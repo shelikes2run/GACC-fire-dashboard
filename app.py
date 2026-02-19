@@ -946,10 +946,24 @@ def main():
                     ['yd', 'td', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon',
                      'Climo_Mean', 'P80', 'P90', 'P95', 'P97']
                     if c in tbl_df.columns]
+
+        display_df = tbl_df.sort_values('PSA')[['PSA'] + num_cols].copy()
+
+        # Round numeric columns — avoids the .style.format() TypeError that
+        # crashes when a column contains None/NaN (pandas bug on Python 3.13)
+        for c in num_cols:
+            display_df[c] = pd.to_numeric(display_df[c], errors='coerce').round(1)
+
+        col_cfg = {
+            c: st.column_config.NumberColumn(c, format='%.1f')
+            for c in num_cols
+        }
+
         st.dataframe(
-            tbl_df.sort_values('PSA')[['PSA'] + num_cols]
-            .style.format({c: '{:.1f}' for c in num_cols}),
-            use_container_width=True, height=520,
+            display_df,
+            column_config=col_cfg,
+            use_container_width=True,
+            height=520,
         )
         st.download_button(
             f'⬇ Download {FIELD_META[fc]["unit"]} CSV',

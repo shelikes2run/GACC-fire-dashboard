@@ -402,3 +402,147 @@ def json_to_dataframes(data):
     result = {fk: pd.DataFrame(rows) for fk, rows in frames.items()}
     result['trend'] = pd.DataFrame(trend_rows)
     return result
+
+
+# ── Historical observed data (for Trend + Heatmap tabs) ───────────────────────
+
+def fetch_psa_history(gacc_name, days: int = 30,
+                      output_path: str = None,
+                      baseline_path: str = 'gacc_climo_baseline.json'):
+    """
+    Fetch the last `days` days of OBSERVED (NFDRType=O) NFDR data for every
+    PSA in the GACC.  Used by the Trend and Heatmap tabs.
+
+    Separate from fetch_psa_forecast() — this window is purely historical
+    (yesterday-N → yesterday) so it never contains forecast rows.
+
+    Returns a dict:
+      {
+        'meta': { gacc, abbrev, start_date, end_date, days, fetched_at, ... },
+        'psa':  {
+          psa_id: {
+            'dates':  ['2026-02-23', '2026-02-24', ...],   # ascending
+            'erc':    [29.1, 30.4, ...],                    # NaN → None
+            'ic':     [...],
+            'bi':     [...],
+            'sc':     [...],
+            'fm100':  [...],
+            'p90_erc':  44.7,   # climo threshold for this PSA
+            'p97_erc':  50.5,
+            'mean_erc': 21.0,
+          }
+        }
+      }
+    """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    t0          = time.time()
+    gacc_config = load_gacc_config()
+    baseline    = load_baseline(baseline_path)
+
+    psas_cfg = gacc_config.get(gacc_name, {}).get('psas', {})
+
+    station_fuel_map = {}
+    for info in psas_cfg.values():
+        fm = info.get('fuel_model', 'Y')
+        for s in info.get('stations', []):
+            station_fuel_map[s] = fm
+
+    all_sids  = sorted(station_fuel_map)
+    yesterday = date.today() - timedelta(days=1)
+    start_dt  = yesterday - timedelta(days=days - 1)
+    start_str = str(start_dt)
+    end_str   = str(yesterday)
+
+    abbrev = gacc_config[gacc_name]['abbrev']
+    log.info('History %s — %d stations  %s → %s',
+             abbrev, len(all_sids), start_str, end_str)
+
+    # Fetch all stations in parallel (observed-only window)
+    def _fetch_one(sid):
+        return sid, fetch_station_forecast(
+            sid, station_fuel_map[sid], start_str, end_str)
+
+    forecasts = {}
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        for sid, data_s in pool.map(lambda s: _fetch_one(s), all_sids):
+            if data_s:
+                # Keep only observed rows
+                forecasts[sid] = {
+                    d: e for d, e in data_s.items()
+                    if e.get('type', 'O') == 'O'
+                }
+
+    log.info('  History: %d/%d stations returned data', len(forecasts), len(all_sids))
+
+    # Build date range spine (all days in window)
+    date_spine = [
+        str(start_dt + timedelta(days=i))
+        for i in range(days)
+    ]
+
+    # Aggregate to PSA level
+    psa_out = {}
+    for psa_id, info in psas_cfg.items():
+        sids   = info.get('stations', [])
+        bkey   = f'{gacc_name}|{psa_id}'
+        bentry = baseline.get('psa', {}).get(bkey, {})
+
+        psa_dates  = []
+        field_vals = {fk: [] for fk in FIELD_COLS}
+
+        for d in date_spine:
+            day_field = {fk: [] for fk in FIELD_COLS}
+            for sid in sids:
+                if sid not in forecasts or d not in forecasts[sid]:
+                    continue
+                entry = forecasts[sid][d]
+                for fk in FIELD_COLS:
+                    v = entry.get(fk)
+                    if v is not None and v >= 0:
+                        day_field[fk].append(v)
+
+            # Only include dates where at least one station has ERC data
+            if day_field['erc']:
+                psa_dates.append(d)
+                for fk in FIELD_COLS:
+                    vs = day_field[fk]
+                    field_vals[fk].append(round(mean(vs), 1) if vs else None)
+
+        if not psa_dates:
+            continue
+
+        entry_out = {
+            'dates': psa_dates,
+            **{fk: field_vals[fk] for fk in FIELD_COLS},
+        }
+        # Attach climo thresholds for quick lookup
+        for fk in ('erc', 'ic', 'bi', 'sc', 'fm100'):
+            b = bentry.get(fk, {})
+            for pct in ('mean', 'p80', 'p90', 'p95', 'p97'):
+                v = b.get(pct)
+                if v is not None:
+                    entry_out[f'{pct}_{fk}'] = v
+
+        psa_out[psa_id] = entry_out
+
+    output = {
+        'meta': {
+            'gacc':       gacc_name,
+            'abbrev':     abbrev,
+            'start_date': start_str,
+            'end_date':   end_str,
+            'days':       days,
+            'fetched_at': datetime.utcnow().isoformat() + 'Z',
+            'psa_count':  len(psa_out),
+        },
+        'psa': psa_out,
+    }
+
+    if output_path:
+        out_p = Path(output_path)
+        out_p.parent.mkdir(parents=True, exist_ok=True)
+        out_p.write_text(json.dumps(output, indent=2), encoding='utf-8')
+        log.info('History done in %.1fs → %s', time.time() - t0, output_path)
+
+    return output

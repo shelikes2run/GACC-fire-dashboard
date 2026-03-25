@@ -96,8 +96,9 @@ FIELD_META = {
 }
 PRIMARY_FIELDS = ['erc','ic','bi','sc','fm100']
 ALL_FIELDS     = list(FIELD_META.keys())
-DAY_COLS       = ['yd','td','Wed','Thu','Fri','Sat','Sun','Mon']
-DAY_LABELS     = ['Yesterday','Today','Wed','Thu','Fri','Sat','Sun','Mon']
+DAY_COLS       = ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6']
+# DAY_LABELS are now computed at render time via _day_labels_from_map()
+# so they always reflect today's date regardless of cache age.
 CACHE_HOURS    = 6
 CACHE_DIR      = Path('gacc_cache')
 CACHE_DIR.mkdir(exist_ok=True)   # ensure dir exists at import time
@@ -106,6 +107,27 @@ CACHE_DIR.mkdir(exist_ok=True)   # ensure dir exists at import time
 @contextmanager
 def _nullctx():
     yield
+
+
+def _day_labels_from_map(day_map: dict) -> list:
+    """
+    Convert the day_map {label: date_str} from the cache into human-readable
+    axis labels computed from TODAY's actual date.
+
+    Always called at render time — never stored in cache — so switching from
+    a Tuesday cache to Wednesday render shows correct 'Today = Wed' labels.
+    """
+    import fems_fetcher as ff
+    return [ff._day_label(day_map[k]) for k in ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6']
+            if k in day_map]
+
+
+def _trend_day_labels(day_map: dict) -> tuple:
+    """Return (keys, labels) for the 7 trend columns td … D+6."""
+    import fems_fetcher as ff
+    keys   = ['td','D+1','D+2','D+3','D+4','D+5','D+6']
+    labels = [ff._day_label(day_map[k]) for k in keys if k in day_map]
+    return keys, labels
 
 
 # ── Credentials ───────────────────────────────────────────────────────────────
@@ -334,18 +356,25 @@ def add_pctile_lines(fig, bdata):
                       annotation_position='right')
 
 
-def chart_7day(row_dict, fk, fmeta, bdata, psa_id, height=360):
-    vals  = [row_dict.get(d) for d in DAY_COLS]
+def chart_7day(row_dict, fk, fmeta, bdata, psa_id, height=360, day_map=None):
+    # Build axis labels fresh from today's date — never use cached weekday names
+    if day_map:
+        x_labels = _day_labels_from_map(day_map)
+        day_keys = ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6']
+    else:
+        x_labels = ['Yesterday','Today','D+1','D+2','D+3','D+4','D+5','D+6']
+        day_keys = DAY_COLS
+    vals  = [row_dict.get(d) for d in day_keys]
     color = fmeta['color']
     fig   = go.Figure()
     p90 = bdata.get('p90'); p97 = bdata.get('p97')
     if p90 is not None and p97 is not None:
         fig.add_trace(go.Scatter(
-            x=DAY_LABELS + DAY_LABELS[::-1], y=[p97]*8 + [p90]*8,
+            x=x_labels + x_labels[::-1], y=[p97]*len(x_labels) + [p90]*len(x_labels),
             fill='toself', fillcolor='rgba(255,77,0,0.05)',
             line=dict(color='rgba(0,0,0,0)'), hoverinfo='skip', showlegend=False))
     fig.add_trace(go.Scatter(
-        x=DAY_LABELS, y=vals, mode='lines+markers', name=fmeta['unit'],
+        x=x_labels, y=vals, mode='lines+markers', name=fmeta['unit'],
         line=dict(color=color, width=3),
         marker=dict(size=9, color=color, line=dict(color=C['bg'], width=2)),
         hovertemplate=f'<b>%{{x}}</b><br>{fmeta["unit"]} = <b>%{{y:.1f}}</b><extra></extra>'))
@@ -403,9 +432,10 @@ def chart_pctile_grouped(df, fk, baseline, gacc_name):
     return fig
 
 
-def chart_trend_heatmap(trend_df):
-    t_days = ['td','Wed','Thu','Fri','Sat','Sun','Mon']
-    t_lbls = ['Today','Wed','Thu','Fri','Sat','Sun','Mon']
+def chart_trend_heatmap(trend_df, day_map=None):
+    import fems_fetcher as _ff
+    _dm    = day_map or _ff._build_day_map()
+    t_days, t_lbls = _trend_day_labels(_dm)
     psas   = sorted(trend_df['PSA'].tolist())
     # FIX 5: fill NaN trend values with 0 so heatmap renders without gaps
     z = [[float(trend_df[trend_df['PSA']==p].iloc[0].get(d) or 0)
@@ -673,10 +703,15 @@ def main():
         '📉  ERC Trend', '🗺️  Heatmap', '⚖️  Percentile Context', '🗒️  Data Table'])
 
     # Tab 1 — 7-Day forecast for selected PSA
+    # Build a fresh day_map for all chart rendering (always today's dates)
+    import fems_fetcher as _ff
+    _render_day_map = _ff._build_day_map()
+
     with t1:
         c_main, c_side = st.columns([3, 1])
         with c_main:
-            st.plotly_chart(chart_7day(sel_dict, selected_field, fmeta, bdata, selected_psa),
+            st.plotly_chart(chart_7day(sel_dict, selected_field, fmeta, bdata,
+                            selected_psa, day_map=_render_day_map),
                             use_container_width=True)
         with c_side:
             st.markdown(f"""<div style="background:{C['surface2']};border:1px solid {C['border']};
@@ -732,15 +767,18 @@ def main():
             kr = kbdi_df[kbdi_df['PSA'] == selected_psa]
             if not kr.empty:
                 b2 = get_psa_bdata(selected_gacc, selected_psa, baseline, 'kbdi')
-                st.plotly_chart(chart_7day(kr.iloc[0].to_dict(), 'kbdi', FIELD_META['kbdi'], b2, selected_psa),
+                st.plotly_chart(chart_7day(kr.iloc[0].to_dict(), 'kbdi', FIELD_META['kbdi'], b2, selected_psa, day_map=_render_day_map),
                                 use_container_width=True)
 
     # Tab 4 — ERC trend
     with t4:
         trend_df = get_field_df(dfs, 'trend')
         if not trend_df.empty:
-            t_days = ['td','Wed','Thu','Fri','Sat','Sun','Mon']
-            t_lbls = ['Today','Wed','Thu','Fri','Sat','Sun','Mon']
+            # Always build day_map from today's real date at render time
+            # — never use the frozen day_map stored in the cache JSON
+            import fems_fetcher as _ff
+            _tdm   = _ff._build_day_map()
+            t_days, t_lbls = _trend_day_labels(_tdm)
             c4a, c4b = st.columns([2, 3])
             with c4a:
                 tr = trend_df[trend_df['PSA'] == selected_psa]
@@ -796,7 +834,7 @@ def main():
         search = st.text_input('🔍 Filter PSA', placeholder='e.g. GB21')
         if search:
             tbl_df = tbl_df[tbl_df['PSA'].str.contains(search.upper(), na=False)]
-        num_cols = [c for c in ['yd','td','Wed','Thu','Fri','Sat','Sun','Mon',
+        num_cols = [c for c in ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6',
                                  'Climo_Mean','P80','P90','P95','P97'] if c in tbl_df.columns]
         display_df = tbl_df.sort_values('PSA')[['PSA'] + num_cols].copy()
         for c in num_cols:

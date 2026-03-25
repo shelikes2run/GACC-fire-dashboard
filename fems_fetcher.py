@@ -54,7 +54,7 @@ FIELD_COLS = {
 }
 
 # Day-label ordering used throughout the app
-DAY_LABELS = ['yd', 'td', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon']
+DAY_LABELS = ['yd', 'td', 'D+1', 'D+2', 'D+3', 'D+4', 'D+5', 'D+6']
 
 
 def _headers():
@@ -180,26 +180,53 @@ def _safe_mean(vals):
 
 def _build_day_map():
     """
-    Returns {label: date_string} for yd / td / Wed … Mon.
-    'yd' = yesterday (for observed), 'td' = today, rest = forecast days.
+    Returns {label: date_string} for the 8 display columns using rolling
+    day offsets (+0 … +6) rather than weekday-name lookups.
+
+    Fixes two bugs with the old weekday-name approach:
+      1. Stale cache: frozen day_map showed "Today=Tuesday" on Wednesday
+      2. Same-day gap: next_weekday(Wed, Wed) jumped +7, leaving a blank
+         between Today and the first forecast slot.
+
+    Labels are yd / td / D+1 … D+6.  app.py converts D+N to readable names
+    at render time using _day_label(), so axis labels are always correct
+    regardless of when the cache was written.
     """
-    today     = date.today()
-    yesterday = today - timedelta(days=1)
-
-    def next_weekday(d, wd):   # wd: 0=Mon … 6=Sun
-        days = (wd - d.weekday()) % 7 or 7
-        return d + timedelta(days=days)
-
+    today = date.today()
     return {
-        'yd':  str(yesterday),
+        'yd':  str(today - timedelta(days=1)),
         'td':  str(today),
-        'Wed': str(next_weekday(today, 2)),
-        'Thu': str(next_weekday(today, 3)),
-        'Fri': str(next_weekday(today, 4)),
-        'Sat': str(next_weekday(today, 5)),
-        'Sun': str(next_weekday(today, 6)),
-        'Mon': str(next_weekday(today, 0)),
+        'D+1': str(today + timedelta(days=1)),
+        'D+2': str(today + timedelta(days=2)),
+        'D+3': str(today + timedelta(days=3)),
+        'D+4': str(today + timedelta(days=4)),
+        'D+5': str(today + timedelta(days=5)),
+        'D+6': str(today + timedelta(days=6)),
     }
+
+
+def _day_label(date_str: str) -> str:
+    """
+    Convert a YYYY-MM-DD string to a human-readable chart label.
+    Called by app.py at render time — always reflects today's actual date.
+
+    e.g. if today is Wednesday:
+      yesterday  → 'Yesterday'
+      today      → 'Today'
+      D+1        → 'Thu'
+      D+6        → 'Tue'
+    """
+    from datetime import date as _date
+    DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    try:
+        d     = _date.fromisoformat(date_str)
+        today = _date.today()
+        delta = (d - today).days
+        if delta == -1: return 'Yesterday'
+        if delta == 0:  return 'Today'
+        return DAY_NAMES[d.weekday()]
+    except Exception:
+        return date_str
 
 
 def fetch_psa_forecast(gacc_name, psa_ids=None,
@@ -305,7 +332,7 @@ def fetch_psa_forecast(gacc_name, psa_ids=None,
         # ERC trend: delta vs today for each forecast day
         today_erc = field_data['erc'].get('td') or 0
         erc_trend = {'td': 0.0}
-        for lbl in ['Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon']:
+        for lbl in ['D+1', 'D+2', 'D+3', 'D+4', 'D+5', 'D+6']:
             v = field_data['erc'].get(lbl)
             erc_trend[lbl] = round(v - today_erc, 1) if v is not None else None
 
@@ -369,7 +396,7 @@ def json_to_dataframes(data):
         t = psa.get('ERC_trend', {})
         trend_rows.append({
             'PSA': psa_id,
-            **{d: t.get(d) for d in ['td', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon']}
+            **{d: t.get(d) for d in ['td', 'D+1', 'D+2', 'D+3', 'D+4', 'D+5', 'D+6']}
         })
 
     result = {fk: pd.DataFrame(rows) for fk, rows in frames.items()}

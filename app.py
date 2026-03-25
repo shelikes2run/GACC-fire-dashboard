@@ -102,6 +102,8 @@ DAY_COLS       = ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6']
 CACHE_HOURS    = 6
 CACHE_DIR      = Path('gacc_cache')
 CACHE_DIR.mkdir(exist_ok=True)   # ensure dir exists at import time
+HIST_HOURS  = 12   # history re-fetched twice daily (data changes slowly)
+HIST_DAYS   = 30   # how many days of observed history to pull
 
 # ── Null context manager ──────────────────────────────────────────────────────
 @contextmanager
@@ -161,6 +163,17 @@ def _cache_age_str(abbrev):
     if age < 60:   return 'just now'
     if age < 3600: return f'{int(age//60)}m ago'
     return f'{age/3600:.1f}h ago'
+
+
+def _hist_cache_path(abbrev):
+    return CACHE_DIR / f'gacc_hist_{abbrev}.json'
+
+
+def _hist_cache_fresh(abbrev):
+    p = _hist_cache_path(abbrev)
+    if not p.exists(): return False
+    age = (datetime.now() - datetime.fromtimestamp(p.stat().st_mtime)).total_seconds()
+    return age < HIST_HOURS * 3600
 
 
 # ── Static loaders ────────────────────────────────────────────────────────────
@@ -262,6 +275,52 @@ def ensure_gacc_loaded(api_key, username, gacc_name, gacc_config, force=False):
 
     # Nothing worked
     raise fetch_err
+
+
+def ensure_history_loaded(api_key, username, gacc_name, gacc_config, force=False):
+    """
+    Load 30-day observed history for gacc_name.
+    Same priority logic as ensure_gacc_loaded:
+      1. session_state + fresh cache → instant
+      2. fresh cache on disk → fast read
+      3. stale/missing → fetch from FEMS (~10-20s, cached 12h)
+    Returns (hist_data_dict, source_str)
+    """
+    hist_key = f'hist_{gacc_name}'
+    abbrev   = gacc_config[gacc_name]['abbrev']
+
+    if not force and hist_key in st.session_state and _hist_cache_fresh(abbrev):
+        return st.session_state[hist_key], 'cached'
+
+    if not force and _hist_cache_fresh(abbrev):
+        try:
+            p    = _hist_cache_path(abbrev)
+            data = json.loads(p.read_text(encoding='utf-8'))
+            st.session_state[hist_key] = data
+            return data, 'cached'
+        except Exception:
+            pass
+
+    try:
+        import fems_fetcher as ff
+        ff.FEMS_API_KEY  = api_key
+        ff.FEMS_USERNAME = username
+        out_path = str(_hist_cache_path(abbrev))
+        data = ff.fetch_psa_history(gacc_name, days=HIST_DAYS,
+                                    output_path=out_path)
+        st.session_state[hist_key] = data
+        return data, 'live'
+    except Exception as e:
+        # If live fails and stale cache exists, use it
+        p = _hist_cache_path(abbrev)
+        if p.exists():
+            try:
+                data = json.loads(p.read_text(encoding='utf-8'))
+                st.session_state[hist_key] = data
+                return data, 'cached (stale)'
+            except Exception:
+                pass
+        raise e
 
 
 # Module-level set tracks which GACCs are currently being background-fetched.
@@ -432,24 +491,145 @@ def chart_pctile_grouped(df, fk, baseline, gacc_name):
     return fig
 
 
-def chart_trend_heatmap(trend_df, day_map=None):
-    import fems_fetcher as _ff
-    _dm    = day_map or _ff._build_day_map()
-    t_days, t_lbls = _trend_day_labels(_dm)
-    psas   = sorted(trend_df['PSA'].tolist())
-    # FIX 5: fill NaN trend values with 0 so heatmap renders without gaps
-    z = [[float(trend_df[trend_df['PSA']==p].iloc[0].get(d) or 0)
-          for d in t_days] for p in psas]
-    fig = go.Figure(go.Heatmap(
-        z=z, x=t_lbls, y=psas,
-        colorscale=[[0,'#00c875'],[0.4,'#1a1e2e'],[0.6,'#1a1e2e'],[0.82,'#ff6b00'],[1,'#ff2d55']],
-        zmid=0,
-        hovertemplate='<b>%{y}</b> · %{x}<br>Δ ERC: <b>%{z:+.1f}</b><extra></extra>',
-        colorbar=dict(tickfont=dict(color=C['muted'], size=9, family='JetBrains Mono'),
-                      title=dict(text='Δ ERC', font=dict(color=C['muted'])), len=0.8)))
+def chart_history_trend(hist_data, psa_id, fk, baseline, gacc_name, height=360):
+    """
+    Line chart of 30-day observed history for one PSA, one field.
+    Shows climo mean, P80, P90, P95, P97 as reference lines.
+    """
+    psa = hist_data.get('psa', {}).get(psa_id, {})
+    if not psa:
+        return go.Figure()
+
+    dates = psa.get('dates', [])
+    vals  = psa.get(fk, [])
+    fmeta = FIELD_META[fk]
+    bdata = get_psa_bdata(gacc_name, psa_id, baseline, fk)
+    color = fmeta['color']
+
+    # X-axis: short date labels
+    xlabels = [d[5:] for d in dates]   # MM-DD
+
+    fig = go.Figure()
+
+    # P90-P97 shaded band
+    p90 = bdata.get('p90'); p97 = bdata.get('p97')
+    if p90 is not None and p97 is not None and xlabels:
+        fig.add_trace(go.Scatter(
+            x=xlabels + xlabels[::-1],
+            y=[p97]*len(xlabels) + [p90]*len(xlabels),
+            fill='toself', fillcolor='rgba(255,77,0,0.05)',
+            line=dict(color='rgba(0,0,0,0)'),
+            hoverinfo='skip', showlegend=False))
+
+    fig.add_trace(go.Scatter(
+        x=xlabels, y=vals, mode='lines+markers',
+        name=fmeta['unit'],
+        line=dict(color=color, width=2.5),
+        marker=dict(size=5, color=color, line=dict(color=C['bg'], width=1)),
+        hovertemplate='<b>%{x}</b><br>' + fmeta['unit'] + ' = <b>%{y:.1f}</b><extra></extra>'))
+
+    add_pctile_lines(fig, bdata)
+
+    meta = hist_data.get('meta', {})
+    date_range = f"{meta.get('start_date','')[5:]} → {meta.get('end_date','')[5:]}"
     fig.update_layout(**{**PL,
-        'title': _title('ERC TREND HEATMAP — Δ vs Today'),
-        'height': max(360, len(psas)*20 + 100),
+        'title': _title(f'{psa_id} — {fmeta["label"]} ({date_range})'),
+        'height': height,
+        'xaxis': {**PL['xaxis'], 'tickangle': -45},
+        'yaxis': {**PL['yaxis'], 'title': fmeta['unit']}})
+    return fig
+
+
+def chart_history_all_psas(hist_data, fk, baseline, gacc_name, selected_psa, height=340):
+    """
+    Multi-line chart: 30-day ERC (or any field) for ALL PSAs.
+    Selected PSA is highlighted; others are dimmed.
+    """
+    psa_dict = hist_data.get('psa', {})
+    fmeta    = FIELD_META[fk]
+    palette  = [C['fire'],C['teal'],C['gold'],C['p80'],C['p95'],C['p97'],C['p90'],'#74c0fc',
+                '#a9e34b','#63e6be','#74c0fc','#e599f7']
+    fig = go.Figure()
+    for i, (psa_id, psa) in enumerate(sorted(psa_dict.items())):
+        dates = psa.get('dates', [])
+        vals  = psa.get(fk, [])
+        if not dates: continue
+        is_sel = psa_id == selected_psa
+        fig.add_trace(go.Scatter(
+            x=[d[5:] for d in dates], y=vals,
+            mode='lines', name=psa_id,
+            line=dict(color=palette[i % len(palette)], width=3 if is_sel else 1),
+            opacity=1.0 if is_sel else 0.25,
+            hovertemplate=f'<b>{psa_id}</b> · %{{x}}: <b>%{{y:.1f}}</b><extra></extra>'))
+
+    meta = hist_data.get('meta', {})
+    date_range = f"{meta.get('start_date','')[5:]} → {meta.get('end_date','')[5:]}"
+    fig.update_layout(**{**PL,
+        'title': _title(f'{fmeta["label"]} — All PSAs ({date_range})'),
+        'height': height,
+        'xaxis': {**PL['xaxis'], 'tickangle': -45},
+        'yaxis': {**PL['yaxis'], 'title': fmeta['unit']}})
+    return fig
+
+
+def chart_history_heatmap(hist_data, fk, baseline, gacc_name):
+    """
+    Heatmap: PSA × date, colored by value relative to P90 threshold.
+    Color scale: green (below P90) → dark (near P90) → orange/red (above P90/P97).
+    """
+    psa_dict = hist_data.get('psa', {})
+    fmeta    = FIELD_META[fk]
+    if not psa_dict:
+        return go.Figure()
+
+    psas      = sorted(psa_dict.keys())
+    all_dates = sorted({d for psa in psa_dict.values() for d in psa.get('dates', [])})
+    xlabels   = [d[5:] for d in all_dates]
+
+    z         = []
+    hover     = []
+    for psa_id in psas:
+        psa    = psa_dict.get(psa_id, {})
+        dates  = psa.get('dates', [])
+        vals   = psa.get(fk, [])
+        bdata  = get_psa_bdata(gacc_name, psa_id, baseline, fk)
+        p90    = bdata.get('p90')
+        date_val = dict(zip(dates, vals))
+        row    = []
+        htxt   = []
+        for d in all_dates:
+            v = date_val.get(d)
+            row.append(float(v) if v is not None else None)
+            if v is not None and p90:
+                pct_str = f'{v/p90*100:.0f}% of P90' if p90 else ''
+                htxt.append(f'{psa_id}<br>{d[5:]}<br>{fmeta["unit"]}={v:.1f}<br>{pct_str}')
+            else:
+                htxt.append(f'{psa_id}<br>{d[5:]}<br>No data')
+        z.append(row)
+        hover.append(htxt)
+
+    fig = go.Figure(go.Heatmap(
+        z=z, x=xlabels, y=psas,
+        customdata=hover,
+        hovertemplate='%{customdata}<extra></extra>',
+        colorscale=[
+            [0.00, '#00c875'],
+            [0.55, '#1a1e2e'],
+            [0.75, '#1a1e2e'],
+            [0.88, '#ff6b00'],
+            [1.00, '#ff2d55'],
+        ],
+        colorbar=dict(
+            title=dict(text=fmeta['unit'], font=dict(color=C['muted'])),
+            tickfont=dict(color=C['muted'], size=9, family='JetBrains Mono'),
+            len=0.8),
+    ))
+    meta = hist_data.get('meta', {})
+    date_range = f"{meta.get('start_date','')[5:]} → {meta.get('end_date','')[5:]}"
+    fig.update_layout(**{**PL,
+        'title': _title(f'{fmeta["label"]} HEATMAP — PSA × DATE ({date_range})'),
+        'height': max(400, len(psas)*18 + 120),
+        'xaxis': {**PL['xaxis'], 'tickangle': -45, 'nticks': 15},
         'yaxis': {**PL['yaxis'], 'autorange': 'reversed'}})
     return fig
 
@@ -632,6 +812,21 @@ def main():
     if 'stale' in source:
         st.warning(f'⚠️ Using stale cache for {abbrev_sel} — FEMS fetch failed. Data may be outdated.')
 
+    # Load 30-day history for Trend + Heatmap tabs (separate fetch, 12h cache)
+    # Non-blocking: if history fetch fails, tabs show a friendly message
+    hist_data   = None
+    hist_source = 'none'
+    hist_abbrev = gacc_config[selected_gacc]['abbrev']
+    try:
+        hist_spinner = (st.spinner(f'Loading {hist_abbrev} history...')
+                        if not _hist_cache_fresh(hist_abbrev) else _nullctx())
+        with hist_spinner:
+            hist_data, hist_source = ensure_history_loaded(
+                api_key, username, selected_gacc, gacc_config)
+    except Exception as hist_err:
+        # History is non-critical — dashboard still works without it
+        hist_data = None
+
     # Build sidebar — returns potentially new GACC if user switched
     new_gacc, selected_psa, selected_field = build_sidebar(
         gacc_config, gacc_names, selected_gacc, source, meta)
@@ -770,51 +965,38 @@ def main():
                 st.plotly_chart(chart_7day(kr.iloc[0].to_dict(), 'kbdi', FIELD_META['kbdi'], b2, selected_psa, day_map=_render_day_map),
                                 use_container_width=True)
 
-    # Tab 4 — ERC trend
+    # Tab 4 — 30-Day ERC Trend (historical observed + climo bands)
     with t4:
-        trend_df = get_field_df(dfs, 'trend')
-        if not trend_df.empty:
-            # Always build day_map from today's real date at render time
-            # — never use the frozen day_map stored in the cache JSON
-            import fems_fetcher as _ff
-            _tdm   = _ff._build_day_map()
-            t_days, t_lbls = _trend_day_labels(_tdm)
-            c4a, c4b = st.columns([2, 3])
+        if hist_data is None:
+            st.info('Historical data unavailable — check FEMS connectivity.')
+        else:
+            # Field selector for trend tab
+            trend_fk = st.radio('Index', PRIMARY_FIELDS,
+                                 format_func=lambda f: FIELD_META[f]['unit'],
+                                 horizontal=True, key='trend_field')
+            c4a, c4b = st.columns([1, 2])
             with c4a:
-                tr = trend_df[trend_df['PSA'] == selected_psa]
-                if not tr.empty:
-                    trow = tr.iloc[0]
-                    vals = [float(trow.get(d) or 0) for d in t_days]
-                    cbars = [C['crit'] if v > 3 else C['high'] if v > 0 else C['norm'] for v in vals]
-                    fig = go.Figure()
-                    fig.add_hline(y=0, line_color=C['border'], line_width=1)
-                    fig.add_trace(go.Bar(x=t_lbls, y=vals, marker_color=cbars, marker_line_width=0,
-                                         hovertemplate='<b>%{x}</b>: Δ ERC = <b>%{y:+.1f}</b><extra></extra>'))
-                    fig.update_layout(**{**PL, 'title': _title(f'{selected_psa} ERC TREND'),
-                                         'height': 300, 'yaxis': {**PL['yaxis'], 'title': 'Δ ERC vs Today'}})
-                    st.plotly_chart(fig, use_container_width=True)
+                # Single PSA: 30-day line with climo bands
+                st.plotly_chart(
+                    chart_history_trend(hist_data, selected_psa, trend_fk, baseline, selected_gacc),
+                    use_container_width=True)
             with c4b:
-                fig2 = go.Figure()
-                palette = [C['fire'],C['teal'],C['gold'],C['p80'],C['p95'],C['p97'],C['p90'],'#74c0fc']
-                for i, (_, row) in enumerate(trend_df.sort_values('PSA').iterrows()):
-                    psa = row['PSA']
-                    fig2.add_trace(go.Scatter(
-                        x=t_lbls, y=[float(row.get(d) or 0) for d in t_days],
-                        mode='lines', name=psa,
-                        line=dict(color=palette[i % len(palette)],
-                                  width=3 if psa == selected_psa else 1.2),
-                        opacity=1.0 if psa == selected_psa else 0.35,
-                        hovertemplate=f'<b>{psa}</b> · %{{x}}: <b>%{{y:+.1f}}</b><extra></extra>'))
-                fig2.add_hline(y=0, line_color=C['border'], line_width=1)
-                fig2.update_layout(**{**PL, 'title': _title('ERC TREND — All PSAs'),
-                                      'height': 300, 'yaxis': {**PL['yaxis'], 'title': 'Δ ERC'}})
-                st.plotly_chart(fig2, use_container_width=True)
+                # All PSAs overlay — selected PSA highlighted
+                st.plotly_chart(
+                    chart_history_all_psas(hist_data, trend_fk, baseline, selected_gacc, selected_psa),
+                    use_container_width=True)
 
-    # Tab 5 — Heatmap
+    # Tab 5 — 30-Day Heatmap (PSA × date, colored by value)
     with t5:
-        trend_df = get_field_df(dfs, 'trend')
-        if not trend_df.empty:
-            st.plotly_chart(chart_trend_heatmap(trend_df), use_container_width=True)
+        if hist_data is None:
+            st.info('Historical data unavailable — check FEMS connectivity.')
+        else:
+            hm_fk = st.radio('Index', PRIMARY_FIELDS,
+                              format_func=lambda f: FIELD_META[f]['unit'],
+                              horizontal=True, key='heatmap_field')
+            st.plotly_chart(
+                chart_history_heatmap(hist_data, hm_fk, baseline, selected_gacc),
+                use_container_width=True)
 
     # Tab 6 — Percentile context
     with t6:
@@ -839,7 +1021,15 @@ def main():
         display_df = tbl_df.sort_values('PSA')[['PSA'] + num_cols].copy()
         for c in num_cols:
             display_df[c] = pd.to_numeric(display_df[c], errors='coerce').round(1)
-        col_cfg = {c: st.column_config.NumberColumn(c, format='%.1f') for c in num_cols}
+        import fems_fetcher as _ff
+        _dm_tbl = _ff._build_day_map()
+        _inv    = {v: k for k, v in _dm_tbl.items()}  # date→label
+        _label  = lambda c: (
+            'Yesterday' if c == 'yd' else
+            'Today'     if c == 'td' else
+            _ff._day_label(_dm_tbl.get(c, c)) if c.startswith('D+') else c
+        )
+        col_cfg = {c: st.column_config.NumberColumn(_label(c), format='%.1f') for c in num_cols}
         st.dataframe(display_df, column_config=col_cfg, use_container_width=True, height=520)
         st.download_button(
             f'⬇ Download {FIELD_META[fc]["unit"]} CSV',
@@ -847,5 +1037,103 @@ def main():
             f'{abbrev}_{fc}_{date.today()}.csv', 'text/csv')
 
 
+def check_password():
+    """
+    Simple password gate — shown before any dashboard content.
+    Password is set via Streamlit secrets (DASHBOARD_PASSWORD) or falls back
+    to an environment variable. Remove the check_password() call from the
+    bottom of this file once QC is complete.
+
+    To set the password on Streamlit Cloud:
+      App Settings → Secrets → add:
+        DASHBOARD_PASSWORD = "your_password_here"
+
+    To set locally, add to .env:
+        DASHBOARD_PASSWORD=your_password_here
+    """
+    # Retrieve password from secrets or env
+    try:
+        correct_pw = st.secrets['DASHBOARD_PASSWORD']
+    except Exception:
+        correct_pw = os.getenv('DASHBOARD_PASSWORD', '')
+
+    if not correct_pw:
+        # No password configured — pass through silently
+        return True
+
+    # Already authenticated this session
+    if st.session_state.get('_authenticated'):
+        return True
+
+    # ── Password screen ───────────────────────────────────────────────────────
+    st.markdown("""
+    <style>
+    .pw-wrap {
+        max-width: 420px;
+        margin: 12vh auto 0;
+        background: #1a1e2e;
+        border: 1px solid #2a3050;
+        border-top: 3px solid #ff4d00;
+        border-radius: 8px;
+        padding: 40px 36px 32px;
+    }
+    .pw-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 32px;
+        letter-spacing: 4px;
+        color: #e8eaf6;
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+    .pw-sub {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: #6b7299;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 28px;
+    }
+    .pw-note {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: #3a3f6b;
+        text-align: center;
+        margin-top: 20px;
+        letter-spacing: 1px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    col = st.columns([1, 2, 1])[1]
+    with col:
+        st.markdown("""
+        <div class="pw-wrap">
+          <div class="pw-title">🔥 FIRE WEATHER</div>
+          <div class="pw-sub">GACC Intelligence Dashboard — QC Preview</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        pw_input = st.text_input(
+            'Access password',
+            type='password',
+            placeholder='Enter password…',
+            label_visibility='collapsed',
+        )
+
+        if st.button('Enter →', use_container_width=True, type='primary'):
+            if pw_input == correct_pw:
+                st.session_state['_authenticated'] = True
+                st.rerun()
+            else:
+                st.error('Incorrect password — try again.')
+
+        st.markdown(
+            '<div class="pw-note">QC preview · contact dashboard admin for access</div>',
+            unsafe_allow_html=True)
+
+    return False
+
+
 if __name__ == '__main__':
-    main()
+    if check_password():
+        main()

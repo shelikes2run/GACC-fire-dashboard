@@ -245,8 +245,19 @@ def _cache_path(abbrev):
 def _cache_fresh(abbrev):
     p = _cache_path(abbrev)
     if not p.exists(): return False
+    # Check age
     age = (datetime.now() - datetime.fromtimestamp(p.stat().st_mtime)).total_seconds()
-    return age < CACHE_HOURS * 3600
+    if age >= CACHE_HOURS * 3600:
+        return False
+    # Check schema version — old cache missing D-5…D-2 keys must be re-fetched
+    try:
+        import fems_fetcher as _ff
+        data = json.loads(p.read_text(encoding='utf-8'))
+        if data.get('meta', {}).get('cache_schema') != _ff.CACHE_SCHEMA:
+            return False   # schema mismatch → force fresh fetch
+    except Exception:
+        return False
+    return True
 
 
 def _cache_age_str(abbrev):

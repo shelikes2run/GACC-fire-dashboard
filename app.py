@@ -1229,6 +1229,161 @@ def main():
             tbl_df.sort_values('PSA').to_csv(index=False),
             f'{abbrev}_{fc}_{date.today()}.csv', 'text/csv')
 
+    # Tab 8 — About & Data (inside main, after tab 7)
+    with t8:
+        _abbrev   = gacc_config[selected_gacc]['abbrev']
+        _n_psas   = len(gacc_config[selected_gacc]['psas'])
+        _n_stns   = len(set(
+            s for info in gacc_config[selected_gacc]['psas'].values()
+            for s in info.get('stations', [])
+        ))
+        _psa_stns = gacc_config[selected_gacc]['psas'].get(selected_psa, {}).get('stations', [])
+        _fuel_mdl = gacc_config[selected_gacc]['psas'].get(selected_psa, {}).get('fuel_model', '?')
+        climo_s   = baseline.get('meta', {}).get('climo_start', 2005)
+        climo_e   = baseline.get('meta', {}).get('climo_end',   2024)
+        n_years   = climo_e - climo_s + 1
+        stn_str   = ', '.join(str(s) for s in _psa_stns) if _psa_stns else 'No stations configured'
+        n_stns_lbl = f"{len(_psa_stns)} key station{'s' if len(_psa_stns) != 1 else ''}"
+
+        # ── Title ──────────────────────────────────────────────────────────────
+        st.markdown(
+            f'''<div style="font-family:Bebas Neue,sans-serif;font-size:26px;
+                    color:{C['text']};letter-spacing:3px;margin-bottom:2px;">
+                About This Dashboard</div>
+            <div style="font-family:JetBrains Mono,monospace;font-size:9px;
+                    color:{C['muted']};letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;">
+                {_abbrev} Fire Weather Intelligence &nbsp;·&nbsp; Data Source &amp; Methodology
+            </div>''',
+            unsafe_allow_html=True)
+
+        # ── Card 1: Data Source ────────────────────────────────────────────────
+        st.markdown(
+            f'''<div style="background:{C['surface']};border:1px solid {C['border']};
+                    border-left:3px solid {C['fire']};border-radius:6px;
+                    padding:20px 24px;margin-bottom:14px;">
+              <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:{C['fire']};
+                          text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">
+                📊 Data Source</div>
+              <div style="font-family:Space Grotesk,sans-serif;font-size:13px;
+                          color:{C['text']};line-height:1.8;">
+                All fire weather indices (ERC, IC, BI, SC) and fuel moisture values are retrieved
+                from the <strong>USDA Forest Service Fire &amp; Environment Management System (FEMS)</strong>
+                via the <code style="background:{C['surface2']};padding:1px 5px;border-radius:3px;">
+                download-nfdr-daily-summary</code> API endpoint.
+                <br><br>
+                Live 7-day forecasts are fetched every 6 hours. The 30-day historical trend uses
+                observed rows only (<code style="background:{C['surface2']};padding:1px 5px;
+                border-radius:3px;">NFDRType = O</code>), refreshed every 12 hours.
+              </div>
+            </div>''',
+            unsafe_allow_html=True)
+
+        # ── Card 2: Climatology Baseline ───────────────────────────────────────
+        st.markdown(
+            f'''<div style="background:{C['surface']};border:1px solid {C['border']};
+                    border-left:3px solid {C['teal']};border-radius:6px;
+                    padding:20px 24px;margin-bottom:14px;">
+              <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:{C['teal']};
+                          text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">
+                📐 Climatology Baseline ({climo_s}–{climo_e})</div>
+              <div style="font-family:Space Grotesk,sans-serif;font-size:13px;
+                          color:{C['text']};line-height:1.8;">
+                Percentile thresholds are derived from <strong>{climo_s}–{climo_e} observed NFDR
+                data</strong> downloaded from FEMS for each key RAWS station in each PSA.
+                <br><br>
+                <strong>Averaging method:</strong> Daily values are averaged across all contributing
+                stations to produce one PSA-level daily value. Percentiles are computed across all
+                daily values in the full {n_years}-year period.
+                <br><br>
+                <strong>Percentile thresholds — fire behavior indices (ERC, IC, BI, SC, KBDI):</strong>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;">
+                <div style="background:{C['surface2']};border-top:2px solid {C['p80']};
+                            border-radius:4px;padding:10px;text-align:center;">
+                  <div style="font-family:Bebas Neue,sans-serif;font-size:22px;color:{C['p80']};">80th</div>
+                  <div style="font-family:JetBrains Mono,monospace;font-size:9px;color:{C['muted']};
+                              text-transform:uppercase;">Above Average<br>Fire Weather</div></div>
+                <div style="background:{C['surface2']};border-top:2px solid {C['p90']};
+                            border-radius:4px;padding:10px;text-align:center;">
+                  <div style="font-family:Bebas Neue,sans-serif;font-size:22px;color:{C['p90']};">90th</div>
+                  <div style="font-family:JetBrains Mono,monospace;font-size:9px;color:{C['muted']};
+                              text-transform:uppercase;">Elevated<br>Fire Potential</div></div>
+                <div style="background:{C['surface2']};border-top:2px solid {C['p95']};
+                            border-radius:4px;padding:10px;text-align:center;">
+                  <div style="font-family:Bebas Neue,sans-serif;font-size:22px;color:{C['p95']};">95th</div>
+                  <div style="font-family:JetBrains Mono,monospace;font-size:9px;color:{C['muted']};
+                              text-transform:uppercase;">High<br>Fire Potential</div></div>
+                <div style="background:{C['surface2']};border-top:2px solid {C['p97']};
+                            border-radius:4px;padding:10px;text-align:center;">
+                  <div style="font-family:Bebas Neue,sans-serif;font-size:22px;color:{C['p97']};">97th</div>
+                  <div style="font-family:JetBrains Mono,monospace;font-size:9px;color:{C['muted']};
+                              text-transform:uppercase;">Critical<br>Fire Potential</div></div>
+              </div>
+            </div>''',
+            unsafe_allow_html=True)
+
+        # ── Card 3: Key RAWS ──────────────────────────────────────────────────
+        st.markdown(
+            f'''<div style="background:{C['surface']};border:1px solid {C['border']};
+                    border-left:3px solid {C['gold']};border-radius:6px;
+                    padding:20px 24px;margin-bottom:14px;">
+              <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:{C['gold']};
+                          text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">
+                📡 Key RAWS Stations — {_abbrev} &nbsp;·&nbsp; PSA {selected_psa}</div>
+              <div style="font-family:Space Grotesk,sans-serif;font-size:13px;
+                          color:{C['text']};line-height:1.8;">
+                <strong>Important:</strong> This dashboard uses a curated set of
+                <strong>key RAWS stations</strong> for each PSA as defined in the GACC fire weather
+                program. Not all RAWS within each PSA boundary are included — only those designated
+                as representative for climatological and fire weather decision support.
+                <br><br>
+                PSA <strong>{selected_psa}</strong> uses <strong>{n_stns_lbl}</strong>
+                (Fuel Model <strong>{_fuel_mdl}</strong>):
+              </div>
+              <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:{C['p80']};
+                          margin-top:10px;word-break:break-all;">{stn_str}</div>
+              <div style="font-family:Space Grotesk,sans-serif;font-size:12px;
+                          color:{C['muted']};margin-top:10px;">
+                {_abbrev} total: {_n_psas} PSAs &nbsp;·&nbsp; {_n_stns} unique key RAWS stations
+              </div>
+            </div>''',
+            unsafe_allow_html=True)
+
+        # ── Card 4: Fuel Moisture Note ─────────────────────────────────────────
+        st.markdown(
+            f'''<div style="background:{C['surface']};border:1px solid {C['border']};
+                    border-left:3px solid {C['teal']};border-radius:6px;
+                    padding:20px 24px;margin-bottom:14px;">
+              <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:{C['muted']};
+                          text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">
+                💧 Fuel Moisture Interpretation</div>
+              <div style="font-family:Space Grotesk,sans-serif;font-size:13px;
+                          color:{C['text']};line-height:1.8;">
+                Fuel moisture indices (1-Hr, 10-Hr, 100-Hr, 1000-Hr FM) are interpreted
+                <strong>inversely</strong> to fire behavior indices —
+                <strong>lower moisture = drier fuels = greater fire danger.</strong>
+                <br><br>
+                On trend and heatmap charts the colorscale is reversed for FM fields:
+                <strong style="color:{C['crit']};">red = critically dry (low moisture)</strong>,
+                <strong style="color:{C['norm']};">green = adequate moisture (high moisture)</strong>.
+                Percentile reference lines are labeled from the dry side
+                (e.g. 10th = Very Dry, 5th = Critically Dry).
+              </div>
+            </div>''',
+            unsafe_allow_html=True)
+
+        # ── Footer ─────────────────────────────────────────────────────────────
+        st.markdown(
+            f'''<div style="font-family:JetBrains Mono,monospace;font-size:9px;
+                    color:{C['dim']};margin-top:4px;line-height:2;">
+              Dashboard built for internal GACC fire weather operations &nbsp;·&nbsp;
+              Data: USDA FS FEMS &nbsp;·&nbsp;
+              Climo baseline: {climo_s}–{climo_e} &nbsp;·&nbsp;
+              Refreshed: 6h (forecast) / 12h (history)
+            </div>''',
+            unsafe_allow_html=True)
+
+
 
 def check_password():
     """
@@ -1326,148 +1481,6 @@ def check_password():
 
     return False
 
-
-    # Tab 8 — About & Methodology
-    with t8:
-        _abbrev = gacc_config[selected_gacc]['abbrev']
-        _n_psas = len(gacc_config[selected_gacc]['psas'])
-        _n_stns = len(set(
-            s for info in gacc_config[selected_gacc]['psas'].values()
-            for s in info.get('stations', [])
-        ))
-
-        # Build station list for selected PSA
-        _psa_stns = gacc_config[selected_gacc]['psas'].get(selected_psa, {}).get('stations', [])
-        _fuel_mdl = gacc_config[selected_gacc]['psas'].get(selected_psa, {}).get('fuel_model', '?')
-
-        climo_start = baseline.get('meta', {}).get('climo_start', 2005)
-        climo_end   = baseline.get('meta', {}).get('climo_end',   2024)
-
-        st.markdown(f"""
-        <div style="max-width:860px;">
-
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:{C['text']};
-                    letter-spacing:3px;margin-bottom:4px;">About This Dashboard</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};
-                    letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;">
-            {_abbrev} Fire Weather Intelligence · Data Source & Methodology
-        </div>
-
-        <div style="background:{C['surface']};border:1px solid {C['border']};border-left:3px solid {C['fire']};
-                    border-radius:6px;padding:20px 24px;margin-bottom:16px;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['fire']};
-                      text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
-            📊 Data Source
-          </div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:{C['text']};line-height:1.8;">
-            All fire weather indices (ERC, IC, BI, SC) and fuel moisture values are retrieved from the
-            <strong>USDA Forest Service Fire & Environment Management System (FEMS)</strong>
-            via the <code style="background:{C['surface2']};padding:1px 5px;border-radius:3px;font-size:11px;">
-            download-nfdr-daily-summary</code> API endpoint.
-            <br><br>
-            Live 7-day forecasts are fetched every 6 hours. The 30-day historical trend uses
-            observed rows only (<code style="background:{C['surface2']};padding:1px 5px;border-radius:3px;font-size:11px;">
-            NFDRType = O</code>), refreshed every 12 hours.
-          </div>
-        </div>
-
-        <div style="background:{C['surface']};border:1px solid {C['border']};border-left:3px solid {C['teal']};
-                    border-radius:6px;padding:20px 24px;margin-bottom:16px;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['teal']};
-                      text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
-            📐 Climatology Baseline ({climo_start}–{climo_end})
-          </div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:{C['text']};line-height:1.8;">
-            Percentile thresholds are derived from <strong>{climo_start}–{climo_end} observed NFDR data</strong>
-            downloaded from FEMS for every key RAWS station in each PSA.
-            <br><br>
-            <strong>Averaging method:</strong> For each PSA, daily values are averaged across all
-            contributing stations to produce one daily PSA value. Percentiles are then computed
-            across all daily values in the full {climo_end - climo_start + 1}-year period.
-            <br><br>
-            <strong>Percentile thresholds:</strong>
-            <br>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px;">
-            <div style="background:{C['surface2']};border:1px solid {C['border']};border-top:2px solid {C['p80']};
-                        border-radius:4px;padding:10px;text-align:center;">
-              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:{C['p80']};">80th</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};text-transform:uppercase;">
-                Above Average<br>Fire Weather</div>
-            </div>
-            <div style="background:{C['surface2']};border:1px solid {C['border']};border-top:2px solid {C['p90']};
-                        border-radius:4px;padding:10px;text-align:center;">
-              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:{C['p90']};">90th</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};text-transform:uppercase;">
-                Elevated<br>Fire Potential</div>
-            </div>
-            <div style="background:{C['surface2']};border:1px solid {C['border']};border-top:2px solid {C['p95']};
-                        border-radius:4px;padding:10px;text-align:center;">
-              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:{C['p95']};">95th</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};text-transform:uppercase;">
-                High<br>Fire Potential</div>
-            </div>
-            <div style="background:{C['surface2']};border:1px solid {C['border']};border-top:2px solid {C['p97']};
-                        border-radius:4px;padding:10px;text-align:center;">
-              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:{C['p97']};">97th</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};text-transform:uppercase;">
-                Critical<br>Fire Potential</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="background:{C['surface']};border:1px solid {C['border']};border-left:3px solid {C['gold']};
-                    border-radius:6px;padding:20px 24px;margin-bottom:16px;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['gold']};
-                      text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
-            📡 Key RAWS Stations — {_abbrev} · PSA {selected_psa}
-          </div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:{C['text']};line-height:1.8;">
-            <strong>Important:</strong> This dashboard uses a curated set of
-            <strong>key RAWS stations</strong> for each PSA, as defined in the
-            GACC fire weather program. Not all RAWS stations within each PSA boundary
-            are included — only those designated as representative for climatological
-            and fire weather decision support purposes.
-            <br><br>
-            PSA <strong>{selected_psa}</strong> uses <strong>{len(_psa_stns)} key station{'s' if len(_psa_stns) != 1 else ''}</strong>
-            (Fuel Model <strong>{_fuel_mdl}</strong>):
-          </div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:{C['p80']};
-                      margin-top:10px;word-break:break-all;">
-            {', '.join(str(s) for s in _psa_stns) if _psa_stns else 'No stations configured'}
-          </div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:{C['muted']};margin-top:12px;">
-            {_abbrev} total: {_n_psas} PSAs · {_n_stns} unique key RAWS stations
-          </div>
-        </div>
-
-        <div style="background:{C['surface']};border:1px solid {C['border']};border-left:3px solid {C['muted']};
-                    border-radius:6px;padding:20px 24px;margin-bottom:16px;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['muted']};
-                      text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
-            ⚠️  Fuel Moisture Index Interpretation
-          </div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:{C['text']};line-height:1.8;">
-            Fuel moisture indices (1-Hr, 10-Hr, 100-Hr, 1000-Hr FM) are interpreted
-            <strong>inversely</strong> compared to fire behavior indices.
-            <strong>Lower fuel moisture = drier fuels = greater fire danger.</strong>
-            <br><br>
-            On trend and heatmap charts, the colorscale for FM fields is reversed:
-            red indicates critically low (dry) moisture, green indicates adequate moisture.
-            Percentile reference lines are labeled to reflect the dry-side thresholds.
-          </div>
-        </div>
-
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['dim']};margin-top:8px;line-height:2;">
-          Dashboard built for internal GACC fire weather operations · Data: USDA FS FEMS ·
-          Climo baseline: {climo_start}–{climo_end} · Refreshed 6h (forecast) / 12h (history)
-        </div>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Also add Key RAWS disclaimer to Trend and Heatmap tabs at top
-        # (handled separately with a small banner in those tabs)
 
 
 if __name__ == '__main__':

@@ -84,23 +84,28 @@ PL = dict(
 
 # ── Field definitions ─────────────────────────────────────────────────────────
 FIELD_META = {
-    'erc':    {'label':'Energy Release Component', 'unit':'ERC',     'color':'#ff4d00','pctile_flip':False},
-    'ic':     {'label':'Ignition Component',       'unit':'IC',      'color':'#cc5de8','pctile_flip':False},
-    'bi':     {'label':'Burning Index',            'unit':'BI',      'color':'#ffd700','pctile_flip':False},
-    'sc':     {'label':'Spread Component',         'unit':'SC',      'color':'#ff6b6b','pctile_flip':False},
-    'fm100':  {'label':'100-Hr Fuel Moisture',     'unit':'FM-100',  'color':'#00d4b4','pctile_flip':True},
-    'fm1':    {'label':'1-Hr Fuel Moisture',       'unit':'FM-1',    'color':'#74c0fc','pctile_flip':True},
-    'fm10':   {'label':'10-Hr Fuel Moisture',      'unit':'FM-10',   'color':'#63e6be','pctile_flip':True},
-    'fm1000': {'label':'1000-Hr Fuel Moisture',    'unit':'FM-1000', 'color':'#a9e34b','pctile_flip':True},
-    'kbdi':   {'label':'Keetch-Byram Drought Index','unit':'KBDI',   'color':'#f08c00','pctile_flip':False},
+    'erc':    {'label':'Energy Release Component',  'unit':'ERC',     'color':'#ff4d00','pctile_flip':False},
+    'ic':     {'label':'Ignition Component',        'unit':'IC',      'color':'#cc5de8','pctile_flip':False},
+    'bi':     {'label':'Burning Index',             'unit':'BI',      'color':'#ffd700','pctile_flip':False},
+    'sc':     {'label':'Spread Component',          'unit':'SC',      'color':'#ff6b6b','pctile_flip':False},
+    'fm100':  {'label':'100-Hr Fuel Moisture',      'unit':'FM-100',  'color':'#00d4b4','pctile_flip':True},
+    'fm1':    {'label':'1-Hr Fuel Moisture',        'unit':'FM-1',    'color':'#74c0fc','pctile_flip':True},
+    'fm10':   {'label':'10-Hr Fuel Moisture',       'unit':'FM-10',   'color':'#63e6be','pctile_flip':True},
+    'fm1000': {'label':'1000-Hr Fuel Moisture',     'unit':'FM-1000', 'color':'#a9e34b','pctile_flip':True},
+    'kbdi':   {'label':'Keetch-Byram Drought Index','unit':'KBDI',    'color':'#f08c00','pctile_flip':False},
+    'gsi':    {'label':'Grassland Spread Index',    'unit':'GSI',     'color':'#e9ff70','pctile_flip':False},
+    'woody':  {'label':'Woody Fuel Moisture',       'unit':'Woody FM','color':'#8ce99a','pctile_flip':True},
+    'herb':   {'label':'Herbaceous Fuel Moisture',  'unit':'Herb FM', 'color':'#b2f2bb','pctile_flip':True},
 }
-PRIMARY_FIELDS = ['erc','ic','bi','sc','fm100']
+PRIMARY_FIELDS = ['erc','ic','bi','sc','fm100','kbdi']
 ALL_FIELDS     = list(FIELD_META.keys())
-DAY_COLS       = ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6']
+DAY_COLS       = ['D-5','D-4','D-3','D-2','yd','td','D+1','D+2','D+3','D+4','D+5','D+6','D+7']
 # DAY_LABELS are now computed at render time via _day_labels_from_map()
 # so they always reflect today's date regardless of cache age.
 CACHE_HOURS    = 6
 CACHE_DIR      = Path('gacc_cache')
+CLIMO_START    = 2005
+CLIMO_END      = 2024
 CACHE_DIR.mkdir(exist_ok=True)   # ensure dir exists at import time
 HIST_HOURS  = 12   # history re-fetched twice daily (data changes slowly)
 HIST_DAYS   = 30   # how many days of observed history to pull
@@ -120,14 +125,102 @@ def _day_labels_from_map(day_map: dict) -> list:
     a Tuesday cache to Wednesday render shows correct 'Today = Wed' labels.
     """
     import fems_fetcher as ff
-    return [ff._day_label(day_map[k]) for k in ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6']
+    return [ff._day_label(day_map[k]) for k in ['D-5','D-4','D-3','D-2','yd','td','D+1','D+2','D+3','D+4','D+5','D+6','D+7']
             if k in day_map]
 
+
+
+def _psa_info_popover(gacc_name, psa_id, gacc_config, baseline, field_key):
+    """
+    Render an ℹ button that expands to show:
+      - Station IDs tied to this PSA (WIMS IDs linking to FAMWEB)
+      - What the selected index measures
+      - How climo percentiles were computed
+    """
+    info = gacc_config.get(gacc_name, {}).get('psas', {}).get(psa_id, {})
+    stations   = info.get('stations', [])
+    fuel_model = info.get('fuel_model', 'Y')
+    fmeta      = FIELD_META.get(field_key, {})
+
+    INDEX_DESCRIPTIONS = {
+        'erc': ('Energy Release Component',
+                'A number related to the available energy (British Thermal Units) per unit area '                'within the flaming front at the head of a fire. ERC is a composite of live and '                'dead fuel moisture and is computed daily. Higher values indicate drier, more '                'energetic conditions.'),
+        'bi':  ('Burning Index',
+                'An estimate of the potential difficulty of fire containment as it relates to '                'flame length at the head of a fire. BI is a daily MAXIMUM value — computed at '                'the time of peak fire danger (typically early afternoon), not a single-time '                'observation like ERC. This means BI climo values are naturally higher relative '                'to a single observed reading.'),
+        'ic':  ('Ignition Component',
+                'The probability that a firebrand will cause a fire requiring suppression. '                'Ranges from 0–100. Values ≥ 50 indicate high ignition probability.'),
+        'sc':  ('Spread Component',
+                'The rate of spread of a fire at the head under current conditions. '                'Expressed in chains per hour.'),
+        'fm100':('100-Hour Fuel Moisture',
+                'The moisture content of dead woody fuels 1–3 inches in diameter. '                'Responds slowly to weather changes (3–4 day lag). '                'Lower values = drier fuels = higher fire danger.'),
+        'fm1':  ('1-Hour Fuel Moisture',
+                'Moisture content of fine dead fuels (grass, needle litter). '                'Responds to weather within hours. Critical for fire starts.'),
+        'fm10': ('10-Hour Fuel Moisture',
+                'Moisture of dead woody fuels 0.25–1 inch diameter. 1-day lag.'),
+        'fm1000':('1000-Hour Fuel Moisture',
+                'Moisture of large dead woody fuels 3–8 inches diameter. '                'Changes very slowly — tracks long-term drought.'),
+        'kbdi': ('Keetch-Byram Drought Index',
+                'A measure of soil and duff drought on a 0–800 scale. '                '0 = field capacity (saturated). 800 = maximum drought. '                'Values > 400 indicate elevated wildfire potential.'),
+    }
+
+    idx_name, idx_desc = INDEX_DESCRIPTIONS.get(field_key, (fmeta.get('label',''), ''))
+
+    with st.expander(f"ℹ  {psa_id} · {fmeta.get('unit',field_key)} info", expanded=False):
+        # ── Station list ──
+        st.markdown(
+            f'<div style="font-family:JetBrains Mono,monospace;font-size:9px;'            f'text-transform:uppercase;letter-spacing:1px;color:{C["muted"]};margin-bottom:6px;">'            f'RAWS Stations — PSA {psa_id} · Fuel Model {fuel_model}</div>',
+            unsafe_allow_html=True)
+        if stations:
+            chips = ' '.join(
+                f'<a href="https://famweb.nwcg.gov/SSOLogin/RawsWeatherInfo.cfm?'                f'siteId={sid}" target="_blank" '                f'style="font-family:JetBrains Mono,monospace;font-size:10px;'                f'background:{C["surface2"]};border:1px solid {C["border"]};'                f'color:{C["teal"]};border-radius:3px;padding:2px 8px;'                f'text-decoration:none;display:inline-block;margin:2px;">{sid}</a>'
+                for sid in stations
+            )
+            st.markdown(f'<div style="line-height:2">{chips}</div>', unsafe_allow_html=True)
+            st.markdown(
+                f'<div style="font-family:JetBrains Mono,monospace;font-size:9px;'                f'color:{C["dim"]};margin-top:4px;">'                f'Station IDs are WIMS IDs. Click to view station details in FAMWEB.</div>',
+                unsafe_allow_html=True)
+        else:
+            st.markdown(
+                f'<div style="font-family:JetBrains Mono,monospace;font-size:10px;'                f'color:{C["muted"]};">No stations mapped for this PSA.</div>',
+                unsafe_allow_html=True)
+
+        st.markdown('<hr style="margin:10px 0">', unsafe_allow_html=True)
+
+        # ── Index description ──
+        st.markdown(
+            f'<div style="font-family:JetBrains Mono,monospace;font-size:9px;'            f'text-transform:uppercase;letter-spacing:1px;color:{C["muted"]};margin-bottom:6px;">'            f'About {idx_name}</div>',
+            unsafe_allow_html=True)
+        st.markdown(
+            f'<div style="font-family:Space Grotesk,sans-serif;font-size:12px;'            f'color:{C["text"]};line-height:1.6;">{idx_desc}</div>',
+            unsafe_allow_html=True)
+
+        st.markdown('<hr style="margin:10px 0">', unsafe_allow_html=True)
+
+        # ── Data source ──
+        st.markdown(
+            f'<div style="font-family:JetBrains Mono,monospace;font-size:9px;'            f'text-transform:uppercase;letter-spacing:1px;color:{C["muted"]};margin-bottom:6px;">'            f'Data Sources</div>',
+            unsafe_allow_html=True)
+        st.markdown(f"""
+        <div style="font-family:Space Grotesk,sans-serif;font-size:11px;color:{C['muted']};line-height:1.8;">
+          <b style="color:{C['text']}">7-Day Forecast</b> — FEMS GraphQL API
+          (<code>nfdrMinMax</code>, <code>nfdrType=Appended</code>).
+          Observed data stitched to NWS 7-day operational forecast.
+          Refreshed every 6 hours.<br>
+          <b style="color:{C['text']}">30-Day History</b> — FEMS REST API
+          (<code>download-nfdr-daily-summary</code>).
+          Observed records only (<code>NFDRType=O</code>). Refreshed every 12 hours.<br>
+          <b style="color:{C['text']}">Percentile Thresholds</b> — Pre-computed 2005–2024
+          climatology baseline from FEMS (<code>download-nfdr-daily-summary</code>).
+          Percentiles calculated across all calendar days in the 16-year period.
+          P80/P90/P95/P97 represent the 80th, 90th, 95th, and 97th percentile
+          of daily values for each PSA across the full climo window.
+        </div>
+        """, unsafe_allow_html=True)
 
 def _trend_day_labels(day_map: dict) -> tuple:
     """Return (keys, labels) for the 7 trend columns td … D+6."""
     import fems_fetcher as ff
-    keys   = ['td','D+1','D+2','D+3','D+4','D+5','D+6']
+    keys   = ['D-5','D-4','D-3','D-2','yd','td','D+1','D+2','D+3','D+4','D+5','D+6','D+7']
     labels = [ff._day_label(day_map[k]) for k in keys if k in day_map]
     return keys, labels
 
@@ -399,14 +492,32 @@ def _title(text):
     )
 
 
-def add_pctile_lines(fig, bdata):
-    for key, color, dash, width, label in [
-        ('mean', C['teal'], 'dot',  1.5, 'Mean'),
-        ('p80',  C['p80'],  'dot',  1.5, '80th'),
-        ('p90',  C['p90'],  'dash', 1.8, '90th'),
-        ('p95',  C['p95'],  'dash', 2.0, '95th'),
-        ('p97',  C['p97'],  'dash', 2.2, '97th'),
-    ]:
+def add_pctile_lines(fig, bdata, flip=False):
+    """
+    Draw climo reference lines.
+    flip=True for fuel moisture: danger is LOW (dry), so P20 is the low-moisture
+    threshold and we label it accordingly. For fire indices, high=danger.
+    """
+    if flip:
+        # FM: low values are dangerous — show low percentiles as warning thresholds
+        # P80/P90/P95/P97 stored in baseline are HIGH moisture (normal/wet side)
+        # We invert: show them but label as the dry-side equivalent
+        lines = [
+            ('mean', C['teal'], 'dot',  1.5, 'Mean'),
+            ('p80',  C['p80'],  'dot',  1.5, '20th (Dry)'),   # low side
+            ('p90',  C['p90'],  'dash', 1.8, '10th (Very Dry)'),
+            ('p95',  C['p95'],  'dash', 2.0, '5th (Critically Dry)'),
+            ('p97',  C['p97'],  'dash', 2.2, '3rd (Extreme Dry)'),
+        ]
+    else:
+        lines = [
+            ('mean', C['teal'], 'dot',  1.5, 'Mean'),
+            ('p80',  C['p80'],  'dot',  1.5, '80th'),
+            ('p90',  C['p90'],  'dash', 1.8, '90th'),
+            ('p95',  C['p95'],  'dash', 2.0, '95th'),
+            ('p97',  C['p97'],  'dash', 2.2, '97th'),
+        ]
+    for key, color, dash, width, label in lines:
         val = bdata.get(key)
         if val is None: continue
         fig.add_hline(y=val, line_dash=dash, line_color=color, line_width=width,
@@ -415,32 +526,88 @@ def add_pctile_lines(fig, bdata):
                       annotation_position='right')
 
 
-def chart_7day(row_dict, fk, fmeta, bdata, psa_id, height=360, day_map=None):
-    # Build axis labels fresh from today's date — never use cached weekday names
-    if day_map:
-        x_labels = _day_labels_from_map(day_map)
-        day_keys = ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6']
-    else:
-        x_labels = ['Yesterday','Today','D+1','D+2','D+3','D+4','D+5','D+6']
-        day_keys = DAY_COLS
-    vals  = [row_dict.get(d) for d in day_keys]
-    color = fmeta['color']
-    fig   = go.Figure()
+def chart_7day(row_dict, fk, fmeta, bdata, psa_id, height=380, day_map=None, type_dict=None):
+    """
+    13-day chart: 5 observed days + today + 7 forecast days.
+    Observed segment: solid line, filled markers.
+    Forecast segment: dashed line, open markers, shaded background.
+    Climo percentile bands overlaid as reference lines.
+    """
+    import fems_fetcher as _ff
+    dm       = day_map or _ff._build_day_map()
+    day_keys = DAY_COLS
+    x_labels = [_ff._day_label(dm.get(k, k)) for k in day_keys]
+    vals     = [row_dict.get(d) for d in day_keys]
+    color    = fmeta['color']
+
+    # Determine split point: where observed ends and forecast begins
+    # Use type_dict if available, otherwise split at td/D+1 boundary
+    obs_keys = ['D-5','D-4','D-3','D-2','yd','td']
+    fct_keys = ['D+1','D+2','D+3','D+4','D+5','D+6','D+7']
+
+    obs_idx = [i for i, k in enumerate(day_keys) if k in obs_keys]
+    fct_idx = [i for i, k in enumerate(day_keys) if k in fct_keys]
+
+    obs_x = [x_labels[i] for i in obs_idx]
+    obs_y = [vals[i]     for i in obs_idx]
+    fct_x = [x_labels[i] for i in fct_idx]
+    fct_y = [vals[i]     for i in fct_idx]
+
+    # Stitch at boundary (share the Today point so lines connect)
+    td_i = day_keys.index('td') if 'td' in day_keys else None
+    if td_i is not None and vals[td_i] is not None:
+        fct_x = [x_labels[td_i]] + fct_x
+        fct_y = [vals[td_i]]     + fct_y
+
+    fig = go.Figure()
+
+    # Forecast shaded background
+    if fct_x:
+        fig.add_vrect(
+            x0=x_labels[td_i] if td_i is not None else fct_x[0],
+            x1=fct_x[-1],
+            fillcolor='rgba(255,77,0,0.04)',
+            layer='below', line_width=0,
+            annotation_text='FORECAST',
+            annotation_position='top right',
+            annotation_font_color=C['muted'],
+            annotation_font_size=9,
+        )
+
+    # P90-P97 risk band
     p90 = bdata.get('p90'); p97 = bdata.get('p97')
     if p90 is not None and p97 is not None:
         fig.add_trace(go.Scatter(
-            x=x_labels + x_labels[::-1], y=[p97]*len(x_labels) + [p90]*len(x_labels),
-            fill='toself', fillcolor='rgba(255,77,0,0.05)',
-            line=dict(color='rgba(0,0,0,0)'), hoverinfo='skip', showlegend=False))
-    fig.add_trace(go.Scatter(
-        x=x_labels, y=vals, mode='lines+markers', name=fmeta['unit'],
-        line=dict(color=color, width=3),
-        marker=dict(size=9, color=color, line=dict(color=C['bg'], width=2)),
-        hovertemplate=f'<b>%{{x}}</b><br>{fmeta["unit"]} = <b>%{{y:.1f}}</b><extra></extra>'))
-    add_pctile_lines(fig, bdata)
+            x=x_labels + x_labels[::-1],
+            y=[p97]*len(x_labels) + [p90]*len(x_labels),
+            fill='toself', fillcolor='rgba(204,93,232,0.04)',
+            line=dict(color='rgba(0,0,0,0)'),
+            hoverinfo='skip', showlegend=False))
+
+    # Observed segment — solid line, filled markers
+    if obs_x:
+        fig.add_trace(go.Scatter(
+            x=obs_x, y=obs_y, mode='lines+markers',
+            name=f'{fmeta["unit"]} (Obs)',
+            line=dict(color=color, width=3),
+            marker=dict(size=8, color=color, line=dict(color=C['bg'], width=2)),
+            hovertemplate='<b>%{x}</b> (Obs)<br>' + fmeta['unit'] + ' = <b>%{y:.1f}</b><extra></extra>'))
+
+    # Forecast segment — dashed line, open markers
+    if fct_x:
+        fig.add_trace(go.Scatter(
+            x=fct_x, y=fct_y, mode='lines+markers',
+            name=f'{fmeta["unit"]} (Fcst)',
+            line=dict(color=color, width=2.5, dash='dot'),
+            marker=dict(size=7, color=C['bg'], line=dict(color=color, width=2)),
+            hovertemplate='<b>%{x}</b> (Fcst)<br>' + fmeta['unit'] + ' = <b>%{y:.1f}</b><extra></extra>'))
+
+    add_pctile_lines(fig, bdata, flip=fmeta.get('pctile_flip', False))
+
     fig.update_layout(**{**PL,
-        'title': _title(f'{psa_id} — 7-Day {fmeta["label"]}'),
+        'title': _title(f'{psa_id} — {fmeta["label"]} · Observed & Forecast'),
         'height': height,
+        'xaxis': {**PL['xaxis']},
         'yaxis': {**PL['yaxis'], 'title': fmeta['unit']}})
     return fig
 
@@ -507,7 +674,7 @@ def chart_history_trend(hist_data, psa_id, fk, baseline, gacc_name, height=360):
     color = fmeta['color']
 
     # X-axis: short date labels
-    xlabels = [d[5:] for d in dates]   # MM-DD
+    xlabels = [__import__('datetime').date.fromisoformat(d).strftime('%b %-d') for d in dates]
 
     fig = go.Figure()
 
@@ -528,10 +695,13 @@ def chart_history_trend(hist_data, psa_id, fk, baseline, gacc_name, height=360):
         marker=dict(size=5, color=color, line=dict(color=C['bg'], width=1)),
         hovertemplate='<b>%{x}</b><br>' + fmeta['unit'] + ' = <b>%{y:.1f}</b><extra></extra>'))
 
-    add_pctile_lines(fig, bdata)
+    add_pctile_lines(fig, bdata, flip=fmeta.get('pctile_flip', False))
 
     meta = hist_data.get('meta', {})
-    date_range = f"{meta.get('start_date','')[5:]} → {meta.get('end_date','')[5:]}"
+    def _fmt_d(s):
+        try: return __import__('datetime').date.fromisoformat(s).strftime('%b %-d')
+        except: return s[5:] if len(s) >= 7 else s
+    date_range = f"{_fmt_d(meta.get('start_date',''))} → {_fmt_d(meta.get('end_date',''))}"
     fig.update_layout(**{**PL,
         'title': _title(f'{psa_id} — {fmeta["label"]} ({date_range})'),
         'height': height,
@@ -556,14 +726,17 @@ def chart_history_all_psas(hist_data, fk, baseline, gacc_name, selected_psa, hei
         if not dates: continue
         is_sel = psa_id == selected_psa
         fig.add_trace(go.Scatter(
-            x=[d[5:] for d in dates], y=vals,
+            x=[__import__('datetime').date.fromisoformat(d).strftime('%b %-d') for d in dates], y=vals,
             mode='lines', name=psa_id,
             line=dict(color=palette[i % len(palette)], width=3 if is_sel else 1),
             opacity=1.0 if is_sel else 0.25,
             hovertemplate=f'<b>{psa_id}</b> · %{{x}}: <b>%{{y:.1f}}</b><extra></extra>'))
 
     meta = hist_data.get('meta', {})
-    date_range = f"{meta.get('start_date','')[5:]} → {meta.get('end_date','')[5:]}"
+    def _fmt_d(s):
+        try: return __import__('datetime').date.fromisoformat(s).strftime('%b %-d')
+        except: return s[5:] if len(s) >= 7 else s
+    date_range = f"{_fmt_d(meta.get('start_date',''))} → {_fmt_d(meta.get('end_date',''))}"
     fig.update_layout(**{**PL,
         'title': _title(f'{fmeta["label"]} — All PSAs ({date_range})'),
         'height': height,
@@ -584,7 +757,7 @@ def chart_history_heatmap(hist_data, fk, baseline, gacc_name):
 
     psas      = sorted(psa_dict.keys())
     all_dates = sorted({d for psa in psa_dict.values() for d in psa.get('dates', [])})
-    xlabels   = [d[5:] for d in all_dates]
+    xlabels   = [__import__('datetime').date.fromisoformat(d).strftime('%b %-d') for d in all_dates]
 
     z         = []
     hover     = []
@@ -600,32 +773,36 @@ def chart_history_heatmap(hist_data, fk, baseline, gacc_name):
         for d in all_dates:
             v = date_val.get(d)
             row.append(float(v) if v is not None else None)
+            _dl = __import__('datetime').date.fromisoformat(d).strftime('%b %-d')
             if v is not None and p90:
-                pct_str = f'{v/p90*100:.0f}% of P90' if p90 else ''
-                htxt.append(f'{psa_id}<br>{d[5:]}<br>{fmeta["unit"]}={v:.1f}<br>{pct_str}')
+                pct_str = f'{v/p90*100:.0f}% of P90'
+                htxt.append(f'{psa_id}<br>{_dl}<br>{fmeta["unit"]}={v:.1f}<br>{pct_str}')
             else:
-                htxt.append(f'{psa_id}<br>{d[5:]}<br>No data')
+                htxt.append(f'{psa_id}<br>{_dl}<br>No data')
         z.append(row)
         hover.append(htxt)
 
+    _fm_fields = {'fm1','fm10','fm100','fm1000'}
+    _cs = (
+        [[0.00,'#ff2d55'],[0.12,'#ff6b00'],[0.25,'#1a1e2e'],[0.45,'#1a1e2e'],[1.00,'#00c875']]
+        if fk in _fm_fields else
+        [[0.00,'#00c875'],[0.55,'#1a1e2e'],[0.75,'#1a1e2e'],[0.88,'#ff6b00'],[1.00,'#ff2d55']]
+    )
     fig = go.Figure(go.Heatmap(
         z=z, x=xlabels, y=psas,
         customdata=hover,
         hovertemplate='%{customdata}<extra></extra>',
-        colorscale=[
-            [0.00, '#00c875'],
-            [0.55, '#1a1e2e'],
-            [0.75, '#1a1e2e'],
-            [0.88, '#ff6b00'],
-            [1.00, '#ff2d55'],
-        ],
+        colorscale=_cs,
         colorbar=dict(
             title=dict(text=fmeta['unit'], font=dict(color=C['muted'])),
             tickfont=dict(color=C['muted'], size=9, family='JetBrains Mono'),
             len=0.8),
     ))
     meta = hist_data.get('meta', {})
-    date_range = f"{meta.get('start_date','')[5:]} → {meta.get('end_date','')[5:]}"
+    def _fmt_d(s):
+        try: return __import__('datetime').date.fromisoformat(s).strftime('%b %-d')
+        except: return s[5:] if len(s) >= 7 else s
+    date_range = f"{_fmt_d(meta.get('start_date',''))} → {_fmt_d(meta.get('end_date',''))}"
     fig.update_layout(**{**PL,
         'title': _title(f'{fmeta["label"]} HEATMAP — PSA × DATE ({date_range})'),
         'height': max(400, len(psas)*18 + 120),
@@ -730,7 +907,7 @@ def build_sidebar(gacc_config, gacc_names, selected_gacc, source, meta):
                     line-height:2;text-transform:uppercase;letter-spacing:.8px;'>
           {gacc_config[selected_gacc_new]['abbrev']} · PSA {selected_psa}<br>
           Fuel Model: {fm_label} · Stations: {n_st}<br>
-          Climo: {meta.get('climo_start',2005)}–{meta.get('climo_end',2020)}<br>
+          Climo: {meta.get('climo_start',2005)}–{meta.get('climo_end',2024)}<br>
           Percentiles: {pcts}</div>""", unsafe_allow_html=True)
 
     return selected_gacc_new, selected_psa, selected_field
@@ -850,8 +1027,8 @@ def main():
           <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:{C['text']};letter-spacing:4px;line-height:1;">
             {abbrev} <span style="color:{C['fire']}">FIRE WEATHER</span> INTELLIGENCE</div>
           <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['muted']};letter-spacing:2px;text-transform:uppercase;margin-top:4px;">
-            7-Day NFDR Forecast · ERC · IC · BI · SC · FM · KBDI ·
-            Climo {meta.get('climo_start',2005)}–{meta.get('climo_end',2020)} Baseline
+            5-Day Obs + 7-Day NFDR Forecast · ERC · IC · BI · SC · FM · KBDI · GSI ·
+            Climo {meta.get('climo_start',2005)}–{meta.get('climo_end',2024)} Baseline
           </div>
         </div>""", unsafe_allow_html=True)
     with c_b:
@@ -893,9 +1070,10 @@ def main():
     </div>""", unsafe_allow_html=True)
 
     # ── Tabs ──────────────────────────────────────────────────────────────────
-    t1, t2, t3, t4, t5, t6, t7 = st.tabs([
+    t1, t2, t3, t4, t5, t6, t7, t8 = st.tabs([
         '📈  7-Day Forecast', '📊  GACC Overview', '🔥  All Indices',
-        '📉  ERC Trend', '🗺️  Heatmap', '⚖️  Percentile Context', '🗒️  Data Table'])
+        '📉  ERC Trend', '🗺️  Heatmap', '⚖️  Percentile Context', '🗒️  Data Table',
+        'ℹ️  About & Data'])
 
     # Tab 1 — 7-Day forecast for selected PSA
     # Build a fresh day_map for all chart rendering (always today's dates)
@@ -922,6 +1100,9 @@ def main():
                   <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:{col}">
                     {f'{v:.0f}' if isinstance(v, float) else v}</span></div>""", unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
+
+        # Info panel — stations + index description + data source
+        _psa_info_popover(selected_gacc, selected_psa, gacc_config, baseline, selected_field)
 
     # Tab 2 — GACC overview bars
     with t2:
@@ -967,6 +1148,12 @@ def main():
 
     # Tab 4 — 30-Day ERC Trend (historical observed + climo bands)
     with t4:
+        st.markdown(f'''<div style="background:{C['surface2']};border:1px solid {C['border']};
+            border-left:3px solid {C['gold']};border-radius:4px;padding:8px 14px;margin-bottom:12px;
+            font-family:JetBrains Mono,monospace;font-size:10px;color:{C['muted']};">
+            📡 Based on key RAWS stations only — see About & Data tab for station list
+            &nbsp;·&nbsp; Climo baseline: {baseline.get('meta',{}).get('climo_start',2005)}–{baseline.get('meta',{}).get('climo_end',2024)} observed data
+        </div>''', unsafe_allow_html=True)
         if hist_data is None:
             st.info('Historical data unavailable — check FEMS connectivity.')
         else:
@@ -988,6 +1175,12 @@ def main():
 
     # Tab 5 — 30-Day Heatmap (PSA × date, colored by value)
     with t5:
+        st.markdown(f'''<div style="background:{C['surface2']};border:1px solid {C['border']};
+            border-left:3px solid {C['gold']};border-radius:4px;padding:8px 14px;margin-bottom:12px;
+            font-family:JetBrains Mono,monospace;font-size:10px;color:{C['muted']};">
+            📡 Based on key RAWS stations only — see About & Data tab for station list
+            &nbsp;·&nbsp; FM fields: red = dry (low moisture) = danger · Fire indices: red = high = danger
+        </div>''', unsafe_allow_html=True)
         if hist_data is None:
             st.info('Historical data unavailable — check FEMS connectivity.')
         else:
@@ -1016,7 +1209,7 @@ def main():
         search = st.text_input('🔍 Filter PSA', placeholder='e.g. GB21')
         if search:
             tbl_df = tbl_df[tbl_df['PSA'].str.contains(search.upper(), na=False)]
-        num_cols = [c for c in ['yd','td','D+1','D+2','D+3','D+4','D+5','D+6',
+        num_cols = [c for c in ['D-5','D-4','D-3','D-2','yd','td','D+1','D+2','D+3','D+4','D+5','D+6','D+7',
                                  'Climo_Mean','P80','P90','P95','P97'] if c in tbl_df.columns]
         display_df = tbl_df.sort_values('PSA')[['PSA'] + num_cols].copy()
         for c in num_cols:
@@ -1037,5 +1230,246 @@ def main():
             f'{abbrev}_{fc}_{date.today()}.csv', 'text/csv')
 
 
+def check_password():
+    """
+    Simple password gate — shown before any dashboard content.
+    Password is set via Streamlit secrets (DASHBOARD_PASSWORD) or falls back
+    to an environment variable. Remove the check_password() call from the
+    bottom of this file once QC is complete.
+
+    To set the password on Streamlit Cloud:
+      App Settings → Secrets → add:
+        DASHBOARD_PASSWORD = "your_password_here"
+
+    To set locally, add to .env:
+        DASHBOARD_PASSWORD=your_password_here
+    """
+    # Retrieve password from secrets or env
+    try:
+        correct_pw = st.secrets['DASHBOARD_PASSWORD']
+    except Exception:
+        correct_pw = os.getenv('DASHBOARD_PASSWORD', '')
+
+    if not correct_pw:
+        # No password configured — pass through silently
+        return True
+
+    # Already authenticated this session
+    if st.session_state.get('_authenticated'):
+        return True
+
+    # ── Password screen ───────────────────────────────────────────────────────
+    st.markdown("""
+    <style>
+    .pw-wrap {
+        max-width: 420px;
+        margin: 12vh auto 0;
+        background: #1a1e2e;
+        border: 1px solid #2a3050;
+        border-top: 3px solid #ff4d00;
+        border-radius: 8px;
+        padding: 40px 36px 32px;
+    }
+    .pw-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 32px;
+        letter-spacing: 4px;
+        color: #e8eaf6;
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+    .pw-sub {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: #6b7299;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 28px;
+    }
+    .pw-note {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: #3a3f6b;
+        text-align: center;
+        margin-top: 20px;
+        letter-spacing: 1px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    col = st.columns([1, 2, 1])[1]
+    with col:
+        st.markdown("""
+        <div class="pw-wrap">
+          <div class="pw-title">🔥 FIRE WEATHER</div>
+          <div class="pw-sub">GACC Intelligence Dashboard — QC Preview</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        pw_input = st.text_input(
+            'Access password',
+            type='password',
+            placeholder='Enter password…',
+            label_visibility='collapsed',
+        )
+
+        if st.button('Enter →', use_container_width=True, type='primary'):
+            if pw_input == correct_pw:
+                st.session_state['_authenticated'] = True
+                st.rerun()
+            else:
+                st.error('Incorrect password — try again.')
+
+        st.markdown(
+            '<div class="pw-note">QC preview · contact dashboard admin for access</div>',
+            unsafe_allow_html=True)
+
+    return False
+
+
+    # Tab 8 — About & Methodology
+    with t8:
+        _abbrev = gacc_config[selected_gacc]['abbrev']
+        _n_psas = len(gacc_config[selected_gacc]['psas'])
+        _n_stns = len(set(
+            s for info in gacc_config[selected_gacc]['psas'].values()
+            for s in info.get('stations', [])
+        ))
+
+        # Build station list for selected PSA
+        _psa_stns = gacc_config[selected_gacc]['psas'].get(selected_psa, {}).get('stations', [])
+        _fuel_mdl = gacc_config[selected_gacc]['psas'].get(selected_psa, {}).get('fuel_model', '?')
+
+        climo_start = baseline.get('meta', {}).get('climo_start', 2005)
+        climo_end   = baseline.get('meta', {}).get('climo_end',   2024)
+
+        st.markdown(f"""
+        <div style="max-width:860px;">
+
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:{C['text']};
+                    letter-spacing:3px;margin-bottom:4px;">About This Dashboard</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};
+                    letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;">
+            {_abbrev} Fire Weather Intelligence · Data Source & Methodology
+        </div>
+
+        <div style="background:{C['surface']};border:1px solid {C['border']};border-left:3px solid {C['fire']};
+                    border-radius:6px;padding:20px 24px;margin-bottom:16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['fire']};
+                      text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
+            📊 Data Source
+          </div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:{C['text']};line-height:1.8;">
+            All fire weather indices (ERC, IC, BI, SC) and fuel moisture values are retrieved from the
+            <strong>USDA Forest Service Fire & Environment Management System (FEMS)</strong>
+            via the <code style="background:{C['surface2']};padding:1px 5px;border-radius:3px;font-size:11px;">
+            download-nfdr-daily-summary</code> API endpoint.
+            <br><br>
+            Live 7-day forecasts are fetched every 6 hours. The 30-day historical trend uses
+            observed rows only (<code style="background:{C['surface2']};padding:1px 5px;border-radius:3px;font-size:11px;">
+            NFDRType = O</code>), refreshed every 12 hours.
+          </div>
+        </div>
+
+        <div style="background:{C['surface']};border:1px solid {C['border']};border-left:3px solid {C['teal']};
+                    border-radius:6px;padding:20px 24px;margin-bottom:16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['teal']};
+                      text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
+            📐 Climatology Baseline ({climo_start}–{climo_end})
+          </div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:{C['text']};line-height:1.8;">
+            Percentile thresholds are derived from <strong>{climo_start}–{climo_end} observed NFDR data</strong>
+            downloaded from FEMS for every key RAWS station in each PSA.
+            <br><br>
+            <strong>Averaging method:</strong> For each PSA, daily values are averaged across all
+            contributing stations to produce one daily PSA value. Percentiles are then computed
+            across all daily values in the full {climo_end - climo_start + 1}-year period.
+            <br><br>
+            <strong>Percentile thresholds:</strong>
+            <br>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px;">
+            <div style="background:{C['surface2']};border:1px solid {C['border']};border-top:2px solid {C['p80']};
+                        border-radius:4px;padding:10px;text-align:center;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:{C['p80']};">80th</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};text-transform:uppercase;">
+                Above Average<br>Fire Weather</div>
+            </div>
+            <div style="background:{C['surface2']};border:1px solid {C['border']};border-top:2px solid {C['p90']};
+                        border-radius:4px;padding:10px;text-align:center;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:{C['p90']};">90th</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};text-transform:uppercase;">
+                Elevated<br>Fire Potential</div>
+            </div>
+            <div style="background:{C['surface2']};border:1px solid {C['border']};border-top:2px solid {C['p95']};
+                        border-radius:4px;padding:10px;text-align:center;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:{C['p95']};">95th</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};text-transform:uppercase;">
+                High<br>Fire Potential</div>
+            </div>
+            <div style="background:{C['surface2']};border:1px solid {C['border']};border-top:2px solid {C['p97']};
+                        border-radius:4px;padding:10px;text-align:center;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:{C['p97']};">97th</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['muted']};text-transform:uppercase;">
+                Critical<br>Fire Potential</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:{C['surface']};border:1px solid {C['border']};border-left:3px solid {C['gold']};
+                    border-radius:6px;padding:20px 24px;margin-bottom:16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['gold']};
+                      text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
+            📡 Key RAWS Stations — {_abbrev} · PSA {selected_psa}
+          </div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:{C['text']};line-height:1.8;">
+            <strong>Important:</strong> This dashboard uses a curated set of
+            <strong>key RAWS stations</strong> for each PSA, as defined in the
+            GACC fire weather program. Not all RAWS stations within each PSA boundary
+            are included — only those designated as representative for climatological
+            and fire weather decision support purposes.
+            <br><br>
+            PSA <strong>{selected_psa}</strong> uses <strong>{len(_psa_stns)} key station{'s' if len(_psa_stns) != 1 else ''}</strong>
+            (Fuel Model <strong>{_fuel_mdl}</strong>):
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:{C['p80']};
+                      margin-top:10px;word-break:break-all;">
+            {', '.join(str(s) for s in _psa_stns) if _psa_stns else 'No stations configured'}
+          </div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;color:{C['muted']};margin-top:12px;">
+            {_abbrev} total: {_n_psas} PSAs · {_n_stns} unique key RAWS stations
+          </div>
+        </div>
+
+        <div style="background:{C['surface']};border:1px solid {C['border']};border-left:3px solid {C['muted']};
+                    border-radius:6px;padding:20px 24px;margin-bottom:16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:{C['muted']};
+                      text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">
+            ⚠️  Fuel Moisture Index Interpretation
+          </div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:{C['text']};line-height:1.8;">
+            Fuel moisture indices (1-Hr, 10-Hr, 100-Hr, 1000-Hr FM) are interpreted
+            <strong>inversely</strong> compared to fire behavior indices.
+            <strong>Lower fuel moisture = drier fuels = greater fire danger.</strong>
+            <br><br>
+            On trend and heatmap charts, the colorscale for FM fields is reversed:
+            red indicates critically low (dry) moisture, green indicates adequate moisture.
+            Percentile reference lines are labeled to reflect the dry-side thresholds.
+          </div>
+        </div>
+
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{C['dim']};margin-top:8px;line-height:2;">
+          Dashboard built for internal GACC fire weather operations · Data: USDA FS FEMS ·
+          Climo baseline: {climo_start}–{climo_end} · Refreshed 6h (forecast) / 12h (history)
+        </div>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Also add Key RAWS disclaimer to Trend and Heatmap tabs at top
+        # (handled separately with a small banner in those tabs)
+
+
 if __name__ == '__main__':
-    main()
+    if check_password():
+        main()

@@ -285,7 +285,69 @@ def load_gacc_config():
 def load_baseline():
     p = Path('gacc_climo_baseline.json')
     if not p.exists(): return {}
-    return json.loads(p.read_text(encoding='utf-8'))
+    baseline = json.loads(p.read_text(encoding='utf-8'))
+    _patch_missing_psas(baseline)
+    return baseline
+
+
+def _patch_missing_psas(baseline):
+    """
+    For any PSA that has no entry in the baseline JSON, check if another PSA
+    in the same GACC has identical stations — if so, inherit its thresholds.
+
+    This handles cases like SC12 (Lower Desert) which was added to gacc_config
+    after the baseline was computed but shares the same key RAWS as SC13.
+
+    Modifies baseline['psa'] in-place. Called once at load time.
+    """
+    import importlib.util
+    cfg_path = Path('gacc_config.py')
+    if not cfg_path.exists():
+        return
+
+    spec = importlib.util.spec_from_file_location('gacc_config', cfg_path)
+    gc   = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gc)
+    gacc_config = gc.GACC_CONFIG
+
+    psa_data    = baseline.get('psa', {})
+    patched     = []
+
+    for gacc_name, gacc_info in gacc_config.items():
+        abbrev = gacc_info['abbrev']
+        psas   = gacc_info['psas']
+
+        # Build a map of frozenset(stations) → existing baseline key
+        # so we can find donors quickly
+        station_to_key = {}
+        for psa_id, info in psas.items():
+            sids = frozenset(info.get('stations', []))
+            if not sids:
+                continue
+            key = f'{gacc_name}|{psa_id}'
+            if key in psa_data:
+                station_to_key[sids] = key   # this PSA has baseline data
+
+        # Now find PSAs that are missing from baseline but have a matching donor
+        for psa_id, info in psas.items():
+            key  = f'{gacc_name}|{psa_id}'
+            sids = frozenset(info.get('stations', []))
+            if key in psa_data or not sids:
+                continue   # already present or no stations — skip
+
+            donor_key = station_to_key.get(sids)
+            if donor_key:
+                # Inherit donor's thresholds — same stations = same climo
+                psa_data[key] = dict(psa_data[donor_key])
+                patched.append(
+                    f'{abbrev}:{psa_id} ← {donor_key.split("|")[1]}'
+                )
+
+    if patched:
+        import logging
+        logging.getLogger('app').info(
+            'Baseline patched for %d PSAs: %s', len(patched), patched
+        )
 
 
 # ── Per-GACC fetch / load ─────────────────────────────────────────────────────

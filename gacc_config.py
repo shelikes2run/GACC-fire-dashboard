@@ -270,7 +270,7 @@ GACC_CONFIG = {
             'SC09': {'fuel_model': 'Y', 'stations': [45114, 45302, 45303, 45314, 45421, 45426, 45435]},
             'SC10': {'fuel_model': 'Y', 'stations': [45101, 45102, 45105, 45111]},
             'SC11': {'fuel_model': 'Y', 'stations': [45604, 45707, 45708, 45709, 45710, 45740]},
-            'SC12': {'fuel_model': 'Y', 'stations': []},
+            'SC12': {'fuel_model': 'Y', 'stations': [20118, 20121, 45620, 45801]},
             'SC13': {'fuel_model': 'Y', 'stations': [20118, 20121, 45620, 45801]},
             'SC14': {'fuel_model': 'Y', 'stations': [45112, 45127, 45128, 45129, 45134]},
             'SC15': {'fuel_model': 'Y', 'stations': [45438, 45440, 45444]},

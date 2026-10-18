@@ -1,0 +1,66 @@
+# FDRA season-tracking site data → `site-data` branch (read by docs/ on GitHub Pages).
+# Public FEMS downloads in batches of 20 stations; no secrets.
+#   current: this year's observed + forecast, PAL lines, map index (twice a day)
+#   normals: 2016-2025 climatology (first run, or when started by hand with "rebuild normals")
+name: Site data
+
+on:
+  schedule:
+    - cron: '50 13 * * *'      # ~6:50 PT
+    - cron: '50 21 * * *'      # ~2:50 PT afternoon refresh
+  workflow_dispatch:
+    inputs:
+      rebuild_normals:
+        description: 'Rebuild the 2016-2025 normals'
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths: ['site/**', 'normals/ca_normals.py', '.github/workflows/site-data.yml', 'docs/data/fdras.geojson']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: site-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: src }
+
+      - name: Check out site-data branch (create if missing)
+        run: |
+          git clone --depth 1 --branch site-data "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" out \
+            || (mkdir out && cd out && git init -b site-data && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git")
+
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+
+      - run: pip install --quiet pandas numpy requests shapely
+
+      - uses: actions/cache@v4
+        with:
+          path: fems_raw
+          key: fems-raw-2016-2025-v1
+
+      - name: Normals (2016-2025)
+        if: ${{ inputs.rebuild_normals || hashFiles('out/normals/fdras.json') == '' }}
+        run: python src/site/build_site_data.py normals out fems_raw
+
+      - name: Current year + PAL + index
+        run: python src/site/build_site_data.py current out
+
+      - name: Publish
+        run: |
+          cd out
+          git config user.name  "site-data bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git commit -qm "site data $(date -u +%FT%TZ)"
+          git push -q origin site-data

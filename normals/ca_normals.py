@@ -10,8 +10,7 @@ assignments, same fuel model (Y).
 
 Pipeline
   1. stations  ← CA NFDRS 3.0 RAWS layer (public REST; CA + HI)
-  2. FDRA join ← point-in-polygon against an FDRA file you provide
-                 (GeoJSON / shapefile / zipped shapefile; any CRS with a .prj)
+  2. FDRAs     ← FDOP stations + fuel model per FDRA (2026 Forest Thresholds sheet)
   3. download  ← FEMS download-nfdr-daily-summary (public, no key), batches of 20
                  stations per request per year, cached so re-runs only fetch what's missing
   4. aggregate ← observed (NFDRType=O) daily values → PSA / FDRA daily means
@@ -24,13 +23,11 @@ Used by CA_Normals_2016_2025.ipynb — run the notebook, not this file.
 
 from __future__ import annotations
 
-import io
 import re
 import json
 import logging
 import math
 import time
-import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from pathlib import Path
@@ -80,82 +77,7 @@ def load_ca_psas() -> pd.DataFrame:
     return pd.DataFrame([f['attributes'] for f in feats])
 
 
-# ── 2. FDRA polygons + station join ───────────────────────────────────────────
-def load_fdra_polygons(path: str | Path, name_fields: list[str]):
-    """Return list of (fdra_id, attrs, shapely_geometry_in_wgs84).
-
-    Accepts .geojson/.json (WGS84), .shp, or a .zip holding a shapefile.
-    Shapefiles are reprojected to WGS84 from their .prj (e.g. CA Teale Albers).
-    `name_fields` builds the FDRA id, e.g. ['UNIT', 'FDRA'] → 'BEU-2'.
-    """
-    from shapely.geometry import shape
-    from shapely.ops import transform
-    path = Path(path)
-    recs = []
-    if path.suffix.lower() in ('.geojson', '.json'):
-        gj = json.loads(path.read_text(encoding='utf-8'))
-        for f in gj['features']:
-            recs.append((f['properties'], shape(f['geometry'])))
-        to_wgs = None
-    else:
-        import shapefile  # pyshp
-        if path.suffix.lower() == '.zip':
-            z = zipfile.ZipFile(path)
-            stem = next(n[:-4] for n in z.namelist() if n.lower().endswith('.shp'))
-            rd = shapefile.Reader(shp=io.BytesIO(z.read(stem + '.shp')),
-                                  shx=io.BytesIO(z.read(stem + '.shx')),
-                                  dbf=io.BytesIO(z.read(stem + '.dbf')))
-            prj = z.read(stem + '.prj').decode() if stem + '.prj' in z.namelist() else None
-        else:
-            rd = shapefile.Reader(str(path))
-            p = path.with_suffix('.prj')
-            prj = p.read_text() if p.exists() else None
-        fields = [f[0] for f in rd.fields[1:]]
-        for sr in rd.shapeRecords():
-            recs.append((dict(zip(fields, sr.record)), shape(sr.shape.__geo_interface__)))
-        to_wgs = None
-        if prj:
-            from pyproj import CRS, Transformer
-            crs = CRS.from_wkt(prj)
-            if crs.to_epsg() != 4326:
-                tr = Transformer.from_crs(crs, 4326, always_xy=True)
-                to_wgs = tr.transform
-    out = []
-    for attrs, geom in recs:
-        if to_wgs:
-            geom = transform(to_wgs, geom)
-        fid = '-'.join(str(attrs.get(k, '')).strip() for k in name_fields)
-        out.append((fid, attrs, geom.buffer(0) if not geom.is_valid else geom))
-    log.info('FDRA polygons: %d from %s', len(out), path.name)
-    return out
-
-
-def load_fdra_from_agol(item_id: str, name_fields: list[str], gis=None):
-    """Read FDRA polygons straight from an AGOL item (e.g. FDRA_CA) in WGS84.
-
-    Signs in through ArcGIS Pro on this PC (GIS('pro')) unless a GIS is
-    passed in, so secured services shared to your NIFC account work.
-    """
-    from arcgis.gis import GIS
-    from shapely.geometry import Polygon, MultiPolygon
-    gis = gis or GIS('pro')
-    item = gis.content.get(item_id)
-    lyr = item.layers[0]
-    fs = lyr.query(where='1=1', out_fields='*', out_sr=4326, return_geometry=True)
-    out = []
-    for f in fs.features:
-        rings = f.geometry.get('rings', [])
-        polys = [Polygon(r) for r in rings if len(r) >= 4]
-        geom = MultiPolygon(polys).buffer(0) if len(polys) > 1 else (polys[0].buffer(0) if polys else None)
-        if geom is None:
-            continue
-        attrs = f.attributes
-        fid = '-'.join(str(attrs.get(k, '')).strip() for k in name_fields)
-        out.append((fid, attrs, geom))
-    log.info('FDRA polygons: %d from AGOL item %s (%s)', len(out), item_id, item.title)
-    return out
-
-
+# ── 2. FDRA station lists (2026 Forest Thresholds sheet) ──────────────────────
 def load_fdra_membership(csv_path) -> tuple[dict, pd.DataFrame]:
     """FDOP station lists from the 2026 Forest Thresholds sheet
     (fdra_station_membership_2026.csv from align_fdras_to_sheet.py).
@@ -170,44 +92,6 @@ def load_fdra_membership(csv_path) -> tuple[dict, pd.DataFrame]:
     pairs = m[['stationId', 'fuel_model']].rename(columns={'fuel_model': 'FuelModel'}).drop_duplicates()
     log.info('FDRA membership: %d FDRAs, %d station × fuel-model pairs', len(mem), len(pairs))
     return mem, pairs
-
-
-def assign_fdras(stations: pd.DataFrame, fdras) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Point-in-polygon. Returns (stations with 'FDRA' col, fdra table).
-
-    FDRAs that contain no station get the nearest station (flagged
-    nearest_only=1) so every FDRA still has normals.
-    """
-    from shapely.geometry import Point
-    from shapely.strtree import STRtree
-    geoms = [g for _, _, g in fdras]
-    tree = STRtree(geoms)
-    pts = [Point(lon, lat) for lon, lat in zip(stations['Longitude'], stations['Latitude'])]
-    st_fdra = []
-    for p in pts:
-        hit = None
-        for i in tree.query(p):
-            if geoms[int(i)].contains(p):
-                hit = fdras[int(i)][0]
-                break
-        st_fdra.append(hit)
-    stations = stations.assign(FDRA=st_fdra)
-
-    rows = []
-    for fid, attrs, g in fdras:
-        sids = stations.loc[stations['FDRA'] == fid, 'stationId'].tolist()
-        nearest = 0
-        if not sids:
-            c = g.representative_point()
-            d = [(c.distance(p), s) for p, s in zip(pts, stations['stationId'])]
-            sids = [min(d)[1]]
-            nearest = 1
-        rows.append({'fdra_id': fid, 'stations': sids, 'n_stations': len(sids), 'nearest_only': nearest,
-                     **{k: v for k, v in attrs.items() if isinstance(v, (str, int, float))}})
-    fdra_tbl = pd.DataFrame(rows)
-    log.info('FDRA join: %d stations inside an FDRA, %d FDRAs use nearest station',
-             stations['FDRA'].notna().sum(), int(fdra_tbl['nearest_only'].sum()))
-    return stations, fdra_tbl
 
 
 # ── 3. FEMS download (public, batched, cached) ────────────────────────────────
@@ -235,7 +119,8 @@ def _fems_get(url, ids, start, end, fuel_models=None, dataset='observation', ret
             time.sleep(5 * a)
 
 
-def _batches(ids, n=BATCH):
+def _batches(ids, n=None):
+    n = n or BATCH
     ids = sorted({int(i) for i in ids})
     return [ids[i:i + n] for i in range(0, len(ids), n)]
 
@@ -276,10 +161,10 @@ def _download(url, prefix, ids, fuel_models, start_year, end_year, raw_dir, work
 
 
 def download_history(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path,
-                     key: str = None, user: str = None, workers: int = 4):
+                     workers: int = 4):
     """Batched, cached NFDR daily summaries (observed). `stations` needs stationId and
     FuelModel; all fuel models in use are requested for every station (one call per
-    batch-year). key/user are ignored — kept so older notebook cells still run."""
+    batch of 20 stations per year). Public FEMS endpoint — no login."""
     fms = sorted(stations['FuelModel'].dropna().astype(str).str.upper().unique())
     return _download(FEMS_URL, 'nfdr_' + ''.join(fms), stations['stationId'], fms,
                      start_year, end_year, raw_dir, workers)
@@ -558,7 +443,7 @@ def write_site_climo(daily: pd.DataFrame, fdra_attrs: pd.DataFrame, out_dir: Pat
 
 # ── 8. FEMS weather history (daily Tmax / RHmin) — public, batched ──────────────
 def download_weather(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path,
-                     url: str = None, key: str = None, user: str = None, workers: int = 4):
+                     workers: int = 4):
     """Batched, cached FEMS wx daily summaries (TemperatureMax, RelativeHumidityMin)."""
     return _download(FEMS_WX_URL, 'wx', stations['stationId'], None, start_year, end_year, raw_dir, workers)
 

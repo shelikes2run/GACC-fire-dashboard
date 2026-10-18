@@ -16,8 +16,8 @@ from pathlib import Path
 
 CA_SVC = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/CA_NFDRS/FeatureServer'
 CA_ITEM = '8c98d879e6c74d07ac6236c0bfa114a3'
-FDRA_URL = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/FDRA_View/FeatureServer/0'
-FDRA_ITEM = 'd18bbbbcb5704673970fb7889da997a6'   # FDRA_CA (CAL FIRE FDRA_View)
+FDRA_URL = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/R5_FDRAs_2026_(forest-clipped)/FeatureServer/0'
+FDRA_ITEM = 'ca74a35c06b347fea2081757e193ea0d'   # R5 FDRAs 2026 (forest-clipped), FDOP stations attached
 PORTAL = 'https://nifc.maps.arcgis.com'
 
 COLORS = {'Critical': '#ff2d55', 'High': '#ff6b00', 'Elevated': '#ffcc00',
@@ -97,14 +97,20 @@ def raws_popup():
 
 
 FDRA_ARCADE = r"""
-// Live FDRA roll-up: average of the CA NFDRS 3.0 RAWS inside this FDRA
+// Live FDRA roll-up from the FDRA's FDOP stations (2026 Forest Thresholds sheet, field station_ids).
+// Stations not carried in the live CA NFDRS 3.0 layer are listed but can't be averaged.
 var flds = ['stationId','StationName','ERC','ERC_Pct','BI','BI_Pct','FM100Hr','FM100Hr_Pct',
             'FM1000Hr','FM1000Hr_Pct','KBDI','KBDI_Pct'];
 var raws = FeatureSetByPortalItem(Portal('""" + PORTAL + r"""'), '""" + CA_ITEM + r"""', 0, flds, false);
-var inside = Intersects(raws, $feature);
-var n = Count(inside);
+var ids = Split(DefaultValue($feature.station_ids, ''), ';', -1, true);
+var live = null;
+if (Count(ids) > 0) { live = Filter(raws, 'stationId IN (' + Concatenate(ids, ',') + ')'); }
+var n = IIf(IsEmpty(live), 0, Count(live));
+var how = 'FDOP stations';
+if (n == 0) { live = Intersects(raws, $feature); n = Count(live); how = 'live RAWS inside the FDRA'; }
 if (n == 0) {
-  return { type: 'text', text: '<p>No CA NFDRS 3.0 RAWS inside this FDRA. See the PSA or nearest station.</p>' };
+  return { type: 'text', text: '<p>No FDOP station for this FDRA is in the live CA NFDRS 3.0 layer (stations: '
+           + Concatenate(ids, ', ') + ').</p>' };
 }
 function cls(p, dir) {
   if (IsEmpty(p)) { return 'No data' }
@@ -115,15 +121,16 @@ var rows = '';
 var idx = [['ERC','ERC','high'],['BI','BI','high'],['FM100Hr','100-hr FM','low'],['FM1000Hr','1000-hr FM','low'],['KBDI','KBDI','high']];
 for (var i in idx) {
   var f = idx[i][0];
-  var v = Round(Average(inside, f), 1);
-  var p = Round(Average(inside, f + '_Pct'), 0);
+  var v = Round(Average(live, f), 1);
+  var p = Round(Average(live, f + '_Pct'), 0);
   rows += '<tr><td>' + idx[i][1] + '</td><td><b>' + v + '</b></td><td>' + p + '</td><td>' + cls(p, idx[i][2]) + '</td></tr>';
 }
 var names = [];
-for (var s in inside) { Push(names, s.StationName + ' (' + s.stationId + ')') }
+for (var s in live) { Push(names, s.StationName + ' (' + s.stationId + ')') }
 return { type: 'text', text:
   '<table style="width:100%;font-size:12px"><tr><th align="left">Index</th><th>FDRA avg</th><th>Avg pct</th><th>Class</th></tr>'
-  + rows + '</table><p style="font-size:11px">' + n + ' RAWS: ' + Concatenate(names, ', ') + '</p>' };
+  + rows + '</table><p style="font-size:11px">Live values from ' + n + ' ' + how + ': ' + Concatenate(names, ', ')
+  + '<br>Percentiles: CA NFDRS 3.0 (fuel model Y). FDRA fuel model ' + $feature.fuel_model + '.</p>' };
 """
 
 
@@ -149,14 +156,14 @@ def build():
         'layerDefinition': {'drawingInfo': {'renderer': renderer(alert_expr('Avg_ERC_Fcast_Pct', 'high'), 'ERC forecast alert', 'high')}},
         'popupInfo': psa_popup()})
     layers.append({
-        'id': 'fdra', 'title': 'FDRAs (CAL FIRE) – click for live roll-up', 'url': FDRA_URL, 'itemId': FDRA_ITEM,
+        'id': 'fdra', 'title': 'FDRAs – national forests 2026 (click for live roll-up)', 'url': FDRA_URL, 'itemId': FDRA_ITEM,
         'layerType': 'ArcGISFeatureLayer', 'visibility': True, 'opacity': 1,
         'layerDefinition': {'drawingInfo': {'renderer': {'type': 'simple', 'symbol': {
             'type': 'esriSFS', 'style': 'esriSFSNull', 'color': [0, 0, 0, 0],
             'outline': {'type': 'esriSLS', 'style': 'esriSLSDash', 'color': [60, 60, 160, 255], 'width': 1.2}}}},
             'minScale': 4000000},
-        'popupInfo': {'title': 'FDRA {UNIT}-{FDRA}', 'popupElements': [
-            {'type': 'fields'},
+        'popupInfo': {'title': 'FDRA {fdra_id} — {forest}', 'popupElements': [
+            {'type': 'text', 'text': '<p>Fuel model <b>{fuel_model}</b> · FDOP stations {station_ids}<br>SL/DL index: {sl_dl_index}<br>Standard 90th/97th: {standard_90_97} · Custom: {custom_thresholds}<br><span style="font-size:11px">Station source: {match}</span></p>'},
             {'type': 'expression', 'expressionInfo': {'title': 'Live FDRA roll-up', 'expression': FDRA_ARCADE,
                                                       'returnType': 'dictionary'}}]}})
     layers.append({

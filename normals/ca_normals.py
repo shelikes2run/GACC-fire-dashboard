@@ -155,6 +155,22 @@ def load_fdra_from_agol(item_id: str, name_fields: list[str], gis=None):
     return out
 
 
+def load_fdra_membership(csv_path) -> tuple[dict, pd.DataFrame]:
+    """FDOP station lists from the 2026 Forest Thresholds sheet
+    (fdra_station_membership_2026.csv from align_fdras_to_sheet.py).
+
+    Returns ({fdra_id: [(stationId, fuel_model), ...]}, pairs DataFrame with
+    stationId / FuelModel for download). Seasonal FDRAs (e.g. ENF 335 peak /
+    non-peak) become separate units: 'ENF-335 (peak)'.
+    """
+    m = pd.read_csv(csv_path).fillna('')
+    m['unit'] = np.where(m['season'] != '', m['fdra_id'] + ' (' + m['season'] + ')', m['fdra_id'])
+    mem = {u: list(zip(g['stationId'].astype(int), g['fuel_model'])) for u, g in m.groupby('unit')}
+    pairs = m[['stationId', 'fuel_model']].rename(columns={'fuel_model': 'FuelModel'}).drop_duplicates()
+    log.info('FDRA membership: %d FDRAs, %d station × fuel-model pairs', len(mem), len(pairs))
+    return mem, pairs
+
+
 def assign_fdras(stations: pd.DataFrame, fdras) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Point-in-polygon. Returns (stations with 'FDRA' col, fdra table).
 
@@ -213,16 +229,21 @@ def _fems_get(sid, fm, start, end, key, user, retries=4):
 
 def download_history(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path,
                      key: str, user: str, workers: int = 8):
-    """One CSV per station-year in raw_dir; existing files are skipped."""
+    """One CSV per station × fuel model × year in raw_dir; existing files are skipped.
+
+    `stations` needs columns stationId and FuelModel; the same station can appear
+    with several fuel models (e.g. Y for its PSA, X for an FDRA).
+    """
     raw_dir.mkdir(parents=True, exist_ok=True)
     jobs = []
-    for sid, fm in zip(stations['stationId'], stations['FuelModel']):
+    pairs = stations[['stationId', 'FuelModel']].drop_duplicates()
+    for sid, fm in zip(pairs['stationId'], pairs['FuelModel']):
         for y in range(start_year, end_year + 1):
-            f = raw_dir / f'{sid}_{y}.csv'
+            f = raw_dir / f'{sid}_{fm}_{y}.csv'
             if not f.exists():
                 jobs.append((sid, fm, y, f))
     log.info('FEMS: %d station-years to download (%d cached)',
-             len(jobs), len(stations) * (end_year - start_year + 1) - len(jobs))
+             len(jobs), len(pairs) * (end_year - start_year + 1) - len(jobs))
     failed = []
 
     def one(job):
@@ -248,11 +269,12 @@ def download_history(stations: pd.DataFrame, start_year: int, end_year: int, raw
 
 
 def load_history(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path) -> pd.DataFrame:
-    """Observed daily values, long → wide: columns stationId, date, <indices>."""
+    """Observed daily values: columns stationId, fm, date, <indices>."""
     frames = []
-    for sid in stations['stationId']:
+    pairs = stations[['stationId', 'FuelModel']].drop_duplicates()
+    for sid, fm in zip(pairs['stationId'], pairs['FuelModel']):
         for y in range(start_year, end_year + 1):
-            f = raw_dir / f'{sid}_{y}.csv'
+            f = raw_dir / f'{sid}_{fm}_{y}.csv'
             if not f.exists() or f.stat().st_size < 50:
                 continue
             df = pd.read_csv(f)
@@ -261,13 +283,13 @@ def load_history(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir
                 continue
             if 'NFDRType' in df.columns:
                 df = df[df['NFDRType'].astype(str).str.upper() == 'O']
-            out = pd.DataFrame({'stationId': sid,
+            out = pd.DataFrame({'stationId': sid, 'fm': fm,
                                 'date': pd.to_datetime(df['ObservationTime'], errors='coerce').dt.normalize()})
             for k, col in FIELD_COLS.items():
                 out[k] = pd.to_numeric(df[col], errors='coerce') if col in df.columns else np.nan
             frames.append(out.dropna(subset=['date']))
-    hist = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=['stationId', 'date', *INDICES])
-    hist = hist.groupby(['stationId', 'date'], as_index=False)[INDICES].mean()
+    hist = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=['stationId', 'fm', 'date', *INDICES])
+    hist = hist.groupby(['stationId', 'fm', 'date'], as_index=False)[INDICES].mean()
     for k in INDICES:                       # FEMS uses negatives for missing
         hist.loc[hist[k] < 0, k] = np.nan
     log.info('History: %d station-days, %d stations, %s → %s', len(hist), hist['stationId'].nunique(),
@@ -276,11 +298,17 @@ def load_history(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir
 
 
 # ── 4. Aggregate to PSA / FDRA ────────────────────────────────────────────────
-def unit_daily(hist: pd.DataFrame, membership: dict[str, list[int]], unit_type: str) -> pd.DataFrame:
-    """Daily mean of member stations for each unit (non-reporting stations ignored)."""
+def unit_daily(hist: pd.DataFrame, membership: dict, unit_type: str, fuel_model='Y') -> pd.DataFrame:
+    """Daily mean of member stations for each unit (non-reporting stations ignored).
+
+    membership: {unit_id: [stationId, ...]} using `fuel_model` for every unit, or
+                {unit_id: [(stationId, fuel_model), ...]} for per-unit fuel models (FDRAs).
+    """
     parts = []
-    for uid, sids in membership.items():
-        sub = hist[hist['stationId'].isin(sids)]
+    for uid, members in membership.items():
+        pairs = [m if isinstance(m, tuple) else (m, fuel_model) for m in members]
+        key = pd.MultiIndex.from_tuples(pairs, names=['stationId', 'fm'])
+        sub = hist[pd.MultiIndex.from_frame(hist[['stationId', 'fm']]).isin(key)]
         if sub.empty:
             continue
         g = sub.groupby('date')[INDICES].mean()

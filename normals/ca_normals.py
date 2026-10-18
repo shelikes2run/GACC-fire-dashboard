@@ -387,7 +387,7 @@ def fdra_site_climo(daily_unit: pd.DataFrame, weather: pd.DataFrame | None = Non
     # every year's percentile series (analog years)
     out['years_series'] = {
         str(y): {k: g.groupby('doy')[k].mean().reindex(days).round(0).tolist()   # Feb 29 folded into Feb 28
-                 for k in ('erc_p', 'bi_p', 'sfdi')}
+                 for k in ('erc_p', 'bi_p', 'sfdi', 'erc', 'bi')}
         for y, g in d.groupby('year')}
     # season end
     ends = {str(y): season_end_doy(g['doy'].to_numpy(), g['erc_p'].to_numpy()) for y, g in d.groupby('year')}

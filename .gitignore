@@ -37,3 +37,5 @@ Thumbs.db
 
 # AGOL pipeline dry-run output
 agol_out/
+normals/fems_raw/
+normals/fdra/

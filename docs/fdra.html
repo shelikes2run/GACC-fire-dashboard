@@ -17,7 +17,8 @@
   <section class="panel" id="facts-panel">
     <h2 id="h-fdra">Loading…</h2>
     <div id="units" class="tabs"></div>
-    <dl class="facts" id="facts"></dl>
+    <details id="factsbox" open><summary class="small muted" style="cursor:pointer;margin-bottom:6px">FDRA details — fuel model, FDOP RAWS, breakpoints</summary>
+    <dl class="facts" id="facts"></dl></details>
   </section>
 
   <section class="panel">
@@ -278,6 +279,7 @@ async function loadUnit(unit) {
 
 (async function main() {
   const id = (P.get('id') || '').trim();
+  if (P.get('embed') === '1') document.getElementById('factsbox').removeAttribute('open');
   const t = new Date(); S.today = new Date(t.getTime() - t.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   try { S.chart = localStorage.getItem('fdra_chart') || 'ERC %'; } catch (e) { S.chart = 'ERC %'; }
   if (!CHARTS[S.chart]) S.chart = 'ERC %';

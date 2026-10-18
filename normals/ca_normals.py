@@ -12,8 +12,8 @@ Pipeline
   1. stations  ← CA NFDRS 3.0 RAWS layer (public REST; CA + HI)
   2. FDRA join ← point-in-polygon against an FDRA file you provide
                  (GeoJSON / shapefile / zipped shapefile; any CRS with a .prj)
-  3. download  ← FEMS download-nfdr-daily-summary, one file per station-year,
-                 cached so re-runs only fetch what's missing
+  3. download  ← FEMS download-nfdr-daily-summary (public, no key), batches of 20
+                 stations per request per year, cached so re-runs only fetch what's missing
   4. aggregate ← observed (NFDRType=O) daily values → PSA / FDRA daily means
                  (same rule as the dashboard: average reporting stations)
   5. normals   ← annual percentiles + day-of-year normals per unit & index
@@ -210,86 +210,103 @@ def assign_fdras(stations: pd.DataFrame, fdras) -> tuple[pd.DataFrame, pd.DataFr
     return stations, fdra_tbl
 
 
-# ── 3. FEMS download (cached) ─────────────────────────────────────────────────
-def _fems_get(sid, fm, start, end, key, user, retries=4):
-    params = dict(dataset='all', startDate=start, endDate=end, dataFormat='csv',
-                  stationIds=sid, fuelModels=fm)
-    headers = {'x-api-key': key, 'x-user-email': user, 'Accept': 'text/csv'}
+# ── 3. FEMS download (public, batched, cached) ────────────────────────────────
+# FEMS ext-climatology downloads are public (no API key). One request takes many
+# stations and several fuel models: e.g. 20 stations × 3 fuel models × 1 year ≈ 3 s.
+FEMS_WX_URL = 'https://fems.fs2c.usda.gov/api/ext-climatology/download-wx-daily-summary/'
+BATCH = 20
+
+
+def _fems_get(url, ids, start, end, fuel_models=None, dataset='observation', retries=4):
+    params = dict(dataset=dataset, startDate=start, endDate=end, dataFormat='csv',
+                  stationIds=','.join(map(str, ids)))
+    if fuel_models:
+        params['fuelModels'] = ','.join(fuel_models)
     for a in range(1, retries + 1):
         try:
-            r = requests.get(FEMS_URL, params=params, headers=headers, timeout=120)
+            r = requests.get(url, params=params, headers={'Accept': 'text/csv'}, timeout=300)
             if r.status_code == 404:
                 return ''
             r.raise_for_status()
             return r.text
-        except Exception as e:
+        except Exception:
             if a == retries:
                 raise
-            time.sleep(3 * a)
+            time.sleep(5 * a)
 
 
-def download_history(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path,
-                     key: str, user: str, workers: int = 8):
-    """One CSV per station × fuel model × year in raw_dir; existing files are skipped.
+def _batches(ids, n=BATCH):
+    ids = sorted({int(i) for i in ids})
+    return [ids[i:i + n] for i in range(0, len(ids), n)]
 
-    `stations` needs columns stationId and FuelModel; the same station can appear
-    with several fuel models (e.g. Y for its PSA, X for an FDRA).
-    """
+
+def _tag(ids):
+    import hashlib
+    return hashlib.md5(','.join(map(str, ids)).encode()).hexdigest()[:8]
+
+
+def _download(url, prefix, ids, fuel_models, start_year, end_year, raw_dir, workers):
     raw_dir.mkdir(parents=True, exist_ok=True)
     jobs = []
-    pairs = stations[['stationId', 'FuelModel']].drop_duplicates()
-    for sid, fm in zip(pairs['stationId'], pairs['FuelModel']):
+    for chunk in _batches(ids):
         for y in range(start_year, end_year + 1):
-            f = raw_dir / f'{sid}_{fm}_{y}.csv'
+            f = raw_dir / f'{prefix}_{y}_{_tag(chunk)}.csv'
             if not f.exists():
-                jobs.append((sid, fm, y, f))
-    log.info('FEMS: %d station-years to download (%d cached)',
-             len(jobs), len(pairs) * (end_year - start_year + 1) - len(jobs))
+                jobs.append((chunk, y, f))
+    log.info('FEMS %s: %d batch-years to download', prefix, len(jobs))
     failed = []
 
     def one(job):
-        sid, fm, y, f = job
-        txt = _fems_get(sid, fm, f'{y}-01-01', f'{y}-12-31', key, user)
+        chunk, y, f = job
+        txt = _fems_get(url, chunk, f'{y}-01-01', f'{y}-12-31', fuel_models)
         f.write_text(txt or '', encoding='utf-8')
-        return job
 
-    done = 0
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futs = {pool.submit(one, j): j for j in jobs}
-        for fut in as_completed(futs):
+        for i, fut in enumerate(as_completed(futs), 1):
             try:
                 fut.result()
             except Exception as e:
-                failed.append((futs[fut][0], futs[fut][2], str(e)[:120]))
-            done += 1
-            if done % 100 == 0:
-                log.info('  %d / %d', done, len(jobs))
+                failed.append((futs[fut][1], str(e)[:120]))
+            if i % 25 == 0:
+                log.info('  %d / %d', i, len(jobs))
     if failed:
-        log.warning('%d station-years failed (re-run to retry): %s', len(failed), failed[:5])
+        log.warning('%d batch-years failed (re-run to retry): %s', len(failed), failed[:5])
     return failed
+
+
+def download_history(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path,
+                     key: str = None, user: str = None, workers: int = 4):
+    """Batched, cached NFDR daily summaries (observed). `stations` needs stationId and
+    FuelModel; all fuel models in use are requested for every station (one call per
+    batch-year). key/user are ignored — kept so older notebook cells still run."""
+    fms = sorted(stations['FuelModel'].dropna().astype(str).str.upper().unique())
+    return _download(FEMS_URL, 'nfdr_' + ''.join(fms), stations['stationId'], fms,
+                     start_year, end_year, raw_dir, workers)
 
 
 def load_history(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path) -> pd.DataFrame:
     """Observed daily values: columns stationId, fm, date, <indices>."""
+    want = set(zip(stations['stationId'].astype(int), stations['FuelModel'].astype(str).str.upper()))
     frames = []
-    pairs = stations[['stationId', 'FuelModel']].drop_duplicates()
-    for sid, fm in zip(pairs['stationId'], pairs['FuelModel']):
-        for y in range(start_year, end_year + 1):
-            f = raw_dir / f'{sid}_{fm}_{y}.csv'
-            if not f.exists() or f.stat().st_size < 50:
-                continue
-            df = pd.read_csv(f)
-            df.columns = df.columns.str.strip()
-            if 'ObservationTime' not in df.columns:
-                continue
-            if 'NFDRType' in df.columns:
-                df = df[df['NFDRType'].astype(str).str.upper() == 'O']
-            out = pd.DataFrame({'stationId': sid, 'fm': fm,
-                                'date': pd.to_datetime(df['ObservationTime'], errors='coerce').dt.normalize()})
-            for k, col in FIELD_COLS.items():
-                out[k] = pd.to_numeric(df[col], errors='coerce') if col in df.columns else np.nan
-            frames.append(out.dropna(subset=['date']))
+    for f in sorted(raw_dir.glob('nfdr_*.csv')):
+        if f.stat().st_size < 50:
+            continue
+        df = pd.read_csv(f)
+        df.columns = df.columns.str.strip()
+        if 'ObservationTime' not in df.columns:
+            continue
+        df = df[df['NFDRType'].astype(str).str.upper() == 'O']
+        out = pd.DataFrame({'stationId': pd.to_numeric(df['StationId'], errors='coerce'),
+                            'fm': df['FuelModel'].astype(str).str.upper(),
+                            'date': pd.to_datetime(df['ObservationTime'], errors='coerce').dt.normalize()})
+        for k, col in FIELD_COLS.items():
+            out[k] = pd.to_numeric(df[col], errors='coerce') if col in df.columns else np.nan
+        frames.append(out.dropna(subset=['date', 'stationId']))
     hist = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=['stationId', 'fm', 'date', *INDICES])
+    hist['stationId'] = hist['stationId'].astype(int)
+    hist = hist[[p in want for p in zip(hist['stationId'], hist['fm'])]]
+    hist = hist[hist['date'].dt.year.between(start_year, end_year)]
     hist = hist.groupby(['stationId', 'fm', 'date'], as_index=False)[INDICES].mean()
     for k in INDICES:                       # FEMS uses negatives for missing
         hist.loc[hist[k] < 0, k] = np.nan
@@ -539,71 +556,36 @@ def write_site_climo(daily: pd.DataFrame, fdra_attrs: pd.DataFrame, out_dir: Pat
     return out_dir
 
 
-# ── 8. FEMS weather history (temperature / RH) — optional ─────────────────────
-FEMS_WX_URLS = [   # tried in order; FEMS does not document a public weather download
-    'https://fems.fs2c.usda.gov/api/ext-climatology/download-weather-daily-summary/',
-    'https://fems.fs2c.usda.gov/api/ext-climatology/download-weather/',
-]
-
-
-def probe_fems_weather(sid: int, key: str, user: str, year: int = 2024):
-    """Return (url, columns) of the first weather endpoint that answers with CSV, else (None, msg)."""
-    headers = {'x-api-key': key, 'x-user-email': user, 'Accept': 'text/csv'}
-    for u in FEMS_WX_URLS:
-        try:
-            r = requests.get(u, params=dict(stationIds=sid, startDate=f'{year}-07-01', endDate=f'{year}-07-07',
-                                            dataFormat='csv', dataset='all'), headers=headers, timeout=60)
-            if r.ok and len(r.text) > 50 and ',' in r.text.splitlines()[0]:
-                return u, r.text.splitlines()[0].split(',')
-        except Exception as e:
-            last = str(e)
-    return None, 'no FEMS weather endpoint answered — TRH normals skipped'
-
-
+# ── 8. FEMS weather history (daily Tmax / RHmin) — public, batched ──────────────
 def download_weather(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path,
-                     url: str, key: str, user: str, workers: int = 8):
-    """Cached yearly weather CSVs per station (wx_<sid>_<year>.csv) from a probed FEMS endpoint."""
-    raw_dir.mkdir(parents=True, exist_ok=True)
-    headers = {'x-api-key': key, 'x-user-email': user, 'Accept': 'text/csv'}
-    jobs = [(int(s), y) for s in stations['stationId'].drop_duplicates() for y in range(start_year, end_year + 1)
-            if not (raw_dir / f'wx_{int(s)}_{y}.csv').exists()]
-    log.info('FEMS weather: %d station-years to download', len(jobs))
-
-    def one(job):
-        s, y = job
-        r = requests.get(url, params=dict(stationIds=s, startDate=f'{y}-01-01', endDate=f'{y}-12-31',
-                                          dataFormat='csv', dataset='all'), headers=headers, timeout=180)
-        (raw_dir / f'wx_{s}_{y}.csv').write_text(r.text if r.ok else '', encoding='utf-8')
-
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        list(pool.map(one, jobs))
+                     url: str = None, key: str = None, user: str = None, workers: int = 4):
+    """Batched, cached FEMS wx daily summaries (TemperatureMax, RelativeHumidityMin)."""
+    return _download(FEMS_WX_URL, 'wx', stations['stationId'], None, start_year, end_year, raw_dir, workers)
 
 
 def load_weather_daily(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path) -> pd.DataFrame:
-    """Daily max temperature and min RH per station from the cached weather CSVs.
-
-    Column names are matched loosely (temp/temperature/dry bulb; rh/relative humidity).
-    """
+    """Daily max temperature and min RH per station (observed rows only)."""
+    want = set(stations['stationId'].astype(int))
     frames = []
-    for s in stations['stationId'].drop_duplicates():
-        for y in range(start_year, end_year + 1):
-            f = raw_dir / f'wx_{int(s)}_{y}.csv'
-            if not f.exists() or f.stat().st_size < 50:
-                continue
-            df = pd.read_csv(f)
-            cols = {c.lower().replace(' ', '').replace('_', ''): c for c in df.columns}
-            tcol = next((cols[c] for c in cols if c in ('temperature', 'temp', 'drybulb', 'airtemperature', 'tmp')), None)
-            hcol = next((cols[c] for c in cols if c in ('relativehumidity', 'rh', 'relhumidity', 'humidity')), None)
-            dcol = next((cols[c] for c in cols if c in ('observationtime', 'datetime', 'obsdate', 'date', 'time')), None)
-            if not (tcol and hcol and dcol):
-                continue
-            t = pd.to_datetime(df[dcol], errors='coerce')
-            w = pd.DataFrame({'date': t.dt.normalize(), 'tmax': pd.to_numeric(df[tcol], errors='coerce'),
-                              'rhmin': pd.to_numeric(df[hcol], errors='coerce')}).dropna(subset=['date'])
-            w = w.groupby('date').agg(tmax=('tmax', 'max'), rhmin=('rhmin', 'min')).reset_index()
-            w.insert(0, 'stationId', int(s))
-            frames.append(w)
-    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=['stationId', 'date', 'tmax', 'rhmin'])
+    for f in sorted(raw_dir.glob('wx_*.csv')):
+        if f.stat().st_size < 50:
+            continue
+        df = pd.read_csv(f)
+        df.columns = df.columns.str.strip()
+        if 'TemperatureMax(F)' not in df.columns:
+            continue
+        df = df[df['ObservationType'].astype(str).str.upper() == 'O']
+        frames.append(pd.DataFrame({
+            'stationId': pd.to_numeric(df['StationId'], errors='coerce'),
+            'date': pd.to_datetime(df['Date'], errors='coerce').dt.normalize(),
+            'tmax': pd.to_numeric(df['TemperatureMax(F)'], errors='coerce'),
+            'rhmin': pd.to_numeric(df['RelativeHumidityMin(%)'], errors='coerce')}))
+    if not frames:
+        return pd.DataFrame(columns=['stationId', 'date', 'tmax', 'rhmin'])
+    w = pd.concat(frames, ignore_index=True).dropna(subset=['stationId', 'date'])
+    w['stationId'] = w['stationId'].astype(int)
+    w = w[w['stationId'].isin(want) & w['date'].dt.year.between(start_year, end_year)]
+    return w.groupby(['stationId', 'date'], as_index=False)[['tmax', 'rhmin']].mean()
 
 
 def unit_weather(wx: pd.DataFrame, membership: dict) -> dict:

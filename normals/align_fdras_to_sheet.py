@@ -20,6 +20,9 @@ Rules (2026 sheet is authoritative)
                   holds the centroid of that FDRA's stations (flagged 'inferred')
   every polygon   clipped to its forest boundary
 
+  FDRAs not in the sheet take the RAWS inside them, else the nearest RAWS (needs all_raws.csv:
+  sid,name,lat,lon for every station)
+
 Output: R5_FDRAs_2026.geojson + fdra_station_membership_2026.csv
 """
 import sys
@@ -36,7 +39,7 @@ FOREST = {'LNF': 'Lassen National Forest', 'MDF': 'Modoc National Forest', 'SRF'
           'TMU': 'Lake Tahoe Basin Management Unit', 'PNF': 'Plumas National Forest'}
 
 
-def main(clipped, national, forests, sheet, stations_psv, out_dir):
+def main(clipped, national, forests, sheet, stations_psv, out_dir, all_stations=None):
     f = gpd.read_file(clipped).to_crs(3310)
     nat = gpd.read_file(national).to_crs(3310)
     nf = gpd.read_file(forests).to_crs(3310)
@@ -100,6 +103,25 @@ def main(clipped, national, forests, sheet, stations_psv, out_dir):
     for col in ['station_ids', 'n_stations', 'fuel_model', 'sl_dl_index', 'standard_90_97', 'custom_thresholds', 'season']:
         allp[col] = allp.key_u.map(first[col]) if col in first else ''
     allp['in_sheet'] = allp.key_u.isin(first.index).astype(int)
+
+    # FDRAs not in the sheet follow location: RAWS inside the polygon, else the nearest
+    # RAWS (flagged). Fuel model = the forest's most common sheet fuel model.
+    loc_rows = []
+    if all_stations is not None:
+        ast = pd.read_csv(all_stations)
+        apts = gpd.GeoDataFrame(ast, geometry=gpd.points_from_xy(ast.lon, ast.lat), crs=4326).to_crs(3310)
+        fm_by_forest = sh[sh.fuel_model != ''].groupby('forest_code').fuel_model.agg(lambda s: s.mode().iat[0])
+        for i, r in allp[allp.in_sheet == 0].iterrows():
+            inside = apts[apts.within(r.geometry)]
+            if len(inside):
+                sids, how = inside.sid.astype(int).tolist(), 'location: RAWS inside FDRA'
+            else:
+                d = apts.distance(r.geometry)
+                sids, how = [int(apts.loc[d.idxmin(), 'sid'])], f'location: nearest RAWS ({d.min() / 1000:.0f} km)'
+            fm = fm_by_forest.get(r.forest_code, 'Y')
+            allp.loc[i, ['station_ids', 'n_stations', 'fuel_model']] = [';'.join(map(str, sids)), len(sids), fm]
+            allp.loc[i, 'match'] = how
+            loc_rows += [{'fdra_id': r.fdra_id, 'season': '', 'stationId': s, 'fuel_model': fm} for s in sids]
     allp['acres'] = (allp.geometry.area / 4046.856).round(0)
     cols = ['fdra_id', 'forest', 'forest_code', 'fdra_name', 'in_sheet', 'station_ids', 'n_stations', 'fuel_model',
             'sl_dl_index', 'standard_90_97', 'custom_thresholds', 'match', 'source_layer', 'acres', 'geometry']
@@ -113,17 +135,18 @@ def main(clipped, national, forests, sheet, stations_psv, out_dir):
         for x in str(r.station_ids).split(';'):
             if x:
                 mem.append({'fdra_id': r.fdra_key, 'season': r.season, 'stationId': int(x), 'fuel_model': r.fuel_model})
+    mem += loc_rows
     pd.DataFrame(mem).to_csv(out_dir / 'fdra_station_membership_2026.csv', index=False)
 
     no_poly = sorted(set(sh.key_u) - set(out.fdra_id.str.upper()))
-    no_sheet = sorted(out.loc[out.in_sheet == 0, 'fdra_id'])
+    no_sheet = out.loc[out.in_sheet == 0, ['fdra_id', 'station_ids', 'match']]
     print(len(out), 'FDRA polygons;', int(out.in_sheet.sum()), 'have sheet stations')
     print('Sheet FDRAs without a polygon:', no_poly)
-    print('Polygons not in sheet (no FDOP stations):', no_sheet)
+    print('Polygons not in sheet → stations by location:'); print(no_sheet.to_string(index=False))
     print(out.loc[out.match.str.startswith('inferred'), ['fdra_id', 'match']].to_string(index=False))
     return out
 
 
 if __name__ == '__main__':
-    a = [Path(x) for x in sys.argv[1:7]]
+    a = [Path(x) for x in sys.argv[1:8]]
     main(*a)

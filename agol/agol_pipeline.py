@@ -314,8 +314,20 @@ def _coerce(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ── 4. AGOL publish / update ──────────────────────────────────────────────────
+PORTAL_URL = os.getenv('ARCGIS_URL', 'https://nifc.maps.arcgis.com')
+
+
 def connect(profile: str | None = None):
+    """Sign in to ArcGIS Online.
+
+    Order: ARCGIS_API_KEY env var (GitHub Actions — use an "API key credentials –
+    Impersonates item owner" developer credential), then a saved arcgis
+    profile, then the ArcGIS Notebook / ArcGIS Pro session.
+    """
     from arcgis.gis import GIS
+    key = os.getenv('ARCGIS_API_KEY')
+    if key:
+        return GIS(PORTAL_URL, api_key=key)
     if profile:
         return GIS(profile=profile)
     try:
@@ -324,10 +336,16 @@ def connect(profile: str | None = None):
         return GIS('pro')           # ArcGIS Pro active portal on Windows
 
 
+def _owner(gis) -> str | None:
+    me = getattr(gis.users, 'me', None)
+    return getattr(me, 'username', None) or os.getenv('ARCGIS_OWNER')
+
+
 def _find_item(gis, title: str, item_type: str):
-    me = gis.users.me.username
-    hits = gis.content.search(f'title:"{title}" AND owner:{me}', item_type=item_type, max_items=20)
-    hits = [h for h in hits if h.title == title]
+    owner = _owner(gis)
+    q = f'title:"{title}"' + (f' AND owner:{owner}' if owner else '')
+    hits = gis.content.search(q, item_type=item_type, max_items=20)
+    hits = [h for h in hits if h.title == title and (not owner or h.owner == owner)]
     return hits[0] if hits else None
 
 
@@ -458,7 +476,11 @@ def publish_daily(gis, daily: pd.DataFrame):
                                '2005–2024 climo thresholds. Updated by agol_pipeline.py.')
     table = item.tables[0]
     _sync_schema(table, daily)
-    table.manager.truncate()
+    try:
+        table.manager.truncate()
+    except Exception as e:          # API keys may not allow truncate
+        log.info('truncate unavailable (%s) — deleting rows instead', e)
+        table.delete_features(where='1=1')
     _apply(table, adds=[{'attributes': _to_attrs(r)} for r in daily.to_dict('records')], batch=2000)
     log.info('Loaded %d rows into %s (%s)', len(daily), TITLE_DAILY, item.id)
     return item
@@ -486,11 +508,16 @@ def _layer_definition(name: str, df: pd.DataFrame, geom_type: str | None) -> dic
 
 def _create_service(gis, title: str, layer_def: dict, snippet: str):
     """Empty hosted feature service with one layer/table, in FOLDER."""
-    _ensure_folder(gis, FOLDER)
+    folder = FOLDER
+    try:
+        _ensure_folder(gis, FOLDER)
+    except Exception as e:
+        log.warning('Could not create folder %r (%s) — using root folder', FOLDER, e)
+        folder = None
     svc_name = title.replace('–', '').replace(' ', '_').replace('__', '_')
     svc_name = f'{svc_name}_{datetime.now(timezone.utc):%Y%m%d%H%M}'
     svc_item = gis.content.create_service(
-        name=svc_name, service_type='featureService', wkid=4326, folder=FOLDER,
+        name=svc_name, service_type='featureService', wkid=4326, folder=folder,
         max_record_count=2000, item_properties={'title': title, 'snippet': snippet},
         tags=TAGS, snippet=snippet)
     if svc_item.title != title:
@@ -544,7 +571,7 @@ def publish_map(gis, current_item, daily_item):
              'snippet': 'PSA fire-danger alerts vs 2005–2024 climo for the GACC Fire Wx Experience.',
              'extent': '-125,24,-66,50', 'text': json.dumps(wm)}
     try:
-        folder = gis.content.folders.get(FOLDER)
+        folder = gis.content.folders.get(FOLDER) or gis.content.folders.get()
         item = folder.add(item_properties=props).result()
     except AttributeError:
         item = gis.content.add(item_properties=props, folder=FOLDER)
@@ -615,7 +642,7 @@ def run(dry_run: bool = False, profile: str | None = None, out_dir: Path | None 
         return current, daily
 
     gis = connect(profile)
-    log.info('Signed in to %s as %s', gis.properties.portalHostname, gis.users.me.username)
+    log.info('Signed in to %s as %s', gis.properties.portalHostname, _owner(gis))
     cur_item = publish_current(gis, current)
     day_item = publish_daily(gis, daily)
     map_item = publish_map(gis, cur_item, day_item)

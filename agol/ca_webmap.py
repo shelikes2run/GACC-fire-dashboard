@@ -6,7 +6,7 @@ web map item's data (ArcGIS Online Assistant → View an Item's JSON → Data �
 keeping the item's existing baseMap / spatialReference.
 
 Live data: CA NFDRS 3.0 (FEMS), owner oncc_oscc_scripting (refreshed daily).
-FDRAs: Kristen's FDRA_View_KA (CAL FIRE FDRA_MASTER_2). FDRA values are rolled up
+FDRAs: Kristen's FDRA_CA item (CAL FIRE FDRA_View, layer FDRA_MASTER_2). FDRA values are rolled up
 live in the popup from the RAWS inside each FDRA (Arcade FeatureSet).
 
     python agol/ca_webmap.py
@@ -17,7 +17,7 @@ from pathlib import Path
 CA_SVC = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/CA_NFDRS/FeatureServer'
 CA_ITEM = '8c98d879e6c74d07ac6236c0bfa114a3'
 FDRA_URL = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/FDRA_View/FeatureServer/0'
-FDRA_ITEM = 'd1f695757afe4fdab3e1442534a1125b'
+FDRA_ITEM = 'd18bbbbcb5704673970fb7889da997a6'   # FDRA_CA (CAL FIRE FDRA_View)
 PORTAL = 'https://nifc.maps.arcgis.com'
 
 COLORS = {'Critical': '#ff2d55', 'High': '#ff6b00', 'Elevated': '#ffcc00',

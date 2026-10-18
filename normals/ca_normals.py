@@ -129,6 +129,32 @@ def load_fdra_polygons(path: str | Path, name_fields: list[str]):
     return out
 
 
+def load_fdra_from_agol(item_id: str, name_fields: list[str], gis=None):
+    """Read FDRA polygons straight from an AGOL item (e.g. FDRA_CA) in WGS84.
+
+    Signs in through ArcGIS Pro on this PC (GIS('pro')) unless a GIS is
+    passed in, so secured services shared to your NIFC account work.
+    """
+    from arcgis.gis import GIS
+    from shapely.geometry import Polygon, MultiPolygon
+    gis = gis or GIS('pro')
+    item = gis.content.get(item_id)
+    lyr = item.layers[0]
+    fs = lyr.query(where='1=1', out_fields='*', out_sr=4326, return_geometry=True)
+    out = []
+    for f in fs.features:
+        rings = f.geometry.get('rings', [])
+        polys = [Polygon(r) for r in rings if len(r) >= 4]
+        geom = MultiPolygon(polys).buffer(0) if len(polys) > 1 else (polys[0].buffer(0) if polys else None)
+        if geom is None:
+            continue
+        attrs = f.attributes
+        fid = '-'.join(str(attrs.get(k, '')).strip() for k in name_fields)
+        out.append((fid, attrs, geom))
+    log.info('FDRA polygons: %d from AGOL item %s (%s)', len(out), item_id, item.title)
+    return out
+
+
 def assign_fdras(stations: pd.DataFrame, fdras) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Point-in-polygon. Returns (stations with 'FDRA' col, fdra table).
 

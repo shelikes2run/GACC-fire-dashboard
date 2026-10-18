@@ -97,8 +97,9 @@ def parse(page, js):
             'name': s['name'], 'forest': s.get('forest') or '', 'classification': s.get('classification') or '',
             'elevation_ft': s.get('elevation_ft'), 'aspect_deg': s.get('aspect_deg'),
             'pal_raw': s.get('pal'), 'erc': o.get('erc'), 'ic': o.get('ic'),
-            'pal_override': ov and ov.get('pal'), 'override_comment': ov and ov.get('comment'),
-            'override_until': ov and ov.get('valid_until'), 'override_by': ov and ov.get('set_by'),
+            # '' rather than null so the fields always exist in the GeoJSON layer
+            'pal_override': (ov or {}).get('pal') or '', 'override_comment': (ov or {}).get('comment') or '',
+            'override_until': (ov or {}).get('valid_until') or '', 'override_by': (ov or {}).get('set_by') or '',
             'fc_dates': ','.join(dates) if pals else '', 'fc_pal': ','.join(pals), 'fc_type': ','.join(types),
             'forest_pal_station': 1 if key in fc else 0, 'report_time': generated,
         }

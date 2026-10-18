@@ -25,6 +25,7 @@ Used by CA_Normals_2016_2025.ipynb — run the notebook, not this file.
 from __future__ import annotations
 
 import io
+import re
 import json
 import logging
 import math
@@ -402,3 +403,215 @@ def write_outputs(out_dir: Path, start_year: int, end_year: int, stations, fdra_
     for k, f in files.items():
         log.info('wrote %-9s %s (%.1f MB)', k, f.name, f.stat().st_size / 1e6)
     return files
+
+
+# ── 7. Site climatology (season-tracking charts, R6 style) ────────────────────
+# Per FDRA, from the 2016–2025 daily FDRA values (FDOP stations, FDRA fuel model):
+#   • ERC / BI / SFDI annual-percentile lookups (101 quantiles) — the GitHub site turns
+#     live values into "annual percentile" with these
+#   • per day-of-year max / avg of the annual percentiles (chart envelopes) and every
+#     year's series (for analog years)
+#   • live fuel moisture (herb, woody) avg / min by day of year
+#   • temperature / RH by day of year when FEMS weather history is available
+#   • fire-season end: first day after which ERC stays below the 70th percentile
+#     (searched from July 1), its distribution across years → 25/50/75/90 % dates
+# SFDI follows Jolly et al. 2019: p = ERC′ × BI′ (annual percentiles), SFDI = percentile
+# of p in the same climatology; classes Low ≤60 < Moderate ≤80 < High ≤90 < Very High ≤97 < Severe.
+SFDI_BREAKS = [60, 80, 90, 97]
+SFDI_LABELS = ['Low', 'Moderate', 'High', 'Very High', 'Severe']
+SEASON_END_PCT = 70
+SEASON_SEARCH_FROM_DOY = 182   # July 1
+
+
+def _pct_of(values: np.ndarray, sorted_clim: np.ndarray) -> np.ndarray:
+    """Annual percentile (0–100) of each value within a sorted climatology."""
+    v = np.asarray(values, dtype=float)
+    out = np.full(v.shape, np.nan)
+    ok = ~np.isnan(v)
+    if len(sorted_clim):
+        out[ok] = np.searchsorted(sorted_clim, v[ok], side='right') / len(sorted_clim) * 100
+    return out
+
+
+def _doy365(dates: pd.Series) -> np.ndarray:
+    doy = dates.dt.dayofyear.to_numpy()
+    leap = dates.dt.is_leap_year.to_numpy()
+    return np.where(leap & (doy > 59), doy - 1, doy)
+
+
+def season_end_doy(doy: np.ndarray, pct: np.ndarray, thresh=SEASON_END_PCT, start=SEASON_SEARCH_FROM_DOY):
+    """First DOY ≥ start after which pct stays < thresh for the rest of the year (None if never)."""
+    s = pd.Series(pct, index=doy).groupby(level=0).mean().reindex(range(1, 366))
+    s = s.loc[start:]
+    above = s[s >= thresh]
+    if s.dropna().empty:
+        return None
+    if above.empty:
+        return int(start)
+    last = int(above.index.max())
+    return last + 1 if last < 365 else None
+
+
+def fdra_site_climo(daily_unit: pd.DataFrame, weather: pd.DataFrame | None = None) -> dict:
+    """Climatology bundle for one FDRA (daily_unit: one unit's rows from unit_daily)."""
+    d = daily_unit.sort_values('date').copy()
+    d['doy'] = _doy365(d['date'])
+    d['year'] = d['date'].dt.year
+    q = np.linspace(0, 100, 101)
+    out = {'years': sorted(d['year'].unique().tolist()), 'n_days': int(len(d))}
+    clim = {}
+    for k in ('erc', 'bi'):
+        v = np.sort(d[k].dropna().to_numpy())
+        clim[k] = v
+        out[f'{k}_q'] = np.round(np.percentile(v, q), 2).tolist() if len(v) else []
+        d[f'{k}_p'] = _pct_of(d[k], v)
+    prod = d['erc_p'] * d['bi_p']
+    clim['prod'] = np.sort(prod.dropna().to_numpy())
+    out['sfdi_prod_q'] = np.round(np.percentile(clim['prod'], q), 1).tolist() if len(clim['prod']) else []
+    d['sfdi'] = _pct_of(prod, clim['prod'])
+
+    days = np.arange(1, 366)
+    env = {}
+    for k in ('erc_p', 'bi_p', 'sfdi'):
+        g = d.groupby('doy')[k]
+        env[k] = {'max': g.max().reindex(days).round(1).tolist(), 'avg': g.mean().reindex(days).round(1).tolist()}
+    for k in ('erc', 'bi'):
+        g = d.groupby('doy')[k]
+        env[k] = {'max': g.max().reindex(days).round(1).tolist(), 'avg': g.mean().reindex(days).round(1).tolist()}
+    for k in ('herb', 'woody', 'fm100', 'fm1000'):
+        g = d.groupby('doy')[k]
+        env[k] = {'min': g.min().reindex(days).round(1).tolist(), 'avg': g.mean().reindex(days).round(1).tolist()}
+    out['envelope'] = env
+    # every year's percentile series (analog years)
+    out['years_series'] = {
+        str(y): {k: g.groupby('doy')[k].mean().reindex(days).round(0).tolist()   # Feb 29 folded into Feb 28
+                 for k in ('erc_p', 'bi_p', 'sfdi')}
+        for y, g in d.groupby('year')}
+    # season end
+    ends = {str(y): season_end_doy(g['doy'].to_numpy(), g['erc_p'].to_numpy()) for y, g in d.groupby('year')}
+    out['season_end_doy'] = ends
+    ev = np.array([v for v in ends.values() if v is not None])
+    out['season_end_quantiles'] = ({str(p): int(np.percentile(ev, p)) for p in (25, 50, 75, 90)} if len(ev) else {})
+    # weather (optional)
+    if weather is not None and len(weather):
+        w = weather.copy()
+        w['doy'] = _doy365(w['date'])
+        for k in ('tmax', 'rhmin'):
+            if k in w:
+                g = w.groupby('doy')[k]
+                env[k] = {'avg': g.mean().reindex(days).round(1).tolist(),
+                          ('max' if k == 'tmax' else 'min'): (g.max() if k == 'tmax' else g.min()).reindex(days).round(1).tolist()}
+    out['sfdi_breaks'] = SFDI_BREAKS
+    out['sfdi_labels'] = SFDI_LABELS
+    return out
+
+
+def _clean(o):
+    """NaN/inf → None, numpy scalars → Python, recursively (valid JSON for the site)."""
+    if isinstance(o, dict):
+        return {k: _clean(v) for k, v in o.items()}
+    if isinstance(o, (list, tuple)):
+        return [_clean(v) for v in o]
+    if isinstance(o, (np.floating, float)):
+        return None if not np.isfinite(o) else float(o)
+    if isinstance(o, np.integer):
+        return int(o)
+    return o
+
+
+def write_site_climo(daily: pd.DataFrame, fdra_attrs: pd.DataFrame, out_dir: Path,
+                     weather_by_unit: dict | None = None) -> Path:
+    """site_data/climo/<fdra_id>.json for every FDRA + site_data/fdras.json index."""
+    cdir = out_dir / 'climo'
+    cdir.mkdir(parents=True, exist_ok=True)
+    idx = []
+    f = daily[daily['unit_type'] == 'FDRA']
+    for uid, g in f.groupby('unit_id'):
+        w = (weather_by_unit or {}).get(uid)
+        c = fdra_site_climo(g, w)
+        safe = re.sub(r'[^A-Za-z0-9_-]+', '_', uid)
+        (cdir / f'{safe}.json').write_text(json.dumps(_clean(c), separators=(',', ':'), allow_nan=False))
+        row = {'fdra_id': uid, 'file': f'climo/{safe}.json', 'years': c['years'], 'n_days': c['n_days'],
+               'season_end_quantiles': c['season_end_quantiles']}
+        idx.append(row)
+    (out_dir / 'fdras.json').write_text(json.dumps(idx, indent=1))
+    log.info('site climatology: %d FDRAs → %s', len(idx), out_dir)
+    return out_dir
+
+
+# ── 8. FEMS weather history (temperature / RH) — optional ─────────────────────
+FEMS_WX_URLS = [   # tried in order; FEMS does not document a public weather download
+    'https://fems.fs2c.usda.gov/api/ext-climatology/download-weather-daily-summary/',
+    'https://fems.fs2c.usda.gov/api/ext-climatology/download-weather/',
+]
+
+
+def probe_fems_weather(sid: int, key: str, user: str, year: int = 2024):
+    """Return (url, columns) of the first weather endpoint that answers with CSV, else (None, msg)."""
+    headers = {'x-api-key': key, 'x-user-email': user, 'Accept': 'text/csv'}
+    for u in FEMS_WX_URLS:
+        try:
+            r = requests.get(u, params=dict(stationIds=sid, startDate=f'{year}-07-01', endDate=f'{year}-07-07',
+                                            dataFormat='csv', dataset='all'), headers=headers, timeout=60)
+            if r.ok and len(r.text) > 50 and ',' in r.text.splitlines()[0]:
+                return u, r.text.splitlines()[0].split(',')
+        except Exception as e:
+            last = str(e)
+    return None, 'no FEMS weather endpoint answered — TRH normals skipped'
+
+
+def download_weather(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path,
+                     url: str, key: str, user: str, workers: int = 8):
+    """Cached yearly weather CSVs per station (wx_<sid>_<year>.csv) from a probed FEMS endpoint."""
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    headers = {'x-api-key': key, 'x-user-email': user, 'Accept': 'text/csv'}
+    jobs = [(int(s), y) for s in stations['stationId'].drop_duplicates() for y in range(start_year, end_year + 1)
+            if not (raw_dir / f'wx_{int(s)}_{y}.csv').exists()]
+    log.info('FEMS weather: %d station-years to download', len(jobs))
+
+    def one(job):
+        s, y = job
+        r = requests.get(url, params=dict(stationIds=s, startDate=f'{y}-01-01', endDate=f'{y}-12-31',
+                                          dataFormat='csv', dataset='all'), headers=headers, timeout=180)
+        (raw_dir / f'wx_{s}_{y}.csv').write_text(r.text if r.ok else '', encoding='utf-8')
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        list(pool.map(one, jobs))
+
+
+def load_weather_daily(stations: pd.DataFrame, start_year: int, end_year: int, raw_dir: Path) -> pd.DataFrame:
+    """Daily max temperature and min RH per station from the cached weather CSVs.
+
+    Column names are matched loosely (temp/temperature/dry bulb; rh/relative humidity).
+    """
+    frames = []
+    for s in stations['stationId'].drop_duplicates():
+        for y in range(start_year, end_year + 1):
+            f = raw_dir / f'wx_{int(s)}_{y}.csv'
+            if not f.exists() or f.stat().st_size < 50:
+                continue
+            df = pd.read_csv(f)
+            cols = {c.lower().replace(' ', '').replace('_', ''): c for c in df.columns}
+            tcol = next((cols[c] for c in cols if c in ('temperature', 'temp', 'drybulb', 'airtemperature', 'tmp')), None)
+            hcol = next((cols[c] for c in cols if c in ('relativehumidity', 'rh', 'relhumidity', 'humidity')), None)
+            dcol = next((cols[c] for c in cols if c in ('observationtime', 'datetime', 'obsdate', 'date', 'time')), None)
+            if not (tcol and hcol and dcol):
+                continue
+            t = pd.to_datetime(df[dcol], errors='coerce')
+            w = pd.DataFrame({'date': t.dt.normalize(), 'tmax': pd.to_numeric(df[tcol], errors='coerce'),
+                              'rhmin': pd.to_numeric(df[hcol], errors='coerce')}).dropna(subset=['date'])
+            w = w.groupby('date').agg(tmax=('tmax', 'max'), rhmin=('rhmin', 'min')).reset_index()
+            w.insert(0, 'stationId', int(s))
+            frames.append(w)
+    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=['stationId', 'date', 'tmax', 'rhmin'])
+
+
+def unit_weather(wx: pd.DataFrame, membership: dict) -> dict:
+    """{fdra_id: daily tmax/rhmin averaged over its stations}."""
+    out = {}
+    for uid, members in membership.items():
+        sids = [m[0] if isinstance(m, tuple) else m for m in members]
+        sub = wx[wx['stationId'].isin(sids)]
+        if len(sub):
+            out[uid] = sub.groupby('date')[['tmax', 'rhmin']].mean().reset_index()
+    return out

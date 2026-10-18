@@ -22,6 +22,7 @@ FORESTS = {'ANF', 'BDF', 'CNF', 'ENF', 'INF', 'KNF', 'LNF', 'LPF', 'MDF', 'MNF',
 NAME_IDS = {
     'jarbo gap': 41214, 'saddleback': 41304, 'pike county': 41701, 'quincy rd': 40910,
     'cashman': 40916, 'pierce': 40915, 'denten creek': 40921, 'laufman': 40709,
+    'coyote': 40917,
 }
 
 

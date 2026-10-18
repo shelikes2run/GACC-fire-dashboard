@@ -13,9 +13,30 @@ FEMS API ──► ArcGIS Notebook (scheduled 2×/day) ──► GACC Fire Wx �
                                                  Experience Builder app
 ```
 
-## 0. Before you open Experience Builder
+## 0. Set up the scheduled refresh (GitHub Actions)
 
-1. Run the notebook once by hand. Confirm the three items exist in the **GACC Fire Weather** folder.
+The refresh runs in GitHub Actions (`.github/workflows/agol-refresh.yml`) twice a day. An ArcGIS
+Notebook (`GACC_AGOL_Pipeline.ipynb`) does the same job if your role has notebook privileges.
+
+**Create the AGOL key (NIFC org):** Content → New item → Developer credentials →
+**API key credentials – Impersonates item owner**. Give it:
+- Privileges: *Create, update, and delete content* and *Publish hosted feature layers*
+  (needed for the first run, which creates the items). Nothing else.
+- Expiration: up to 1 year — set a calendar reminder to regenerate it.
+Copy the key when it's shown (it's displayed once).
+
+**Add GitHub secrets** (repo → Settings → Secrets and variables → Actions → New repository secret):
+`ARCGIS_API_KEY`, `FEMS_API_KEY`, `FEMS_USERNAME`.
+
+**First run:** Actions → *AGOL refresh* → Run workflow. Try `gacc = OSCC` first, then blank (all).
+After the first full run you can narrow the key's item access to the three GACC Fire Wx items.
+
+GitHub pauses scheduled workflows in repos with no commits for 60 days; re-enable from the
+Actions tab if that happens.
+
+## 0b. Before you open Experience Builder
+
+1. Confirm the three items exist in the **GACC Fire Weather** folder.
 2. Open **GACC Fire Wx – Map** in Map Viewer and check the PSA polygons line up and colour by alert.
    The layer list has one copy of the PSA layer per index (only *ERC alert — today* is on).
 3. Note any PSAs the log listed as *no NIFC boundary* or *no climo* — they'll be missing from the map

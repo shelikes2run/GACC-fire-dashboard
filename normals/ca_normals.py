@@ -3,13 +3,13 @@ ca_normals.py
 ─────────────
 California NFDRS normals (default 2016–2025) by RAWS station, PSA and FDRA.
 
-Station list comes from the live "CA NFDRS 3.0 (FEMS)" layer that the
+Station list comes from the live "CA NFDRS 3.0 (FEMS)" layer (California + Hawaii) that the
 Experience Builder app displays (oncc_oscc_scripting, NIFC org), so the
 normals line up 1:1 with the live values: same stations, same PSA
 assignments, same fuel model (Y).
 
 Pipeline
-  1. stations  ← CA NFDRS 3.0 RAWS layer (public REST; Hawaii excluded)
+  1. stations  ← CA NFDRS 3.0 RAWS layer (public REST; CA + HI)
   2. FDRA join ← point-in-polygon against an FDRA file you provide
                  (GeoJSON / shapefile / zipped shapefile; any CRS with a .prj)
   3. download  ← FEMS download-nfdr-daily-summary, one file per station-year,
@@ -59,7 +59,7 @@ DOY_WINDOW = 7          # ± days pooled around each day-of-year (15-day window)
 
 
 # ── 1. Stations ───────────────────────────────────────────────────────────────
-def load_ca_stations(exclude_gaccs=('ONCC_HI',)) -> pd.DataFrame:
+def load_ca_stations(exclude_gaccs=()) -> pd.DataFrame:
     url = f'{CA_NFDRS_URL}/0/query'
     params = dict(where='1=1', outFields='stationId,StationName,GACC,PSA,FuelModel,Latitude,Longitude,Unit,Agency',
                   returnGeometry='false', f='json', resultRecordCount=2000)
@@ -327,7 +327,7 @@ def write_outputs(out_dir: Path, start_year: int, end_year: int, stations, fdra_
     files = {}
     meta = {'period': f'{start_year}-{end_year}', 'generated': date.today().isoformat(),
             'source': 'FEMS download-nfdr-daily-summary, observed (NFDRType=O) daily values',
-            'stations_from': 'CA NFDRS 3.0 (FEMS) RAWS layer, Hawaii excluded',
+            'stations_from': 'CA NFDRS 3.0 (FEMS) RAWS layer (California + Hawaii)',
             'fuel_model': sorted(stations['FuelModel'].unique().tolist()),
             'aggregation': 'unit daily value = mean of reporting member stations',
             'annual_percentiles': ANNUAL_PCTS, 'doy_window_days': 2 * DOY_WINDOW + 1}

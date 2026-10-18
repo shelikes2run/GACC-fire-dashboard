@@ -162,7 +162,7 @@ def build():
     layers.append({
         'id': 'raws', 'title': 'RAWS – ERC percentile (today)', 'url': f'{CA_SVC}/0', 'itemId': CA_ITEM,
         'layerType': 'ArcGISFeatureLayer', 'visibility': True, 'opacity': 1,
-        'layerDefinition': {'definitionExpression': "GACC <> 'ONCC_HI'", 'drawingInfo': {
+        'layerDefinition': {'drawingInfo': {
             'renderer': renderer(alert_expr('ERC_Pct', 'high'), 'Station ERC alert', 'high', geom='point'),
             'labelingInfo': [{'labelExpressionInfo': {'expression': '$feature.StationName'}, 'minScale': 1500000,
                               'symbol': {'type': 'esriTS', 'color': [20, 20, 20, 255], 'haloColor': [255, 255, 255, 255],
@@ -170,7 +170,7 @@ def build():
         'showLabels': True, 'popupInfo': raws_popup()})
     layers.append({
         'id': 'gacc', 'title': 'CA GACCs', 'url': f'{CA_SVC}/2', 'itemId': CA_ITEM, 'layerType': 'ArcGISFeatureLayer',
-        'visibility': True, 'layerDefinition': {'definitionExpression': "GACCAbbreviation <> 'ONCC_HI' OR GACCAbbreviation IS NULL",
+        'visibility': True, 'layerDefinition': {
             'drawingInfo': {'renderer': {'type': 'simple', 'symbol': {
                 'type': 'esriSFS', 'style': 'esriSFSNull', 'color': [0, 0, 0, 0],
                 'outline': {'type': 'esriSLS', 'style': 'esriSLSSolid', 'color': [20, 20, 20, 255], 'width': 2}}}}},

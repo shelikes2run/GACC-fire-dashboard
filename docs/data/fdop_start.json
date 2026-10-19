@@ -2140,5 +2140,129 @@
    }
   ],
   "notes": "Thresholds are set on the KNF East dispatch-area SIG (40240, 40243), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 10 ac, multi-fire day 2+. This FDRA's own SIG (Juanita, Van Bremmer) is used for the season-tracking charts; the Workbench starts from the KNF East SIG."
+ },
+ "LNF-ALL": {
+  "source": "Lassen NF / Lassen Volcanic NP Interagency FDOP v2 (signed 2024-07-03), Tables 7, 11-14, Figure 24",
+  "stations": [
+   40703,
+   40904,
+   40730,
+   40723,
+   40609
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2010,
+   2023
+  ],
+  "breaks": {
+   "bi": [
+    9,
+    16,
+    22,
+    31
+   ],
+   "erc": [
+    16,
+    30,
+    42,
+    57
+   ],
+   "ic": [
+    12,
+    21,
+    31,
+    44
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 30,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 14)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     9,
+     16,
+     22,
+     31
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective & dispatch (BI-Y; Table 11)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     9,
+     16,
+     24,
+     31
+    ],
+    "classes": [
+     "Low · DL1",
+     "Moderate · DL2",
+     "High · DL2",
+     "Very High · DL3",
+     "Extreme · DL3"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-Y; Table 12)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     16,
+     30,
+     42,
+     57
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (IC-Y; Table 13)",
+    "idx": "ic",
+    "fm": "Y",
+    "breaks": [
+     12,
+     21,
+     31,
+     44
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "One FDRA for the Lassen NF and Lassen Volcanic NP; 5-station SIG Bogard, Chester, Gordon, Ladder Butte, Manzanita Lake (fuel model Y). Staffing BI-Y 0-9/10-16/17-22/23-31/32+ (Table 14: SL1-2 = DL1, SL3 = DL2, SL4-5 = DL3). Table 11 gives BI adjective 0-9/10-16/17-24/25-31/32+ with dispatch 1/2/2/3/3 — the BI-to-dispatch mapping differs between Tables 11 and 14. Pocket card: 2010-2023, May-Oct, large fires (30 ac+) when ERC > 48."
  }
 }

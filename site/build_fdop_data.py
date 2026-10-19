@@ -56,7 +56,9 @@ FRAP = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/Calif
 WFIGS_YTD = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Interagency_Perimeters_YearToDate/FeatureServer/0'
 
 # defaults shared with the Workbench (docs/assets/fdop.js) — keep in step
-DEFAULTS = {'months': [5, 6, 7, 8, 9, 10], 'large_fire_ac': 100, 'mfd_n': 3, 'calib': [2006, 2020],
+# Season, large-fire size and multi-fire day follow the R5 FDOP examples (Sierra South, BDF); calibration is the
+# FFP 10-year minimum on the FPA FOD record. All are editable per FDRA in the Workbench.
+DEFAULTS = {'season': ['05-01', '11-30'], 'large_fire_ac': 10, 'mfd_n': 2, 'calib': [2011, 2020],
             'veg_yellow_pct': 10, 'veg_red_pct': 20, 'complete_min': 0.8}
 
 
@@ -365,7 +367,9 @@ def scorecard(unit, members, fm, hist, fires, burned, cfg=DEFAULTS):
     d = sig_daily(hist, members, fm)
     if d.empty:
         return None
-    d = d[d.index.month.isin(cfg['months'])]
+    md = d.index.strftime('%m-%d')
+    s0, s1 = cfg['season']
+    d = d[(md >= s0) & (md <= s1)] if s0 <= s1 else d[(md >= s0) | (md <= s1)]
     ev = event_table(d.index, fires, cfg['large_fire_ac'], cfg['mfd_n'])
     d = d.join(ev)
     d['year'] = d.index.year

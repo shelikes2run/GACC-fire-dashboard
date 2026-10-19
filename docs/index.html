@@ -62,7 +62,7 @@
       l.bindPopup(`<b>Forest:</b> ${esc(p.forest)}<br><b>FDRA:</b> ${esc(p.fdra_name)} (${esc(p.fdra_id)})<br>
         <b>Fuel model:</b> ${esc(p.fuel_model || '')}<br>
         <b>SFDI fcst:</b> ${c ? `${fmt(r.next_fcst.sfdi)} – ${c.label}` : '–'}<br>
-        <a href="${link(p.fdra_id)}">Season tracking charts</a>`);
+        <a href="${link(p.fdra_id)}">Season tracking charts</a> · <a href="fdop.html?id=${encodeURIComponent(p.fdra_id)}${embed ? '&embed=1' : ''}">FDOP Workbench</a>`);
       l.on('mouseover', () => l.setStyle({ weight: 3 }));
       l.on('mouseout', () => layer.resetStyle(l));
     },

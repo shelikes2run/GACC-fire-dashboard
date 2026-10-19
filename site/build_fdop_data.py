@@ -475,6 +475,7 @@ def main(out: Path, cache: Path):
         fm = (grp.fuel_model.mode().iat[0] or 'Y')
         poly = g.loc[g.fdra_id.str.upper() == base_id(unit).upper()]
         props = poly.iloc[0].drop('geometry').to_dict() if len(poly) else {}
+        props = {k: ('' if v is None or (isinstance(v, float) and math.isnan(v)) else v) for k, v in props.items()}
         cands = []
         for s in cand.get(unit, []):
             ci = cinfo.get(unit, {}).get(s, {})
@@ -489,13 +490,13 @@ def main(out: Path, cache: Path):
         sc = scorecard(unit, members, fm, hist, by_fdra.get(props.get('fdra_id', base_id(unit)), []), burned)
         if sc:
             (out / 'scorecards').mkdir(exist_ok=True)
-            (out / 'scorecards' / f'{safe(unit)}.json').write_text(json.dumps(sc, separators=(',', ':'), default=float))
+            (out / 'scorecards' / f'{safe(unit)}.json').write_text(json.dumps(cn._clean(sc), separators=(',', ':'), default=float))
             last = sc['years'][-1] if sc['years'] else {}
             prev = next((r for r in reversed(sc['years']) if r['year'] < datetime.now(TZ).year), None)
             cards.append({'unit': unit, 'year': prev and prev['year'], 'verdict': prev and prev['verdict'],
                           'flags': prev and prev['flags'], 'current_year_flags': last.get('flags')})
     now = datetime.now(TZ)
-    (out / 'index.json').write_text(json.dumps({
+    (out / 'index.json').write_text(json.dumps(cn._clean({
         'generated': now.strftime('%Y-%m-%d %H:%M %Z'), 'history_start': f'{START_YEAR}-01-01', 'history_end': last_day,
         'fuel_models': FMS, 'scale': SCALE, 'defaults': DEFAULTS,
         'sources': {'fires': f'FPA FOD 6th ed. {START_YEAR}-{fod_max}; WFIGS incident locations {fod_max + 1}-{now.year}',
@@ -504,8 +505,8 @@ def main(out: Path, cache: Path):
         'units': units, 'scorecards': cards,
         # every RAWS with history, so a planner can add any station to an FDRA's SIG in the Workbench
         'stations': [{'sid': int(k), 'name': names.get(int(k), ''), 'lat': stn.get(int(k), {}).get('lat'),
-                      'lon': stn.get(int(k), {}).get('lon'), 'fms': v} for k, v in sorted(meta.items())]},
-        separators=(',', ':'), default=float))
+                      'lon': stn.get(int(k), {}).get('lon'), 'fms': v} for k, v in sorted(meta.items())]}),
+        separators=(',', ':'), default=float, allow_nan=False))
     log.info('FDOP data: %d units, %d stations × fuel models, %d FDRAs with fires', len(units),
              sum(len(v) for v in meta.values()), len(by_fdra))
 

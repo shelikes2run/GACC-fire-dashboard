@@ -118,6 +118,10 @@
         <div id="hchart1" class="chart sm"></div>
         <div id="hchart2" class="chart sm"></div>
         <div id="hchart3" class="chart sm"></div>
+        <h3 class="small" style="margin:14px 0 6px;text-transform:uppercase;letter-spacing:.06em">Fire size percentiles</h3>
+        <div class="table-wrap"><table class="data" id="hpct"></table></div>
+        <p class="note" id="hpctnote"></p>
+        <div id="hchart4" class="chart sm"></div>
         <div class="form-row no-print">Show fires in <select id="hyear"></select> ≥ <input type="number" id="hmin" value="10" style="width:70px"> ac</div>
         <div class="table-wrap" style="max-height:340px"><table class="data" id="htable"></table></div>
       </div>
@@ -387,12 +391,54 @@ function drawHistory() {
   PL('hchart3', [{ x: SC.map(c => c[0]), y: SC.map(c => calF.filter(f => f[1] >= c[1] && f[1] < c[2]).length / nCal), type: 'bar', name: `per year, ${cfg.calibFrom}–${cfg.calibTo}`, marker: { color: '#9aa0a6' } },
     { x: SC.map(c => c[0]), y: SC.map(c => fires.filter(f => +f[0].slice(0, 4) === sy && f[1] >= c[1] && f[1] < c[2]).length), type: 'bar', name: String(sy), marker: { color: '#e5534b' } }],
     { title: { text: 'Fire size classes (NWCG A–G)', font: { size: 14 } }, barmode: 'group', yaxis: { title: 'fires', type: 'log', gridcolor: '#43484e' } });
+  drawSizePct(fires, calF, sy);
   const hs = $('hyear'); if (!hs.options.length) { hs.innerHTML = years.slice().reverse().map(y => `<option>${y}</option>`).join(''); }
   const mn = +$('hmin').value || 0;
   const list = fires.filter(f => +f[0].slice(0, 4) === +hs.value && f[1] >= mn).sort((a, b) => b[1] - a[1]);
   $('htable').innerHTML = `<thead><tr><th class="l">Date</th><th class="l">Name</th><th>Acres</th><th>Cause</th><th>Source</th></tr></thead><tbody>${list.map(f =>
     `<tr><td class="l">${f[0]}</td><td class="l">${esc(f[4] || '')}</td><td>${Math.round(f[1]).toLocaleString()}</td><td>${{ H: 'Human', N: 'Lightning', U: '–' }[f[2]]}</td><td>${f[3]}</td></tr>`).join('') ||
     '<tr><td colspan="5" class="muted">No fires that size this year.</td></tr>'}</tbody>`;
+}
+
+// Fire size percentiles: the usual way an FDOP sets its "large fire" size (e.g. the 90th or 95th
+// percentile fire). Rows: all years, calibration years, the chosen year, and by cause.
+const SIZE_P = [50, 75, 80, 90, 95, 97, 99];
+function drawSizePct(fires, calF, sy) {
+  const cfg = W.cfg, srt = a => a.map(f => f[1]).filter(v => v > 0).sort((x, y) => x - y);
+  const fmtAc = v => v === null ? '–' : v < 1 ? v.toFixed(2) : v < 10 ? v.toFixed(1) : Math.round(v).toLocaleString();
+  const yr = fires.filter(f => +f[0].slice(0, 4) === sy);
+  const all = fires.map(f => +f[0].slice(0, 4));
+  const groups = [
+    [`All years ${Math.min(...all)}–${Math.max(...all)}`, fires, true],
+    [`Calibration ${cfg.calibFrom}–${cfg.calibTo}`, calF, true],
+    [String(sy), yr, false],
+    ['Human-caused (all years)', fires.filter(f => f[2] === 'H'), false],
+    ['Lightning (all years)', fires.filter(f => f[2] === 'N'), false],
+  ];
+  const rows = groups.map(([name, arr, pick]) => {
+    const s = srt(arr);
+    const cells = SIZE_P.map(p => {
+      const v = s.length >= 5 ? pctile(s, p) : null;
+      const use = pick && v !== null ? ` <button class="mini no-print" data-ac="${Math.max(1, Math.round(v))}" title="Use as the large fire size">use</button>` : '';
+      return `<td>${fmtAc(v)}${use}</td>`;
+    }).join('');
+    const rk = s.length ? rankPct(s, cfg.large - 1e-9) : null;
+    return `<tr><td class="l">${esc(name)}</td><td>${s.length.toLocaleString()}</td>${cells}<td>${rk === null ? '–' : ord(rk)}</td><td>${fmtAc(s.length ? s[s.length - 1] : null)}</td></tr>`;
+  }).join('');
+  $('hpct').innerHTML = `<thead><tr><th class="l">Fires</th><th>n</th>${SIZE_P.map(p => `<th>${ord(p)}</th>`).join('')}<th>${cfg.large} ac is the</th><th>Largest</th></tr></thead><tbody>${rows}</tbody>`;
+  $('hpct').querySelectorAll('button[data-ac]').forEach(b => b.onclick = () => { $('large').value = b.dataset.ac; run(); });
+  const cs = srt(calF);
+  $('hpctnote').innerHTML = `Fire size (acres) at each percentile of all fires in the FDRA (FPA FOD through 2020, WFIGS after). ` +
+    `The current large fire size, <b>${cfg.large} ac</b>, is the <b>${cs.length ? ord(rankPct(cs, cfg.large - 1e-9)) : '–'}</b> percentile fire in the calibration years — ` +
+    `${cs.length ? `${cs.filter(v => v >= cfg.large).length.toLocaleString()} of ${cs.length.toLocaleString()} fires reached it` : 'no fires'}. ` +
+    `FDOPs commonly set the large fire size near the 90th–95th percentile; press <b>use</b> to try a value (the validation and decision points recompute). ` +
+    `Too few large fires (fewer than ~2 a year) makes the large-fire-day statistics unstable.`;
+  // percentile curve (log acres): calibration vs chosen year
+  const curve = (s, name, color, dash) => ({ x: s.map((_, i) => 100 * (i + 0.5) / s.length), y: s, name, mode: 'lines', line: { color, dash, width: 2 } });
+  PL('hchart4', [curve(cs, `calibration ${cfg.calibFrom}–${cfg.calibTo}`, '#9aa0a6'), curve(srt(yr), String(sy), '#e5534b'),
+    { x: [0, 100], y: [cfg.large, cfg.large], name: `large fire ${cfg.large} ac`, mode: 'lines', line: { color: '#ffd27f', dash: 'dot' } }],
+    { title: { text: 'Fire size by percentile', font: { size: 14 } }, xaxis: { title: 'percentile of fires', range: [0, 100], gridcolor: '#43484e' },
+      yaxis: { title: 'acres', type: 'log', gridcolor: '#43484e' } });
 }
 
 function writeAbout() {

@@ -214,9 +214,10 @@ def fod_fires(cache: Path) -> pd.DataFrame:
     gdb = next(p for p in d.rglob('*.gdb') if p.is_dir())
     lyr = next(l[0] for l in pyogrio.list_layers(gdb) if l[0].lower() == 'fires')
     df = pyogrio.read_dataframe(gdb, layer=lyr, read_geometry=False,
-                                where=f"STATE='CA' AND FIRE_YEAR>={START_YEAR}",
                                 columns=['FOD_ID', 'FIRE_YEAR', 'DISCOVERY_DATE', 'FIRE_SIZE', 'NWCG_CAUSE_CLASSIFICATION',
-                                         'NWCG_GENERAL_CAUSE', 'LATITUDE', 'LONGITUDE', 'NWCG_REPORTING_AGENCY', 'FIRE_NAME'])
+                                         'NWCG_GENERAL_CAUSE', 'LATITUDE', 'LONGITUDE', 'NWCG_REPORTING_AGENCY', 'FIRE_NAME', 'STATE'])
+    log.info('FPA FOD read: %d fires nationally', len(df))
+    df = df[(df['STATE'].astype(str).str.strip() == 'CA') & (pd.to_numeric(df['FIRE_YEAR']) >= START_YEAR)]
     out = pd.DataFrame({'date': pd.to_datetime(df['DISCOVERY_DATE']).dt.normalize(), 'acres': pd.to_numeric(df['FIRE_SIZE']),
                         'cause': df['NWCG_CAUSE_CLASSIFICATION'].map({'Human': 'H', 'Natural': 'N'}).fillna('U'),
                         'lat': df['LATITUDE'], 'lon': df['LONGITUDE'], 'agency': df['NWCG_REPORTING_AGENCY'],

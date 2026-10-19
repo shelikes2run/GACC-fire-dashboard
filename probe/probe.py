@@ -1,26 +1,31 @@
-import requests, json
+import requests, json, io, zipfile
 out = {}
-def q(name, url, params):
+def q(name, url, params, n=2500):
     try:
-        r = requests.get(url, params=params, timeout=90)
-        out[name] = r.text[:3000]
+        r = requests.get(url, params=params, timeout=120); out[name] = r.text[:n]
     except Exception as e:
         out[name] = 'ERR ' + str(e)
-FOD = 'https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_FireOccurrence6thEdition_01/MapServer'
-q('fod_svc', FOD, {'f': 'json'})
-q('fod_l0', FOD + '/0', {'f': 'json'})
-q('fod_l0_q', FOD + '/0/query', {'where': "STATE='CA'", 'returnCountOnly': 'true', 'f': 'json'})
-q('fod_l0_sample', FOD + '/0/query', {'where': "STATE='CA'", 'outFields': '*', 'resultRecordCount': 2, 'returnGeometry': 'true', 'outSR': 4326, 'f': 'json'})
-W = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0'
-q('wfigs', W, {'f': 'json'})
-q('wfigs_cnt', W + '/query', {'where': "POOState='US-CA' AND FireDiscoveryDateTime >= DATE '2023-01-01' AND FireDiscoveryDateTime < DATE '2024-01-01'", 'returnCountOnly': 'true', 'f': 'json'})
-q('wfigs_s', W + '/query', {'where': "POOState='US-CA'", 'outFields': 'IncidentName,FireDiscoveryDateTime,IncidentSize,FireCause,IncidentTypeCategory,POOProtectingAgency,FinalAcres,DiscoveryAcres', 'resultRecordCount': 2, 'f': 'json'})
+C = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/California_Historic_Fire_Perimeters/FeatureServer'
+q('cal_svc', C, {'f': 'json'}, 1500)
+q('cal_l0_fields', C + '/0', {'f': 'json'}, 6000)
+q('cal_cnt2020', C + '/0/query', {'where': 'YEAR_=2020', 'returnCountOnly': 'true', 'f': 'json'})
 P = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/InterAgencyFirePerimeterHistory_All_Years_View/FeatureServer/0'
-q('perim', P, {'f': 'json'})
-q('perim_cnt', P + '/query', {'where': "FIRE_YEAR_INT=2020", 'geometry': '-124.5,32.5,-114,42', 'geometryType': 'esriGeometryEnvelope', 'inSR': 4326, 'returnCountOnly': 'true', 'f': 'json'})
-F = 'https://fems.fs2c.usda.gov/api/ext-climatology/download-nfdr-daily-summary/'
-r = requests.get(F, params=dict(dataset='observation', startDate='2006-01-01', endDate='2006-12-31', dataFormat='csv', stationIds='40910,40916,45438', fuelModels='Y'), timeout=120)
-out['fems2006'] = f'{r.status_code} lines={len(r.text.splitlines())} {r.text[:300]}'
-r = requests.get(F, params=dict(dataset='observation', startDate='2000-01-01', endDate='2000-12-31', dataFormat='csv', stationIds='40910', fuelModels='Y'), timeout=120)
-out['fems2000'] = f'{r.status_code} lines={len(r.text.splitlines())}'
+r = requests.get(P, params={'f': 'json'}, timeout=60).json()
+out['perim_fields'] = ','.join(f['name'] for f in r.get('fields', []))
+W = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0'
+r = requests.get(W, params={'f': 'json'}, timeout=60).json()
+out['wfigs_fields'] = ','.join(f['name'] for f in r.get('fields', []))
+q('wfigs_minyear', W + '/query', {'where': "POOState='US-CA' AND IncidentTypeCategory='WF'", 'outStatistics': json.dumps([{'statisticType': 'min', 'onStatisticField': 'FireDiscoveryDateTime', 'outStatisticFieldName': 'mn'}, {'statisticType': 'count', 'onStatisticField': 'OBJECTID', 'outStatisticFieldName': 'n'}]), 'f': 'json'})
+for y in (2016, 2019, 2021, 2024):
+    q(f'wfigs_wf_{y}', W + '/query', {'where': f"POOState='US-CA' AND IncidentTypeCategory='WF' AND FireDiscoveryDateTime >= DATE '{y}-01-01' AND FireDiscoveryDateTime < DATE '{y+1}-01-01'", 'returnCountOnly': 'true', 'f': 'json'})
+# FPA FOD 6th edition (RDS-2013-0009.6)
+for u in ['https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.6/RDS-2013-0009.6_Data_Format2_GDB.zip',
+          'https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.6/RDS-2013-0009.6_Data_Format1_SQLITE.zip',
+          'https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.6/RDS-2013-0009.6_Data_Format3_CSV.zip',
+          'https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0009.6']:
+    try:
+        h = requests.head(u, timeout=60, allow_redirects=True)
+        out['fod ' + u.rsplit('/', 1)[-1]] = f"{h.status_code} {h.headers.get('content-length')} {h.headers.get('content-type')}"
+    except Exception as e:
+        out['fod ' + u] = 'ERR ' + str(e)
 json.dump(out, open('probe_out.json', 'w'), indent=1)

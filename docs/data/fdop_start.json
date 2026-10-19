@@ -3422,5 +3422,330 @@
    }
   ],
   "notes": "SIG Round Mountain, Ash Creek (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SRF-110": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40102,
+   40105,
+   40101
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    6,
+    14,
+    30,
+    33
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (SRNRA; BI-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     6,
+     14,
+     30,
+     33
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (SRNRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     14,
+     22
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "FDRA SRNRA; SIG Gasquet 2, Ship Mtn, Camp Six (33% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. Dispatch from 2005-2022 fire history vs BI."
+ },
+ "SRF-112-115": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40404,
+   40430,
+   40408,
+   40519
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    6,
+    14,
+    29,
+    32
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (ORD-HIA-LTRD; BI-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     6,
+     14,
+     29,
+     32
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (ORD-HIA-LTRD; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     11,
+     21
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "FDRA ORD-HIA-LTRD; SIG Brush Mtn, Slate Creek, Hoopa, Underwood (25% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. Dispatch from 2005-2022 fire history vs BI."
+ },
+ "SRF-130": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40507,
+   40508
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    5,
+    11,
+    23,
+    25
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (MR; BI-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     5,
+     11,
+     23,
+     25
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (MR; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     19
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "FDRA MR; SIG Mad River, Ruth (50% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. Dispatch from 2005-2022 fire history vs BI."
+ },
+ "SRF-201": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40231,
+   40246
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7,
+    15,
+    31,
+    33
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (Ukonom; BI-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7,
+     15,
+     31,
+     33
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (Ukonom; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     15,
+     24
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "FDRA Ukonom; SIG Somes Bar, Dutch Indy (KNF) (50% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. Dispatch from 2005-2022 fire history vs BI."
+ },
+ "SRF-RWP": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40102,
+   40425
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2015,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    14,
+    24,
+    35,
+    40
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (RWP (Redwood NP); ERC-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     14,
+     24,
+     35,
+     40
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   }
+  ],
+  "large": 5,
+  "notes": "FDRA RWP (Redwood NP); SIG Gasquet 2, Schoolhouse (50% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. RWP uses ERC and has no dispatch levels; large fire 5 ac (only 3 large-fire days 2015-2024)."
  }
 }

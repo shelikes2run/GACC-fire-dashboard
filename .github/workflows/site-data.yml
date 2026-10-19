@@ -49,7 +49,7 @@ jobs:
           key: fems-raw-2016-2025-v1
 
       - name: Normals (2016-2025)
-        if: ${{ inputs.rebuild_normals || hashFiles('out/normals/fdras.json') == '' }}
+        if: ${{ inputs.rebuild_normals || github.event_name == 'push' || hashFiles('out/normals/fdras.json') == '' }}
         run: python src/site/build_site_data.py normals out fems_raw
 
       - name: Current year + PAL + index

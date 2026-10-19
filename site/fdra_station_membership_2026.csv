@@ -28,20 +28,6 @@ BDF-692,,45133,Y
 BDF-694,,45102,X
 BDF-694,,45114,X
 BDF-694,,45111,X
-CNF-Inland,,45704,X
-CNF-Inland,,45710,X
-CNF-Inland,,45729,X
-CNF-Inland,,45734,X
-CNF-Inland,,45744,X
-CNF-Inland,,45745,X
-CNF-Mountain,,45619,X
-CNF-Mountain,,45635,X
-CNF-Mountain,,45636,X
-CNF-Mountain,,45707,X
-CNF-Mountain,,45708,X
-CNF-Mountain,,45709,X
-CNF-Mountain,,45711,X
-CNF-Mountain,,45740,X
 ENF-335,peak,42601,Y
 ENF-335,peak,42603,Y
 ENF-335,peak,42608,Y
@@ -52,8 +38,6 @@ ENF-335,non-peak,42603,Y
 ENF-335,non-peak,42608,Y
 ENF-335,non-peak,42611,Y
 ENF-335,non-peak,42615,Y
-ENF-PENDING-HIGH-ELEV,,42603,Y
-ENF-PENDING-HIGH-ELEV,,42604,Y
 INF-460,,43711,Y
 INF-460,,44709,Y
 INF-460,,43710,Y
@@ -87,8 +71,6 @@ LPF-507,,44302,X
 LPF-512,,45220,X
 LPF-514,,45218,X
 LPF-514,,45221,X
-LPF-514IS,,45216,X
-LPF-514IS,,45217,X
 LPF-560,,44301,X
 LPF-560,,44317,X
 LPF-585,,45201,X
@@ -171,7 +153,6 @@ SRF-RWP,,40102,Y
 SRF-RWP,,40425,Y
 STF-348,,44115,Y
 STF-348,,43605,Y
-STF-360,,43210,Y
 STF-370,,43615,Y
 SQF-438,,44701,X
 SQF-438,,44719,X
@@ -204,3 +185,182 @@ SNF-529,,44505,Y
 SNF-exempt,,44110,Y
 ENF-330,,41908,Y
 ENF-340,,42603,Y
+AEU-Central,,42615,Y
+AEU-East,,42616,Y
+AEU-El Dorado,,42615,Y
+AEU-Unit-wide,,42616,Y
+AEU-West,,41907,Y
+BDU-Desert,,45112,Y
+BDU-Desert,,45127,Y
+BDU-Desert,,45134,Y
+BDU-Mountain,,45109,Y
+BDU-Owens Valley,,43708,Y
+BDU-Owens Valley,,44803,Y
+BDU-Unit-wide,,45128,Y
+BDU-Unit-wide,,45129,Y
+BDU-Valley,,45113,Y
+BEU-FDRA South BEU,,44310,Y
+BEU-FDRA South BEU,,44317,Y
+BEU-Fdra North Beu,,44409,Y
+BEU-Fdra North Beu,,44410,Y
+BEU-Fdra West Beu,,44302,Y
+BLM-Ca Nod,,40308,Y
+BTU-BTU Unit,,41214,Y
+BTU-Brush,,41201,Y
+BTU-Brush,,41211,Y
+BTU-Brush,,41214,Y
+BTU-Grass,,41211,Y
+BTU-Timber,,41213,Y
+CZU-Bayside,,43309,Y
+CZU-Coast,,43802,Y
+CZU-Inland,,43304,Y
+CZU-Inland,,43809,Y
+FKU-Auberry Dunlap,,44516,Y
+FKU-Great_Valley,,44516,Y
+FKU-Owens Valley,,44719,Y
+FKU-Shaver Kings,,44508,Y
+FKU-Westdie,,44310,Y
+HUU-Alder Point,,40429,Y
+HUU-Coastal Strip,,40427,Y
+HUU-Eel River,,40421,Y
+HUU-Unit-wide,,40408,Y
+KRN-Kern County,,45017,Y
+KRN-Kern County,,44904,Y
+LAC-La County,,45412,Y
+LAC-La County,,45433,Y
+LAC-La County,,45443,Y
+LAC-La County,,45452,Y
+LAC-La County,,45438,Y
+LAC-La County,,45440,Y
+LAC-La County,,45444,Y
+LAC-La County,,45437,Y
+LAC-Unit-wide,,45433,Y
+LMU-Lassen Nf,,40719,Y
+LMU-Lassen Nf,,40904,Y
+LMU-Lmu Unit,,40308,Y
+LMU-Lmu Unit,,40724,Y
+LMU-Lmu Unit,,40725,Y
+LMU-Lmu Unit,,40728,Y
+LMU-Lmunw,,40312,Y
+LMU-Lmuse,,40714,Y
+LMU-Lmuse,,40727,Y
+LMU-Lmusw,,40904,Y
+LMU-Local,,40309,Y
+LMU-Unit-wide,,40904,Y
+LNU-Central,,41411,Y
+LNU-Central,,42108,Y
+LNU-East Side,,41410,Y
+LNU-East Side,,42202,Y
+LNU-Mayacamas,,42010,Y
+LNU-Mnf,,41406,Y
+LNU-Southend,,43008,Y
+LNU-Unit-wide,,42310,Y
+LNU-West Side,,42310,Y
+LOCAL-Local,,40314,Y
+LOCAL-Unit-wide,,45745,Y
+MEU-Coastal,,41001,Y
+MEU-East,,41005,Y
+MEU-East,,41015,Y
+MEU-North,,41015,Y
+MEU-South,,41001,Y
+MMU-7,,44004,Y
+MMU-Catheys Valley,,44114,Y
+MMU-Los Banos,,44004,Y
+MMU-Mariposa,,44106,Y
+MMU-Metcalf,,44110,Y
+MMU-Owens Valley,,44102,Y
+MMU-Owens Valley,,44112,Y
+MMU-Owens Valley,,44109,Y
+MMU-Owens Valley,,43612,Y
+MRN-Hicks Valley,,42308,Y
+MRN-Marin City,,42312,Y
+MRN-Point Reyes,,42308,Y
+MRN-Throckmorton,,42312,Y
+MRN-Tomales,,42308,Y
+MRN-Unit-wide,,42310,Y
+MRN-Woodacre,,42308,Y
+MRN-Woodacre,,42309,Y
+MVU-Unit-wide,,45801,Y
+NEU-Central,,41806,Y
+NEU-Eastern,,260117,Y
+NEU-Foothill,,41701,Y
+NEU-Fra,,41201,Y
+NEU-Local,,41909,Y
+NEU-Lra West,,41201,Y
+NEU-Placer,,41907,Y
+NEU-Plumas,,41302,Y
+NEU-Western,,41907,Y
+NPS-Ca Bnp,,40233,Y
+ORC-Orange County Coastal,,45636,Y
+ORC-Orange County Inland,,45636,Y
+RRU-East,,45112,Y
+RRU-Orange County Inland,,45636,Y
+RRU-West,,45620,Y
+RRU-West,,45616,Y
+RRU-West,,45603,Y
+SBC-166,,44901,Y
+SBC-Central Coast,,45220,Y
+SBC-Channel Isalnds,,45216,Y
+SBC-Channel Isalnds,,45217,Y
+SBC-Coastal,,45220,Y
+SBC-Cuyama Valley,,45303,Y
+SBC-Mountain,,45201,Y
+SBC-North,,45221,Y
+SBC-Santa Ynez Valley,,45201,Y
+SBC-South Coast,,45221,Y
+SCU-2,,43304,Y
+SCU-5,,43404,Y
+SCU-6,,43009,Y
+SCU-6,,43402,Y
+SCU-6,,43403,Y
+SCU-6,,43011,Y
+SCU-7,,43008,Y
+SCU-7,,43013,Y
+SCU-7,,43407,Y
+SCU-7,,43502,Y
+SDU-Desert,,45709,Y
+SDU-Inland,,45734,Y
+SDU-Mountain,,45708,Y
+SDU-Mountain,,45729,Y
+SHU-1,,40503,Y
+SHU-2,,40615,Y
+SHU-3,,40611,Y
+SHU-4,,40615,Y
+SHU-5,,40630,Y
+SKU-Unit-wide,,40217,Y
+SKU-Unit-wide,,40239,Y
+SKU-Unit-wide,,40228,Y
+SKU-Unit-wide,,40242,Y
+SLU-166,,44901,Y
+SLU-Coastal,,44915,Y
+SLU-Coastal Valley,,44915,Y
+SLU-Inland Grass,,44914,Y
+SLU-Inland Grass,,44916,Y
+SLU-Slo,,44901,Y
+SRF-Ltrd,,40519,Y
+SRF-Mr,,40508,Y
+SRF-Or,,40430,Y
+SRF-Srnra,,40102,Y
+TCU-Fothills West,,43613,Y
+TCU-Sierra,,43605,Y
+TCU-Sierra South,,43605,Y
+TCU-West,,43613,Y
+TGU-1,,41213,Y
+TGU-2,,40814,Y
+TGU-3,,40802,Y
+TGU-3,,40816,Y
+TUU-1,,44733,Y
+TUU-Bia,,44717,Y
+TUU-Fed,,44713,Y
+TUU-Fed,,44701,Y
+TUU-Fed,,44732,Y
+TUU-Lra,,44733,Y
+UFW-Ca Lkr,,40233,Y
+UFW-Ca Mdr,,40309,Y
+UFW-Ca Tkr,,40233,Y
+UFW-Ufw-Lkr,,40302,Y
+USF-Ca Mdf,,40312,Y
+VNC-Central,,45308,Y
+VNC-Central,,45307,Y
+VNC-South,,45313,Y
+VNC-Unit-wide,,45216,Y

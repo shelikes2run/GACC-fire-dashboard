@@ -57,8 +57,8 @@ WFIGS_YTD = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/
 
 # defaults shared with the Workbench (docs/assets/fdop.js) — keep in step
 # Season, large-fire size and multi-fire day follow the R5 FDOP examples (Sierra South, BDF); calibration is the
-# FFP 10-year minimum on the FPA FOD record. All are editable per FDRA in the Workbench.
-DEFAULTS = {'season': ['05-01', '11-30'], 'large_fire_ac': 10, 'mfd_n': 2, 'calib': [2011, 2020],
+# FFP 10-year minimum (here 15 years, all fires: FPA FOD through 2020, WFIGS after). All are editable per FDRA in the Workbench.
+DEFAULTS = {'season': ['05-01', '11-30'], 'large_fire_ac': 10, 'mfd_n': 2, 'calib': [2011, 2025],
             'veg_yellow_pct': 10, 'veg_red_pct': 20, 'complete_min': 0.8}
 
 
@@ -235,10 +235,12 @@ def wfigs_fires(first_year: int) -> pd.DataFrame:
         feats = arcgis_query(WFIGS, f"POOState='US-CA' AND IncidentTypeCategory='WF' AND FireDiscoveryDateTime >= DATE '{y}-01-01' "
                                     f"AND FireDiscoveryDateTime < DATE '{y + 1}-01-01'",
                              fields='UniqueFireIdentifier,FireDiscoveryDateTime,IncidentSize,FinalAcres,DiscoveryAcres,FireCause,'
-                                    'POOProtectingAgency,IncidentName,IsCpxChild', page=2000)
+                                    'POOProtectingAgency,IncidentName,IsCpxChild,CpxID,IrwinID', page=2000)
+        # every fire counts: keep complex members, drop only the complex "parent" record (it duplicates them)
+        parents = {str(f['properties'].get('CpxID')).upper() for f in feats if f['properties'].get('CpxID')}
         for f in feats:
             p, gm = f['properties'], f.get('geometry')
-            if not gm or p.get('IsCpxChild') in (1, '1', True):
+            if not gm or (str(p.get('IrwinID')).upper() in parents and p.get('IsCpxChild') not in (1, '1', True)):
                 continue
             ac = next((p[k] for k in ('FinalAcres', 'IncidentSize', 'DiscoveryAcres') if p.get(k) not in (None, '')), 0)
             rows.append({'uid': p.get('UniqueFireIdentifier'), 'date': pd.to_datetime(p['FireDiscoveryDateTime'], unit='ms', utc=True)
@@ -281,8 +283,10 @@ def burned_by_year(g) -> tuple[dict, int]:
                      for f in yt if f.get('geometry')]
         except Exception as e:
             log.warning('WFIGS YTD perimeters: %s', e)
-    p = gpd.GeoDataFrame(rows, crs=4326).to_crs(3310)
-    p['geometry'] = p.geometry.make_valid().buffer(0)
+    p = gpd.GeoDataFrame(rows, crs=4326)
+    p = p[p.geom_type.isin(['Polygon', 'MultiPolygon'])].to_crs(3310)
+    p['geometry'] = p.geometry.buffer(0)
+    p = p[~p.geometry.is_empty]
     out = {}
     for _, r in g.iterrows():
         area = r.geometry.area

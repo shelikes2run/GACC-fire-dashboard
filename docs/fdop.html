@@ -92,6 +92,12 @@
       </div>
       <div class="tabpane" id="t-dp" style="display:none">
         <h2>Decision points</h2>
+        <h3 class="small" style="text-transform:uppercase;letter-spacing:.06em;margin:4px 0 6px">Breakpoint options from the data</h3>
+        <div id="opt-summary" class="small" style="margin-bottom:6px"></div>
+        <div class="table-wrap"><table class="data" id="opttable"></table></div>
+        <div id="optchart" class="chart sm"></div>
+        <p class="note" id="opt-note"></p>
+        <h3 class="small" style="text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px">Current breakpoints</h3>
         <div id="dp-warn"></div>
         <div class="table-wrap"><table class="data" id="dptable"></table></div>
         <div id="dpffp" class="chart"></div>
@@ -234,6 +240,8 @@ function drawDP() {
   const breaks = $('breaks').value.split(',').map(parseFloat).filter(v => !isNaN(v)).sort((a, b) => a - b);
   if (!breaks.length) return;
   const t = classTable(cal, k, breaks, W.sorted);
+  if (!W.optSkip) drawOptions(cal, k, breaks);   // an option just applied keeps the table as it was
+  W.optSkip = false;
   $('dp-warn').innerHTML = (!t.monoFD || !t.monoLFD) ? `<div class="warn">Probability does not rise with every class
     (${[!t.monoFD && 'fire day', !t.monoLFD && 'large fire day'].filter(Boolean).join(', ')}). Consider merging or moving breakpoints.</div>` : '';
   const q90 = pctile(W.sorted, 90), q97 = pctile(W.sorted, 97);
@@ -257,6 +265,113 @@ function drawDP() {
     (sheet ? `The 2026 sheet's ${IDX_LABEL[k]} class tops are <b>${sheet.join(', ')}</b> — <a href="#" id="use-sheet">use them</a>. ` : '') +
     'A good class set has probabilities that climb class to class and puts most large fire days in the top one or two classes.';
   const us = $('use-sheet'); if (us) us.onclick = ev => { ev.preventDefault(); $('breaks').value = sheet.join(','); drawDP(); };
+}
+
+// ── breakpoint options ─────────────────────────────────────────────────────────
+function rnd(v) { return v === null || isNaN(v) ? null : Math.abs(v) >= 10 ? Math.round(v) : Math.round(v * 10) / 10; }
+function evalBreaks(cal, k, b) {
+  const t = classTable(cal, k, b, W.sorted), C = t.classes;
+  const tot = C.reduce((s, o) => s + o.days, 0), F = C.reduce((s, o) => s + o.fd, 0), L = C.reduce((s, o) => s + o.lfd, 0);
+  const bern = (e, n) => (e ? e * Math.log(e / n) : 0) + (n - e ? (n - e) * Math.log(1 - e / n) : 0);
+  const ll = key => C.reduce((s, o) => s + (o.days ? bern(o[key], o.days) : 0), 0);
+  const r2fd = F && F < tot ? 1 - ll('fd') / bern(F, tot) : null, r2l = L && L < tot ? 1 - ll('lfd') / bern(L, tot) : null;
+  const top2 = C.slice(-2), last = C[C.length - 1], nY = W.cfg.calibTo - W.cfg.calibFrom + 1;
+  return { t, r2fd, r2l, capL: L ? top2.reduce((s, o) => s + o.lfd, 0) / L : null, shareTop2: tot ? top2.reduce((s, o) => s + o.days, 0) / tot : null,
+    dpyTop2: top2.reduce((s, o) => s + o.days, 0) / nY, dpyTop: last.days / nY,
+    lift: L && last.days ? (last.lfd / last.days) / (L / tot) : null, empty: C.filter(o => !o.days).length, thin: C.filter(o => o.days && o.days < 0.02 * tot).length };
+}
+// supervised breakpoints: the class set (on calibration percentile values) that best separates fire days and
+// large fire days (Bernoulli log-likelihood of each, scaled by its no-class baseline), every class ≥ minShare of
+// days and probabilities that never fall from one class to the next
+function optimalBreaks(cal, k, nb, minShare = 0.03) {
+  const edges = [...new Set(Array.from({ length: 99 }, (_, i) => rnd(pctile(W.sorted, i + 1))))].filter(v => v !== null).sort((a, b) => a - b);
+  const m = edges.length + 1, n = Array(m).fill(0), f = Array(m).fill(0), l = Array(m).fill(0);
+  for (const r of cal) { const v = r[k]; if (v === null) continue; let i = edges.findIndex(b => v <= b); if (i < 0) i = edges.length; n[i]++; f[i] += r.fd; l[i] += r.lfd; }
+  const cs = a => a.reduce((o, v) => (o.push(o[o.length - 1] + v), o), [0]);
+  const N = cs(n), Fc = cs(f), Lc = cs(l), tot = N[m], minN = Math.max(1, minShare * tot);
+  const bern = (e, t) => (e ? e * Math.log(e / t) : 0) + (t - e ? (t - e) * Math.log(1 - e / t) : 0);
+  const z0f = Math.abs(bern(Fc[m], tot)) || 1, z0l = Math.abs(bern(Lc[m], tot)) || 1;
+  const seg = (a, b) => { const t = N[b] - N[a]; return t < minN ? null : { sc: bern(Fc[b] - Fc[a], t) / z0f + bern(Lc[b] - Lc[a], t) / z0l, pf: (Fc[b] - Fc[a]) / t, pl: (Lc[b] - Lc[a]) / t }; };
+  const K = nb + 1, best = Array.from({ length: K + 1 }, () => Array(m + 1).fill(null));
+  best[0][0] = { sc: 0, pf: -1, pl: -1, cuts: [] };
+  for (let j = 1; j <= K; j++) for (let b = 1; b <= m; b++) for (let a = j - 1; a < b; a++) {
+    const p = best[j - 1][a]; if (!p) continue; const s2 = seg(a, b); if (!s2) continue;
+    if (s2.pf < p.pf - 1e-9 || s2.pl < p.pl - 1e-9) continue;          // keep probabilities rising
+    const sc = p.sc + s2.sc;
+    if (!best[j][b] || sc > best[j][b].sc) best[j][b] = { sc, pf: s2.pf, pl: s2.pl, cuts: a ? [...p.cuts, a] : p.cuts };
+  }
+  const fin = best[K][m];
+  return fin && fin.cuts.length === nb ? fin.cuts.map(c => edges[c - 1]) : null;
+}
+function probBreaks(cal, k, nb, key) {
+  const s = logistic(cal.map(r => r[k]), cal.map(r => r[key])); if (!s || !(s.b1 > 0)) return null;
+  const P = x => 1 / (1 + Math.exp(-(s.b0 + s.b1 * x))), lo = P(pctile(W.sorted, 1)), hi = P(pctile(W.sorted, 99));
+  const out = Array.from({ length: nb }, (_, i) => { const p = lo + (hi - lo) * (i + 1) / (nb + 1); return (Math.log(p / (1 - p)) - s.b0) / s.b1; });
+  return out.map(rnd);
+}
+function breakOptions(cal, k, cur) {
+  const nb = cur.length, P = p => rnd(pctile(W.sorted, p));
+  const STD = [15, 35, 60, 80, 90, 97], std = STD.slice(-nb);
+  const eq = Array.from({ length: nb }, (_, i) => Math.round(100 * (i + 1) / (nb + 1)));
+  const ups = $('bp-pcts').value.split(',').map(Number).filter(v => !isNaN(v));
+  const opts = [
+    { key: 'cur', name: W.S0 ? 'Current FDOP' : 'Current', why: 'The breakpoints in the setup box now.', b: cur },
+    { key: 'std', name: `Climatology ${std.join('/')}`, why: 'Standard percentile classes — the top two classes are the 90th and 97th percentile days.', b: std.map(P) },
+  ];
+  if (ups.length === nb && ups.join() !== std.join()) opts.push({ key: 'ups', name: `Percentiles ${ups.join('/')}`, why: 'Your percentile set (From percentiles box).', b: ups.map(P) });
+  opts.push({ key: 'eq', name: 'Equal days', why: `Each class holds about ${Math.round(100 / (nb + 1))}% of days — easy to explain, but the top class is common.`, b: eq.map(P) });
+  const pf = probBreaks(cal, k, nb, 'fd'); if (pf) opts.push({ key: 'pfd', name: 'Equal fire-day probability steps', why: 'FireFamily Plus approach: logistic model of fire days, breakpoints at even steps of predicted probability (1st–99th percentile range).', b: pf });
+  const pl = probBreaks(cal, k, nb, 'lfd'); if (pl) opts.push({ key: 'plfd', name: 'Equal large-fire probability steps', why: 'Same, on the large fire day model — puts the breaks where large-fire risk climbs.', b: pl });
+  const op = optimalBreaks(cal, k, nb); if (op) opts.push({ key: 'opt', name: 'Optimized for fire + large fire days', why: 'Best separation of fire days and large fire days with every class ≥ 3% of days and probabilities rising class to class.', b: op });
+  const capped = cur.map(v => v);
+  const hiN = cur.filter(v => rankPct(W.sorted, v) >= 99.5).length;
+  if (hiN && nb >= 2) {
+    const q = [P(90), P(97)];
+    for (let i = 0; i < Math.min(hiN, 2); i++) capped[nb - 1 - i] = Math.min(capped[nb - 1 - i], q[1 - i]);
+    for (let i = 1; i < nb; i++) if (capped[i] <= capped[i - 1]) capped[i] = rnd(capped[i - 1] + 1);
+    opts.push({ key: 'cap', name: 'Current, unreachable breaks pulled to 90th/97th', why: `${hiN} current breakpoint(s) sit above the 99.5th percentile of calibration days, so those classes almost never occur.`, b: capped });
+  }
+  opts.forEach(o => { o.b = o.b.filter(v => v !== null).sort((x, y) => x - y); o.ev = o.b.length === nb ? evalBreaks(cal, k, o.b) : null; });
+  return opts.filter(o => o.ev);
+}
+function drawOptions(cal, k, cur) {
+  const opts = breakOptions(cal, k, cur); W.opts = opts;
+  const ok = o => o.ev.t.monoFD && o.ev.t.monoLFD && !o.ev.empty;
+  const score = o => (o.ev.r2l ?? 0) + (o.ev.r2fd ?? 0);
+  const ranked = opts.filter(ok).sort((a, b) => score(b) - score(a));
+  const bestO = ranked[0], curO = opts[0];
+  const pr = o => o.ev.t.classes.map(c => c.pFD === null ? '–' : Math.round(100 * c.pFD)).join(' · ');
+  const pl = o => o.ev.t.classes.map(c => c.pLFD === null ? '–' : (100 * c.pLFD).toFixed(c.pLFD < 0.1 ? 1 : 0)).join(' · ');
+  $('opttable').innerHTML = `<thead><tr><th class="l">Option</th><th>${IDX_LABEL[k]} breakpoints</th><th>as percentiles</th><th>P(fire day) % by class</th><th>P(large) % by class</th>
+    <th>Rises?</th><th>Sep. fire / large (R²)</th><th>Large fire days in top 2</th><th>Days/yr top 2 · top</th><th>Top-class lift</th><th class="no-print"></th></tr></thead><tbody>${opts.map(o => {
+      const e = o.ev, rise = e.t.monoFD && e.t.monoLFD ? '✓' : `<span style="color:${FLAG[1]}">no (${[!e.t.monoFD && 'fire', !e.t.monoLFD && 'large'].filter(Boolean).join(', ')})</span>`;
+      return `<tr${o === bestO ? ' class="best"' : ''}${o.key === 'cur' ? ' style="background:#30353a"' : ''}><td class="l" title="${esc(o.why)}"><b>${esc(o.name)}</b>${o === bestO ? ' <span class="badge" style="background:#2e7d32">strongest</span>' : ''}</td>
+        <td><b>${o.b.join(' / ')}</b></td><td>${o.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')}</td><td>${pr(o)}</td><td>${pl(o)}</td><td>${rise}${e.empty ? ` <span style="color:${FLAG[2]}">${e.empty} empty</span>` : ''}${e.thin ? ` <span class="muted">${e.thin} thin</span>` : ''}</td>
+        <td>${f2(e.r2fd)} / ${f2(e.r2l)}</td><td>${pct(e.capL)} <span class="muted">of ${pct(e.shareTop2)} days</span></td><td>${f2(e.dpyTop2, 0)} · ${f2(e.dpyTop, 0)}</td><td>${e.lift === null ? '–' : f2(e.lift, 1) + '×'}</td>
+        <td class="no-print"><button class="mini" data-o="${o.key}">use</button></td></tr>`; }).join('')}</tbody>`;
+  $('opttable').querySelectorAll('button[data-o]').forEach(b => b.onclick = () => { const o = W.opts.find(x => x.key === b.dataset.o); $('breaks').value = o.b.join(','); W.cfg.breaks = o.b; W.optSkip = true; drawDP();
+    $('opttable').querySelectorAll('tr').forEach(tr => tr.style.outline = ''); b.closest('tr').style.outline = '2px solid #ffd27f'; });
+  const lines = [];
+  if (curO) {
+    const e = curO.ev, never = curO.b.filter(v => rankPct(W.sorted, v) >= 99.5);
+    lines.push(`<b>Current:</b> ${curO.b.join(' / ')} (${curO.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')} percentile) — ` +
+      `${e.t.monoFD && e.t.monoLFD ? 'probabilities rise class to class' : 'probabilities do not rise every class'}; top two classes hold ${pct(e.capL)} of large fire days on ${f2(e.dpyTop2, 0)} days a year` +
+      (never.length ? `; <b style="color:${FLAG[2]}">${never.join(', ')} ${never.length > 1 ? 'are' : 'is'} above the 99.5th percentile — ${never.length > 1 ? 'those classes almost never occur' : 'that class almost never occurs'} with this station set and fuel model</b>` : '') + '.');
+  }
+  if (bestO && bestO !== curO) lines.push(`<b>Strongest separation:</b> ${esc(bestO.name)} — ${bestO.b.join(' / ')}; top two classes hold ${pct(bestO.ev.capL)} of large fire days on ${f2(bestO.ev.dpyTop2, 0)} days a year, top-class large-fire rate ${bestO.ev.lift ? f2(bestO.ev.lift, 1) + '×' : '–'} the season average.`);
+  else if (bestO === curO) lines.push('<b>The current breakpoints already give the strongest separation of the options tested.</b>');
+  $('opt-summary').innerHTML = lines.join('<br>');
+  // chart: P(large fire day) by class for each option
+  const cols = ['#ffffff', '#9aa0a6', '#7fb3ff', '#ffd27f', '#80cbc4', '#e5534b', '#ce93d8', '#f48fb1'];
+  PL('optchart', opts.map((o, i) => ({ x: o.ev.t.classes.map(c => 'Class ' + c.cls), y: o.ev.t.classes.map(c => c.pLFD), name: o.name, mode: 'lines+markers',
+    line: { color: cols[i % cols.length], width: o.key === 'cur' ? 3 : 1.6, dash: o.key === 'cur' ? 'solid' : undefined } })),
+    { title: { text: `P(large fire day) by class — each option (${IDX_LABEL[k]}-${W.cfg.fm}, ${W.cfg.calibFrom}–${W.cfg.calibTo})`, font: { size: 14 } },
+      yaxis: { title: 'probability', tickformat: '.0%', gridcolor: '#43484e', rangemode: 'tozero' } });
+  $('opt-note').innerHTML = `All options use the same stations, fuel model, index, season, calibration years and fire definitions as the setup, and keep the current number of classes (${cur.length + 1}). ` +
+    `<b>Sep. R²</b>: how much of the fire-day / large-fire-day pattern the classes explain (higher = classes separate fire days better; McFadden R² of the class model). ` +
+    `<b>Large fire days in top 2</b>: share caught by the two highest classes, with the share of all days they cover. <b>Lift</b>: top-class large-fire-day rate ÷ season average. ` +
+    `“strongest” = highest combined separation among options whose probabilities rise every class and have no empty class. Statistics are a starting point — round to operationally sensible numbers and check against local knowledge before adopting. ` +
+    `Hover an option name for how it was built; <b>use</b> loads it into the setup (the tables below recompute; nothing is saved to the FDOP).`;
 }
 
 // FireFamily Plus-style decision point chart: the index's cumulative distribution with the days that had

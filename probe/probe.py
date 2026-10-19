@@ -1,31 +1,26 @@
-import requests, json, io, zipfile
+import requests, json, io, zipfile, os, subprocess
 out = {}
-def q(name, url, params, n=2500):
-    try:
-        r = requests.get(url, params=params, timeout=120); out[name] = r.text[:n]
-    except Exception as e:
-        out[name] = 'ERR ' + str(e)
-C = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/California_Historic_Fire_Perimeters/FeatureServer'
-q('cal_svc', C, {'f': 'json'}, 1500)
-q('cal_l0_fields', C + '/0', {'f': 'json'}, 6000)
-q('cal_cnt2020', C + '/0/query', {'where': 'YEAR_=2020', 'returnCountOnly': 'true', 'f': 'json'})
-P = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/InterAgencyFirePerimeterHistory_All_Years_View/FeatureServer/0'
-r = requests.get(P, params={'f': 'json'}, timeout=60).json()
-out['perim_fields'] = ','.join(f['name'] for f in r.get('fields', []))
-W = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0'
-r = requests.get(W, params={'f': 'json'}, timeout=60).json()
-out['wfigs_fields'] = ','.join(f['name'] for f in r.get('fields', []))
-q('wfigs_minyear', W + '/query', {'where': "POOState='US-CA' AND IncidentTypeCategory='WF'", 'outStatistics': json.dumps([{'statisticType': 'min', 'onStatisticField': 'FireDiscoveryDateTime', 'outStatisticFieldName': 'mn'}, {'statisticType': 'count', 'onStatisticField': 'OBJECTID', 'outStatisticFieldName': 'n'}]), 'f': 'json'})
-for y in (2016, 2019, 2021, 2024):
-    q(f'wfigs_wf_{y}', W + '/query', {'where': f"POOState='US-CA' AND IncidentTypeCategory='WF' AND FireDiscoveryDateTime >= DATE '{y}-01-01' AND FireDiscoveryDateTime < DATE '{y+1}-01-01'", 'returnCountOnly': 'true', 'f': 'json'})
-# FPA FOD 6th edition (RDS-2013-0009.6)
-for u in ['https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.6/RDS-2013-0009.6_Data_Format2_GDB.zip',
-          'https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.6/RDS-2013-0009.6_Data_Format1_SQLITE.zip',
-          'https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.6/RDS-2013-0009.6_Data_Format3_CSV.zip',
-          'https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0009.6']:
-    try:
-        h = requests.head(u, timeout=60, allow_redirects=True)
-        out['fod ' + u.rsplit('/', 1)[-1]] = f"{h.status_code} {h.headers.get('content-length')} {h.headers.get('content-type')}"
-    except Exception as e:
-        out['fod ' + u] = 'ERR ' + str(e)
-json.dump(out, open('probe_out.json', 'w'), indent=1)
+u = 'https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.6/RDS-2013-0009.6_Data_Format2_GDB.zip'
+with requests.get(u, stream=True, timeout=600) as r:
+    with open('fod.zip', 'wb') as f:
+        for ch in r.iter_content(1 << 20): f.write(ch)
+z = zipfile.ZipFile('fod.zip'); out['zip'] = z.namelist()[:20]; z.extractall('fod')
+import pyogrio
+gdb = [os.path.join(dp, d) for dp, dn, fn in os.walk('fod') for d in dn if d.endswith('.gdb')][0]
+out['layers'] = str(pyogrio.list_layers(gdb))
+lyr = [l[0] for l in pyogrio.list_layers(gdb) if 'ire' in l[0]][0]
+info = pyogrio.read_info(gdb, layer=lyr); out['fields'] = list(info['fields']); out['n'] = info['features']
+df = pyogrio.read_dataframe(gdb, layer=lyr, where="STATE='CA' AND FIRE_YEAR>=2006", read_geometry=False)
+out['ca_rows'] = len(df); out['sample'] = df.head(3).astype(str).to_dict('records')
+out['by_year'] = df.groupby('FIRE_YEAR').size().to_dict()
+C = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/California_Historic_Fire_Perimeters/FeatureServer/0'
+r = requests.get(C, params={'f': 'json'}, timeout=60).json()
+out['frap_fields'] = [f['name'] for f in r['fields']]; out['frap_max'] = r.get('maxRecordCount')
+out['frap_years'] = requests.get(C + '/query', params={'where': 'YEAR_>=2020', 'outStatistics': json.dumps([{'statisticType': 'count', 'onStatisticField': 'OBJECTID', 'outStatisticFieldName': 'n'}]), 'groupByFieldsForStatistics': 'YEAR_', 'f': 'json'}, timeout=60).text[:800]
+Y = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Interagency_Perimeters_YearToDate/FeatureServer/0'
+r = requests.get(Y, params={'f': 'json'}, timeout=60).json()
+out['ytd_fields'] = [f['name'] for f in r.get('fields', [])][:60]; out['ytd_err'] = r.get('error')
+F = 'https://fems.fs2c.usda.gov/api/ext-climatology/download-nfdr-daily-summary/'
+t = requests.get(F, params=dict(dataset='observation', startDate='2010-07-01', endDate='2010-07-02', dataFormat='csv', stationIds='40910', fuelModels='V,W,X,Y,Z'), timeout=120).text
+out['fms'] = sorted(set(l.split(',')[3] for l in t.splitlines()[1:]))
+json.dump(out, open('probe_out.json', 'w'), indent=1, default=str)

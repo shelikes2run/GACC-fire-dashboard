@@ -1,0 +1,16 @@
+// FDRA popup expression in "CA Fire Weather Intelligence Map" (item 0b083c059dc8442ca7c9e6a8842e3ca1).
+// Live roll-up of the FDRA's FDOP stations (field station_ids, from the 2026 Forest Thresholds sheet)
+// against each forest's custom thresholds. Values that are thresholds (not FDRA ids) are NOT committed
+// here on purpose — they live in the web map; see the threshold table in the build notes.
+//
+// Logic:
+//   1. live = CA NFDRS 3.0 RAWS whose stationId is in station_ids (fallback: RAWS inside the FDRA)
+//   2. average ERC / BI and their percentiles
+//   3. class by forest rule:
+//        BDF   BI staffing (5 class) + dispatch (4 class) breakpoints per FDRA
+//        ENF   335 BI dispatch + ERC staffing, peak (May 1–Nov 15) / non-peak breakpoints
+//        SRF   BI vs forest 90th / 97th values per FDRA
+//        TNF   BI vs custom pair (index to confirm)
+//        SQF   custom pair shown, index pending
+//        other ERC / BI vs 90th / 97th using the live percentile
+//   4. FDRAs with fuel model X or Z show a warning: the live layer is fuel model Y only.

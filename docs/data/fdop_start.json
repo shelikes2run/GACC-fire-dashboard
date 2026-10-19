@@ -1578,5 +1578,567 @@
    }
   ],
   "notes": "Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). Stations from the 2026 thresholds sheet."
+ },
+ "KNF-200": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40222,
+   40225,
+   40237
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    12,
+    17,
+    22,
+    27
+   ],
+   "erc": [
+    22,
+    34,
+    42,
+    52
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 50,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF West; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     17,
+     22,
+     27
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF West; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     28,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF West; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     22,
+     34,
+     42,
+     52
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF West dispatch-area SIG (40222, 40225, 40237), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 50 ac, multi-fire day 2+. This FDRA's own SIG (Slater Butte, Somes Bar, Dutch Indy) is used for the season-tracking charts; the Workbench starts from the KNF West SIG."
+ },
+ "KNF-202": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40222,
+   40225,
+   40237
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    12,
+    17,
+    22,
+    27
+   ],
+   "erc": [
+    22,
+    34,
+    42,
+    52
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 50,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF West; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     17,
+     22,
+     27
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF West; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     28,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF West; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     22,
+     34,
+     42,
+     52
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF West dispatch-area SIG (40222, 40225, 40237), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 50 ac, multi-fire day 2+. This FDRA's own SIG (Blue Ridge, Sawyers Bar, Somes Bar) is used for the season-tracking charts; the Workbench starts from the KNF West SIG."
+ },
+ "KNF-204": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40222,
+   40225,
+   40237
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    12,
+    17,
+    22,
+    27
+   ],
+   "erc": [
+    22,
+    34,
+    42,
+    52
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 50,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF West; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     17,
+     22,
+     27
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF West; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     28,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF West; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     22,
+     34,
+     42,
+     52
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF West dispatch-area SIG (40222, 40225, 40237), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 50 ac, multi-fire day 2+. This FDRA's own SIG (Oak Knoll, Slater Butte, Collins Baldy) is used for the season-tracking charts; the Workbench starts from the KNF West SIG."
+ },
+ "KNF-208": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40222,
+   40225,
+   40237
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    12,
+    17,
+    22,
+    27
+   ],
+   "erc": [
+    22,
+    34,
+    42,
+    52
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 50,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF West; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     17,
+     22,
+     27
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF West; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     28,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF West; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     22,
+     34,
+     42,
+     52
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF West dispatch-area SIG (40222, 40225, 40237), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 50 ac, multi-fire day 2+. This FDRA's own SIG (Collins Baldy, Quartz Hill, Callahan #2) is used for the season-tracking charts; the Workbench starts from the KNF West SIG."
+ },
+ "KNF-214": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40240,
+   40243
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    15,
+    21,
+    26,
+    30
+   ],
+   "erc": [
+    20,
+    33,
+    40,
+    48
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF East; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     15,
+     21,
+     26,
+     30
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF East; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     16,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF East; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     33,
+     40,
+     48
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF East dispatch-area SIG (40240, 40243), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 10 ac, multi-fire day 2+. This FDRA's own SIG (Juanita, Van Bremmer) is used for the season-tracking charts; the Workbench starts from the KNF East SIG."
+ },
+ "KNF-220": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40240,
+   40243
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    15,
+    21,
+    26,
+    30
+   ],
+   "erc": [
+    20,
+    33,
+    40,
+    48
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF East; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     15,
+     21,
+     26,
+     30
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF East; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     16,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF East; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     33,
+     40,
+     48
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF East dispatch-area SIG (40240, 40243), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 10 ac, multi-fire day 2+. This FDRA's own SIG (Juanita, Van Bremmer) is used for the season-tracking charts; the Workbench starts from the KNF East SIG."
  }
 }

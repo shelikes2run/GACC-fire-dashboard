@@ -34,7 +34,11 @@ jobs:
           key: fdop-cache-${{ github.run_id }}
           restore-keys: fdop-cache-
       - name: Build
-        run: python src/site/build_fdop_data.py out fdop_cache
+        run: |
+          set +e
+          python src/site/build_fdop_data.py out fdop_cache > build.log 2>&1
+          echo "exit $?" >> build.log
+          mkdir -p out && tail -300 build.log > out/build_log.txt
       - name: Publish (single commit)
         run: |
           cd out

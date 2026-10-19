@@ -27,6 +27,7 @@ FOREST = ROOT / 'docs' / 'data' / 'fdras_forest_2026.geojson'
 OUT = ROOT / 'docs' / 'data' / 'fdras.geojson'
 MEM = ROOT / 'site' / 'fdra_station_membership_2026.csv'
 RAWS = ROOT / 'site' / 'ca_raws.csv'
+FORESTS = ROOT / 'site' / 'R5_forest_boundaries.geojson'      # USFS EDW administrative forest boundaries, R5
 GENERIC = re.compile(r'(^$|^\s*$|UNIT$|^LOCAL$|^FRA$|^LRA|^FED$|^NULL$|^NONE$)', re.I)
 UNIT_NAMES = {'AEU': 'Amador-El Dorado', 'BDU': 'San Bernardino', 'BEU': 'San Benito-Monterey', 'BTU': 'Butte', 'CZU': 'San Mateo-Santa Cruz',
               'FKU': 'Fresno-Kings', 'HUU': 'Humboldt-Del Norte', 'KRN': 'Kern County', 'LAC': 'Los Angeles County', 'LMU': 'Lassen-Modoc',
@@ -47,6 +48,10 @@ def main(master_path):
         FOREST.write_bytes(OUT.read_bytes())
     fo = gpd.read_file(FOREST).to_crs(3310)
     fo['geometry'] = fo.geometry.make_valid().buffer(0)
+    nf = gpd.read_file(FORESTS).to_crs(3310)
+    nf['geometry'] = nf.geometry.make_valid().buffer(0)
+    nf_union = nf.union_all()
+    fo['geometry'] = fo.geometry.intersection(nf_union)          # forest FDRAs stay inside forest boundaries
     fo = fo.sort_values('acres')                  # smaller forest FDRA wins an overlap
     taken, keep = None, []
     for _, r in fo.iterrows():
@@ -54,7 +59,35 @@ def main(master_path):
         taken = r.geometry if taken is None else taken.union(r.geometry)
         if g.area > 4e6:
             keep.append({**r.drop('geometry').to_dict(), 'geometry': g, 'source': 'USFS 2026 Forest Thresholds FDRA'})
-    forest_union = taken
+    keep = gpd.GeoDataFrame(keep, crs=3310)
+    # every acre of every forest belongs to one of its FDRAs: gaps go to the forest FDRA sharing the
+    # longest border with them (same forest first), else the nearest one
+    # Sierra South FDOP: the Stanislaus high country above the 348/370 elevation bands is FDRA 533
+    # (High Elevation, shared STF / YNP / SNF), so Stanislaus gaps go to 533
+    GAP_TO = {'Stanislaus National Forest': 'SNF-533'}
+    filled = 0
+    for _, f in nf.iterrows():
+        gap = f.geometry.difference(keep.union_all())
+        parts = [p for p in getattr(gap, 'geoms', [gap]) if p.area > 1e4]
+        same = keep[keep.forest == f.forestname]
+        for p in parts:
+            if f.forestname in GAP_TO and (keep.fdra_id == GAP_TO[f.forestname]).any():
+                i = keep.index[keep.fdra_id == GAP_TO[f.forestname]][0]
+                keep.at[i, 'geometry'] = keep.at[i, 'geometry'].union(p)
+                filled += p.area
+                continue
+            pool = same if len(same) else keep
+            shared = pool.geometry.apply(lambda g: g.buffer(30).intersection(p.boundary).length)
+            i = shared.idxmax() if shared.max() > 0 else pool.distance(p).idxmin()
+            if shared.max() == 0 and len(same):                    # not touching its own forest's FDRAs: try any
+                sh2 = keep.geometry.apply(lambda g: g.buffer(30).intersection(p.boundary).length)
+                if sh2.max() > 0:
+                    i = sh2.idxmax()
+            keep.at[i, 'geometry'] = keep.at[i, 'geometry'].union(p)
+            filled += p.area
+    keep['geometry'] = keep.geometry.buffer(0)
+    print(f'forest gaps filled: {filled / 4046.86:,.0f} ac')
+    forest_union = nf_union
 
     m = gpd.read_file(master_path)
     m = m[m.geometry.notna()].to_crs(3310)
@@ -101,14 +134,14 @@ def main(master_path):
         cf.loc[i, 'n_stations'] = len(sids)
         cf.loc[i, 'match'] = how
         new_rows += [{'fdra_id': r.fdra_id, 'season': '', 'stationId': s, 'fuel_model': 'Y'} for s in sids]
-    fos = gpd.GeoDataFrame(keep, crs=3310)
-    # CAL FIRE pieces that carry a forest FDRA's own id (e.g. SQF 435-445 beyond the forest boundary) join it
-    same = cf.fdra_id.isin(set(fos.fdra_id))
-    for _, r in cf[same].iterrows():
-        i = fos.index[fos.fdra_id == r.fdra_id][0]
-        fos.at[i, 'geometry'] = fos.at[i, 'geometry'].union(r.geometry)
-    cf = cf[~same]
-    new_rows = [x for x in new_rows if x['fdra_id'] not in set(fos.fdra_id)]
+    fos = keep
+    # CAL FIRE polygons that carry a forest FDRA's name but lie outside the forest (e.g. SQF 435-445 in
+    # Sequoia-Kings Canyon NP) stay separate, labelled as outside the National Forest
+    clash = cf.fdra_id.isin(set(fos.fdra_id))
+    ren = {fid: fid + ' (outside NF)' for fid in cf.loc[clash, 'fdra_id']}
+    cf['fdra_id'] = cf['fdra_id'].replace(ren)
+    for x in new_rows:
+        x['fdra_id'] = ren.get(x['fdra_id'], x['fdra_id'])
     allp = pd.concat([fos, cf], ignore_index=True)
     allp['acres'] = (allp.geometry.area / 4046.86).round(0)
     allp['agency'] = allp['source'].map(lambda s: 'USFS' if s.startswith('USFS') else 'CAL FIRE / interagency')
@@ -119,7 +152,12 @@ def main(master_path):
     out = out.to_crs(4326)
     out.to_file(OUT, driver='GeoJSON', COORDINATE_PRECISION=5)
     pd.concat([mem, pd.DataFrame(new_rows)], ignore_index=True).to_csv(MEM, index=False)
-    print(f'{len(out)} FDRAs ({len(fos)} forest + {len(cf)} CAL FIRE/interagency), {out.to_crs(3310).area.sum() / 4046.86 / 1e6:.1f} M ac')
+    o3 = out.to_crs(3310)
+    print(f'{len(out)} FDRAs ({len(fos)} forest + {len(cf)} CAL FIRE/interagency), {o3.area.sum() / 4046.86 / 1e6:.1f} M ac')
+    for _, f in nf.iterrows():                    # coverage check per forest
+        cov = o3[o3.agency == 'USFS'].intersection(f.geometry).area.sum() / f.geometry.area
+        if cov < 0.995:
+            print(f'  {f.forestname}: {100 * cov:.1f}% covered by forest FDRAs')
     return out
 
 

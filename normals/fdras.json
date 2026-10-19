@@ -3560,8 +3560,8 @@
   }
  },
  {
-  "fdra_id": "ENF-335_non-peak_",
-  "file": "climo/ENF-335_non-peak_.json",
+  "fdra_id": "ENF-335",
+  "file": "climo/ENF-335.json",
   "years": [
    2016,
    2017,
@@ -3583,8 +3583,8 @@
   }
  },
  {
-  "fdra_id": "ENF-335_non-peak___V",
-  "file": "climo/ENF-335_non-peak___V.json",
+  "fdra_id": "ENF-335__V",
+  "file": "climo/ENF-335__V.json",
   "years": [
    2016,
    2017,
@@ -3606,8 +3606,8 @@
   }
  },
  {
-  "fdra_id": "ENF-335_non-peak___W",
-  "file": "climo/ENF-335_non-peak___W.json",
+  "fdra_id": "ENF-335__W",
+  "file": "climo/ENF-335__W.json",
   "years": [
    2016,
    2017,
@@ -3629,100 +3629,8 @@
   }
  },
  {
-  "fdra_id": "ENF-335_non-peak___X",
-  "file": "climo/ENF-335_non-peak___X.json",
-  "years": [
-   2016,
-   2017,
-   2018,
-   2019,
-   2020,
-   2021,
-   2022,
-   2023,
-   2024,
-   2025
-  ],
-  "n_days": 3653,
-  "season_end_quantiles": {
-   "25": 325,
-   "50": 340,
-   "75": 345,
-   "90": 350
-  }
- },
- {
-  "fdra_id": "ENF-335_non-peak___Z",
-  "file": "climo/ENF-335_non-peak___Z.json",
-  "years": [
-   2016,
-   2017,
-   2018,
-   2019,
-   2020,
-   2021,
-   2022,
-   2023,
-   2024,
-   2025
-  ],
-  "n_days": 3653,
-  "season_end_quantiles": {
-   "25": 300,
-   "50": 313,
-   "75": 336,
-   "90": 343
-  }
- },
- {
-  "fdra_id": "ENF-335_peak_",
-  "file": "climo/ENF-335_peak_.json",
-  "years": [
-   2016,
-   2017,
-   2018,
-   2019,
-   2020,
-   2021,
-   2022,
-   2023,
-   2024,
-   2025
-  ],
-  "n_days": 3653,
-  "season_end_quantiles": {
-   "25": 295,
-   "50": 304,
-   "75": 320,
-   "90": 327
-  }
- },
- {
-  "fdra_id": "ENF-335_peak___V",
-  "file": "climo/ENF-335_peak___V.json",
-  "years": [
-   2016,
-   2017,
-   2018,
-   2019,
-   2020,
-   2021,
-   2022,
-   2023,
-   2024,
-   2025
-  ],
-  "n_days": 3653,
-  "season_end_quantiles": {
-   "25": 326,
-   "50": 342,
-   "75": 350,
-   "90": 354
-  }
- },
- {
-  "fdra_id": "ENF-335_peak___W",
-  "file": "climo/ENF-335_peak___W.json",
+  "fdra_id": "ENF-335__X",
+  "file": "climo/ENF-335__X.json",
   "years": [
    2016,
    2017,
@@ -3744,31 +3652,8 @@
   }
  },
  {
-  "fdra_id": "ENF-335_peak___X",
-  "file": "climo/ENF-335_peak___X.json",
-  "years": [
-   2016,
-   2017,
-   2018,
-   2019,
-   2020,
-   2021,
-   2022,
-   2023,
-   2024,
-   2025
-  ],
-  "n_days": 3653,
-  "season_end_quantiles": {
-   "25": 326,
-   "50": 342,
-   "75": 348,
-   "90": 353
-  }
- },
- {
-  "fdra_id": "ENF-335_peak___Z",
-  "file": "climo/ENF-335_peak___Z.json",
+  "fdra_id": "ENF-335__Z",
+  "file": "climo/ENF-335__Z.json",
   "years": [
    2016,
    2017,

@@ -1,5 +1,120 @@
 [
  {
+  "fdra_id": "AEU-Central",
+  "file": "climo/AEU-Central.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 293,
+   "50": 302,
+   "75": 320,
+   "90": 327
+  }
+ },
+ {
+  "fdra_id": "AEU-East",
+  "file": "climo/AEU-East.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 291,
+   "50": 306,
+   "75": 322,
+   "90": 331
+  }
+ },
+ {
+  "fdra_id": "AEU-El Dorado",
+  "file": "climo/AEU-El_Dorado.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 293,
+   "50": 302,
+   "75": 320,
+   "90": 327
+  }
+ },
+ {
+  "fdra_id": "AEU-Unit-wide",
+  "file": "climo/AEU-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 291,
+   "50": 306,
+   "75": 322,
+   "90": 331
+  }
+ },
+ {
+  "fdra_id": "AEU-West",
+  "file": "climo/AEU-West.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 264,
+   "50": 285,
+   "75": 292,
+   "90": 309
+  }
+ },
+ {
   "fdra_id": "ANF-Front Country",
   "file": "climo/ANF-Front_Country.json",
   "years": [
@@ -184,8 +299,8 @@
   }
  },
  {
-  "fdra_id": "CNF-Inland",
-  "file": "climo/CNF-Inland.json",
+  "fdra_id": "BDU-Desert",
+  "file": "climo/BDU-Desert.json",
   "years": [
    2016,
    2017,
@@ -200,15 +315,15 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 355,
-   "50": 356,
-   "75": 359,
-   "90": 361
+   "25": 263,
+   "50": 295,
+   "75": 311,
+   "90": 327
   }
  },
  {
-  "fdra_id": "CNF-Mountain",
-  "file": "climo/CNF-Mountain.json",
+  "fdra_id": "BDU-Mountain",
+  "file": "climo/BDU-Mountain.json",
   "years": [
    2016,
    2017,
@@ -223,10 +338,331 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 354,
-   "50": 355,
-   "75": 357,
+   "25": 326,
+   "50": 342,
+   "75": 358,
    "90": 359
+  }
+ },
+ {
+  "fdra_id": "BDU-Owens Valley",
+  "file": "climo/BDU-Owens_Valley.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 277,
+   "50": 293,
+   "75": 304,
+   "90": 313
+  }
+ },
+ {
+  "fdra_id": "BDU-Unit-wide",
+  "file": "climo/BDU-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 251,
+   "50": 274,
+   "75": 311,
+   "90": 326
+  }
+ },
+ {
+  "fdra_id": "BDU-Valley",
+  "file": "climo/BDU-Valley.json",
+  "years": [
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 2963,
+  "season_end_quantiles": {
+   "25": 337,
+   "50": 355,
+   "75": 359,
+   "90": 362
+  }
+ },
+ {
+  "fdra_id": "BEU-FDRA South BEU",
+  "file": "climo/BEU-FDRA_South_BEU.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 295,
+   "75": 308,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "BEU-Fdra North Beu",
+  "file": "climo/BEU-Fdra_North_Beu.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 280,
+   "50": 295,
+   "75": 319,
+   "90": 329
+  }
+ },
+ {
+  "fdra_id": "BEU-Fdra West Beu",
+  "file": "climo/BEU-Fdra_West_Beu.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 331,
+   "50": 337,
+   "75": 347,
+   "90": 348
+  }
+ },
+ {
+  "fdra_id": "BLM-Ca Nod",
+  "file": "climo/BLM-Ca_Nod.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 276,
+   "50": 284,
+   "75": 302,
+   "90": 311
+  }
+ },
+ {
+  "fdra_id": "BTU-BTU Unit",
+  "file": "climo/BTU-BTU_Unit.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 292,
+   "75": 306,
+   "90": 318
+  }
+ },
+ {
+  "fdra_id": "BTU-Brush",
+  "file": "climo/BTU-Brush.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 284,
+   "50": 290,
+   "75": 306,
+   "90": 318
+  }
+ },
+ {
+  "fdra_id": "BTU-Grass",
+  "file": "climo/BTU-Grass.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 284,
+   "50": 290,
+   "75": 309,
+   "90": 318
+  }
+ },
+ {
+  "fdra_id": "BTU-Timber",
+  "file": "climo/BTU-Timber.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 296,
+   "75": 314,
+   "90": 323
+  }
+ },
+ {
+  "fdra_id": "CZU-Bayside",
+  "file": "climo/CZU-Bayside.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 299,
+   "50": 329,
+   "75": 342,
+   "90": 346
+  }
+ },
+ {
+  "fdra_id": "CZU-Coast",
+  "file": "climo/CZU-Coast.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 297,
+   "50": 313,
+   "75": 330,
+   "90": 345
+  }
+ },
+ {
+  "fdra_id": "CZU-Inland",
+  "file": "climo/CZU-Inland.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 318,
+   "50": 332,
+   "75": 345,
+   "90": 346
   }
  },
  {
@@ -322,8 +758,8 @@
   }
  },
  {
-  "fdra_id": "ENF-PENDING-HIGH-ELEV",
-  "file": "climo/ENF-PENDING-HIGH-ELEV.json",
+  "fdra_id": "FKU-Auberry Dunlap",
+  "file": "climo/FKU-Auberry_Dunlap.json",
   "years": [
    2016,
    2017,
@@ -339,9 +775,193 @@
   "n_days": 3653,
   "season_end_quantiles": {
    "25": 276,
-   "50": 295,
-   "75": 309,
-   "90": 324
+   "50": 286,
+   "75": 292,
+   "90": 298
+  }
+ },
+ {
+  "fdra_id": "FKU-Great_Valley",
+  "file": "climo/FKU-Great_Valley.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 276,
+   "50": 286,
+   "75": 292,
+   "90": 298
+  }
+ },
+ {
+  "fdra_id": "FKU-Owens Valley",
+  "file": "climo/FKU-Owens_Valley.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 301,
+   "50": 324,
+   "75": 341,
+   "90": 348
+  }
+ },
+ {
+  "fdra_id": "FKU-Shaver Kings",
+  "file": "climo/FKU-Shaver_Kings.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 289,
+   "50": 315,
+   "75": 335,
+   "90": 344
+  }
+ },
+ {
+  "fdra_id": "FKU-Westdie",
+  "file": "climo/FKU-Westdie.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 286,
+   "50": 289,
+   "75": 295,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "HUU-Alder Point",
+  "file": "climo/HUU-Alder_Point.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 323,
+   "50": 335,
+   "75": 345,
+   "90": 350
+  }
+ },
+ {
+  "fdra_id": "HUU-Coastal Strip",
+  "file": "climo/HUU-Coastal_Strip.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 269,
+   "50": 279,
+   "75": 289,
+   "90": 296
+  }
+ },
+ {
+  "fdra_id": "HUU-Eel River",
+  "file": "climo/HUU-Eel_River.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 268,
+   "50": 272,
+   "75": 288,
+   "90": 293
+  }
+ },
+ {
+  "fdra_id": "HUU-Unit-wide",
+  "file": "climo/HUU-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 257,
+   "50": 261,
+   "75": 273,
+   "90": 280
   }
  },
  {
@@ -575,6 +1195,236 @@
   }
  },
  {
+  "fdra_id": "KRN-Kern County",
+  "file": "climo/KRN-Kern_County.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 283,
+   "50": 291,
+   "75": 315,
+   "90": 324
+  }
+ },
+ {
+  "fdra_id": "LAC-La County",
+  "file": "climo/LAC-La_County.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 325,
+   "50": 332,
+   "75": 347,
+   "90": 354
+  }
+ },
+ {
+  "fdra_id": "LAC-Unit-wide",
+  "file": "climo/LAC-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 337,
+   "50": 353,
+   "75": 357,
+   "90": 362
+  }
+ },
+ {
+  "fdra_id": "LMU-Lassen Nf",
+  "file": "climo/LMU-Lassen_Nf.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 279,
+   "50": 292,
+   "75": 309,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "LMU-Lmu Unit",
+  "file": "climo/LMU-Lmu_Unit.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 277,
+   "50": 287,
+   "75": 302,
+   "90": 311
+  }
+ },
+ {
+  "fdra_id": "LMU-Lmunw",
+  "file": "climo/LMU-Lmunw.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 296,
+   "75": 309,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "LMU-Lmuse",
+  "file": "climo/LMU-Lmuse.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 277,
+   "50": 288,
+   "75": 302,
+   "90": 311
+  }
+ },
+ {
+  "fdra_id": "LMU-Lmusw",
+  "file": "climo/LMU-Lmusw.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 279,
+   "50": 292,
+   "75": 312,
+   "90": 317
+  }
+ },
+ {
+  "fdra_id": "LMU-Local",
+  "file": "climo/LMU-Local.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 275,
+   "50": 284,
+   "75": 302,
+   "90": 311
+  }
+ },
+ {
+  "fdra_id": "LMU-Unit-wide",
+  "file": "climo/LMU-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 279,
+   "50": 292,
+   "75": 312,
+   "90": 317
+  }
+ },
+ {
   "fdra_id": "LNF-ALL",
   "file": "climo/LNF-ALL.json",
   "years": [
@@ -595,6 +1445,213 @@
    "50": 297,
    "75": 309,
    "90": 323
+  }
+ },
+ {
+  "fdra_id": "LNU-Central",
+  "file": "climo/LNU-Central.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 283,
+   "50": 289,
+   "75": 308,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "LNU-East Side",
+  "file": "climo/LNU-East_Side.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 283,
+   "50": 290,
+   "75": 305,
+   "90": 317
+  }
+ },
+ {
+  "fdra_id": "LNU-Mayacamas",
+  "file": "climo/LNU-Mayacamas.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 287,
+   "50": 322,
+   "75": 341,
+   "90": 348
+  }
+ },
+ {
+  "fdra_id": "LNU-Mnf",
+  "file": "climo/LNU-Mnf.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 277,
+   "50": 290,
+   "75": 311,
+   "90": 318
+  }
+ },
+ {
+  "fdra_id": "LNU-Southend",
+  "file": "climo/LNU-Southend.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 282,
+   "50": 294,
+   "75": 309,
+   "90": 318
+  }
+ },
+ {
+  "fdra_id": "LNU-Unit-wide",
+  "file": "climo/LNU-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 295,
+   "50": 322,
+   "75": 342,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "LNU-West Side",
+  "file": "climo/LNU-West_Side.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 295,
+   "50": 322,
+   "75": 342,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "LOCAL-Local",
+  "file": "climo/LOCAL-Local.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 292,
+   "75": 308,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "LOCAL-Unit-wide",
+  "file": "climo/LOCAL-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 354,
+   "75": 359,
+   "90": 361
   }
  },
  {
@@ -661,29 +1718,6 @@
   "n_days": 3653,
   "season_end_quantiles": {
    "25": 357,
-   "50": 361,
-   "75": 364,
-   "90": 365
-  }
- },
- {
-  "fdra_id": "LPF-514IS",
-  "file": "climo/LPF-514IS.json",
-  "years": [
-   2016,
-   2017,
-   2018,
-   2019,
-   2020,
-   2021,
-   2022,
-   2023,
-   2024,
-   2025
-  ],
-  "n_days": 3653,
-  "season_end_quantiles": {
-   "25": 358,
    "50": 361,
    "75": 364,
    "90": 365
@@ -851,6 +1885,236 @@
   }
  },
  {
+  "fdra_id": "MEU-Coastal",
+  "file": "climo/MEU-Coastal.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 297,
+   "75": 307,
+   "90": 314
+  }
+ },
+ {
+  "fdra_id": "MEU-East",
+  "file": "climo/MEU-East.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 279,
+   "50": 289,
+   "75": 309,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "MEU-North",
+  "file": "climo/MEU-North.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 280,
+   "50": 290,
+   "75": 311,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "MEU-South",
+  "file": "climo/MEU-South.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 297,
+   "75": 307,
+   "90": 314
+  }
+ },
+ {
+  "fdra_id": "MMU-7",
+  "file": "climo/MMU-7.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 256,
+   "50": 266,
+   "75": 275,
+   "90": 283
+  }
+ },
+ {
+  "fdra_id": "MMU-Catheys Valley",
+  "file": "climo/MMU-Catheys_Valley.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 288,
+   "75": 292,
+   "90": 309
+  }
+ },
+ {
+  "fdra_id": "MMU-Los Banos",
+  "file": "climo/MMU-Los_Banos.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 256,
+   "50": 266,
+   "75": 275,
+   "90": 283
+  }
+ },
+ {
+  "fdra_id": "MMU-Mariposa",
+  "file": "climo/MMU-Mariposa.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 287,
+   "50": 290,
+   "75": 293,
+   "90": 310
+  }
+ },
+ {
+  "fdra_id": "MMU-Metcalf",
+  "file": "climo/MMU-Metcalf.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 282,
+   "50": 295,
+   "75": 308,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "MMU-Owens Valley",
+  "file": "climo/MMU-Owens_Valley.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 291,
+   "50": 297,
+   "75": 309,
+   "90": 325
+  }
+ },
+ {
   "fdra_id": "MNF-162",
   "file": "climo/MNF-162.json",
   "years": [
@@ -920,6 +2184,466 @@
   }
  },
  {
+  "fdra_id": "MRN-Hicks Valley",
+  "file": "climo/MRN-Hicks_Valley.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 297,
+   "50": 322,
+   "75": 333,
+   "90": 346
+  }
+ },
+ {
+  "fdra_id": "MRN-Marin City",
+  "file": "climo/MRN-Marin_City.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 281,
+   "50": 290,
+   "75": 309,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "MRN-Point Reyes",
+  "file": "climo/MRN-Point_Reyes.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 297,
+   "50": 322,
+   "75": 333,
+   "90": 346
+  }
+ },
+ {
+  "fdra_id": "MRN-Throckmorton",
+  "file": "climo/MRN-Throckmorton.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 281,
+   "50": 290,
+   "75": 309,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "MRN-Tomales",
+  "file": "climo/MRN-Tomales.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 297,
+   "50": 322,
+   "75": 333,
+   "90": 346
+  }
+ },
+ {
+  "fdra_id": "MRN-Unit-wide",
+  "file": "climo/MRN-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 295,
+   "50": 322,
+   "75": 342,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "MRN-Woodacre",
+  "file": "climo/MRN-Woodacre.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 295,
+   "50": 316,
+   "75": 330,
+   "90": 345
+  }
+ },
+ {
+  "fdra_id": "MVU-Unit-wide",
+  "file": "climo/MVU-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 259,
+   "50": 272,
+   "75": 296,
+   "90": 305
+  }
+ },
+ {
+  "fdra_id": "NEU-Central",
+  "file": "climo/NEU-Central.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 277,
+   "50": 295,
+   "75": 309,
+   "90": 324
+  }
+ },
+ {
+  "fdra_id": "NEU-Eastern",
+  "file": "climo/NEU-Eastern.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 291,
+   "50": 302,
+   "75": 310,
+   "90": 324
+  }
+ },
+ {
+  "fdra_id": "NEU-Foothill",
+  "file": "climo/NEU-Foothill.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 297,
+   "75": 309,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "NEU-Fra",
+  "file": "climo/NEU-Fra.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 288,
+   "75": 306,
+   "90": 317
+  }
+ },
+ {
+  "fdra_id": "NEU-Local",
+  "file": "climo/NEU-Local.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 288,
+   "50": 294,
+   "75": 309,
+   "90": 325
+  }
+ },
+ {
+  "fdra_id": "NEU-Lra West",
+  "file": "climo/NEU-Lra_West.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 288,
+   "75": 306,
+   "90": 317
+  }
+ },
+ {
+  "fdra_id": "NEU-Placer",
+  "file": "climo/NEU-Placer.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 264,
+   "50": 285,
+   "75": 292,
+   "90": 309
+  }
+ },
+ {
+  "fdra_id": "NEU-Plumas",
+  "file": "climo/NEU-Plumas.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 282,
+   "50": 296,
+   "75": 310,
+   "90": 324
+  }
+ },
+ {
+  "fdra_id": "NEU-Western",
+  "file": "climo/NEU-Western.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 264,
+   "50": 285,
+   "75": 292,
+   "90": 309
+  }
+ },
+ {
+  "fdra_id": "NPS-Ca Bnp",
+  "file": "climo/NPS-Ca_Bnp.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 273,
+   "50": 290,
+   "75": 296,
+   "90": 310
+  }
+ },
+ {
+  "fdra_id": "ORC-Orange County Coastal",
+  "file": "climo/ORC-Orange_County_Coastal.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 353,
+   "75": 359,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "ORC-Orange County Inland",
+  "file": "climo/ORC-Orange_County_Inland.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 353,
+   "75": 359,
+   "90": 361
+  }
+ },
+ {
   "fdra_id": "PNF-Central",
   "file": "climo/PNF-Central.json",
   "years": [
@@ -986,6 +2710,443 @@
    "50": 297,
    "75": 309,
    "90": 319
+  }
+ },
+ {
+  "fdra_id": "RRU-East",
+  "file": "climo/RRU-East.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 266,
+   "50": 298,
+   "75": 309,
+   "90": 325
+  }
+ },
+ {
+  "fdra_id": "RRU-Orange County Inland",
+  "file": "climo/RRU-Orange_County_Inland.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 353,
+   "75": 359,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "RRU-West",
+  "file": "climo/RRU-West.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 305,
+   "50": 324,
+   "75": 342,
+   "90": 347
+  }
+ },
+ {
+  "fdra_id": "SBC-166",
+  "file": "climo/SBC-166.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 276,
+   "50": 287,
+   "75": 311,
+   "90": 320
+  }
+ },
+ {
+  "fdra_id": "SBC-Central Coast",
+  "file": "climo/SBC-Central_Coast.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 352,
+   "50": 355,
+   "75": 360,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "SBC-Channel Isalnds",
+  "file": "climo/SBC-Channel_Isalnds.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 338,
+   "50": 353,
+   "75": 360,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "SBC-Coastal",
+  "file": "climo/SBC-Coastal.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 352,
+   "50": 355,
+   "75": 360,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "SBC-Cuyama Valley",
+  "file": "climo/SBC-Cuyama_Valley.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 283,
+   "50": 287,
+   "75": 324,
+   "90": 329
+  }
+ },
+ {
+  "fdra_id": "SBC-Mountain",
+  "file": "climo/SBC-Mountain.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 301,
+   "50": 324,
+   "75": 342,
+   "90": 348
+  }
+ },
+ {
+  "fdra_id": "SBC-North",
+  "file": "climo/SBC-North.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 351,
+   "50": 356,
+   "75": 361,
+   "90": 362
+  }
+ },
+ {
+  "fdra_id": "SBC-Santa Ynez Valley",
+  "file": "climo/SBC-Santa_Ynez_Valley.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 301,
+   "50": 324,
+   "75": 342,
+   "90": 348
+  }
+ },
+ {
+  "fdra_id": "SBC-South Coast",
+  "file": "climo/SBC-South_Coast.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 351,
+   "50": 356,
+   "75": 361,
+   "90": 362
+  }
+ },
+ {
+  "fdra_id": "SCU-2",
+  "file": "climo/SCU-2.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 335,
+   "75": 347,
+   "90": 351
+  }
+ },
+ {
+  "fdra_id": "SCU-5",
+  "file": "climo/SCU-5.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 288,
+   "50": 317,
+   "75": 337,
+   "90": 351
+  }
+ },
+ {
+  "fdra_id": "SCU-6",
+  "file": "climo/SCU-6.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 295,
+   "50": 316,
+   "75": 330,
+   "90": 346
+  }
+ },
+ {
+  "fdra_id": "SCU-7",
+  "file": "climo/SCU-7.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 283,
+   "50": 294,
+   "75": 314,
+   "90": 327
+  }
+ },
+ {
+  "fdra_id": "SDU-Desert",
+  "file": "climo/SDU-Desert.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 320,
+   "50": 325,
+   "75": 345,
+   "90": 358
+  }
+ },
+ {
+  "fdra_id": "SDU-Inland",
+  "file": "climo/SDU-Inland.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 327,
+   "50": 354,
+   "75": 358,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "SDU-Mountain",
+  "file": "climo/SDU-Mountain.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 324,
+   "50": 326,
+   "75": 345,
+   "90": 349
   }
  },
  {
@@ -1101,6 +3262,253 @@
    "50": 292,
    "75": 309,
    "90": 316
+  }
+ },
+ {
+  "fdra_id": "SHU-1",
+  "file": "climo/SHU-1.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 277,
+   "50": 289,
+   "75": 311,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "SHU-2",
+  "file": "climo/SHU-2.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 297,
+   "75": 312,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "SHU-3",
+  "file": "climo/SHU-3.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 277,
+   "50": 290,
+   "75": 306,
+   "90": 316
+  }
+ },
+ {
+  "fdra_id": "SHU-4",
+  "file": "climo/SHU-4.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 297,
+   "75": 312,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "SHU-5",
+  "file": "climo/SHU-5.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 274,
+   "50": 288,
+   "75": 294,
+   "90": 311
+  }
+ },
+ {
+  "fdra_id": "SKU-Unit-wide",
+  "file": "climo/SKU-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 271,
+   "50": 277,
+   "75": 290,
+   "90": 300
+  }
+ },
+ {
+  "fdra_id": "SLU-166",
+  "file": "climo/SLU-166.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 276,
+   "50": 287,
+   "75": 311,
+   "90": 320
+  }
+ },
+ {
+  "fdra_id": "SLU-Coastal",
+  "file": "climo/SLU-Coastal.json",
+  "years": [
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 2514,
+  "season_end_quantiles": {
+   "25": 338,
+   "50": 352,
+   "75": 353,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "SLU-Coastal Valley",
+  "file": "climo/SLU-Coastal_Valley.json",
+  "years": [
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 2514,
+  "season_end_quantiles": {
+   "25": 338,
+   "50": 352,
+   "75": 353,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "SLU-Inland Grass",
+  "file": "climo/SLU-Inland_Grass.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 280,
+   "50": 287,
+   "75": 296,
+   "90": 320
+  }
+ },
+ {
+  "fdra_id": "SLU-Slo",
+  "file": "climo/SLU-Slo.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 276,
+   "50": 287,
+   "75": 311,
+   "90": 320
   }
  },
  {
@@ -1403,6 +3811,75 @@
   }
  },
  {
+  "fdra_id": "SRF-Ltrd",
+  "file": "climo/SRF-Ltrd.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 279,
+   "50": 289,
+   "75": 306,
+   "90": 317
+  }
+ },
+ {
+  "fdra_id": "SRF-Mr",
+  "file": "climo/SRF-Mr.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 272,
+   "50": 289,
+   "75": 311,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "SRF-Or",
+  "file": "climo/SRF-Or.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 272,
+   "50": 289,
+   "75": 306,
+   "90": 319
+  }
+ },
+ {
   "fdra_id": "SRF-RWP",
   "file": "climo/SRF-RWP.json",
   "years": [
@@ -1423,6 +3900,29 @@
    "50": 290,
    "75": 315,
    "90": 327
+  }
+ },
+ {
+  "fdra_id": "SRF-Srnra",
+  "file": "climo/SRF-Srnra.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 268,
+   "50": 272,
+   "75": 287,
+   "90": 292
   }
  },
  {
@@ -1449,29 +3949,6 @@
   }
  },
  {
-  "fdra_id": "STF-360",
-  "file": "climo/STF-360.json",
-  "years": [
-   2016,
-   2017,
-   2018,
-   2019,
-   2020,
-   2021,
-   2022,
-   2023,
-   2024,
-   2025
-  ],
-  "n_days": 3653,
-  "season_end_quantiles": {
-   "25": 287,
-   "50": 305,
-   "75": 322,
-   "90": 330
-  }
- },
- {
   "fdra_id": "STF-370",
   "file": "climo/STF-370.json",
   "years": [
@@ -1492,6 +3969,167 @@
    "50": 305,
    "75": 328,
    "90": 340
+  }
+ },
+ {
+  "fdra_id": "TCU-Fothills West",
+  "file": "climo/TCU-Fothills_West.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 290,
+   "75": 306,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "TCU-Sierra",
+  "file": "climo/TCU-Sierra.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 286,
+   "50": 294,
+   "75": 320,
+   "90": 327
+  }
+ },
+ {
+  "fdra_id": "TCU-Sierra South",
+  "file": "climo/TCU-Sierra_South.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 286,
+   "50": 294,
+   "75": 320,
+   "90": 327
+  }
+ },
+ {
+  "fdra_id": "TCU-West",
+  "file": "climo/TCU-West.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 290,
+   "75": 306,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "TGU-1",
+  "file": "climo/TGU-1.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 296,
+   "75": 314,
+   "90": 323
+  }
+ },
+ {
+  "fdra_id": "TGU-2",
+  "file": "climo/TGU-2.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 271,
+   "50": 287,
+   "75": 305,
+   "90": 316
+  }
+ },
+ {
+  "fdra_id": "TGU-3",
+  "file": "climo/TGU-3.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 293,
+   "75": 313,
+   "90": 318
   }
  },
  {
@@ -1584,6 +4222,282 @@
    "50": 297,
    "75": 309,
    "90": 324
+  }
+ },
+ {
+  "fdra_id": "TUU-1",
+  "file": "climo/TUU-1.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 329,
+   "50": 343,
+   "75": 347,
+   "90": 354
+  }
+ },
+ {
+  "fdra_id": "TUU-Bia",
+  "file": "climo/TUU-Bia.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 289,
+   "50": 297,
+   "75": 309,
+   "90": 324
+  }
+ },
+ {
+  "fdra_id": "TUU-Fed",
+  "file": "climo/TUU-Fed.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 289,
+   "50": 302,
+   "75": 309,
+   "90": 324
+  }
+ },
+ {
+  "fdra_id": "TUU-Lra",
+  "file": "climo/TUU-Lra.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 329,
+   "50": 343,
+   "75": 347,
+   "90": 354
+  }
+ },
+ {
+  "fdra_id": "UFW-Ca Lkr",
+  "file": "climo/UFW-Ca_Lkr.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 273,
+   "50": 290,
+   "75": 296,
+   "90": 310
+  }
+ },
+ {
+  "fdra_id": "UFW-Ca Mdr",
+  "file": "climo/UFW-Ca_Mdr.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 275,
+   "50": 284,
+   "75": 302,
+   "90": 311
+  }
+ },
+ {
+  "fdra_id": "UFW-Ca Tkr",
+  "file": "climo/UFW-Ca_Tkr.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 273,
+   "50": 290,
+   "75": 296,
+   "90": 310
+  }
+ },
+ {
+  "fdra_id": "UFW-Ufw-Lkr",
+  "file": "climo/UFW-Ufw-Lkr.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 295,
+   "75": 304,
+   "90": 310
+  }
+ },
+ {
+  "fdra_id": "USF-Ca Mdf",
+  "file": "climo/USF-Ca_Mdf.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 278,
+   "50": 296,
+   "75": 309,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "VNC-Central",
+  "file": "climo/VNC-Central.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 331,
+   "50": 340,
+   "75": 346,
+   "90": 354
+  }
+ },
+ {
+  "fdra_id": "VNC-South",
+  "file": "climo/VNC-South.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 340,
+   "50": 353,
+   "75": 356,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "VNC-Unit-wide",
+  "file": "climo/VNC-Unit-wide.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 333,
+   "50": 346,
+   "75": 359,
+   "90": 364
   }
  }
 ]

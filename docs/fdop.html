@@ -408,9 +408,9 @@ function writeAbout() {
     <br>• <i>Vegetation</i>: share of the FDRA burned in the trailing 5 years (default watch ${c.vegYellow}%, review ${c.vegRed}% — set these to the unit's own judgment).
     <br>• <i>Stations</i>: SIG data completeness (watch < ${Math.round(100 * c.completeMin)}%, review < 60%).
     <br>Recalibrate when the vegetation check is red or two checks are red; review when one is red or two are yellow.</p>
-    <p><b>Cautions.</b> FPA FOD (through 2020) and WFIGS (2021 on) count fires differently — WFIGS includes many more small incidents — so the default
-    calibration is 2006–2020 and later years are judged mostly on large fires, timing and index skill. Fire perimeters miss small fires and can over-map old ones.
-    Thresholds here are screening rules, not policy: confirm any recalibration in FireFamily Plus with the unit.</p>`;
+    <p><b>Cautions.</b> Fire records include every wildfire, all agencies and sizes: FPA FOD through 2020 and WFIGS from 2021 (complex members
+    counted individually). The two sources were compiled differently, so check the fire-per-year chart for a step at 2021 before trusting trends across it.
+    Fire perimeters miss small fires and can over-map old ones. Thresholds here are screening rules, not policy: confirm any recalibration in FireFamily Plus with the unit.</p>`;
 }
 
 function csv() {

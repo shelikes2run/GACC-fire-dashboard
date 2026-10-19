@@ -54,7 +54,7 @@ if (n > 0) { NOW = {'erc': Round(Average(live, 'ERC'), 1), 'bi': Round(Average(l
 function bclass(v, bps, labels) {
   if (IsEmpty(v)) { return '' }
   var c = labels[0];
-  for (var i in bps) { if (v >= bps[i] && i + 1 < Count(labels)) { c = labels[i + 1] } }
+  for (var i in bps) { if (v > bps[i] && i + 1 < Count(labels)) { c = labels[i + 1] } }   // breakpoint = top of its class
   return c;
 }
 function chip(c, rank, total) {
@@ -82,7 +82,7 @@ for (var i in tools) {
       rank = IndexOf(cls, c);
     } else if (HasKey(E.p, k) && E.fm == 'Y') {
       var q = E.p[k];
-      c = When(v >= q[1], '≥ 97th', v >= q[0], '≥ 90th', '< 90th');
+      c = When(v >= q[1], '≥ 97th', v >= q[0], '≥ 90th', 'below 90th');
       rank = When(v >= q[1], 2, v >= q[0], 1, 0); total = 3;
     }
   }

@@ -257,7 +257,7 @@ function show(name) {
 }
 
 const LVL_COL = ['#2e7d32', '#7cb342', '#fbc02d', '#fb8c00', '#e53935', '#8e24aa'];
-function lvlOf(t, v) { if (v === null || v === undefined) return null; let c = 0; t.breaks.forEach((b, i) => { if (v >= b) c = i + 1; }); return c; }
+function lvlOf(t, v) { if (v === null || v === undefined) return null; let c = 0; t.breaks.forEach((b, i) => { if (v > b) c = i + 1; }); return c;   // breakpoint = top of its class }
 function lvlName(t, c) { return (t.classes && t.classes[c]) || String(c + 1); }
 function lvlBadge(t, c) {
   if (c === null) return '–';

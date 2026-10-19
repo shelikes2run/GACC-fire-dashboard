@@ -1400,5 +1400,183 @@
    }
   ],
   "notes": "2026 FDOP: one FDRA, SIG of 5 RAWS (Beaver, Bald Mtn, Hellhole, Owens Camp, Steely Fork), fuel model Y, 2016-2025 Jan-Dec. Staffing ERC-Y 0-15/16-31/32-50/51-60/61+; dispatch BI-Y 0-10 smoke check, 11-20 low, 21-29 medium, 30+ high (95th). Large fire = 5 ac; multi-fire day = 2+. FDOP SIG 90th/97th: ERC-Y 57/61, BI-Y 30/32 (ERC-X 88/93, BI-X 147/161). Replaces the peak / non-peak sets. Robbs and Granite Springs to join a future high-elevation FDRA."
+ },
+ "CNF-INLAND": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45704,
+   45710,
+   45729,
+   45734,
+   45744,
+   45745
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    52,
+    105,
+    211,
+    239
+   ],
+   "erc": [
+    60
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     52,
+     105,
+     211,
+     239
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     119,
+     188
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 61+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     60
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 61+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "Coastal/Inland FDRA. 2025 FEMS amendment: dispatch BI-X 0-119 / 120-188 / 189+; staffing & adjective BI-X 0-52/53-105/106-211/212-239/240+ (90th 211, 97th 239); seasonal staffing ERC-X 61+ (90% of fires ≥1 ac, 2013-2022, calendar year, large fire 1 ac). Stations from the 2026 thresholds sheet (2022 FDOP SIG table is scanned)."
+ },
+ "CNF-MOUNTAIN": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45619,
+   45635,
+   45636,
+   45707,
+   45708,
+   45709,
+   45711,
+   45740
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    46,
+    94,
+    188,
+    212
+   ],
+   "erc": [
+    64
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     46,
+     94,
+     188,
+     212
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     111,
+     167
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 65+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 65+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). Stations from the 2026 thresholds sheet."
  }
 }

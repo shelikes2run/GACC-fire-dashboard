@@ -2870,6 +2870,236 @@
   }
  },
  {
+  "fdra_id": "CNF-INLAND",
+  "file": "climo/CNF-INLAND.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 355,
+   "50": 356,
+   "75": 359,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "CNF-INLAND__V",
+  "file": "climo/CNF-INLAND__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 355,
+   "50": 356,
+   "75": 359,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "CNF-INLAND__W",
+  "file": "climo/CNF-INLAND__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 355,
+   "50": 356,
+   "75": 359,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "CNF-INLAND__Y",
+  "file": "climo/CNF-INLAND__Y.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 341,
+   "75": 357,
+   "90": 358
+  }
+ },
+ {
+  "fdra_id": "CNF-INLAND__Z",
+  "file": "climo/CNF-INLAND__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 325,
+   "50": 353,
+   "75": 357,
+   "90": 360
+  }
+ },
+ {
+  "fdra_id": "CNF-MOUNTAIN",
+  "file": "climo/CNF-MOUNTAIN.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 354,
+   "50": 355,
+   "75": 357,
+   "90": 359
+  }
+ },
+ {
+  "fdra_id": "CNF-MOUNTAIN__V",
+  "file": "climo/CNF-MOUNTAIN__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 354,
+   "50": 355,
+   "75": 359,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "CNF-MOUNTAIN__W",
+  "file": "climo/CNF-MOUNTAIN__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 353,
+   "50": 355,
+   "75": 356,
+   "90": 359
+  }
+ },
+ {
+  "fdra_id": "CNF-MOUNTAIN__Y",
+  "file": "climo/CNF-MOUNTAIN__Y.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 342,
+   "75": 357,
+   "90": 358
+  }
+ },
+ {
+  "fdra_id": "CNF-MOUNTAIN__Z",
+  "file": "climo/CNF-MOUNTAIN__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 325,
+   "50": 341,
+   "75": 355,
+   "90": 357
+  }
+ },
+ {
   "fdra_id": "CZU-Bayside",
   "file": "climo/CZU-Bayside.json",
   "years": [

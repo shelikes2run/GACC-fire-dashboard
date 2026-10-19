@@ -326,10 +326,9 @@ function breakOptions(cal, k, cur) {
   const capped = cur.map(v => v);
   const hiN = cur.filter(v => rankPct(W.sorted, v) >= 99.5).length;
   if (hiN && nb >= 2) {
-    const q = [P(90), P(97)];
-    for (let i = 0; i < Math.min(hiN, 2); i++) capped[nb - 1 - i] = Math.min(capped[nb - 1 - i], q[1 - i]);
-    for (let i = 1; i < nb; i++) if (capped[i] <= capped[i - 1]) capped[i] = rnd(capped[i - 1] + 1);
-    opts.push({ key: 'cap', name: 'Current, unreachable breaks pulled to 90th/97th', why: `${hiN} current breakpoint(s) sit above the 99.5th percentile of calibration days, so those classes almost never occur.`, b: capped });
+    capped[nb - 2] = P(90); capped[nb - 1] = P(97);                  // top two classes = 90th / 97th percentile days
+    for (let i = nb - 3; i >= 0; i--) if (capped[i] >= capped[i + 1]) capped[i] = rnd(pctile(W.sorted, Math.max(1, rankPct(W.sorted, capped[i + 1]) - 15)));
+    opts.push({ key: 'cap', name: 'Current, top two breaks at the 90th / 97th', why: `${hiN} current breakpoint(s) sit above the 99.5th percentile of calibration days, so those classes almost never occur.`, b: capped });
   }
   opts.forEach(o => { o.b = o.b.filter(v => v !== null).sort((x, y) => x - y); o.ev = o.b.length === nb ? evalBreaks(cal, k, o.b) : null; });
   return opts.filter(o => o.ev);

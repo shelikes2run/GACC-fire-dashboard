@@ -810,7 +810,7 @@
   ]
  },
  "INF-460": {
-  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 5",
+  "source": "Inyo NF Fire Danger Operating Plan, April 2026, Appendix 2, Tables A5.1-A5.2",
   "stations": [
    43709,
    43710,
@@ -823,8 +823,8 @@
    "12-31"
   ],
   "calib": [
-   2011,
-   2020
+   2006,
+   2025
   ],
   "breaks": {
    "bi": [
@@ -843,7 +843,7 @@
   ],
   "tools": [
    {
-    "label": "FFP BI-Y bins (not modified)",
+    "label": "Adjective, dispatch & staffing levels (BI-Y; Appendix 2)",
     "idx": "bi",
     "fm": "Y",
     "breaks": [
@@ -861,7 +861,7 @@
     ]
    }
   ],
-  "notes": "BI-Y, year-round (Jan 1-Dec 31), 2011-2020; 90th = 34, 97th = 38. Managers have not modified the FFP bins."
+  "notes": "MONO SIG: Crestview, Rock Creek, Dexter (equal weight), 2005-2025 Jan-Dec. BI-Y bins Low 0-14 / Mod 15-25 / High 26-33 / VH 34-37 (90th) / Ext 38+ (97th); FFP bins, not manager-modified. BI-Y used for pocket card, adjective, dispatch and staffing levels. Calibration starts 2006 here (first year of the Workbench record)."
  },
  "SNF-528": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 6",
@@ -1216,7 +1216,7 @@
   "notes": "ERC-X; station 90th/97th Democrat 107/112, River Kern 110/115 (averaged here). FDOP class graphics not in the text."
  },
  "INF-461": {
-  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 11",
+  "source": "Inyo NF Fire Danger Operating Plan, April 2026, Appendix 3, Tables A11.1-A11.2",
   "stations": [
    43708,
    43710,
@@ -1230,8 +1230,8 @@
    "12-31"
   ],
   "calib": [
-   2011,
-   2020
+   2006,
+   2025
   ],
   "breaks": {
    "bi": [
@@ -1250,7 +1250,7 @@
   ],
   "tools": [
    {
-    "label": "FFP BI-Y bins (not modified)",
+    "label": "Adjective, dispatch & staffing levels (BI-Y; Appendix 3)",
     "idx": "bi",
     "fm": "Y",
     "breaks": [
@@ -1268,10 +1268,10 @@
     ]
    }
   ],
-  "notes": "BI-Y, year-round because of winter fire activity; 90th = 49, 97th = 54."
+  "notes": "OWENS SIG: Benton, Rock Creek, Owens Valley, Oak Creek (equal weight), 2005-2025 Jan-Dec. BI-Y bins Low 0-31 / Mod 32-37 / High 38-48 / VH 49-53 (90th) / Ext 54+ (97th); FFP bins, not manager-modified. BI-Y for all decision tools. Calibration starts 2006 here (first year of the Workbench record)."
  },
  "INF-443": {
-  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 12",
+  "source": "Inyo NF Fire Danger Operating Plan, April 2026, Appendix 4, Tables A12.1-A12.2",
   "stations": [
    44722
   ],
@@ -1282,8 +1282,8 @@
    "12-31"
   ],
   "calib": [
-   2011,
-   2020
+   2006,
+   2025
   ],
   "breaks": {
    "erc": [
@@ -1302,7 +1302,7 @@
   ],
   "tools": [
    {
-    "label": "FFP ERC-Y bins (not modified)",
+    "label": "Adjective, dispatch & staffing levels (ERC-Y; Appendix 4)",
     "idx": "erc",
     "fm": "Y",
     "breaks": [
@@ -1320,7 +1320,7 @@
     ]
    }
   ],
-  "notes": "Single station (Black Rock), ERC-Y, year-round; 90th = 50, 97th = 55."
+  "notes": "PLATEAU SIG: Black Rock (SQF RAWS), 2005-2025 Jan-Dec. ERC-Y bins Low 0-25 / Mod 26-35 / High 36-49 / VH 50-54 (90th) / Ext 55+ (97th); FFP bins, not manager-modified. ERC-Y for all decision tools. Calibration starts 2006 here (first year of the Workbench record)."
  },
  "ENF-335": {
   "source": "Eldorado NF Fire Danger Operating Plan 2026, Tables 3, 5, 7, 10, 11",

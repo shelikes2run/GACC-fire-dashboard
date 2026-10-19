@@ -44,7 +44,7 @@
   "notes": "Manager-modified ERC-Y bins used in 2022 (FFP initial bins 0-46, 47-59, 60-72, 73-76, 77+). Large fire = 10 ac final size; multi-fire day = 2+ starts.",
   "tools": [
    {
-    "label": "Staffing / dispatch \u2014 manager ERC-Y bins (2022)",
+    "label": "Staffing / dispatch — manager ERC-Y bins (2022)",
     "idx": "erc",
     "fm": "Y",
     "breaks": [
@@ -1321,5 +1321,84 @@
    }
   ],
   "notes": "Single station (Black Rock), ERC-Y, year-round; 90th = 50, 97th = 55."
+ },
+ "ENF-335": {
+  "source": "Eldorado NF Fire Danger Operating Plan 2026, Tables 3, 5, 7, 10, 11",
+  "stations": [
+   42601,
+   42603,
+   42608,
+   42611,
+   42615
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    15,
+    31,
+    50,
+    60
+   ],
+   "bi": [
+    10,
+    20,
+    29
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 5,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-Y; Tables 5 and 10, Jan–Dec)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     15,
+     31,
+     50,
+     60
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; Table 7, Jan–Dec)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     10,
+     20,
+     29
+    ],
+    "classes": [
+     "Smoke Check",
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 FDOP: one FDRA, SIG of 5 RAWS (Beaver, Bald Mtn, Hellhole, Owens Camp, Steely Fork), fuel model Y, 2016-2025 Jan-Dec. Staffing ERC-Y 0-15/16-31/32-50/51-60/61+; dispatch BI-Y 0-10 smoke check, 11-20 low, 21-29 medium, 30+ high (95th). Large fire = 5 ac; multi-fire day = 2+. FDOP SIG 90th/97th: ERC-Y 57/61, BI-Y 30/32 (ERC-X 88/93, BI-X 147/161). Replaces the peak / non-peak sets. Robbs and Granite Springs to join a future high-elevation FDRA."
  }
 }

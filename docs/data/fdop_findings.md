@@ -16,6 +16,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - SNF-528: climatology May 1–Nov 30, but Table A6.1 lists Jun 15–Oct 1 for thresholds.
 - SQF-445: 90th/97th averaged across stations.
 - SQF-435: an outside-NF piece's Y station had been averaged into the X data — fixed (separate unit).
+- Sequoia's current FDOP is still this 2023 Sierra South plan (the SQF file provided is the identical PDF). Inyo has since issued its own April 2026 FDOP; STF/SNF/SQF have not.
 
 ## Angeles NF (ANF) — FDOP Vol. 3 (2022-07-29)
 - Loaded: FDRA-average BI-X and ERC-X breakpoints (Tables 2–4) for Front Country, High Country, Saugus.

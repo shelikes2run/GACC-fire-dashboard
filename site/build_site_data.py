@@ -41,6 +41,24 @@ PAL_RAW = 'https://raw.githubusercontent.com/shelikes2run/GACC-fire-dashboard/pa
 NORMAL_YEARS = (2016, 2025)
 TZ = ZoneInfo('America/Los_Angeles')
 SEASONS = {'peak': ((5, 1), (11, 15))}            # ENF-335 peak season May 1 – Nov 15
+FMS = ['V', 'W', 'X', 'Y', 'Z']                   # NFDRS 2016 fuel models offered on the charts
+
+
+def all_fm(mem: dict):
+    """Membership with every fuel model: {(unit, fm): [(stationId, fm), ...]} and the
+    unit's own (FDOP) fuel model. Same stations, each fuel model averaged on its own."""
+    out, own = {}, {}
+    for uid, members in mem.items():
+        own[uid] = members[0][1] if members else 'Y'
+        sids = sorted({s for s, _ in members})
+        for fm in FMS:
+            out[(uid, fm)] = members if fm == own[uid] else [(s, fm) for s in sids]
+    return out, own
+
+
+def fm_name(uid: str, fm: str, own: str) -> str:
+    """File stem: the FDOP fuel model keeps the plain unit name; others get _<FM>."""
+    return safe(uid) if fm == own else f'{safe(uid)}__{fm}'
 
 
 def safe(uid: str) -> str:
@@ -52,16 +70,42 @@ def base_id(uid: str) -> str:
 
 
 # ── normals ───────────────────────────────────────────────────────────────────
+def fast_unit_daily(hist: pd.DataFrame, named: dict) -> pd.DataFrame:
+    """cn.unit_daily for ~1,000 units: split history by fuel model once."""
+    by_fm = {fm: g for fm, g in hist.groupby('fm')}
+    parts = []
+    for uid, members in named.items():
+        pieces = []
+        for fm in {f for _, f in members}:
+            g = by_fm.get(fm)
+            if g is not None:
+                pieces.append(g[g['stationId'].isin({sid for sid, f in members if f == fm})])
+        sub = pd.concat(pieces) if pieces else pd.DataFrame()
+        if sub.empty:
+            continue
+        d = sub.groupby('date')[cn.INDICES].mean()
+        d['n_reporting'] = sub.groupby('date')['stationId'].nunique()
+        d = d.reset_index()
+        d.insert(0, 'unit_id', uid)
+        d.insert(0, 'unit_type', 'FDRA')
+        parts.append(d)
+    return pd.concat(parts, ignore_index=True) if parts else pd.DataFrame()
+
+
 def build_normals(out: Path, cache: Path):
     mem, pairs = cn.load_fdra_membership(MEMBERSHIP)
+    allm, own = all_fm(mem)
     y0, y1 = NORMAL_YEARS
+    sids = sorted(pairs['stationId'].astype(int).unique())
+    pairs = pd.DataFrame([(s, fm) for s in sids for fm in FMS], columns=['stationId', 'FuelModel'])
     cn.download_history(pairs, y0, y1, cache)
     hist = cn.load_history(pairs, y0, y1, cache)
-    daily = cn.unit_daily(hist, mem, 'FDRA')
+    named = {fm_name(u, fm, own[u]): m for (u, fm), m in allm.items()}
+    daily = fast_unit_daily(hist, named)
     wx_st = pairs[['stationId']].drop_duplicates()
     cn.download_weather(wx_st, y0, y1, cache)
     wx = cn.load_weather_daily(wx_st, y0, y1, cache)
-    wx_by_unit = cn.unit_weather(wx, mem) if len(wx) else None
+    wx_by_unit = cn.unit_weather(wx, named) if len(wx) else None
     cn.write_site_climo(daily, None, out / 'normals', wx_by_unit)
     # extra envelopes the site charts use (100-hr / 1000-hr already in envelope)
     log.info('normals written for %d units', daily['unit_id'].nunique())
@@ -170,6 +214,9 @@ def build_current(out: Path):
     today = now.date()
     start, end = f'{today.year}-01-01', (today + timedelta(days=10)).isoformat()
     mem, pairs = cn.load_fdra_membership(MEMBERSHIP)
+    allm, own = all_fm(mem)
+    sids = sorted(pairs['stationId'].astype(int).unique())
+    pairs = pd.DataFrame([(s, fm) for s in sids for fm in FMS], columns=['stationId', 'FuelModel'])
     n, w = fetch_current(pairs, start, end)
     log.info('current: %d NFDR rows, %d wx rows, %s → %s', len(n), len(w), start, end)
     polys = json.loads(POLYGONS.read_text())
@@ -178,7 +225,9 @@ def build_current(out: Path):
     cdir.mkdir(parents=True, exist_ok=True)
     idx_units = {}
     names = n.drop_duplicates('stationId').set_index('stationId')['name'].to_dict()
-    for uid, members in mem.items():
+    fm_files = {}
+    for (uid, fmk), members in allm.items():
+        stem = fm_name(uid, fmk, own[uid])
         mset = set(members)
         sub = n[[(s, f) in mset for s, f in zip(n['stationId'], n['fm'])]]
         if sub.empty:
@@ -192,7 +241,7 @@ def build_current(out: Path):
             d = d.join(_pick(ww, ['tmax', 'rhmin'])[['tmax', 'rhmin']], how='left')
         else:
             d['tmax'] = d['rhmin'] = np.nan
-        cpath = out / 'normals' / 'climo' / f'{safe(uid)}.json'
+        cpath = out / 'normals' / 'climo' / f'{stem}.json'
         climo = json.loads(cpath.read_text()) if cpath.exists() else {}
         d['erc_p'] = _pct(d['erc'], climo.get('erc_q'))
         d['bi_p'] = _pct(d['bi'], climo.get('bi_q'))
@@ -227,7 +276,7 @@ def build_current(out: Path):
         o_row = d.loc[last_o] if last_o is not None else None
         f_row = fc.iloc[0] if len(fc) else None
         bid = base_id(uid)
-        unit = {'unit_id': uid, 'fdra_id': bid, 'season': uid[len(bid):].strip(' ()') or None,
+        unit = {'unit_id': uid, 'fdra_id': bid, 'fm': fmk, 'fdop_fm': own[uid], 'season': uid[len(bid):].strip(' ()') or None,
                 'stations': [{'stationId': s, 'name': names.get(s, ''), 'fm': f} for s, f in members],
                 'has_normals': bool(climo), 'normal_years': climo.get('years', []),
                 'latest_obs': {'date': last_o.strftime('%Y-%m-%d') if last_o is not None else None, **(snap(o_row) or {})},
@@ -237,8 +286,11 @@ def build_current(out: Path):
         doc = {**unit, 'generated': now.strftime('%Y-%m-%d %H:%M %Z'), 'series': series, 'station_table': st_rows,
                'pal': pal.get(next((p['properties']['fdra_id'] for p in polys['features']
                                     if p['properties']['fdra_id'].upper() == bid.upper()), bid), [])}
-        (cdir / f'{safe(uid)}.json').write_text(json.dumps(doc, separators=(',', ':'), allow_nan=False))
-        idx_units.setdefault(bid.upper(), []).append(unit)
+        (cdir / f'{stem}.json').write_text(json.dumps(doc, separators=(',', ':'), allow_nan=False))
+        fm_files.setdefault(uid, {})[fmk] = {'cur': f'current/{stem}.json',
+                                             **({'norm': f'normals/climo/{stem}.json'} if climo else {})}
+        if fmk == own[uid]:
+            idx_units.setdefault(bid.upper(), []).append(unit)
 
     # index: one row per polygon; seasonal FDRAs pick the unit for today's season
     md = (today.month, today.day)
@@ -258,6 +310,7 @@ def build_current(out: Path):
                      'fuel_model': p['fuel_model'], 'units': [u['unit_id'] for u in units],
                      'files': {u['unit_id']: f"current/{safe(u['unit_id'])}.json" for u in units},
                      'normals': {u['unit_id']: f"normals/climo/{safe(u['unit_id'])}.json" for u in units if u['has_normals']},
+                     'fm_files': {u['unit_id']: fm_files.get(u['unit_id'], {}) for u in units},
                      'active_unit': active and active['unit_id'],
                      'latest_obs': active and active['latest_obs'], 'next_fcst': active and active['next_fcst'],
                      'sfdi_class_fcst': active and active['sfdi_class_fcst'],

@@ -172,7 +172,7 @@ async function run() {
   if (!cfg.breaks.length) setBreaksFromPct();
   drawValidation(); drawDP(); drawDelta(); drawHistory(); writeAbout();
   drawStations().catch(e => console.warn(e));
-  try { localStorage.setItem('fdop_' + W.unit.unit, JSON.stringify(cfg)); } catch (e) {}
+  try { localStorage.setItem('fdop_' + W.unit.unit, JSON.stringify({ ...cfg, src: (W.S0 && W.S0.source) || '' })); } catch (e) {}
 }
 
 function calRows(rows) { return rows.filter(r => r.year >= W.cfg.calibFrom && r.year <= W.cfg.calibTo); }
@@ -442,6 +442,7 @@ function fillSetup(unit) {
   // starting point: the FDRA's current signed FDOP (docs/data/fdop_start.json), then the 2026 sheet
   const S0 = (W.start || {})[unit.unit] || (W.start || {})[unit.fdra_id] || null;
   W.S0 = S0;
+  if (S0 && saved && saved.src !== S0.source) saved = null;   // FDOP starting point changed since this browser saved a setup
   const st = W.override || (fromUrl && q('st') ? q('st').split('.').map(Number) : saved ? saved.stations : (S0 && S0.stations) || unit.sheet_stations);
   W.override = null;
   for (const s of st) if (S0 && S0.stations && S0.stations.includes(s) && !unit.candidates.some(c => c.sid === s)) {

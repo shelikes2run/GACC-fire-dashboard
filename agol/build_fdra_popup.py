@@ -15,11 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 start = json.loads((ROOT / 'docs' / 'data' / 'fdop_start.json').read_text())
 p = json.loads(Path(sys.argv[1]).read_text())
 
-SHEET = {   # 2026 Forest Thresholds sheet (no FDOP file loaded yet)
-    'TNF-350': [['Custom (sheet; index assumed BI)', 'bi', 'Y', [22, 30], ['Normal', 'Elevated', 'Critical']]],
-    'TNF-354': [['Custom (sheet; index assumed BI)', 'bi', 'Y', [22, 30], ['Normal', 'Elevated', 'Critical']]],
-    'TNF-380': [['Custom (sheet; index assumed BI)', 'bi', 'Y', [22, 30], ['Normal', 'Elevated', 'Critical']]],
-}
+SHEET = {}   # 2026 sheet values no longer used: every forest with thresholds now comes from its FDOP (fdop_start.json)
 
 D = {}
 for fid, fm in p['fm'].items():

@@ -501,7 +501,11 @@ def main(out: Path, cache: Path):
         'sources': {'fires': f'FPA FOD 6th ed. {START_YEAR}-{fod_max}; WFIGS incident locations {fod_max + 1}-{now.year}',
                     'perimeters': f'CAL FIRE FRAP {START_YEAR}-{frap_max}' + (f'; WFIGS YTD {now.year}' if frap_max < now.year else ''),
                     'nfdrs': 'FEMS daily summaries (observed), NFDRS 2016'},
-        'units': units, 'scorecards': cards}, separators=(',', ':'), default=float))
+        'units': units, 'scorecards': cards,
+        # every RAWS with history, so a planner can add any station to an FDRA's SIG in the Workbench
+        'stations': [{'sid': int(k), 'name': names.get(int(k), ''), 'lat': stn.get(int(k), {}).get('lat'),
+                      'lon': stn.get(int(k), {}).get('lon'), 'fms': v} for k, v in sorted(meta.items())]},
+        separators=(',', ':'), default=float))
     log.info('FDOP data: %d units, %d stations × fuel models, %d FDRAs with fires', len(units),
              sum(len(v) for v in meta.values()), len(by_fdra))
 

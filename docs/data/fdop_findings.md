@@ -71,6 +71,19 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - Analysis years, season and large-fire size are not stated in the text (in FFP graphics) — Workbench defaults used.
 - Severity triggers in Vol. 2 still reference ERC fuel model G (1978) for PSAs NC02/NC05 in places, alongside fuel model Y elsewhere.
 
+## Plumas NF + Tahoe NF (PNF/TNF) — Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09
+- New structure: three zone FDRAs (North, East, West) whose SIGs cross the two forests; fuel model Y; staffing from 2005–2022 FEMS gap-filled data, May 1–Oct 31; dispatch from 2005–2022 weather with 2014–2023 fire history.
+  - North (Quincy, Pierce, Cashman): staffing BI-Y 18/25/30/38; dispatch 18/25.
+  - East (Laufman, Denten Creek, Coyote, Stampede, Rice Canyon): staffing 14/22/28/34; dispatch 19/29.
+  - West (Saddleback, Pike County LO, White Cloud, Duncan, Seed Orchard): staffing 11/23/32/38; dispatch 19/29.
+- **New zone boundaries are only a map image in the FDOP** — our six older polygons (PNF West/Central/East, TNF 350/354/380) are mapped to the zones by station (Central→North; PNF-East, TNF-380→East; PNF-West, TNF-350, TNF-354→West) and given the zone SIG and thresholds. Need the zone FDRA shapefile to replace them.
+- East/West dispatch: main section and summary boxes say 0-19 / 20-29 / 30+; the appendix analysis text derives 0-24.9 / 25-31.9 / 32+. Both loaded; forest should confirm.
+- East SIG: Table 3 and staffing table use Coyote (40917); the East dispatch analysis lists Dog Valley (41302) instead.
+- West fire summary: "Lightning caused (3215)" of 940 fires — typo; and the period is given as both 2005–2022 and 2014–2023.
+- Adjective rating is an ERC-Y × BI-Y matrix (I–V) per zone — not charted as a single tool (axes in the notes).
+- Large-fire size not stated in the text.
+- Old 2026-sheet TNF value (BI 22/30, "index assumed") retired.
+
 ## Cross-forest
 - 2025 R5 PAL matrix now in the Workbench PAL check.
 - Breakpoint convention made consistent: a breakpoint is the top of its class everywhere (popup, tracking, Workbench).

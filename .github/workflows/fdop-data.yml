@@ -1,0 +1,46 @@
+# FDOP Workbench data → `fdop-data` branch (one commit, force-pushed so it never grows).
+# Station NFDRS history 2006→today (FEMS, public, batches of 20), fire occurrence
+# (FPA FOD + WFIGS), burned area (CAL FIRE FRAP + WFIGS YTD), yearly scorecards. No secrets.
+name: FDOP data
+
+on:
+  schedule:
+    - cron: '20 14 2 * *'        # monthly (2nd, ~7:20 PT): current-year fires, burned area, scorecards
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['site/build_fdop_data.py', '.github/workflows/fdop-data.yml', 'site/fdra_station_membership_2026.csv']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fdop-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: src }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pandas numpy requests geopandas pyogrio shapely
+      - uses: actions/cache@v4
+        with:
+          path: fdop_cache
+          key: fdop-cache-${{ github.run_id }}
+          restore-keys: fdop-cache-
+      - name: Build
+        run: python src/site/build_fdop_data.py out fdop_cache
+      - name: Publish (single commit)
+        run: |
+          cd out
+          git init -q -b fdop-data
+          git config user.name  "fdop-data bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -qm "FDOP data $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" fdop-data

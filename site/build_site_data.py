@@ -66,7 +66,7 @@ def safe(uid: str) -> str:
 
 
 def base_id(uid: str) -> str:
-    return re.sub(r'\s*\(.*\)$', '', uid)
+    return re.sub(r'\s*\((?:peak|non-peak)\)$', '', uid)   # seasons only — '(outside NF)' is part of the id
 
 
 # ── normals ───────────────────────────────────────────────────────────────────

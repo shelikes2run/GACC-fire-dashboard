@@ -10,8 +10,8 @@ var ids = Split(DefaultValue($feature.station_ids, ''), ';', -1, true);
 var live = null; var n = 0; var how = 'FDOP stations';
 if (Count(ids) > 0) { live = Filter(raws, 'stationId IN (' + Concatenate(ids, ',') + ')'); n = Count(live); }
 if (n == 0) { live = Intersects(raws, $feature); n = Count(live); how = 'live RAWS inside the FDRA'; }
-var V = {'erc': null, 'bi': null};
-if (n > 0) { V = {'erc': Round(Average(live, 'ERC'), 1), 'bi': Round(Average(live, 'BI'), 1)}; }
+var LIVE = {'erc': null, 'bi': null};
+if (n > 0) { LIVE = {'erc': Round(Average(live, 'ERC'), 1), 'bi': Round(Average(live, 'BI'), 1)}; }
 
 function bclass(v, bps, labels) {
   if (IsEmpty(v)) { return '' }
@@ -37,7 +37,7 @@ if (Count(tools) == 0) {
 }
 for (var i in tools) {
   var t = tools[i]; var k = t[1]; var fm = t[2]; var b = t[3]; var cls = t[4];
-  var v = V[k]; var c = ''; var rank = 0; var total = Count(cls);
+  var v = LIVE[k]; var c = ''; var rank = 0; var total = Count(cls);
   if (fm == 'Y' && !IsEmpty(v)) {
     if (Count(b) > 0) {
       c = bclass(v, b, cls);

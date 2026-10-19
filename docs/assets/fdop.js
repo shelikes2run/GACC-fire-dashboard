@@ -8,8 +8,9 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const CLASS_NAMES = { 5: ['Low', 'Moderate', 'High', 'Very High', 'Extreme'], 4: ['Low', 'Moderate', 'High', 'Extreme'], 3: ['Low', 'Moderate', 'High'] };
 // R5 Project Activity Level matrix (ERC-Y / IC-Y, updated 13 Apr 2023); the day's PAL is the lower of the two ratings
 const PAL_LEVELS = ['A', 'B', 'C', 'D', 'Ev', 'E'];
-const PAL_ERC = [34, 40, 45, 50, 53];   // upper bounds of A..Ev
-const PAL_IC = [20, 28, 31, 37, 43];
+// R5 PAL matrix, 2025 regional update for FEMS (as published in the ENF 2026 FDOP, Table 9) — upper bounds of A..Ev
+const PAL_ERC = [32, 40, 43, 48, 51];
+const PAL_IC = [17, 27, 36, 41, 49];
 const palOf = (erc, ic) => {
   if (erc === null || ic === null) return null;
   const lv = (v, b) => { const i = b.findIndex(x => v <= x); return i < 0 ? b.length : i; };

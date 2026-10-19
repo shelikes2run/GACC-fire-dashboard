@@ -2339,5 +2339,249 @@
    }
   ],
   "notes": "DRAFT April 2026. One FDRA (MIFA) covering Modoc NF and partners; SIG of 8 RAWS, equal weight: Round Mtn, Indian Well, Blue Mtn, Timber Mtn, Lower Klamath, Rush Creek, Bear Flat, Cold Springs (Blue Mtn is listed twice in Table 2). Staffing BI 0-20/21-41/42-83/84-93/93+ ('based on the BI 97% for fuel model Z'); Table 5 lists fuel model Y for the stations, but the breakpoints match BI-Z (BI-Y 97th is ~39). Dispatch BI 0-47/48-81/82+ annotated 'proposed change, under review by MIFA. ERC Y'. Adjective rating = staffing level x IC matrix. FFP parameters: large fire 100 ac, multiple fire day 5 fires, 2016-2025. Fire season for percentiles Jun-Sep. Sub-SIGs: Modoc (Timber, Round, Blue, Rush Creek, Lower Klamath), Warners (Cold Springs, Bear Flat)."
+ },
+ "MNF-162": {
+  "source": "Mendocino NF 2026 Fire Danger Operating Plan, Vol. 1 (Tables 9-11, 13-15, 17)",
+  "stations": [
+   41005,
+   41406
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    39,
+    59,
+    71,
+    91
+   ],
+   "erc": [
+    57,
+    74,
+    91,
+    110
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Z; Tables 13/17)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     39,
+     59,
+     71,
+     91
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Z; Tables 14-15)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     71
+    ],
+    "classes": [
+     "Low",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (ERC-Z; Table 14)",
+    "idx": "erc",
+    "fm": "Z",
+    "breaks": [
+     57,
+     74,
+     91,
+     110
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA 162 West; SIG Eel River, Soda Creek (fuel model Z). FDOP tables list the start of each class: staffing BI-Z starts 0/40/60/72/92; dispatch high at BI 72+; adjective ERC-Z starts 0/58/75/92/111. Loaded as class tops. Analysis years, season and large-fire size not stated in the text — Workbench defaults."
+ },
+ "MNF-165": {
+  "source": "Mendocino NF 2026 Fire Danger Operating Plan, Vol. 1 (Tables 9-11, 13-15, 17)",
+  "stations": [
+   41101,
+   41018
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    37,
+    56,
+    69,
+    91
+   ],
+   "erc": [
+    61,
+    84,
+    101,
+    109
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Z; Tables 13/17)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     37,
+     56,
+     69,
+     91
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Z; Tables 14-15)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     69
+    ],
+    "classes": [
+     "Low",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (ERC-Z; Table 14)",
+    "idx": "erc",
+    "fm": "Z",
+    "breaks": [
+     61,
+     84,
+     101,
+     109
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA 165 High Country; SIG Alder Springs, Mendocino Pass (fuel model Z). FDOP tables list the start of each class: staffing BI-Z starts 0/38/57/70/92; dispatch high at BI 70+ (Table 14, Grindstone) — Table 15 also lists 72+ for Upperlake/Covelo; adjective ERC-Z starts 0/62/85/102/110. Loaded as class tops. Analysis years, season and large-fire size not stated in the text — Workbench defaults."
+ },
+ "MNF-170": {
+  "source": "Mendocino NF 2026 Fire Danger Operating Plan, Vol. 1 (Tables 9-11, 13-15, 17)",
+  "stations": [
+   40802,
+   41402,
+   41503
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    22,
+    28,
+    34,
+    43
+   ],
+   "erc": [
+    28,
+    39,
+    51,
+    61
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Tables 13/17)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     28,
+     34,
+     43
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; Tables 14-15)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     34
+    ],
+    "classes": [
+     "Low",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (ERC-Y; Table 14)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     28,
+     39,
+     51,
+     61
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA 170 East; SIG Eagle Peak, High Glade Lookout, Stonyford (fuel model Y). FDOP tables list the start of each class: staffing BI-Y starts 0/23/29/35/44; dispatch high at BI 35+; adjective ERC-Y starts 0/29/40/52/62. Loaded as class tops. Analysis years, season and large-fire size not stated in the text — Workbench defaults."
  }
 }

@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pip install requests pyogrio pandas && python probe/probe.py
+      - run: pip install requests pyogrio pandas ; python probe/probe.py || true
       - run: |
           git config user.name bot; git config user.email actions@users.noreply.github.com
           git add probe_out.json; git commit -qm "probe out"; git push -q origin HEAD:probe

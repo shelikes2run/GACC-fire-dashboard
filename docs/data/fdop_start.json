@@ -1,0 +1,304 @@
+{
+ "_about": "Starting points for the FDOP Workbench taken from the current signed FDOPs. Values here win over the 2026 thresholds sheet when the Workbench opens an FDRA; users can change everything from there.",
+ "STF-348": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 2",
+  "stations": [
+   43605,
+   44115
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "12-01"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "large": 10,
+  "mfd": 2,
+  "breaks": {
+   "erc": [
+    29,
+    48,
+    67,
+    75
+   ]
+  },
+  "breaks_ffp": {
+   "erc": [
+    46,
+    59,
+    72,
+    76
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "notes": "Manager-modified ERC-Y bins used in 2022 (FFP initial bins 0-46, 47-59, 60-72, 73-76, 77+). Large fire = 10 ac final size; multi-fire day = 2+ starts."
+ },
+ "STF-370": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 3",
+  "stations": [
+   44102,
+   43615,
+   43210
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "11-01"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "large": 20,
+  "mfd": 2,
+  "breaks": {
+   "erc": [
+    27,
+    40,
+    54,
+    63
+   ]
+  },
+  "breaks_ffp": {
+   "erc": [
+    34,
+    44,
+    63,
+    66
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "notes": "Manager-modified ERC-Y bins (FFP initial 0-34, 35-44, 45-63, 64-66, 67+). Large fire = 20 ac; multi-fire day = 2+."
+ },
+ "SNF-533": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 4",
+  "stations": [
+   43612,
+   44511,
+   44520
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "06-15",
+   "10-01"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    52,
+    57
+   ]
+  },
+  "classes": [
+   "Below Very High",
+   "Very High",
+   "Extreme"
+  ],
+  "notes": "Very High = 75th percentile = ERC 52; Extreme = 95th percentile = ERC 57 (2010-2020, Jun 15-Oct 1). Covers STF, YNP and SNF high country."
+ },
+ "BDF-660": {
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 13",
+  "stations": [
+   45601,
+   45113,
+   45108,
+   45109
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "large": 30,
+  "breaks": {
+   "bi": [
+    75,
+    124,
+    175,
+    212
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "High",
+   "High + 2nd alarm"
+  ],
+  "notes": "BI fire business thresholds for dispatch levels (1-75 Low, 76-124 Moderate, 125-175 High, 176-212 High, >212 High 2nd alarm). Large fire = 30 ac+."
+ },
+ "BDF-670": {
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 9 (SIG)",
+  "stations": [
+   45604,
+   45605,
+   45612
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "large": 30
+ },
+ "BDF-673": {
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 10 (SIG)",
+  "stations": [
+   45616,
+   45603
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "large": 30
+ },
+ "BDF-692": {
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 11 (SIG)",
+  "stations": [
+   45105,
+   45101,
+   45133
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "large": 30
+ },
+ "BDF-694": {
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 12 (SIG)",
+  "stations": [
+   45102,
+   45114,
+   45111
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "large": 30
+ },
+ "ANF-Front Country": {
+  "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
+  "stations": [
+   45443,
+   45405,
+   45411,
+   45437,
+   45421
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    38,
+    92,
+    147,
+    225
+   ],
+   "erc": [
+    16.6,
+    33.6,
+    55.2,
+    93
+   ]
+  },
+  "top": {
+   "bi": 271,
+   "erc": 109.4
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "notes": "FDRA average of the per-station Fire Family Plus breakpoints (BI Low/Mod/High/VH/Extreme = 38/92/147/225/271; ERC 16.6/33.6/55.2/93/109.4). Per-station values: Claremont, Clear Creek, Little Tujunga, Santa Fe, Tanbark."
+ },
+ "ANF-High Country": {
+  "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
+  "stations": [
+   45401,
+   45436,
+   45435
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    69,
+    119,
+    187,
+    239
+   ],
+   "erc": [
+    5.7,
+    47,
+    70.7,
+    96
+   ]
+  },
+  "top": {
+   "bi": 290,
+   "erc": 108
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "notes": "FDRA averages of per-station breakpoints (BI 69/119/187/239/290; ERC 5.7/47/70.7/96/108). Stations Big Pines, Chilao, Mill Creek."
+ },
+ "ANF-Saugus": {
+  "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
+  "stations": [
+   45438,
+   45449,
+   45435,
+   45423,
+   45426,
+   45448
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    43,
+    110,
+    182,
+    247
+   ],
+   "erc": [
+    19.8,
+    39.5,
+    74.2,
+    99.8
+   ]
+  },
+  "top": {
+   "bi": 304,
+   "erc": 107.5
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "notes": "FDRA averages of per-station breakpoints (BI 43/110/182/247/304; ERC 19.8/39.5/74.2/99.8/107.5). Stations Acton, Grass Mtn, Mill Creek, Valyermo, Warm Springs Mtn, Whitaker Peak."
+ }
+}

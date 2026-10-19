@@ -5,6 +5,18 @@ const FDATA = (new URLSearchParams(location.search).get('fdata')) ||
 const IDX_LABEL = { erc: 'ERC', bi: 'BI', ic: 'IC', sc: 'SC', f100: '100-hr FM', f1000: '1000-hr FM' };
 const MOIST = new Set(['f100', 'f1000']);           // lower = drier: tested on the negative
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const CLASS_NAMES = { 5: ['Low', 'Moderate', 'High', 'Very High', 'Extreme'], 4: ['Low', 'Moderate', 'High', 'Extreme'], 3: ['Low', 'Moderate', 'High'] };
+// R5 Project Activity Level matrix (ERC-Y / IC-Y, updated 13 Apr 2023); the day's PAL is the lower of the two ratings
+const PAL_LEVELS = ['A', 'B', 'C', 'D', 'Ev', 'E'];
+const PAL_ERC = [34, 40, 45, 50, 53];   // upper bounds of A..Ev
+const PAL_IC = [20, 28, 31, 37, 43];
+const palOf = (erc, ic) => {
+  if (erc === null || ic === null) return null;
+  const lv = (v, b) => { const i = b.findIndex(x => v <= x); return i < 0 ? b.length : i; };
+  return Math.min(lv(Math.round(erc), PAL_ERC), lv(Math.round(ic), PAL_IC));
+};
+const inSeason = (md, s0, s1) => s0 <= s1 ? (md >= s0 && md <= s1) : (md >= s0 || md <= s1);
+const seasonLabel = c => `${MONTHS[+c.season[0].slice(0, 2) - 1]} ${+c.season[0].slice(3)} – ${MONTHS[+c.season[1].slice(0, 2) - 1]} ${+c.season[1].slice(3)}`;
 const FLAG = ['#2e7d32', '#f9a825', '#c62828'];
 const FLAG_TXT = ['OK', 'Watch', 'Review'];
 
@@ -99,9 +111,10 @@ function buildDaily(stFiles, fires, cfg, scale) {
   }
   const rows = [];
   for (let i = 0; i < n; i++) {
-    const dt = new Date(start.getTime() + i * 864e5), m = dt.getUTCMonth() + 1, y = dt.getUTCFullYear();
-    if (!cfg.months.includes(m) || y < cfg.yearsFrom) continue;
-    const ds = dt.toISOString().slice(0, 10), row = { date: ds, year: y, doy: Math.floor((dt - Date.UTC(y, 0, 1)) / 864e5) + 1 };
+    const dt = new Date(start.getTime() + i * 864e5), y = dt.getUTCFullYear();
+    const ds = dt.toISOString().slice(0, 10);
+    if (!inSeason(ds.slice(5), cfg.season[0], cfg.season[1]) || y < cfg.yearsFrom) continue;
+    const row = { date: ds, year: y, doy: Math.floor((dt - Date.UTC(y, 0, 1)) / 864e5) + 1 };
     let nst = 0;
     for (const k of Object.keys(IDX_LABEL)) {
       let s = 0, c = 0;

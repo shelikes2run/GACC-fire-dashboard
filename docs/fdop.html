@@ -63,6 +63,7 @@
       <div class="form-row">Calibration years <input type="number" id="y0" min="2006" max="2030"> – <input type="number" id="y1" min="2006" max="2030"></div>
       <div class="form-row">Fire season <input type="text" id="s0" style="width:64px" placeholder="MM-DD"> to <input type="text" id="s1" style="width:64px" placeholder="MM-DD"></div>
       <div class="form-row">Large fire ≥ <input type="number" id="large" min="1"> ac · Multi-fire day ≥ <input type="number" id="mfd" min="2"> fires</div>
+      <div class="form-row" id="tool-row" style="display:none">FDOP decision tool <select id="tool" style="width:100%"></select></div>
       <div class="form-row">Breakpoints (class upper values, comma-separated)<input type="text" id="breaks" placeholder="e.g. 21,39,54,61"></div>
       <div class="form-row"><button class="btn ghost" id="bp-pct" title="Set breakpoints from calibration percentiles">From percentiles</button>
         <input type="text" id="bp-pcts" value="25,60,90,97" style="width:120px"></div>
@@ -232,7 +233,8 @@ function drawDP() {
   $('dp-warn').innerHTML = (!t.monoFD || !t.monoLFD) ? `<div class="warn">Probability does not rise with every class
     (${[!t.monoFD && 'fire day', !t.monoLFD && 'large fire day'].filter(Boolean).join(', ')}). Consider merging or moving breakpoints.</div>` : '';
   const q90 = pctile(W.sorted, 90), q97 = pctile(W.sorted, 97);
-  const names = (W.S0 && W.S0.classes && W.S0.classes.length === t.classes.length) ? W.S0.classes : (CLASS_NAMES[t.classes.length] || []);
+  const names = (W.toolClasses && W.toolClasses.length === t.classes.length) ? W.toolClasses
+    : (W.S0 && W.S0.classes && W.S0.classes.length === t.classes.length) ? W.S0.classes : (CLASS_NAMES[t.classes.length] || []);
   $('dptable').innerHTML = `<thead><tr><th class="l">Class</th><th>${IDX_LABEL[k]} range</th><th>Percentile</th><th>Days</th><th>% days</th>
     <th>Fires / day</th><th>P(fire day)</th><th>P(large)</th><th>P(multi)</th><th>Share of large fire days</th></tr></thead><tbody>${t.classes.map(o =>
     `<tr><td class="l"><b>${o.cls}</b> ${names[o.cls - 1] || ''}</td><td>${f2(o.lo, 0)}–${f2(o.hi, 0)}</td><td>${f2(o.pLo, 0)}–${f2(o.pHi, 0)}</td><td>${o.days}</td><td>${pct(o.pct)}</td>
@@ -473,6 +475,14 @@ function fillSetup(unit) {
     <button class="btn ghost no-print" id="reset-fdop" style="padding:2px 8px;margin-left:6px">Reset to FDOP</button><br>` : '<b>No signed FDOP loaded for this FDRA yet</b> — starting from the 2026 sheet / climatology.<br>') + `2026 sheet: FDOP stations ${unit.sheet_stations.join(', ')} · fuel model ${esc(unit.fuel_model)} · ` +
     `${esc(unit.sl_dl_index || '')} ${unit.custom_thresholds ? '· custom: ' + esc(unit.custom_thresholds) : ''}`;
   document.querySelectorAll('#units button').forEach(b => b.classList.toggle('on', b.dataset.u === unit.unit));
+  const tools = (S0 && S0.tools) || [];
+  $('tool-row').style.display = tools.length ? '' : 'none';
+  $('tool').innerHTML = tools.map((t, i) => `<option value="${i}">${esc(t.label)}</option>`).join('');
+  W.toolClasses = tools.length ? tools[0].classes : null;
+  $('tool').onchange = () => {
+    const t = tools[+$('tool').value]; if (!t) return;
+    $('idx').value = t.idx; $('fm').value = t.fm; $('breaks').value = t.breaks.join(','); W.toolClasses = t.classes; run();
+  };
   const rb = $('reset-fdop'); if (rb) rb.onclick = () => { try { localStorage.removeItem('fdop_' + unit.unit); } catch (e) {} fillSetup(unit); run(); };
 }
 

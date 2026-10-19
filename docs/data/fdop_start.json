@@ -41,7 +41,63 @@
    "Very High",
    "Extreme"
   ],
-  "notes": "Manager-modified ERC-Y bins used in 2022 (FFP initial bins 0-46, 47-59, 60-72, 73-76, 77+). Large fire = 10 ac final size; multi-fire day = 2+ starts."
+  "notes": "Manager-modified ERC-Y bins used in 2022 (FFP initial bins 0-46, 47-59, 60-72, 73-76, 77+). Large fire = 10 ac final size; multi-fire day = 2+ starts.",
+  "tools": [
+   {
+    "label": "Staffing / dispatch \u2014 manager ERC-Y bins (2022)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     29,
+     48,
+     67,
+     75
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FFP initial ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     46,
+     59,
+     72,
+     76
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "STF forest staffing & adjective levels (Table A14.1, ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     24,
+     33,
+     50,
+     62
+    ],
+    "classes": [
+     "1 Low",
+     "2 Medium",
+     "3 High",
+     "4 Very High",
+     "5 Extreme"
+    ]
+   }
+  ]
  },
  "STF-370": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 3",
@@ -85,7 +141,45 @@
    "Very High",
    "Extreme"
   ],
-  "notes": "Manager-modified ERC-Y bins (FFP initial 0-34, 35-44, 45-63, 64-66, 67+). Large fire = 20 ac; multi-fire day = 2+."
+  "notes": "Manager-modified ERC-Y bins (FFP initial 0-34, 35-44, 45-63, 64-66, 67+). Large fire = 20 ac; multi-fire day = 2+.",
+  "tools": [
+   {
+    "label": "Manager ERC-Y bins (2022)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     27,
+     40,
+     54,
+     63
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FFP initial ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     34,
+     44,
+     63,
+     66
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ]
  },
  "SNF-533": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 4",
@@ -115,17 +209,33 @@
    "Very High",
    "Extreme"
   ],
-  "notes": "Very High = 75th percentile = ERC 52; Extreme = 95th percentile = ERC 57 (2010-2020, Jun 15-Oct 1). Covers STF, YNP and SNF high country."
+  "notes": "Very High = 75th percentile = ERC 52; Extreme = 95th percentile = ERC 57 (2010-2020, Jun 15-Oct 1). Covers STF, YNP and SNF high country.",
+  "tools": [
+   {
+    "label": "Very High / Extreme (ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     52,
+     57
+    ],
+    "classes": [
+     "Below VH",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ]
  },
  "BDF-660": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 13",
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45601,
    45113,
    45108,
    45109
   ],
-  "fm": "Y",
+  "fm": "X",
   "idx": "bi",
   "large": 30,
   "breaks": {
@@ -134,19 +244,63 @@
     124,
     175,
     212
+   ],
+   "erc": [
+    20,
+    33,
+    48,
+    58
    ]
   },
   "classes": [
-   "Low",
-   "Moderate",
-   "High",
-   "High",
-   "High + 2nd alarm"
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
   ],
-  "notes": "BI fire business thresholds for dispatch levels (1-75 Low, 76-124 Moderate, 125-175 High, 176-212 High, >212 High 2nd alarm). Large fire = 30 ac+."
+  "notes": "BI-X staffing/dispatch 75/124/175/212; ERC-Y preparedness 20/33/48/58. Large fire = 30 ac+. Adjective tables are images in the FDOP.",
+  "tools": [
+   {
+    "label": "Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     75,
+     124,
+     175,
+     212
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     33,
+     48,
+     58
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ]
  },
  "BDF-670": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 9 (SIG)",
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45604,
    45605,
@@ -154,20 +308,140 @@
   ],
   "fm": "Y",
   "idx": "bi",
-  "large": 30
+  "large": 30,
+  "breaks": {
+   "bi": [
+    18,
+    30,
+    47,
+    55
+   ],
+   "erc": [
+    23,
+    37,
+    50,
+    56
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing / dispatch levels (BI-Y; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     18,
+     30,
+     47,
+     55
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     23,
+     37,
+     50,
+     56
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "BI-Y staffing/dispatch 18/30/47/55; ERC-Y preparedness 23/37/50/56. Large fire = 30 ac+. Adjective tables are images in the FDOP."
  },
  "BDF-673": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 10 (SIG)",
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45616,
    45603
   ],
-  "fm": "Y",
+  "fm": "X",
   "idx": "bi",
-  "large": 30
+  "large": 30,
+  "breaks": {
+   "bi": [
+    100,
+    150,
+    200,
+    260
+   ],
+   "erc": [
+    20,
+    35,
+    50,
+    61
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     100,
+     150,
+     200,
+     260
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     35,
+     50,
+     61
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "BI-X staffing/dispatch 100/150/200/260; ERC-Y preparedness 20/35/50/61. Large fire = 30 ac+. Adjective tables are images in the FDOP."
  },
  "BDF-692": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 11 (SIG)",
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45105,
    45101,
@@ -175,18 +449,138 @@
   ],
   "fm": "Y",
   "idx": "bi",
-  "large": 30
+  "large": 30,
+  "breaks": {
+   "bi": [
+    18,
+    27,
+    38,
+    43
+   ],
+   "erc": [
+    28,
+    42,
+    54,
+    61
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing / dispatch levels (BI-Y; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     18,
+     27,
+     38,
+     43
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     28,
+     42,
+     54,
+     61
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "BI-Y staffing/dispatch 18/27/38/43; ERC-Y preparedness 28/42/54/61. Large fire = 30 ac+. Adjective tables are images in the FDOP."
  },
  "BDF-694": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Table 12 (SIG)",
+  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45102,
    45114,
    45111
   ],
-  "fm": "Y",
+  "fm": "X",
   "idx": "bi",
-  "large": 30
+  "large": 30,
+  "breaks": {
+   "bi": [
+    75,
+    120,
+    173,
+    204
+   ],
+   "erc": [
+    25,
+    40,
+    55,
+    65
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     75,
+     120,
+     173,
+     204
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     25,
+     40,
+     55,
+     65
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "BI-X staffing/dispatch 75/120/173/204; ERC-Y preparedness 25/40/55/65. Large fire = 30 ac+. Adjective tables are images in the FDOP."
  },
  "ANF-Front Country": {
   "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
@@ -224,7 +618,45 @@
    "Very High",
    "Extreme"
   ],
-  "notes": "FDRA average of the per-station Fire Family Plus breakpoints (BI Low/Mod/High/VH/Extreme = 38/92/147/225/271; ERC 16.6/33.6/55.2/93/109.4). Per-station values: Claremont, Clear Creek, Little Tujunga, Santa Fe, Tanbark."
+  "notes": "FDRA average of the per-station Fire Family Plus breakpoints (BI Low/Mod/High/VH/Extreme = 38/92/147/225/271; ERC 16.6/33.6/55.2/93/109.4). Per-station values: Claremont, Clear Creek, Little Tujunga, Santa Fe, Tanbark.",
+  "tools": [
+   {
+    "label": "FDRA average BI breakpoints (Tables 2-3)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     38,
+     92,
+     147,
+     225
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FDRA average ERC breakpoints (Table 4)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     16.6,
+     33.6,
+     55.2,
+     93
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ]
  },
  "ANF-High Country": {
   "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
@@ -260,7 +692,45 @@
    "Very High",
    "Extreme"
   ],
-  "notes": "FDRA averages of per-station breakpoints (BI 69/119/187/239/290; ERC 5.7/47/70.7/96/108). Stations Big Pines, Chilao, Mill Creek."
+  "notes": "FDRA averages of per-station breakpoints (BI 69/119/187/239/290; ERC 5.7/47/70.7/96/108). Stations Big Pines, Chilao, Mill Creek.",
+  "tools": [
+   {
+    "label": "FDRA average BI breakpoints (Tables 2-3)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     69,
+     119,
+     187,
+     239
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FDRA average ERC breakpoints (Table 4)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     5.7,
+     47,
+     70.7,
+     96
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ]
  },
  "ANF-Saugus": {
   "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
@@ -299,6 +769,557 @@
    "Very High",
    "Extreme"
   ],
-  "notes": "FDRA averages of per-station breakpoints (BI 43/110/182/247/304; ERC 19.8/39.5/74.2/99.8/107.5). Stations Acton, Grass Mtn, Mill Creek, Valyermo, Warm Springs Mtn, Whitaker Peak."
+  "notes": "FDRA averages of per-station breakpoints (BI 43/110/182/247/304; ERC 19.8/39.5/74.2/99.8/107.5). Stations Acton, Grass Mtn, Mill Creek, Valyermo, Warm Springs Mtn, Whitaker Peak.",
+  "tools": [
+   {
+    "label": "FDRA average BI breakpoints (Tables 2-3)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     43,
+     110,
+     182,
+     247
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FDRA average ERC breakpoints (Table 4)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     19.8,
+     39.5,
+     74.2,
+     99.8
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ]
+ },
+ "INF-460": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 5",
+  "stations": [
+   43709,
+   43710,
+   43711
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "bi": [
+    14,
+    25,
+    33,
+    37
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "FFP BI-Y bins (not modified)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     14,
+     25,
+     33,
+     37
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "BI-Y, year-round (Jan 1-Dec 31), 2011-2020; 90th = 34, 97th = 38. Managers have not modified the FFP bins."
+ },
+ "SNF-528": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 6",
+  "stations": [
+   44207,
+   44110,
+   44112,
+   44204,
+   44505,
+   44510,
+   44503
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    42,
+    59,
+    69,
+    77
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Manager ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     42,
+     59,
+     69,
+     77
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FFP initial ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     56,
+     65,
+     76,
+     79
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Manager bins 0-42/43-59/60-69/70-77/78+ (FFP 0-56/57-65/66-76/77-79/80+). Climatology May 1-Nov 30; Table A6.1 lists Jun 15-Oct 1 for the thresholds."
+ },
+ "SNF-532": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 7",
+  "stations": [
+   44503,
+   44203,
+   44109,
+   44505
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "04-01",
+   "11-30"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    39,
+    53,
+    64,
+    70
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Manager ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     39,
+     53,
+     64,
+     70
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FFP initial ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     48,
+     56,
+     68,
+     72
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Manager bins 0-39/40-53/54-64/65-70/71+ (FFP 0-48/49-56/57-68/69-72/73+). The FDOP SIG is weighted (Fence Meadow 30, Minarets 30, Mt Rest 30, Wawona 10); the Workbench averages stations equally."
+ },
+ "SQF-438": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 8",
+  "stations": [
+   44701,
+   44712,
+   44717,
+   44719,
+   44508
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2010,
+   2020
+  ],
+  "breaks": {
+   "bi": [
+    50,
+    150
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch levels (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     50,
+     150
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "BI-X for staffing and adjective; dispatch Low 0-50, Moderate 50-150, High 150-264. Per-station 90th/97th BI and ERC listed in Table A8.X."
+ },
+ "SQF-435": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 9",
+  "stations": [
+   44713,
+   44732
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "11-01"
+  ],
+  "calib": [
+   2010,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    20,
+    35
+   ],
+   "bi": [
+    25,
+    45
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch levels (ERC-Y, chosen for tree mortality)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     25,
+     45
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "ERC dispatch Low 0-20, Moderate 20-35, High 35-76 (chosen because of tree mortality); BI alternative 0-25/25-45/45+. Station 90th/97th ERC: Park Ridge 61/66, Wolverton 69/72."
+ },
+ "SQF-440": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 10",
+  "stations": [
+   44707,
+   44722,
+   44726,
+   45009
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "11-01"
+  ],
+  "calib": [
+   2010,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    21,
+    35
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch response (ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     21,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Dispatch Low 0-21, Moderate 21-35, High 35-67. Station 90th/97th ERC: Johnsondale 56/59, Black Rock 52/56, Peppermint 60/65, Breckenridge 63/67."
+ },
+ "SQF-445": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 13",
+  "stations": [
+   45002,
+   45016
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "04-01",
+   "11-30"
+  ],
+  "calib": [
+   2012,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    108.5,
+    113.5
+   ]
+  },
+  "classes": [
+   "Below VH",
+   "Very High (90th)",
+   "Extreme (97th)"
+  ],
+  "tools": [
+   {
+    "label": "90th / 97th ERC-X (station average)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     108.5,
+     113.5
+    ],
+    "classes": [
+     "Below VH",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "ERC-X; station 90th/97th Democrat 107/112, River Kern 110/115 (averaged here). FDOP class graphics not in the text."
+ },
+ "INF-461": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 11",
+  "stations": [
+   43708,
+   43710,
+   44803,
+   44804
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "bi": [
+    31,
+    37,
+    48,
+    53
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "FFP BI-Y bins (not modified)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     31,
+     37,
+     48,
+     53
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "BI-Y, year-round because of winter fire activity; 90th = 49, 97th = 54."
+ },
+ "INF-443": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 12",
+  "stations": [
+   44722
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    25,
+    35,
+    49,
+    54
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "FFP ERC-Y bins (not modified)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     25,
+     35,
+     49,
+     54
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Single station (Black Rock), ERC-Y, year-round; 90th = 50, 97th = 55."
  }
 }

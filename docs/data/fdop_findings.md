@@ -94,6 +94,15 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - Typos: FFP parameter table header "FDRA 2380" (= 230); FDRA 243 Ash Creek data years blank and its 90th (25/27) below the 1–12 value pattern of the other stations.
 - Pocket-card large fire changed from 5 to 10 acres.
 
+## Six Rivers NF / Redwood NP (SRF/RWP) — 2026 FDOP, DRAFT for signature V2 (Jun 2026)
+- Loaded (FDOP name → our FDRA): SRNRA → SRF-110, ORD-HIA-LTRD → SRF-112-115, MR → SRF-130, Ukonom → SRF-201, RWP → SRF-RWP; SIGs match our membership.
+  - Staffing BI-Y: 6/14/30/33, 6/14/29/32, 5/11/23/25, 7/15/31/33; RWP staffing ERC-Y 14/24/35/40 (2015–2025).
+  - Dispatch BI-Y: 14/22, 11/21, 12/19, 15/24 (from 2005–2022 fire history); RWP has no dispatch levels.
+- Still a draft (not signed). FDRA names in the FDOP (SRNRA, ORD-HIA-LTRD, MR, Ukonom, RWP) differ from the 2026 sheet numbers (110, 112-115, 130, 201).
+- Dataset years: text says 2005–2022 gap-filled; the staffing table says 2005–2025.
+- RWP: only 3 large-fire days (5 ac+) in 2015–2024 — FDOP notes the sample is too small for statistical inference.
+- Old 2026-sheet SRF values (BI 90th/97th 31.1/34.7 etc.) retired.
+
 ## Cross-forest
 - 2025 R5 PAL matrix now in the Workbench PAL check.
 - Breakpoint convention made consistent: a breakpoint is the top of its class everywhere (popup, tracking, Workbench).

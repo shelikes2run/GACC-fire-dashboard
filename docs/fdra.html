@@ -265,6 +265,7 @@ async function loadUnit(unit) {
     ['Breakpoints', [p.standard_90_97 ? 'standard 90th/97th: ' + esc(p.standard_90_97) : '', p.custom_thresholds ? 'custom: ' + esc(p.custom_thresholds) : ''].filter(Boolean).join(' · ') || '–'],
   ];
   if (S.cur.season) facts.splice(1, 0, ['Season', esc(S.cur.season) + (S.cur.season === 'peak' ? ' (May 1 – Nov 15)' : ' (Nov 16 – Apr 30)')]);
+  facts.push(['FDOP', `<a href="fdop.html?id=${encodeURIComponent(p.fdra_id)}&unit=${encodeURIComponent(unit)}${P.get('embed') === '1' ? '&embed=1' : ''}">Open the FDOP Workbench ▸</a> (validate indices, decision points, yearly recalibration check)`]);
   document.getElementById('facts').innerHTML = facts.map(([k, v]) => `<dt>${k}:</dt><dd>${v}</dd>`).join('');
   document.getElementById('nonorm').innerHTML = S.norm ? '' :
     '<div class="warn">The 2016–2025 normals for this FDRA are not built yet, so percentiles, SFDI and the max/average lines are missing. They fill in after the normals job runs.</div>';

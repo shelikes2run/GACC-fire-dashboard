@@ -16,6 +16,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - SNF-528: climatology May 1–Nov 30, but Table A6.1 lists Jun 15–Oct 1 for thresholds.
 - SQF-445: 90th/97th averaged across stations.
 - SQF-435: an outside-NF piece's Y station had been averaged into the X data — fixed (separate unit).
+- SQF-435 (Sequoia/Kings Canyon): fuel model is mixed in the FDOP — Table 3 lists pocket card and adjective on ERC FM-Y, dispatch on ERC FM-X and staffing on BI FM-X, while Appendix 9 (Table A9.1) bases the decision thresholds on ERC FM-Y (stations' 90th/97th 61/66 and 69/72). The 2026 sheet / our season tracking default to X; the Workbench starts on ERC-Y 20/35 (and BI 25/45). Needs one answer from the forest/park.
 - Sequoia's current FDOP is still this 2023 Sierra South plan (the SQF file provided is the identical PDF). Inyo has since issued its own April 2026 FDOP; STF/SNF/SQF have not.
 
 ## Angeles NF (ANF) — FDOP Vol. 3 (2022-07-29)

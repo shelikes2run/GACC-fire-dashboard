@@ -3071,5 +3071,356 @@
    }
   ],
   "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the West zone by its stations until the new zone boundaries are loaded. West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9."
+ },
+ "SHF-230": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40501,
+   40503,
+   40512,
+   40516,
+   40517,
+   40518,
+   40520
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7.43,
+    14.85,
+    29.7,
+    32.9
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7.43,
+     14.85,
+     29.7,
+     32.9
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20,
+     26
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Big Bar, Hayfork, Friend Mtn, Trinity Camp, Scorpion, Backbone, Five Cent (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHF-238": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40511,
+   40812
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7.08,
+    14.15,
+    28.3,
+    30.9
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7.08,
+     14.15,
+     28.3,
+     30.9
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     31
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Yolla Bolla, Paymocus (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHF-240": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40217,
+   40247,
+   40618
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7.6,
+    15.2,
+    30.4,
+    33.4
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7.6,
+     15.2,
+     30.4,
+     33.4
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     26
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Mt. Shasta, Bolam, Sims (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHF-241": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40614,
+   40635
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    8.8,
+    17.6,
+    35.2,
+    38.2
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     8.8,
+     17.6,
+     35.2,
+     38.2
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     31
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Sugarloaf SHF, Oak Mountain (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHF-243": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40221,
+   40244
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7.28,
+    14.55,
+    29.1,
+    32.0
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7.28,
+     14.55,
+     29.1,
+     32.0
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20,
+     27
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Round Mountain, Ash Creek (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
  }
 }

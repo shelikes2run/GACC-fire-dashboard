@@ -58,7 +58,7 @@
       <div class="form-row">Fuel model <select id="fm"></select>
         Index <select id="idx"><option value="erc">ERC</option><option value="bi">BI</option><option value="ic">IC</option><option value="sc">SC</option></select></div>
       <div class="form-row">Calibration years <input type="number" id="y0" min="2006" max="2030"> – <input type="number" id="y1" min="2006" max="2030"></div>
-      <div class="form-row months" id="months"></div>
+      <div class="form-row">Fire season <input type="text" id="s0" style="width:64px" placeholder="MM-DD"> to <input type="text" id="s1" style="width:64px" placeholder="MM-DD"></div>
       <div class="form-row">Large fire ≥ <input type="number" id="large" min="1"> ac · Multi-fire day ≥ <input type="number" id="mfd" min="2"> fires</div>
       <div class="form-row">Breakpoints (class upper values, comma-separated)<input type="text" id="breaks" placeholder="e.g. 21,39,54,61"></div>
       <div class="form-row"><button class="btn ghost" id="bp-pct" title="Set breakpoints from calibration percentiles">From percentiles</button>
@@ -79,6 +79,9 @@
         <p class="small muted" id="valid-note"></p>
         <div class="table-wrap"><table class="data" id="vtable"></table></div>
         <div id="vchart" class="chart sm"></div>
+        <h3 class="small" style="text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px">Station by station (fuel model <span id="vst-fm"></span>)</h3>
+        <p class="small muted" style="margin-top:0">Each RAWS on its own over the calibration years and season — the per-station breakpoints table many FDOPs carry, plus how well each station alone tracks fire days.</p>
+        <div class="table-wrap"><table class="data" id="vstations"></table></div>
         <p class="note">AUC: chance a fire day has a higher index than a non-fire day (0.5 = no skill, 0.7+ useful, 0.8+ strong).
           R² (McFadden) and the binned R² (observed vs. predicted probability in 10 index classes, as in FireFamily Plus) describe fit;
           p is the slope's significance. Moisture indices are tested as “drier = higher”.</p>
@@ -87,7 +90,12 @@
         <h2>Decision points</h2>
         <div id="dp-warn"></div>
         <div class="table-wrap"><table class="data" id="dptable"></table></div>
+        <div id="dpffp" class="chart"></div>
         <div id="dpchart" class="chart sm"></div>
+        <h3 class="small" style="text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px">Percentile bins vs. your (manager) bins</h3>
+        <div class="table-wrap"><table class="data" id="dpcompare"></table></div>
+        <h3 class="small" style="text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px">R5 Project Activity Level check (ERC-Y / IC-Y matrix, lower of the two)</h3>
+        <div class="table-wrap"><table class="data" id="dppal"></table></div>
         <p class="note" id="dp-note"></p>
       </div>
       <div class="tabpane" id="t-delta" style="display:none">
@@ -105,6 +113,7 @@
         <div class="kpis" id="hkpi"></div>
         <div id="hchart1" class="chart sm"></div>
         <div id="hchart2" class="chart sm"></div>
+        <div id="hchart3" class="chart sm"></div>
         <div class="form-row no-print">Show fires in <select id="hyear"></select> ≥ <input type="number" id="hmin" value="10" style="width:70px"> ac</div>
         <div class="table-wrap" style="max-height:340px"><table class="data" id="htable"></table></div>
       </div>
@@ -131,7 +140,7 @@ function cfgFromUI() {
   return {
     stations: [...document.querySelectorAll('#stlist input:checked')].map(i => Number(i.value)),
     fm: $('fm').value, idx: $('idx').value, calibFrom: +$('y0').value, calibTo: +$('y1').value,
-    months: [...document.querySelectorAll('#months input:checked')].map(i => +i.value),
+    season: [$('s0').value.trim() || '05-01', $('s1').value.trim() || '11-30'],
     large: +$('large').value, mfd: +$('mfd').value, yearsFrom: 2006,
     breaks: $('breaks').value.split(',').map(s => parseFloat(s)).filter(v => !isNaN(v)).sort((a, b) => a - b),
     vegYellow: +$('vy').value, vegRed: +$('vr').value, completeMin: W.idx.defaults.complete_min,
@@ -158,6 +167,7 @@ async function run() {
   W.sorted = sorted;
   if (!cfg.breaks.length) setBreaksFromPct();
   drawValidation(); drawDP(); drawDelta(); drawHistory(); writeAbout();
+  drawStations().catch(e => console.warn(e));
   try { localStorage.setItem('fdop_' + W.unit.unit, JSON.stringify(cfg)); } catch (e) {}
 }
 
@@ -189,7 +199,7 @@ function drawValidation() {
     `<tr${r.fm === cfg.fm && r.k === cfg.idx ? ' style="background:#30353a"' : ''}><td class="l">${r.fm}</td><td class="l">${IDX_LABEL[r.k]}</td>${events.map(([e]) => cell(r, e)).join('')}</tr>`).join('')}</tbody>`;
   const cal = calRows(W.rows);
   const fd = cal.filter(r => r.fd).length, lf = cal.filter(r => r.lfd).length, mf = cal.filter(r => r.mfd).length;
-  $('valid-note').textContent = `Calibration ${cfg.calibFrom}–${cfg.calibTo}, ${cfg.months.map(m => MONTHS[m - 1]).join(' ')}: ${cal.length.toLocaleString()} days, ` +
+  $('valid-note').textContent = `Calibration ${cfg.calibFrom}–${cfg.calibTo}, ${seasonLabel(cfg)}: ${cal.length.toLocaleString()} days, ` +
     `${fd} fire days, ${lf} large fire days, ${mf} multi-fire days. Gold outline = best AUC for each event type.`;
   // probability curves for the chosen index
   const tr = [];
@@ -219,9 +229,10 @@ function drawDP() {
   $('dp-warn').innerHTML = (!t.monoFD || !t.monoLFD) ? `<div class="warn">Probability does not rise with every class
     (${[!t.monoFD && 'fire day', !t.monoLFD && 'large fire day'].filter(Boolean).join(', ')}). Consider merging or moving breakpoints.</div>` : '';
   const q90 = pctile(W.sorted, 90), q97 = pctile(W.sorted, 97);
+  const names = CLASS_NAMES[t.classes.length] || [];
   $('dptable').innerHTML = `<thead><tr><th class="l">Class</th><th>${IDX_LABEL[k]} range</th><th>Percentile</th><th>Days</th><th>% days</th>
     <th>Fires / day</th><th>P(fire day)</th><th>P(large)</th><th>P(multi)</th><th>Share of large fire days</th></tr></thead><tbody>${t.classes.map(o =>
-    `<tr><td class="l"><b>${o.cls}</b></td><td>${f2(o.lo, 0)}–${f2(o.hi, 0)}</td><td>${f2(o.pLo, 0)}–${f2(o.pHi, 0)}</td><td>${o.days}</td><td>${pct(o.pct)}</td>
+    `<tr><td class="l"><b>${o.cls}</b> ${names[o.cls - 1] || ''}</td><td>${f2(o.lo, 0)}–${f2(o.hi, 0)}</td><td>${f2(o.pLo, 0)}–${f2(o.pHi, 0)}</td><td>${o.days}</td><td>${pct(o.pct)}</td>
     <td>${f2(o.fpd)}</td><td>${pct(o.pFD)}</td><td>${pct(o.pLFD)}</td><td>${pct(o.pMFD)}</td><td>${pct(o.shareL)}</td></tr>`).join('')}</tbody>`;
   PL('dpchart', [
     { x: t.classes.map(o => 'Class ' + o.cls), y: t.classes.map(o => o.pFD), name: 'P(fire day)', type: 'bar', marker: { color: '#7fb3ff' } },
@@ -229,11 +240,77 @@ function drawDP() {
     { x: t.classes.map(o => 'Class ' + o.cls), y: t.classes.map(o => o.pct), name: '% of days', mode: 'lines+markers', yaxis: 'y2', line: { color: '#9aa0a6' } },
   ], { title: { text: `Decision-point classes — ${IDX_LABEL[k]}, fuel model ${cfg.fm}, ${cfg.calibFrom}–${cfg.calibTo}`, font: { size: 14 } }, barmode: 'group',
     yaxis: { title: 'probability', tickformat: '.0%', gridcolor: '#43484e' }, yaxis2: { overlaying: 'y', side: 'right', tickformat: '.0%', showgrid: false, title: '% of days' } });
+  drawFFP(cal, k, breaks);
+  drawCompare(cal, k, breaks);
+  drawPAL(cal);
   const sheet = parseBreaks(W.unit.custom_thresholds, IDX_LABEL[k]);
   $('dp-note').innerHTML = `Calibration climatology: 90th = <b>${f2(q90, 1)}</b>, 97th = <b>${f2(q97, 1)}</b> (${IDX_LABEL[k]}, fuel model ${cfg.fm}). ` +
     (sheet ? `The 2026 sheet's ${IDX_LABEL[k]} class tops are <b>${sheet.join(', ')}</b> — <a href="#" id="use-sheet">use them</a>. ` : '') +
     'A good class set has probabilities that climb class to class and puts most large fire days in the top one or two classes.';
   const us = $('use-sheet'); if (us) us.onclick = ev => { ev.preventDefault(); $('breaks').value = sheet.join(','); drawDP(); };
+}
+
+// FireFamily Plus-style decision point chart: the index's cumulative distribution with the days that had
+// fires, large fires and multi-fire days marked on it, and the class breakpoints across it
+function drawFFP(cal, k, breaks) {
+  const sorted = W.sorted, n = sorted.length; if (!n) return;
+  const pts = Array.from({ length: 101 }, (_, p) => pctile(sorted, p));
+  const ev = (key, col, name, sym) => {
+    const d = cal.filter(r => r[key] && r[k] !== null);
+    return { x: d.map(r => r[k]), y: d.map(r => rankPct(sorted, r[k])), mode: 'markers', name: `${name} (${d.length})`,
+      marker: { color: col, size: key === 'fd' ? 5 : 9, symbol: sym, line: { width: 1, color: '#111' } }, text: d.map(r => r.date), hovertemplate: '%{text}: %{x:.0f} (%{y:.0f}th)' };
+  };
+  const shapes = breaks.map(b => ({ type: 'line', xref: 'x', yref: 'paper', x0: b, x1: b, y0: 0, y1: 1, line: { color: '#ffd27f', width: 1, dash: 'dot' } }));
+  const ann = breaks.map((b, i) => ({ x: b, y: 1, xref: 'x', yref: 'paper', yanchor: 'bottom', text: `${f2(b, 0)} (${f2(rankPct(sorted, b), 0)}th)`, showarrow: false, font: { size: 10, color: '#ffd27f' } }));
+  PL('dpffp', [
+    { x: pts, y: Array.from({ length: 101 }, (_, p) => p), mode: 'lines', name: 'cumulative % of days', line: { color: '#9aa0a6', width: 2 }, hoverinfo: 'skip' },
+    ev('fd', '#7fb3ff', 'fire days', 'circle'), ev('mfd', '#ffd27f', `multi-fire days (≥${W.cfg.mfd})`, 'diamond'), ev('lfd', '#e5534b', `large fire days (≥${W.cfg.large} ac)`, 'star'),
+  ], { title: { text: `Decision points — ${IDX_LABEL[k]}-${W.cfg.fm}, ${W.cfg.calibFrom}–${W.cfg.calibTo}, ${seasonLabel(W.cfg)}`, font: { size: 14 } },
+    xaxis: { title: IDX_LABEL[k], gridcolor: '#43484e' }, yaxis: { title: 'percentile', range: [0, 101], gridcolor: '#43484e' }, shapes, annotations: ann });
+}
+function drawCompare(cal, k, breaks) {
+  const ps = $('bp-pcts').value.split(',').map(Number).filter(v => !isNaN(v));
+  const pb = ps.map(p => pctile(W.sorted, p));
+  const a = classTable(cal, k, pb, W.sorted).classes, b = classTable(cal, k, breaks, W.sorted).classes;
+  const n = Math.max(a.length, b.length), names = CLASS_NAMES[n] || [];
+  let rows = '';
+  for (let i = 0; i < n; i++) {
+    const x = a[i], y = b[i];
+    rows += `<tr><td class="l">${i + 1} ${names[i] || ''}</td>
+      <td>${x ? `${f2(x.lo, 0)}–${f2(x.hi, 0)}` : '–'}</td><td>${x ? pct(x.pFD) : '–'}</td><td>${x ? pct(x.pLFD) : '–'}</td><td>${x ? pct(x.shareL) : '–'}</td>
+      <td>${y ? `${f2(y.lo, 0)}–${f2(y.hi, 0)}` : '–'}</td><td>${y ? `${f2(y.pLo, 0)}–${f2(y.pHi, 0)}` : '–'}</td><td>${y ? pct(y.pFD) : '–'}</td><td>${y ? pct(y.pLFD) : '–'}</td><td>${y ? pct(y.shareL) : '–'}</td></tr>`;
+  }
+  $('dpcompare').innerHTML = `<thead><tr><th class="l"></th><th colspan="4" style="text-align:center">Percentile bins (${ps.join(' / ')})</th>
+    <th colspan="5" style="text-align:center">Your bins</th></tr><tr><th class="l">Class</th><th>${IDX_LABEL[k]}</th><th>P(fire day)</th><th>P(large)</th><th>Share of large</th>
+    <th>${IDX_LABEL[k]}</th><th>Percentile</th><th>P(fire day)</th><th>P(large)</th><th>Share of large</th></tr></thead><tbody>${rows}</tbody>`;
+}
+function drawPAL(cal) {
+  const yRows = W.byFm['Y'] ? calRows(W.byFm['Y']) : cal;
+  const out = PAL_LEVELS.map(l => ({ l, days: 0, fd: 0, lfd: 0, fires: 0 }));
+  for (const r of yRows) { const p = palOf(r.erc, r.ic); if (p === null) continue; const o = out[p]; o.days++; o.fd += r.fd; o.lfd += r.lfd; o.fires += r.fires; }
+  const tot = out.reduce((s, o) => s + o.days, 0), totL = out.reduce((s, o) => s + o.lfd, 0);
+  $('dppal').innerHTML = `<thead><tr><th class="l">PAL</th><th>ERC-Y</th><th>IC-Y</th><th>Days</th><th>% days</th><th>P(fire day)</th><th>P(large)</th><th>Share of large fire days</th></tr></thead><tbody>${out.map((o, i) =>
+    `<tr><td class="l"><b>${o.l}</b></td><td>${i === 0 ? '0–' + PAL_ERC[0] : i < 5 ? (PAL_ERC[i - 1] + 1) + '–' + PAL_ERC[i] : (PAL_ERC[4] + 1) + '+'}</td><td>${i === 0 ? '0–' + PAL_IC[0] : i < 5 ? (PAL_IC[i - 1] + 1) + '–' + PAL_IC[i] : (PAL_IC[4] + 1) + '+'}</td><td>${o.days}</td>
+    <td>${pct(tot ? o.days / tot : 0)}</td><td>${pct(o.days ? o.fd / o.days : null)}</td><td>${pct(o.days ? o.lfd / o.days : null)}</td><td>${pct(totL ? o.lfd / totL : null)}</td></tr>`).join('')}</tbody>`;
+}
+
+async function drawStations() {
+  const cfg = W.cfg, cands = W.unit.candidates.filter(c => c.fms && c.fms[cfg.fm]);
+  $('vst-fm').textContent = cfg.fm;
+  const files = await Promise.all(cands.map(c => stationFile(c.sid, cfg.fm)));
+  const rows = [];
+  cands.forEach((c, i) => {
+    if (!files[i]) return;
+    const d = calRows(buildDaily([files[i]], W.fires, cfg, W.idx.scale));
+    const e = d.map(r => r.erc).filter(v => v !== null).sort((a, b) => a - b), bi = d.map(r => r.bi).filter(v => v !== null).sort((a, b) => a - b);
+    const le = logistic(d.map(r => r.erc), d.map(r => r.fd)), lb = logistic(d.map(r => r.bi), d.map(r => r.fd));
+    rows.push({ c, comp: d.length ? e.length / d.length : 0, e90: pctile(e, 90), e97: pctile(e, 97), b90: pctile(bi, 90), b97: pctile(bi, 97), ae: le && le.auc, ab: lb && lb.auc });
+  });
+  const sel = new Set(cfg.stations);
+  $('vstations').innerHTML = `<thead><tr><th class="l">Station</th><th>ID</th><th></th><th>Data</th><th>ERC 90th</th><th>ERC 97th</th><th>BI 90th</th><th>BI 97th</th>
+    <th>AUC ERC</th><th>AUC BI</th></tr></thead><tbody>${rows.map(r => `<tr${sel.has(r.c.sid) ? ' style="background:#30353a"' : ''}><td class="l">${esc(r.c.name || '')}</td><td>${r.c.sid}</td>
+    <td class="small">${r.c.sheet ? 'FDOP' : ''} ${sel.has(r.c.sid) ? '✓ in SIG' : ''}</td><td>${pct(r.comp)}</td><td>${f2(r.e90, 0)}</td><td>${f2(r.e97, 0)}</td><td>${f2(r.b90, 0)}</td><td>${f2(r.b97, 0)}</td>
+    <td>${f2(r.ae)}</td><td>${f2(r.ab)}</td></tr>`).join('')}</tbody>`;
 }
 
 function drawDelta() {
@@ -247,7 +324,7 @@ function drawDelta() {
   const r = D.years.find(x => x.year === +sel.value) || D.years[D.years.length - 1];
   const vt = ['Indices look current', 'Watch — review breakpoints with the unit', 'Recalibrate — the calibration no longer matches'][r.verdict];
   $('verdict').innerHTML = `<span class="verdict" style="background:${FLAG[r.verdict]}">${r.year}: ${vt}</span>
-    <div class="small muted">Compared with ${cfg.calibFrom}–${cfg.calibTo} (${cfg.months.map(m => MONTHS[m - 1]).join(' ')}), ${IDX_LABEL.erc} fuel model ${cfg.fm}, stations ${cfg.stations.join(', ')}.${r.year === new Date().getFullYear() ? ' Current year is partial.' : ''}</div>`;
+    <div class="small muted">Compared with ${cfg.calibFrom}–${cfg.calibTo} (${seasonLabel(cfg)}), ${IDX_LABEL.erc} fuel model ${cfg.fm}, stations ${cfg.stations.join(', ')}.${r.year === new Date().getFullYear() ? ' Current year is partial.' : ''}</div>`;
   const yr = W.idx.sources;
   const rowsT = [
     ['Weather / fire danger', r.flags.weather, `Days ≥ 90th: <b>${r.ge90}</b> (expected ${f2(r.exp90, 0)}); ≥ 97th: <b>${r.ge97}</b> (expected ${f2(r.exp97, 0)}). Mean ERC percentile ${f2(r.ercPctl, 0)}.`],
@@ -301,6 +378,10 @@ function drawHistory() {
   PL('hchart2', [{ x: MONTHS, y: monthCount(calF, nCal), name: `calibration average ${cfg.calibFrom}–${cfg.calibTo}`, type: 'bar', marker: { color: '#9aa0a6' } },
     { x: MONTHS, y: monthCount(fires.filter(f => +f[0].slice(0, 4) === sy), 1), name: String(sy), mode: 'lines+markers', line: { color: '#e5534b' } }],
     { title: { text: 'Timing — fires per month', font: { size: 14 } }, yaxis: { title: 'fires', gridcolor: '#43484e' } });
+  const SC = [['A <¼', 0, 0.25], ['B ¼–10', 0.25, 10], ['C 10–100', 10, 100], ['D 100–300', 100, 300], ['E 300–1k', 300, 1000], ['F 1k–5k', 1000, 5000], ['G 5k+', 5000, 1e12]];
+  PL('hchart3', [{ x: SC.map(c => c[0]), y: SC.map(c => calF.filter(f => f[1] >= c[1] && f[1] < c[2]).length / nCal), type: 'bar', name: `per year, ${cfg.calibFrom}–${cfg.calibTo}`, marker: { color: '#9aa0a6' } },
+    { x: SC.map(c => c[0]), y: SC.map(c => fires.filter(f => +f[0].slice(0, 4) === sy && f[1] >= c[1] && f[1] < c[2]).length), type: 'bar', name: String(sy), marker: { color: '#e5534b' } }],
+    { title: { text: 'Fire size classes (NWCG A–G)', font: { size: 14 } }, barmode: 'group', yaxis: { title: 'fires', type: 'log', gridcolor: '#43484e' } });
   const hs = $('hyear'); if (!hs.options.length) { hs.innerHTML = years.slice().reverse().map(y => `<option>${y}</option>`).join(''); }
   const mn = +$('hmin').value || 0;
   const list = fires.filter(f => +f[0].slice(0, 4) === +hs.value && f[1] >= mn).sort((a, b) => b[1] - a[1]);
@@ -315,7 +396,7 @@ function writeAbout() {
     Fires: ${esc(s.fires)}, wildfires whose point of origin is inside the FDRA. Burned area: ${esc(s.perimeters)}. Updated ${esc(W.idx.generated)}.</p>
     <p><b>SIG.</b> The FDRA value each day is the average of the checked stations (stations not reporting that day are skipped), as in a WIMS/FireFamily Plus SIG.</p>
     <p><b>Events.</b> Fire day: at least one wildfire discovered that day. Large fire day: at least one fire discovered that day that reached ≥ ${c.large} ac.
-    Multi-fire day: ≥ ${c.mfd} fires discovered that day. Only the season months you pick are used.</p>
+    Multi-fire day: ≥ ${c.mfd} fires discovered that day. Only days inside the fire season you set are used (as in the FFP analysis period).</p>
     <p><b>Validation.</b> One-variable logistic regression of each event on each index and fuel model (the FireFamily Plus / FDOP approach), reported as AUC,
     McFadden R², a 10-class binned R² and the slope's p-value. Pick the index and fuel model with the best skill for the decisions they drive (BI for staffing,
     ERC for preparedness is typical), then set class breakpoints so the probabilities climb class to class.</p>
@@ -342,7 +423,7 @@ function csv() {
 function linkToSetup() {
   const c = W.cfg, u = new URL(location.href);
   u.searchParams.set('unit', W.unit.unit); u.searchParams.set('st', c.stations.join('.')); u.searchParams.set('fm', c.fm);
-  u.searchParams.set('idx', c.idx); u.searchParams.set('cal', c.calibFrom + '-' + c.calibTo); u.searchParams.set('mo', c.months.join('.'));
+  u.searchParams.set('idx', c.idx); u.searchParams.set('cal', c.calibFrom + '-' + c.calibTo); u.searchParams.set('ss', c.season.join('_'));
   u.searchParams.set('lg', c.large); u.searchParams.set('mfd', c.mfd); u.searchParams.set('bp', $('breaks').value);
   navigator.clipboard && navigator.clipboard.writeText(u.toString());
   setStatus('Link copied: ' + u.toString());
@@ -367,8 +448,8 @@ function fillSetup(unit) {
   $('idx').value = (fromUrl && q('idx')) || (saved && saved.idx) || (sl.indexOf('BI') >= 0 && sl.indexOf('ERC') < 0 ? 'bi' : 'erc');
   const d = W.idx.defaults, cal = (fromUrl && q('cal')) ? q('cal').split('-').map(Number) : saved ? [saved.calibFrom, saved.calibTo] : d.calib;
   $('y0').value = cal[0]; $('y1').value = cal[1];
-  const mo = (fromUrl && q('mo')) ? q('mo').split('.').map(Number) : saved ? saved.months : d.months;
-  $('months').innerHTML = 'Season ' + MONTHS.map((m, i) => `<label><input type="checkbox" value="${i + 1}" ${mo.includes(i + 1) ? 'checked' : ''}>${m}</label>`).join('');
+  const ss = (fromUrl && q('ss')) ? q('ss').split('_') : (saved && saved.season) ? saved.season : d.season;
+  $('s0').value = ss[0]; $('s1').value = ss[1];
   $('large').value = (fromUrl && q('lg')) || (saved && saved.large) || d.large_fire_ac;
   $('mfd').value = (fromUrl && q('mfd')) || (saved && saved.mfd) || d.mfd_n;
   const sheetBp = parseBreaks(unit.custom_thresholds, $('idx').value.toUpperCase());

@@ -61,6 +61,16 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - Fuel model conflict: staffing text says BI fuel model Z, FFP table lists Y — breakpoints only fit Z (BI-Z 90th/97th 89/101 vs BI-Y 97th ~39).
 - Table 2 lists Blue Mountain twice; adjective matrix IC columns skip 21–30; response-plan note says "ERC Y" while thresholds are BI.
 
+## Mendocino NF (MNF) — 2026 FDOP Vols. 1–4 (Vol. 1 final draft .docx; Vol. 2 Apr 2026; Vol. 3 Jun 2026; Vol. 4 RAWS analysis Apr 2023)
+- Loaded: 162 West (BI-Z / ERC-Z), 165 High Country (BI-Z / ERC-Z), 170 East (BI-Y / ERC-Y) — staffing 39/59/71/91, 37/56/69/91, 22/28/34/43; dispatch Low/High at 72+, 70+, 35+; adjective ERC 57/74/91/110, 61/84/101/109, 28/39/51/61 (FDOP lists class starts; converted to class tops).
+- **Our membership did not match the FDOP SIGs (Tables 9–11) and had the fuel models reversed** — fixed in membership, polygons and hosted layer:
+  - 162 West: Eel River 41005 + Soda Creek 41406, fuel model Z (we had 4 stations, Y).
+  - 165 High Country: Alder Springs 41101 + Mendocino Pass 41018, Z (we had a typo station "411018", Y).
+  - 170 East: Eagle Peak 40802, High Glade Lookout 41402, Stonyford 41503, Y (we had 40816 added, Z).
+- 165 dispatch: Table 14/17 high at BI 70+ (Grindstone, Table 15), but Table 15 also lists 165 at 72+ under Upperlake/Covelo.
+- Analysis years, season and large-fire size are not stated in the text (in FFP graphics) — Workbench defaults used.
+- Severity triggers in Vol. 2 still reference ERC fuel model G (1978) for PSAs NC02/NC05 in places, alongside fuel model Y elsewhere.
+
 ## Cross-forest
 - 2025 R5 PAL matrix now in the Workbench PAL check.
 - Breakpoint convention made consistent: a breakpoint is the top of its class everywhere (popup, tracking, Workbench).

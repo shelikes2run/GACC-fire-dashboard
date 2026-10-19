@@ -53,7 +53,7 @@
   <div class="grid2">
     <section class="panel" id="setup-col">
       <h2>Setup</h2>
-      <div class="small muted">Stations (SIG) — the 2026 sheet's FDOP stations are pre-checked; RAWS inside or within 25 km are listed for testing.</div>
+      <div class="small muted">Stations (SIG) — the current FDOP's SIG is pre-checked (else the 2026 sheet's); RAWS inside or within 25 km are listed for testing.</div>
       <div class="stlist" id="stlist"></div>
       <div class="form-row no-print"><input type="text" id="st-search" list="st-all" placeholder="Add any RAWS — type a name or WIMS ID" style="width:100%">
         <datalist id="st-all"></datalist></div>
@@ -232,7 +232,7 @@ function drawDP() {
   $('dp-warn').innerHTML = (!t.monoFD || !t.monoLFD) ? `<div class="warn">Probability does not rise with every class
     (${[!t.monoFD && 'fire day', !t.monoLFD && 'large fire day'].filter(Boolean).join(', ')}). Consider merging or moving breakpoints.</div>` : '';
   const q90 = pctile(W.sorted, 90), q97 = pctile(W.sorted, 97);
-  const names = CLASS_NAMES[t.classes.length] || [];
+  const names = (W.S0 && W.S0.classes && W.S0.classes.length === t.classes.length) ? W.S0.classes : (CLASS_NAMES[t.classes.length] || []);
   $('dptable').innerHTML = `<thead><tr><th class="l">Class</th><th>${IDX_LABEL[k]} range</th><th>Percentile</th><th>Days</th><th>% days</th>
     <th>Fires / day</th><th>P(fire day)</th><th>P(large)</th><th>P(multi)</th><th>Share of large fire days</th></tr></thead><tbody>${t.classes.map(o =>
     `<tr><td class="l"><b>${o.cls}</b> ${names[o.cls - 1] || ''}</td><td>${f2(o.lo, 0)}–${f2(o.hi, 0)}</td><td>${f2(o.pLo, 0)}–${f2(o.pHi, 0)}</td><td>${o.days}</td><td>${pct(o.pct)}</td>
@@ -437,9 +437,15 @@ function fillSetup(unit) {
   let saved = null; try { saved = JSON.parse(localStorage.getItem('fdop_' + unit.unit) || 'null'); } catch (e) {}
   const q = k => P.get(k);
   const fromUrl = q('unit') === unit.unit;
-  const st = W.override || (fromUrl && q('st') ? q('st').split('.').map(Number) : saved ? saved.stations : unit.sheet_stations);
+  // starting point: the FDRA's current signed FDOP (docs/data/fdop_start.json), then the 2026 sheet
+  const S0 = (W.start || {})[unit.unit] || (W.start || {})[unit.fdra_id] || null;
+  W.S0 = S0;
+  const st = W.override || (fromUrl && q('st') ? q('st').split('.').map(Number) : saved ? saved.stations : (S0 && S0.stations) || unit.sheet_stations);
   W.override = null;
-  const fm = (fromUrl && q('fm')) || (saved && saved.fm) || unit.fuel_model || 'Y';
+  for (const s of st) if (S0 && S0.stations && S0.stations.includes(s) && !unit.candidates.some(c => c.sid === s)) {
+    const a = (W.idx.stations || []).find(x => x.sid === s); if (a) unit.candidates.push({ ...a, inside: null, dist_km: null, sheet: false, fdop: true });
+  }
+  const fm = (fromUrl && q('fm')) || (saved && saved.fm) || (S0 && S0.fm) || unit.fuel_model || 'Y';
   // stations added from the statewide list (URL or saved set) that aren't candidates yet
   const extra = st.filter(s => !unit.candidates.some(c => c.sid === s));
   for (const s of extra) { const a = (W.idx.stations || []).find(x => x.sid === s); if (a) unit.candidates.push({ ...a, inside: null, dist_km: null, sheet: false, added: true }); }
@@ -447,24 +453,27 @@ function fillSetup(unit) {
     const comp = c.fms && c.fms[fm] ? Math.round(100 * c.fms[fm].complete) + '%' : 'no data';
     return `<label><input type="checkbox" value="${c.sid}" ${st.includes(c.sid) ? 'checked' : ''}>
       <span>${esc(c.name || '?')} <span class="muted small">${c.sid}</span></span>
-      ${c.sheet ? '<span class="tag sheet">FDOP</span>' : ''}${c.added ? '<span class="tag">added</span>' : ''}<span class="tag">${c.inside ? 'inside' : c.dist_km !== null && c.dist_km !== undefined ? c.dist_km + ' km' : '–'}</span>
+      ${S0 && S0.stations && S0.stations.includes(c.sid) ? '<span class="tag sheet">FDOP</span>' : ''}${c.sheet ? '<span class="tag">2026 sheet</span>' : ''}${c.added ? '<span class="tag">added</span>' : ''}<span class="tag">${c.inside ? 'inside' : c.dist_km !== null && c.dist_km !== undefined ? c.dist_km + ' km' : '–'}</span>
       <span class="tag" title="days with data ${W.idx.history_start}–">${comp}</span></label>`;
   }).join('');
   $('fm').innerHTML = W.idx.fuel_models.map(f => `<option ${f === fm ? 'selected' : ''}>${f}</option>`).join('');
   const sl = (unit.sl_dl_index || '').toUpperCase();
-  $('idx').value = (fromUrl && q('idx')) || (saved && saved.idx) || (sl.indexOf('BI') >= 0 && sl.indexOf('ERC') < 0 ? 'bi' : 'erc');
-  const d = W.idx.defaults, cal = (fromUrl && q('cal')) ? q('cal').split('-').map(Number) : saved ? [saved.calibFrom, saved.calibTo] : d.calib;
+  $('idx').value = (fromUrl && q('idx')) || (saved && saved.idx) || (S0 && S0.idx) || (sl.indexOf('BI') >= 0 && sl.indexOf('ERC') < 0 ? 'bi' : 'erc');
+  const d = W.idx.defaults, cal = (fromUrl && q('cal')) ? q('cal').split('-').map(Number) : saved ? [saved.calibFrom, saved.calibTo] : (S0 && S0.calib) || d.calib;
   $('y0').value = cal[0]; $('y1').value = cal[1];
-  const ss = (fromUrl && q('ss')) ? q('ss').split('_') : (saved && saved.season) ? saved.season : d.season;
+  const ss = (fromUrl && q('ss')) ? q('ss').split('_') : (saved && saved.season) ? saved.season : (S0 && S0.season) || d.season;
   $('s0').value = ss[0]; $('s1').value = ss[1];
-  $('large').value = (fromUrl && q('lg')) || (saved && saved.large) || d.large_fire_ac;
-  $('mfd').value = (fromUrl && q('mfd')) || (saved && saved.mfd) || d.mfd_n;
+  $('large').value = (fromUrl && q('lg')) || (saved && saved.large) || (S0 && S0.large) || d.large_fire_ac;
+  $('mfd').value = (fromUrl && q('mfd')) || (saved && saved.mfd) || (S0 && S0.mfd) || d.mfd_n;
+  const fdopBp = S0 && S0.breaks && S0.breaks[$('idx').value];
   const sheetBp = parseBreaks(unit.custom_thresholds, $('idx').value.toUpperCase());
-  $('breaks').value = (fromUrl && q('bp')) || (saved && saved.breaks && saved.breaks.join(',')) || (sheetBp ? sheetBp.join(',') : '');
+  $('breaks').value = (fromUrl && q('bp')) || (saved && saved.breaks && saved.breaks.join(',')) || (fdopBp ? fdopBp.join(',') : sheetBp ? sheetBp.join(',') : '');
   $('vy').value = (saved && saved.vegYellow) || d.veg_yellow_pct; $('vr').value = (saved && saved.vegRed) || d.veg_red_pct;
-  $('sheetline').innerHTML = `2026 sheet: FDOP stations ${unit.sheet_stations.join(', ')} · fuel model ${esc(unit.fuel_model)} · ` +
+  $('sheetline').innerHTML = (S0 ? `<b>Starting point — current FDOP:</b> ${esc(S0.source)}${S0.notes ? ' — ' + esc(S0.notes) : ''}
+    <button class="btn ghost no-print" id="reset-fdop" style="padding:2px 8px;margin-left:6px">Reset to FDOP</button><br>` : '<b>No signed FDOP loaded for this FDRA yet</b> — starting from the 2026 sheet / climatology.<br>') + `2026 sheet: FDOP stations ${unit.sheet_stations.join(', ')} · fuel model ${esc(unit.fuel_model)} · ` +
     `${esc(unit.sl_dl_index || '')} ${unit.custom_thresholds ? '· custom: ' + esc(unit.custom_thresholds) : ''}`;
   document.querySelectorAll('#units button').forEach(b => b.classList.toggle('on', b.dataset.u === unit.unit));
+  const rb = $('reset-fdop'); if (rb) rb.onclick = () => { try { localStorage.removeItem('fdop_' + unit.unit); } catch (e) {} fillSetup(unit); run(); };
 }
 
 async function loadUnit(unit) {
@@ -478,7 +487,7 @@ async function loadUnit(unit) {
 }
 
 (async function main() {
-  W.idx = await fjson('index.json');
+  [W.idx, W.start] = await Promise.all([fjson('index.json'), fetch('data/fdop_start.json').then(r => r.json()).catch(() => ({}))]);
   const id = (P.get('id') || '').replace(/\s*\(.*\)$/, '').toUpperCase();
   const units = W.idx.units.filter(u => u.fdra_id.toUpperCase() === id);
   if (!units.length) { $('h2').textContent = id ? `No FDOP data for “${P.get('id')}”` : 'Pick an FDRA on the map'; return; }
@@ -498,7 +507,7 @@ async function loadUnit(unit) {
   $('bp-pct').onclick = () => { setBreaksFromPct(); drawDP(); };
   $('breaks').onchange = drawDP; $('dyear').onchange = drawDelta; $('hyear').onchange = drawHistory; $('hmin').onchange = drawHistory;
   $('vy').onchange = $('vr').onchange = () => { W.cfg = cfgFromUI(); drawDelta(); };
-  $('fm').onchange = () => fillSetupKeep(); $('idx').onchange = () => { $('breaks').value = ''; run(); };
+  $('fm').onchange = () => fillSetupKeep(); $('idx').onchange = () => { const b = W.S0 && W.S0.breaks && W.S0.breaks[$('idx').value]; $('breaks').value = b ? b.join(',') : ''; run(); };
   const want = P.get('unit');
   await loadUnit(units.find(u => u.unit === want) || units.find(u => !/non-peak/.test(u.unit)) || units[0]);
 })().catch(e => { $('h2').textContent = 'Could not load FDOP data'; setStatus(e.message); });

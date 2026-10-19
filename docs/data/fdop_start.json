@@ -2264,5 +2264,80 @@
    }
   ],
   "notes": "One FDRA for the Lassen NF and Lassen Volcanic NP; 5-station SIG Bogard, Chester, Gordon, Ladder Butte, Manzanita Lake (fuel model Y). Staffing BI-Y 0-9/10-16/17-22/23-31/32+ (Table 14: SL1-2 = DL1, SL3 = DL2, SL4-5 = DL3). Table 11 gives BI adjective 0-9/10-16/17-24/25-31/32+ with dispatch 1/2/2/3/3 — the BI-to-dispatch mapping differs between Tables 11 and 14. Pocket card: 2010-2023, May-Oct, large fires (30 ac+) when ERC > 48."
+ },
+ "MDF-258": {
+  "source": "Modoc Interagency Fire Alliance (MIFA) Fire Danger Operating Plan, April 2026 DRAFT — Table 2, Table 5, Staffing Levels, Response Plan",
+  "stations": [
+   40221,
+   40233,
+   40302,
+   40306,
+   40310,
+   40312,
+   40313,
+   40314
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "season": [
+   "06-01",
+   "09-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    20,
+    41,
+    83,
+    93
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 100,
+  "mfd": 5,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Z; FFP 5.0 decision points)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     20,
+     41,
+     83,
+     93
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (BI; marked 'proposed change, under review')",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     47,
+     81
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "DRAFT April 2026. One FDRA (MIFA) covering Modoc NF and partners; SIG of 8 RAWS, equal weight: Round Mtn, Indian Well, Blue Mtn, Timber Mtn, Lower Klamath, Rush Creek, Bear Flat, Cold Springs (Blue Mtn is listed twice in Table 2). Staffing BI 0-20/21-41/42-83/84-93/93+ ('based on the BI 97% for fuel model Z'); Table 5 lists fuel model Y for the stations, but the breakpoints match BI-Z (BI-Y 97th is ~39). Dispatch BI 0-47/48-81/82+ annotated 'proposed change, under review by MIFA. ERC Y'. Adjective rating = staffing level x IC matrix. FFP parameters: large fire 100 ac, multiple fire day 5 fires, 2016-2025. Fire season for percentiles Jun-Sep. Sub-SIGs: Modoc (Timber, Round, Blue, Rush Creek, Lower Klamath), Warners (Cold Springs, Bear Flat)."
  }
 }

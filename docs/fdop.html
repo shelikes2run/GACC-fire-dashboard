@@ -497,7 +497,7 @@ async function loadUnit(unit) {
 }
 
 (async function main() {
-  [W.idx, W.start] = await Promise.all([fjson('index.json'), fetch('data/fdop_start.json').then(r => r.json()).catch(() => ({}))]);
+  [W.idx, W.start] = await Promise.all([fjson('index.json'), fetch('data/fdop_start.json?t=' + Math.floor(Date.now() / 600000)).then(r => r.json()).catch(() => ({}))]);
   const id = (P.get('id') || '').replace(/\s*\(.*\)$/, '').toUpperCase();
   const units = W.idx.units.filter(u => u.fdra_id.toUpperCase() === id);
   if (!units.length) { $('h2').textContent = id ? `No FDOP data for “${P.get('id')}”` : 'Pick an FDRA on the map'; return; }

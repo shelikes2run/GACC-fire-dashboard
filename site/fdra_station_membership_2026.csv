@@ -186,7 +186,6 @@ SNF-exempt,,44110,Y
 ENF-330,,41908,Y
 ENF-340,,42603,Y
 AEU-Central,,42615,Y
-AEU-East,,42616,Y
 AEU-El Dorado,,42615,Y
 AEU-Unit-wide,,42616,Y
 AEU-West,,41907,Y
@@ -285,7 +284,6 @@ NEU-Central,,41806,Y
 NEU-Eastern,,260117,Y
 NEU-Foothill,,41701,Y
 NEU-Fra,,41201,Y
-NEU-Local,,41909,Y
 NEU-Lra West,,41201,Y
 NEU-Placer,,41907,Y
 NEU-Plumas,,41302,Y
@@ -337,8 +335,10 @@ SLU-Coastal Valley,,44915,Y
 SLU-Inland Grass,,44914,Y
 SLU-Inland Grass,,44916,Y
 SLU-Slo,,44901,Y
-SRF-Ltrd,,40519,Y
-SRF-Mr,,40508,Y
+SQF-435 (outside NF),,44713,Y
+SQF-440 (outside NF),,45017,Y
+SRF-Ltrd,,40404,Y
+SRF-Mr,,40507,Y
 SRF-Or,,40430,Y
 SRF-Srnra,,40102,Y
 TCU-Fothills West,,43613,Y

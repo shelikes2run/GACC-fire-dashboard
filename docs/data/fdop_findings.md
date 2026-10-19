@@ -69,6 +69,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
   - 162 West: Eel River 41005 + Soda Creek 41406, fuel model Z (we had 4 stations, Y).
   - 165 High Country: Alder Springs 41101 + Mendocino Pass 41018, Z (we had a typo station "411018", Y).
   - 170 East: Eagle Peak 40802, High Glade Lookout 41402, Stonyford 41503, Y (we had 40816 added, Z).
+- **162 West breakpoints look too high for its SIG on fuel model Z**: at Eel River + Soda Creek, BI-Z 90th/97th (2016–2025) is 59/65, but SL4 starts at 72 and SL5 at 92 (dispatch High at 72+) — SL4/SL5 and High dispatch would almost never occur. ERC-Z extreme (111+) is also above the 97th (106). 165 (BI-Z 86/96) and 170 (BI-Y 39/43) fit their tables. Possibly copied from 165 or computed with different stations.
 - 165 dispatch: Table 14/17 high at BI 70+ (Grindstone, Table 15), but Table 15 also lists 165 at 72+ under Upperlake/Covelo.
 - Analysis years, season and large-fire size are not stated in the text (in FFP graphics) — Workbench defaults used.
 - Severity triggers in Vol. 2 still reference ERC fuel model G (1978) for PSAs NC02/NC05 in places, alongside fuel model Y elsewhere.
@@ -102,6 +103,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - Dataset years: text says 2005–2022 gap-filled; the staffing table says 2005–2025.
 - RWP: only 3 large-fire days (5 ac+) in 2015–2024 — FDOP notes the sample is too small for statistical inference.
 - Old 2026-sheet SRF values (BI 90th/97th 31.1/34.7 etc.) retired.
+- **Redwood NP (RWP) has no polygon on the map** — it is in the station membership and the FDOP, but the statewide FDRA layer has no RWP boundary, so it only shows in the Workbench/season tracking by id. Need an RWP FDRA boundary.
 
 ## Cross-forest
 - 2025 R5 PAL matrix now in the Workbench PAL check.

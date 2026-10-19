@@ -75,7 +75,8 @@ if (Count(tools) == 0) {
 }
 for (var i in tools) {
   var t = tools[i]; var k = t[1]; var fm = t[2]; var b = t[3]; var cls = t[4];
-  var v = NOW[k]; var c = ''; var rank = 0; var total = Count(cls);
+  var v = null; if (HasKey(NOW, k)) { v = NOW[k]; }
+  var c = ''; var rank = 0; var total = Count(cls);
   if (fm == 'Y' && !IsEmpty(v)) {
     if (Count(b) > 0) {
       c = bclass(v, b, cls);

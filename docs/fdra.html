@@ -265,7 +265,7 @@ function lvlBadge(t, c) {
   return `<span class="badge" style="background:${LVL_COL[Math.min(k, LVL_COL.length - 1)]}">${esc(lvlName(t, c))}</span>`;
 }
 function trackTable() {
-  const tl = fdopTools('erc').concat(fdopTools('bi')), s = S.cur.series;
+  const tl = fdopTools('erc').concat(fdopTools('bi'), fdopTools('ic')), s = S.cur.series;
   if (!tl.length) {
     document.getElementById('track').innerHTML = '';
     document.getElementById('tracknote').innerHTML = S.tools && S.tools.length ?

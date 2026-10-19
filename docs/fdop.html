@@ -55,6 +55,9 @@
       <h2>Setup</h2>
       <div class="small muted">Stations (SIG) — the 2026 sheet's FDOP stations are pre-checked; RAWS inside or within 25 km are listed for testing.</div>
       <div class="stlist" id="stlist"></div>
+      <div class="form-row no-print"><input type="text" id="st-search" list="st-all" placeholder="Add any RAWS — type a name or WIMS ID" style="width:100%">
+        <datalist id="st-all"></datalist></div>
+      <div class="small muted no-print">Check or uncheck stations to build the SIG, then Run. Your station set is remembered in this browser and goes into “Copy link”.</div>
       <div class="form-row">Fuel model <select id="fm"></select>
         Index <select id="idx"><option value="erc">ERC</option><option value="bi">BI</option><option value="ic">IC</option><option value="sc">SC</option></select></div>
       <div class="form-row">Calibration years <input type="number" id="y0" min="2006" max="2030"> – <input type="number" id="y1" min="2006" max="2030"></div>
@@ -434,13 +437,17 @@ function fillSetup(unit) {
   let saved = null; try { saved = JSON.parse(localStorage.getItem('fdop_' + unit.unit) || 'null'); } catch (e) {}
   const q = k => P.get(k);
   const fromUrl = q('unit') === unit.unit;
-  const st = fromUrl && q('st') ? q('st').split('.').map(Number) : saved ? saved.stations : unit.sheet_stations;
+  const st = W.override || (fromUrl && q('st') ? q('st').split('.').map(Number) : saved ? saved.stations : unit.sheet_stations);
+  W.override = null;
   const fm = (fromUrl && q('fm')) || (saved && saved.fm) || unit.fuel_model || 'Y';
+  // stations added from the statewide list (URL or saved set) that aren't candidates yet
+  const extra = st.filter(s => !unit.candidates.some(c => c.sid === s));
+  for (const s of extra) { const a = (W.idx.stations || []).find(x => x.sid === s); if (a) unit.candidates.push({ ...a, inside: null, dist_km: null, sheet: false, added: true }); }
   $('stlist').innerHTML = unit.candidates.sort((a, b) => (b.sheet - a.sheet) || ((a.dist_km ?? 99) - (b.dist_km ?? 99))).map(c => {
     const comp = c.fms && c.fms[fm] ? Math.round(100 * c.fms[fm].complete) + '%' : 'no data';
     return `<label><input type="checkbox" value="${c.sid}" ${st.includes(c.sid) ? 'checked' : ''}>
       <span>${esc(c.name || '?')} <span class="muted small">${c.sid}</span></span>
-      ${c.sheet ? '<span class="tag sheet">FDOP</span>' : ''}<span class="tag">${c.inside ? 'inside' : c.dist_km !== null && c.dist_km !== undefined ? c.dist_km + ' km' : '–'}</span>
+      ${c.sheet ? '<span class="tag sheet">FDOP</span>' : ''}${c.added ? '<span class="tag">added</span>' : ''}<span class="tag">${c.inside ? 'inside' : c.dist_km !== null && c.dist_km !== undefined ? c.dist_km + ' km' : '–'}</span>
       <span class="tag" title="days with data ${W.idx.history_start}–">${comp}</span></label>`;
   }).join('');
   $('fm').innerHTML = W.idx.fuel_models.map(f => `<option ${f === fm ? 'selected' : ''}>${f}</option>`).join('');
@@ -486,6 +493,7 @@ async function loadUnit(unit) {
     document.querySelectorAll('.tabpane').forEach(p => p.style.display = p.id === 't-' + b.dataset.t ? '' : 'none');
     window.dispatchEvent(new Event('resize'));
   });
+  addStationUI();
   $('run').onclick = run; $('csv').onclick = csv; $('link').onclick = linkToSetup; $('print').onclick = () => window.print();
   $('bp-pct').onclick = () => { setBreaksFromPct(); drawDP(); };
   $('breaks').onchange = drawDP; $('dyear').onchange = drawDelta; $('hyear').onchange = drawHistory; $('hmin').onchange = drawHistory;
@@ -496,6 +504,18 @@ async function loadUnit(unit) {
 })().catch(e => { $('h2').textContent = 'Could not load FDOP data'; setStatus(e.message); });
 
 function fillSetupKeep() { run(); }
+function addStationUI() {
+  const all = W.idx.stations || [];
+  $('st-all').innerHTML = all.map(s => `<option value="${s.sid} — ${esc(s.name || '')}">`).join('');
+  $('st-search').onchange = () => {
+    const sid = parseInt($('st-search').value, 10); $('st-search').value = '';
+    const a = all.find(x => x.sid === sid); if (!a) { setStatus('No FEMS history for that station.'); return; }
+    if (!W.unit.candidates.some(c => c.sid === sid)) W.unit.candidates.push({ ...a, inside: null, dist_km: null, sheet: false, added: true });
+    const keep = cfgFromUI(); if (!keep.stations.includes(sid)) keep.stations.push(sid);
+    W.override = keep.stations;
+    fillSetup(W.unit); run();
+  };
+}
 </script>
 </body>
 </html>

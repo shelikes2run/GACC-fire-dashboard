@@ -84,6 +84,14 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - Large-fire size not stated in the text.
 - Old 2026-sheet TNF value (BI 22/30, "index assumed") retired.
 
+## Shasta-Trinity NF (SHF) — 2026 FDOP, FINAL signed (May 2026)
+- Loaded: FDRAs 230, 238, 240, 241, 243 — staffing BI-Y (SL4 = 90th, SL5 = 97th; SL2/SL3 at ¼ and ½ the 90th): 7.43/14.85/29.7/32.9, 7.08/14.15/28.3/30.9, 7.6/15.2/30.4/33.4, 8.8/17.6/35.2/38.2, 7.28/14.55/29.1/32.0; dispatch BI-Y 20/26, 22/31, 19/26, 22/31, 20/27.
+- SIGs match our membership exactly (no station fixes needed).
+- Percentiles from gap-filled FEMS 2005–2022, Jan–Dec; dispatch from 2011–2025 fire occurrence (5+ ac large fire days, 2+ multi-fire days); FFP large fire 10 ac.
+- FDRA staffing is tracked, but the Forest-level staffing (all RAWS, 7.43/14.85/29.7/31.7) sets actual staffing — Forest-level SIG not mapped as its own FDRA.
+- Typos: FFP parameter table header "FDRA 2380" (= 230); FDRA 243 Ash Creek data years blank and its 90th (25/27) below the 1–12 value pattern of the other stations.
+- Pocket-card large fire changed from 5 to 10 acres.
+
 ## Cross-forest
 - 2025 R5 PAL matrix now in the Workbench PAL check.
 - Breakpoint convention made consistent: a breakpoint is the top of its class everywhere (popup, tracking, Workbench).

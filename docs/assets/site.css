@@ -70,3 +70,7 @@ body.embed .panel { padding: 12px; margin-bottom: 10px; }
   .chart { height: 380px; }
 }
 button.mini{font-size:10px;padding:0 4px;margin-left:3px;border-radius:3px;border:1px solid #555;background:#33373c;color:#ddd;cursor:pointer}
+
+.today-box { background:#fff; color:#111; border-radius:6px; padding:10px 12px; max-width:760px; }
+.today-box a { color:#1565c0; }
+.today-box table td, .today-box table th { padding:3px 4px; border-bottom:1px solid #eee; vertical-align:top; }

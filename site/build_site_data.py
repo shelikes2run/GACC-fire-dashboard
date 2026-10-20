@@ -369,6 +369,10 @@ def write_sfdi_geojson(out: Path, polys: dict, rows: list, now):
             'generated': now.strftime('%Y-%m-%d %H:%M %Z')}})
     gj = {'type': 'FeatureCollection', 'features': feats}
     (out / 'fdras_sfdi.geojson').write_text(json.dumps(gj, separators=(',', ':'), allow_nan=False))
+    # the same summary per FDRA for the season-tracking page (side panel of the app)
+    (out / 'popups.json').write_text(json.dumps({'generated': now.strftime('%Y-%m-%d %H:%M %Z'),
+                                                 'fdras': {f['properties']['fdra_id']: f['properties']['popup_html'] for f in feats}},
+                                                separators=(',', ':')))
     log.info('fdras_sfdi.geojson: %d polygons', len(feats))
 
 

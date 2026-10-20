@@ -264,6 +264,11 @@ function drawDP() {
   drawOptions(cal, k, breaks);
   $('dp-warn').innerHTML = (!t.monoFD || !t.monoLFD) ? `<div class="warn">Probability does not rise with every class
     (${[!t.monoFD && 'fire day', !t.monoLFD && 'large fire day'].filter(Boolean).join(', ')}). Consider merging or moving breakpoints.</div>` : '';
+  if (NEG(k) && W.sorted.length) {   // GSI sits at 0 (cured / dormant) for much of the year in grass
+    const z = W.sorted.filter(v => v === 0).length / W.sorted.length;
+    if (z >= 0.4) $('dp-warn').innerHTML += `<div class="warn">GSI is 0 (fully cured or dormant) on ${pct(z)} of the ${seasonLabel(cfg)} days, so most breakpoints collapse to 0.
+      GSI works as a green-up / curing tool: set the fire season to the transition months (for grass usually about 03-01 to 06-30) and Run, then build breakpoints there.</div>`;
+  }
   const q90 = pctile(W.sorted, 90), q97 = pctile(W.sorted, 97);
   const names = (W.toolClasses && W.toolClasses.length === t.classes.length) ? W.toolClasses
     : (W.S0 && W.S0.classes && W.S0.classes.length === t.classes.length) ? W.S0.classes : (CLASS_NAMES[t.classes.length] || []);

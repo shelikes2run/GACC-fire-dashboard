@@ -209,6 +209,36 @@ def pal_by_polygon(polys):
 cn_pal_order = ['A', 'B', 'C', 'D', 'Ev', 'E']
 
 
+SITE = 'https://shelikes2run.github.io/GACC-fire-dashboard/'
+
+
+def write_sfdi_geojson(out: Path, polys: dict, rows: list, now):
+    """fdras_sfdi.geojson: every FDRA polygon with today's forecast SFDI and class — the
+    main-map layer in AGOL (GeoJSON layer read from the site-data branch, refreshed by the map)."""
+    from shapely.geometry import mapping, shape
+    by = {r['fdra_id']: r for r in rows}
+    feats = []
+    for f in polys['features']:
+        p = f['properties']
+        r = by.get(p['fdra_id'], {})
+        fc, ob = r.get('next_fcst') or {}, r.get('latest_obs') or {}
+        g = shape(f['geometry']).simplify(0.001, preserve_topology=True)
+        val = lambda d, k: (None if d.get(k) is None else round(float(d[k]), 1))
+        feats.append({'type': 'Feature', 'geometry': mapping(g), 'properties': {
+            'fdra_id': p['fdra_id'], 'forest': p.get('forest') or '', 'fdra_name': p.get('fdra_name') or '',
+            'fuel_model': p.get('fuel_model') or '',
+            'sfdi': val(fc, 'sfdi'), 'sfdi_class': sfdi_class(fc.get('sfdi')) or 'No data', 'fcst_date': fc.get('date') or '',
+            'sfdi_obs': val(ob, 'sfdi'), 'sfdi_class_obs': sfdi_class(ob.get('sfdi')) or 'No data', 'obs_date': ob.get('date') or '',
+            'erc': val(ob, 'erc'), 'erc_p': val(ob, 'erc_p'), 'bi': val(ob, 'bi'), 'bi_p': val(ob, 'bi_p'),
+            'erc_f': val(fc, 'erc'), 'bi_f': val(fc, 'bi'),
+            'charts': SITE + 'fdra.html?id=' + requests.utils.quote(p['fdra_id']),
+            'workbench': SITE + 'fdop.html?id=' + requests.utils.quote(p['fdra_id']),
+            'generated': now.strftime('%Y-%m-%d %H:%M %Z')}})
+    gj = {'type': 'FeatureCollection', 'features': feats}
+    (out / 'fdras_sfdi.geojson').write_text(json.dumps(gj, separators=(',', ':'), allow_nan=False))
+    log.info('fdras_sfdi.geojson: %d polygons', len(feats))
+
+
 def build_current(out: Path):
     now = datetime.now(TZ)
     today = now.date()
@@ -315,6 +345,7 @@ def build_current(out: Path):
                      'latest_obs': active and active['latest_obs'], 'next_fcst': active and active['next_fcst'],
                      'sfdi_class_fcst': active and active['sfdi_class_fcst'],
                      'pal': [{'name': s['name'], 'today_1400': s['today_1400']} for s in pal.get(p['fdra_id'], [])]})
+    write_sfdi_geojson(out, polys, rows, now)
     (out / 'fdras.json').write_text(json.dumps({'generated': now.strftime('%Y-%m-%d %H:%M %Z'), 'fdras': rows},
                                                separators=(',', ':'), allow_nan=False))
     log.info('current: %d units, %d polygons → %s', sum(len(v) for v in idx_units.values()), len(rows), out)

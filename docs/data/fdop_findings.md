@@ -19,6 +19,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - SQF-445: 90th/97th averaged across stations.
 - SQF-435: an outside-NF piece's Y station had been averaged into the X data — fixed (separate unit).
 - SQF-435 (Sequoia/Kings Canyon): fuel model is mixed in the FDOP — Table 3 lists pocket card and adjective on ERC FM-Y, dispatch on ERC FM-X and staffing on BI FM-X, while Appendix 9 (Table A9.1) bases the decision thresholds on ERC FM-Y (stations' 90th/97th 61/66 and 69/72). The 2026 sheet / our season tracking default to X; the Workbench starts on ERC-Y 20/35 (and BI 25/45). Needs one answer from the forest/park.
+- 2026 sheet custom thresholds for SQF (two values each, index not stated) loaded as secondary 3-level tools on the best-fitting index: 435 ERC-Y 21/46 (39th/69th), 438 BI-X 45/104 (16th/47th), 440 ERC-Y 13/28 (25th/45th), 445 ERC-Y 28/53 (23rd/68th — the sheet says fuel model X, where they would be the 5th/20th percentile). Forest should confirm index and fuel model.
 - Sequoia's current FDOP is still this 2023 Sierra South plan (the SQF file provided is the identical PDF). Inyo has since issued its own April 2026 FDOP; STF/SNF/SQF have not.
 
 ## Angeles NF (ANF) — FDOP Vol. 3 (2022-07-29)
@@ -87,7 +88,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - West fire summary: "Lightning caused (3215)" of 940 fires — typo; and the period is given as both 2005–2022 and 2014–2023.
 - Adjective rating is an ERC-Y × BI-Y matrix (I–V) per zone — not charted as a single tool (axes in the notes).
 - Large-fire size not stated in the text.
-- Old 2026-sheet TNF value (BI 22/30, "index assumed") retired.
+- 2026 sheet TNF custom 22/30 (index not stated; BI-Y fits at ~60th/77th) kept as a secondary tool — the zone FDOP's dispatch BI-Y 19/29 is primary. Sheet notes 354 will be combined with 350 under the new FDOP (done in the zone plan).
 
 ## Shasta-Trinity NF (SHF) — 2026 FDOP, FINAL signed (May 2026)
 - Loaded: FDRAs 230, 238, 240, 241, 243 — staffing BI-Y (SL4 = 90th, SL5 = 97th; SL2/SL3 at ¼ and ½ the 90th): 7.43/14.85/29.7/32.9, 7.08/14.15/28.3/30.9, 7.6/15.2/30.4/33.4, 8.8/17.6/35.2/38.2, 7.28/14.55/29.1/32.0; dispatch BI-Y 20/26, 22/31, 19/26, 22/31, 20/27.

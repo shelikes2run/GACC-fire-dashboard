@@ -27,6 +27,16 @@
   .kpi b { display: block; font-size: 18px; }
   .kpi span { font-size: 11px; color: var(--muted); }
   .chart.sm { height: 330px; }
+  #opttable tbody tr { cursor: pointer; }
+  #opttable tr.cmp-sel td { background: #24384f; }
+  #opttable tr.cmp-base td:first-child { box-shadow: inset 3px 0 0 #9aa0a6; }
+  .cmpbox { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin: 10px 0; background: var(--panel-2); }
+  .cmpbox h3 { margin: 0 0 6px; font-size: 14px; }
+  .cmpgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 900px) { .cmpgrid { grid-template-columns: 1fr; } }
+  .up { color: #81c784; } .down { color: #e57373; }
+  .custom-list { font-size: 12px; margin: 2px 0 0; }
+  .custom-list span { display: inline-block; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 0 6px; margin: 2px 4px 0 0; }
   #status { font-size: 12px; color: var(--muted); }
   @media print {
     header.top, .tabs, .no-print, #setup-col { display: none !important; }
@@ -65,8 +75,11 @@
       <div class="form-row">Large fire ≥ <input type="number" id="large" min="1"> ac · Multi-fire day ≥ <input type="number" id="mfd" min="2"> fires</div>
       <div class="form-row" id="tool-row" style="display:none">FDOP decision tool <select id="tool" style="width:100%"></select></div>
       <div class="form-row">Breakpoints (class upper values, comma-separated)<input type="text" id="breaks" placeholder="e.g. 21,39,54,61"></div>
+      <div class="form-row no-print"><button class="btn ghost" id="bp-add" title="Add these breakpoints as an option and compare them with the current FDOP (Decision points tab)">+ Compare these breakpoints</button></div>
       <div class="form-row"><button class="btn ghost" id="bp-pct" title="Set breakpoints from calibration percentiles">From percentiles</button>
-        <input type="text" id="bp-pcts" value="25,60,90,97" style="width:120px"></div>
+        <input type="text" id="bp-pcts" value="25,60,90,97" style="width:120px">
+        <button class="btn ghost no-print" id="pct-add" title="Add this percentile set as an option and compare it with the current FDOP (Decision points tab)">+ Compare</button></div>
+      <div class="custom-list no-print" id="custom-list"></div>
       <div class="form-row no-print"><button class="btn" id="run">Run</button>
         <button class="btn ghost" id="link">Copy link</button><button class="btn ghost" id="csv">Daily CSV</button>
         <button class="btn ghost" id="print">Print report</button></div>
@@ -95,6 +108,7 @@
         <h3 class="small" style="text-transform:uppercase;letter-spacing:.06em;margin:4px 0 6px">Breakpoint options from the data</h3>
         <div id="opt-summary" class="small" style="margin-bottom:6px"></div>
         <div class="table-wrap"><table class="data" id="opttable"></table></div>
+        <div id="optcmp"></div>
         <div id="optchart" class="chart sm"></div>
         <p class="note" id="opt-note"></p>
         <h3 class="small" style="text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px">Current breakpoints</h3>
@@ -242,8 +256,7 @@ function drawDP() {
   const breaks = $('breaks').value.split(',').map(parseFloat).filter(v => !isNaN(v)).sort((a, b) => a - b);
   if (!breaks.length) return;
   const t = classTable(cal, k, breaks, W.sorted);
-  if (!W.optSkip) drawOptions(cal, k, breaks);   // an option just applied keeps the table as it was
-  W.optSkip = false;
+  drawOptions(cal, k, breaks);
   $('dp-warn').innerHTML = (!t.monoFD || !t.monoLFD) ? `<div class="warn">Probability does not rise with every class
     (${[!t.monoFD && 'fire day', !t.monoLFD && 'large fire day'].filter(Boolean).join(', ')}). Consider merging or moving breakpoints.</div>` : '';
   const q90 = pctile(W.sorted, 90), q97 = pctile(W.sorted, 97);
@@ -311,28 +324,48 @@ function probBreaks(cal, k, nb, key) {
   const out = Array.from({ length: nb }, (_, i) => { const p = lo + (hi - lo) * (i + 1) / (nb + 1); return (Math.log(p / (1 - p)) - s.b0) / s.b1; });
   return out.map(rnd);
 }
+// the current FDOP decision tool for this index / fuel model — the fixed baseline every option is compared with
+function fdopBaseline(k) {
+  const cfg = W.cfg, tools = W.tools || [], sel = tools[+$('tool').value];
+  const fit = t => t && t.idx === k && t.fm === cfg.fm;
+  if (fit(sel)) return { b: sel.breaks.slice(), name: 'Current FDOP', label: sel.label, classes: sel.classes };
+  const S0 = W.S0;
+  if (S0 && S0.breaks && S0.breaks[k] && (!S0.fm || S0.fm === cfg.fm)) return { b: S0.breaks[k].slice(), name: 'Current FDOP', label: S0.source || '', classes: S0.classes };
+  const t2 = tools.find(fit); if (t2) return { b: t2.breaks.slice(), name: 'Current FDOP', label: t2.label, classes: t2.classes };
+  const sheet = parseBreaks(W.unit.custom_thresholds, IDX_LABEL[k]);
+  if (sheet) return { b: sheet, name: '2026 sheet thresholds', label: 'Custom Thresholds column', classes: null };
+  return null;
+}
+const sameB = (a, b) => a && b && a.length === b.length && a.every((v, i) => Math.abs(v - b[i]) < 1e-6);
 function breakOptions(cal, k, cur) {
-  const nb = cur.length, P = p => rnd(pctile(W.sorted, p));
+  const base = fdopBaseline(k);
+  const nb = (base ? base.b : cur).length, P = p => rnd(pctile(W.sorted, p));
   const STD = [15, 35, 60, 80, 90, 97], std = STD.slice(-nb);
   const eq = Array.from({ length: nb }, (_, i) => Math.round(100 * (i + 1) / (nb + 1)));
   const ups = $('bp-pcts').value.split(',').map(Number).filter(v => !isNaN(v));
-  const opts = [
-    { key: 'cur', name: W.S0 ? 'Current FDOP' : 'Current', why: 'The breakpoints in the setup box now.', b: cur },
-    { key: 'std', name: `Climatology ${std.join('/')}`, why: 'Standard percentile classes — the top two classes are the 90th and 97th percentile days.', b: std.map(P) },
-  ];
+  const opts = [];
+  if (base) opts.push({ key: 'fdop', name: base.name, why: base.label ? `${base.name}: ${base.label}` : base.name, b: base.b, classes: base.classes, base: true });
+  if (!base || !sameB([...cur].sort((x, y) => x - y), [...base.b].sort((x, y) => x - y)))
+    opts.push({ key: 'cur', name: base ? 'Setup box' : 'Current (setup box)', why: 'The breakpoints in the setup box now.', b: cur, base: !base });
+  opts.push({ key: 'std', name: `Climatology ${std.join('/')}`, why: 'Standard percentile classes — the top two classes are the 90th and 97th percentile days.', b: std.map(P) });
   if (ups.length === nb && ups.join() !== std.join()) opts.push({ key: 'ups', name: `Percentiles ${ups.join('/')}`, why: 'Your percentile set (From percentiles box).', b: ups.map(P) });
   opts.push({ key: 'eq', name: 'Equal days', why: `Each class holds about ${Math.round(100 / (nb + 1))}% of days — easy to explain, but the top class is common.`, b: eq.map(P) });
   const pf = probBreaks(cal, k, nb, 'fd'); if (pf) opts.push({ key: 'pfd', name: 'Equal fire-day probability steps', why: 'FireFamily Plus approach: logistic model of fire days, breakpoints at even steps of predicted probability (1st–99th percentile range).', b: pf });
   const pl = probBreaks(cal, k, nb, 'lfd'); if (pl) opts.push({ key: 'plfd', name: 'Equal large-fire probability steps', why: 'Same, on the large fire day model — puts the breaks where large-fire risk climbs.', b: pl });
   const op = optimalBreaks(cal, k, nb); if (op) opts.push({ key: 'opt', name: 'Optimized for fire + large fire days', why: 'Best separation of fire days and large fire days with every class ≥ 3% of days and probabilities rising class to class.', b: op });
-  const capped = cur.map(v => v);
-  const hiN = cur.filter(v => rankPct(W.sorted, v) >= 99.5).length;
+  const ref = base ? base.b : cur, capped = ref.map(v => v);
+  const hiN = ref.filter(v => rankPct(W.sorted, v) >= 99.5).length;
   if (hiN && nb >= 2) {
     capped[nb - 2] = P(90); capped[nb - 1] = P(97);                  // top two classes = 90th / 97th percentile days
     for (let i = nb - 3; i >= 0; i--) if (capped[i] >= capped[i + 1]) capped[i] = rnd(pctile(W.sorted, Math.max(1, rankPct(W.sorted, capped[i + 1]) - 15)));
-    opts.push({ key: 'cap', name: 'Current, top two breaks at the 90th / 97th', why: `${hiN} current breakpoint(s) sit above the 99.5th percentile of calibration days, so those classes almost never occur.`, b: capped });
+    opts.push({ key: 'cap', name: `${base ? 'FDOP' : 'Current'}, top two breaks at the 90th / 97th`, why: `${hiN} current breakpoint(s) sit above the 99.5th percentile of calibration days, so those classes almost never occur.`, b: capped });
   }
-  opts.forEach(o => { o.b = o.b.filter(v => v !== null).sort((x, y) => x - y); o.ev = o.b.length === nb ? evalBreaks(cal, k, o.b) : null; });
+  // user-added options (left panel) — any number of classes; percentile sets are re-read on every run
+  for (const c of (W.custom || [])) {
+    if (c.pcts) opts.push({ key: c.key, name: `Your percentiles ${c.pcts.join('/')}`, why: 'Added from the percentile box — breakpoints are these calibration percentiles.', b: c.pcts.map(P), custom: true });
+    else if (c.idx === k && c.fm === W.cfg.fm) opts.push({ key: c.key, name: `Your breakpoints ${c.b.join('/')}`, why: 'Added from the breakpoints box.', b: c.b, custom: true });
+  }
+  opts.forEach(o => { o.b = o.b.filter(v => v !== null).sort((x, y) => x - y); o.ev = o.b.length && (o.custom || o.base || o.b.length === nb) ? evalBreaks(cal, k, o.b) : null; });
   return opts.filter(o => o.ev);
 }
 function drawOptions(cal, k, cur) {
@@ -340,22 +373,29 @@ function drawOptions(cal, k, cur) {
   const ok = o => o.ev.t.monoFD && o.ev.t.monoLFD && !o.ev.empty;
   const score = o => (o.ev.r2l ?? 0) + (o.ev.r2fd ?? 0);
   const ranked = opts.filter(ok).sort((a, b) => score(b) - score(a));
-  const bestO = ranked[0], curO = opts[0];
+  const bestO = ranked[0], curO = opts.find(o => o.base) || opts[0];
+  W.cmpBase = curO;
+  if (!W.cmp || !opts.some(o => o.key === W.cmp) || W.cmp === curO.key) W.cmp = (opts.find(o => o.key === 'opt') || bestO || opts[1] || curO).key;
   const pr = o => o.ev.t.classes.map(c => c.pFD === null ? '–' : Math.round(100 * c.pFD)).join(' · ');
   const pl = o => o.ev.t.classes.map(c => c.pLFD === null ? '–' : (100 * c.pLFD).toFixed(c.pLFD < 0.1 ? 1 : 0)).join(' · ');
   $('opttable').innerHTML = `<thead><tr><th class="l">Option</th><th>${IDX_LABEL[k]} breakpoints</th><th>as percentiles</th><th>P(fire day) % by class</th><th>P(large) % by class</th>
     <th>Rises?</th><th>Sep. fire / large (R²)</th><th>Large fire days in top 2</th><th>Days/yr top 2 · top</th><th>Top-class lift</th><th class="no-print"></th></tr></thead><tbody>${opts.map(o => {
       const e = o.ev, rise = e.t.monoFD && e.t.monoLFD ? '✓' : `<span style="color:${FLAG[1]}">no (${[!e.t.monoFD && 'fire', !e.t.monoLFD && 'large'].filter(Boolean).join(', ')})</span>`;
-      return `<tr${o === bestO ? ' class="best"' : ''}${o.key === 'cur' ? ' style="background:#30353a"' : ''}><td class="l" title="${esc(o.why)}"><b>${esc(o.name)}</b>${o === bestO ? ' <span class="badge" style="background:#2e7d32">strongest</span>' : ''}</td>
+      const cl = [o === bestO && 'best', o === curO && 'cmp-base', o.key === W.cmp && 'cmp-sel'].filter(Boolean).join(' ');
+      return `<tr data-k="${o.key}"${cl ? ` class="${cl}"` : ''}${o === curO ? ' style="background:#30353a"' : ''}><td class="l" title="${esc(o.why)}"><b>${esc(o.name)}</b>${o === curO && opts.some(x => x.base) ? ' <span class="badge" style="background:#5f6368">baseline</span>' : ''}${o === bestO ? ' <span class="badge" style="background:#2e7d32">strongest</span>' : ''}${o.custom ? ` <button class="mini" data-x="${o.key}" title="Remove this option">✕</button>` : ''}</td>
         <td><b>${o.b.join(' / ')}</b></td><td>${o.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')}</td><td>${pr(o)}</td><td>${pl(o)}</td><td>${rise}${e.empty ? ` <span style="color:${FLAG[2]}">${e.empty} empty</span>` : ''}${e.thin ? ` <span class="muted">${e.thin} thin</span>` : ''}</td>
         <td>${f2(e.r2fd)} / ${f2(e.r2l)}</td><td>${pct(e.capL)} <span class="muted">of ${pct(e.shareTop2)} days</span></td><td>${f2(e.dpyTop2, 0)} · ${f2(e.dpyTop, 0)}</td><td>${e.lift === null ? '–' : f2(e.lift, 1) + '×'}</td>
-        <td class="no-print"><button class="mini" data-o="${o.key}">use</button></td></tr>`; }).join('')}</tbody>`;
-  $('opttable').querySelectorAll('button[data-o]').forEach(b => b.onclick = () => { const o = W.opts.find(x => x.key === b.dataset.o); $('breaks').value = o.b.join(','); W.cfg.breaks = o.b; W.optSkip = true; drawDP();
-    $('opttable').querySelectorAll('tr').forEach(tr => tr.style.outline = ''); b.closest('tr').style.outline = '2px solid #ffd27f'; });
+        <td class="no-print"><button class="mini" data-o="${o.key}" title="Load into the setup box (Current breakpoints table below)">use</button></td></tr>`; }).join('')}</tbody>`;
+  $('opttable').querySelectorAll('button[data-o]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const o = W.opts.find(x => x.key === b.dataset.o);
+    W.cmp = o.key; $('breaks').value = o.b.join(','); W.cfg.breaks = o.b; drawDP(); });
+  $('opttable').querySelectorAll('button[data-x]').forEach(b => b.onclick = ev => { ev.stopPropagation(); W.custom = (W.custom || []).filter(c => c.key !== b.dataset.x); drawCustomList(); drawDP(); });
+  $('opttable').querySelectorAll('tbody tr[data-k]').forEach(tr => tr.onclick = () => { W.cmp = tr.dataset.k;
+    $('opttable').querySelectorAll('tbody tr').forEach(x => x.classList.toggle('cmp-sel', x === tr)); drawOptCompare(cal, k); });
+  drawOptCompare(cal, k);
   const lines = [];
   if (curO) {
     const e = curO.ev, never = curO.b.filter(v => rankPct(W.sorted, v) >= 99.5);
-    lines.push(`<b>Current:</b> ${curO.b.join(' / ')} (${curO.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')} percentile) — ` +
+    lines.push(`<b>${esc(curO.name)}:</b> ${curO.b.join(' / ')} (${curO.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')} percentile) — ` +
       `${e.t.monoFD && e.t.monoLFD ? 'probabilities rise class to class' : 'probabilities do not rise every class'}; top two classes hold ${pct(e.capL)} of large fire days on ${f2(e.dpyTop2, 0)} days a year` +
       (never.length ? `; <b style="color:${FLAG[2]}">${never.join(', ')} ${never.length > 1 ? 'are' : 'is'} above the 99.5th percentile — ${never.length > 1 ? 'those classes almost never occur' : 'that class almost never occurs'} with this station set and fuel model</b>` : '') + '.');
   }
@@ -372,7 +412,82 @@ function drawOptions(cal, k, cur) {
     `<b>Sep. R²</b>: how much of the fire-day / large-fire-day pattern the classes explain (higher = classes separate fire days better; McFadden R² of the class model). ` +
     `<b>Large fire days in top 2</b>: share caught by the two highest classes, with the share of all days they cover. <b>Lift</b>: top-class large-fire-day rate ÷ season average. ` +
     `“strongest” = highest combined separation among options whose probabilities rise every class and have no empty class. Statistics are a starting point — round to operationally sensible numbers and check against local knowledge before adopting. ` +
-    `Hover an option name for how it was built; <b>use</b> loads it into the setup (the tables below recompute; nothing is saved to the FDOP).`;
+    `Hover an option name for how it was built. <b>Click any row</b> to compare it side by side with the ${opts.some(o => o.key === 'fdop') ? 'current FDOP' : 'baseline'} (box above the chart); <b>use</b> loads it into the setup box so the class tables below recompute. ` +
+    `Add your own options from the left panel (<b>+ Compare these breakpoints</b> / percentile <b>+ Compare</b>). Nothing is saved to the FDOP.`;
+}
+
+// side-by-side: the selected option vs the baseline (current FDOP)
+function drawOptCompare(cal, k) {
+  const A = W.cmpBase, B = (W.opts || []).find(o => o.key === W.cmp);
+  if (!A || !B || A === B) { $('optcmp').innerHTML = ''; return; }
+  const ea = A.ev, eb = B.ev, nY = W.cfg.calibTo - W.cfg.calibFrom + 1;
+  const nm = (o, n) => (o.classes && o.classes.length === n) ? o.classes : (A.classes && A.classes.length === n) ? A.classes
+    : (W.toolClasses && W.toolClasses.length === n) ? W.toolClasses : (CLASS_NAMES[n] || []);
+  const pc = v => v === null || v === undefined ? null : 100 * v;
+  const delta = (a, b, d = 0, unit = '', higherBetter = true) => {
+    if (a === null || b === null || a === undefined || b === undefined || isNaN(a) || isNaN(b)) return '';
+    const x = b - a; if (Math.abs(x) < Math.pow(10, -d) / 2) return '<span class="muted">same</span>';
+    return `<span class="${higherBetter === null ? 'muted' : (x > 0) === higherBetter ? 'up' : 'down'}">${x > 0 ? '+' : ''}${x.toFixed(d)}${unit}</span>`;
+  };
+  const topP = e => e.t.classes[e.t.classes.length - 1].pLFD;
+  const rows = [
+    ['Breakpoints', A.b.join(' / '), B.b.join(' / '), ''],
+    ['As percentiles', A.b.map(v => ord(rankPct(W.sorted, v))).join(' / '), B.b.map(v => ord(rankPct(W.sorted, v))).join(' / '), ''],
+    ['Classes', A.b.length + 1, B.b.length + 1, ''],
+    ['Probabilities rise every class', ea.t.monoFD && ea.t.monoLFD ? '✓' : 'no', eb.t.monoFD && eb.t.monoLFD ? '✓' : 'no', ''],
+    ['Separation of fire days (R²)', f2(ea.r2fd), f2(eb.r2fd), delta(ea.r2fd, eb.r2fd, 2)],
+    ['Separation of large fire days (R²)', f2(ea.r2l), f2(eb.r2l), delta(ea.r2l, eb.r2l, 2)],
+    ['Large fire days caught in top 2 classes', pct(ea.capL), pct(eb.capL), delta(pc(ea.capL), pc(eb.capL), 0, ' pts')],
+    ['Days a year in top 2 classes', f2(ea.dpyTop2, 0), f2(eb.dpyTop2, 0), delta(ea.dpyTop2, eb.dpyTop2, 0, '', null)],
+    ['Days a year in top class', f2(ea.dpyTop, 0), f2(eb.dpyTop, 0), delta(ea.dpyTop, eb.dpyTop, 0, '', null)],
+    ['Top-class P(large fire day)', pct(topP(ea)), pct(topP(eb)), delta(pc(topP(ea)), pc(topP(eb)), 1, ' pts')],
+    ['Top-class lift (× season average)', ea.lift === null ? '–' : f2(ea.lift, 1) + '×', eb.lift === null ? '–' : f2(eb.lift, 1) + '×', delta(ea.lift, eb.lift, 1)],
+    ['Empty / thin classes', `${ea.empty} / ${ea.thin}`, `${eb.empty} / ${eb.thin}`, ''],
+  ];
+  // how many calibration days change class (same class count only)
+  let moved = '';
+  if (A.b.length === B.b.length) {
+    const ci = (v, b) => { const i = b.findIndex(x => v <= x); return i < 0 ? b.length : i; };
+    let up = 0, dn = 0, n = 0, lUp = 0, lDn = 0;
+    for (const r of cal) { const v = r[k]; if (v === null) continue; n++; const d = ci(v, B.b) - ci(v, A.b); if (d > 0) { up++; lUp += r.lfd; } else if (d < 0) { dn++; lDn += r.lfd; } }
+    moved = `<p class="small" style="margin:6px 0 0">With <b>${esc(B.name)}</b>, ${pct((up + dn) / n)} of calibration days land in a different class than under ${esc(A.name)}: ` +
+      `<b>${f2(up / nY, 0)} days a year move up</b> (${lUp} large fire days among them) and <b>${f2(dn / nY, 0)} days a year move down</b> (${lDn} large fire days).</p>`;
+  }
+  const side = (o, e) => { const n = e.t.classes.length, names = nm(o, n);
+    return `<div><div class="small"><b>${esc(o.name)}</b>${o.base && o.label ? ` <span class="muted">— ${esc(o.label)}</span>` : ''}</div><div class="table-wrap"><table class="data"><thead><tr><th class="l">Class</th><th>${IDX_LABEL[k]}</th><th>Pctile</th><th>Days/yr</th><th>P(fire)</th><th>P(large)</th><th>Share of large</th></tr></thead><tbody>${e.t.classes.map(c =>
+      `<tr><td class="l"><b>${c.cls}</b> ${esc(names[c.cls - 1] || '')}</td><td>${f2(c.lo, 0)}–${f2(c.hi, 0)}</td><td>${f2(c.pLo, 0)}–${f2(c.pHi, 0)}</td><td>${f2(c.days / nY, 0)}</td><td>${pct(c.pFD)}</td><td>${pct(c.pLFD)}</td><td>${pct(c.shareL)}</td></tr>`).join('')}</tbody></table></div></div>`; };
+  $('optcmp').innerHTML = `<div class="cmpbox"><h3>Compare: ${esc(B.name)} <span class="muted">vs</span> ${esc(A.name)}</h3>
+    <div class="table-wrap"><table class="data"><thead><tr><th class="l">Measure</th><th>${esc(A.name)}</th><th>${esc(B.name)}</th><th>Change</th></tr></thead><tbody>${rows.map(r =>
+      `<tr><td class="l">${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>
+    ${moved}
+    <div class="cmpgrid" style="margin-top:8px">${side(A, ea)}${side(B, eb)}</div>
+    <div id="optcmpchart" class="chart sm"></div>
+    <p class="note" style="margin:4px 0 0">Green = better (more separation, more large fire days caught, sharper top class); grey = a trade-off to judge locally (days a year in the top classes). Click another row above to switch; the chart below it still shows every option.</p></div>`;
+  const xs = e => e.t.classes.map(c => 'Class ' + c.cls);
+  PL('optcmpchart', [
+    { x: xs(ea), y: ea.t.classes.map(c => c.pLFD), name: A.name + ' — P(large)', type: 'bar', marker: { color: '#9aa0a6' } },
+    { x: xs(eb), y: eb.t.classes.map(c => c.pLFD), name: B.name + ' — P(large)', type: 'bar', marker: { color: '#e5534b' } },
+    { x: xs(ea), y: ea.t.classes.map(c => c.pFD), name: A.name + ' — P(fire day)', mode: 'lines+markers', line: { color: '#cfd3d7', dash: 'dot' } },
+    { x: xs(eb), y: eb.t.classes.map(c => c.pFD), name: B.name + ' — P(fire day)', mode: 'lines+markers', line: { color: '#7fb3ff' } },
+  ], { title: { text: `${IDX_LABEL[k]}-${W.cfg.fm}: probability by class, ${W.cfg.calibFrom}–${W.cfg.calibTo}`, font: { size: 14 } }, barmode: 'group', xaxis: { type: 'category' },
+    yaxis: { title: 'probability', tickformat: '.0%', gridcolor: '#43484e', rangemode: 'tozero' } });
+}
+function drawCustomList() {
+  const c = W.custom || [];
+  $('custom-list').innerHTML = c.length ? 'Added to compare: ' + c.map(x => `<span>${x.pcts ? 'pctiles ' + x.pcts.join('/') : `${x.idx.toUpperCase()}-${x.fm} ${x.b.join('/')}`}</span>`).join('') : '';
+}
+function addCustom(kind) {
+  W.custom = W.custom || [];
+  const nums = id => $(id).value.split(',').map(v => parseFloat(v)).filter(v => !isNaN(v)).sort((a, b) => a - b);
+  let c;
+  if (kind === 'pct') { const p = nums('bp-pcts').filter(v => v > 0 && v < 100); if (!p.length) { setStatus('Enter percentiles, e.g. 25,60,90,97'); return; }
+    c = W.custom.find(x => x.pcts && x.pcts.join() === p.join()) || { key: 'u' + Date.now(), pcts: p }; }
+  else { const b = nums('breaks'); if (!b.length) { setStatus('Enter breakpoints, e.g. 21,39,54,61'); return; }
+    c = W.custom.find(x => x.b && x.idx === W.cfg.idx && x.fm === W.cfg.fm && x.b.join() === b.join()) || { key: 'u' + Date.now(), b, idx: W.cfg.idx, fm: W.cfg.fm }; }
+  if (!W.custom.includes(c)) W.custom.push(c);
+  W.cmp = c.key; drawCustomList(); drawDP();
+  document.querySelector('#tabs button[data-t="dp"]').click();
+  $('optcmp').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // FireFamily Plus-style decision point chart: the index's cumulative distribution with the days that had
@@ -641,7 +756,7 @@ function fillSetup(unit) {
     <button class="btn ghost no-print" id="reset-fdop" style="padding:2px 8px;margin-left:6px">Reset to FDOP</button><br>` : '<b>No signed FDOP loaded for this FDRA yet</b> — starting from the 2026 sheet / climatology.<br>') + `2026 sheet: FDOP stations ${unit.sheet_stations.join(', ')} · fuel model ${esc(unit.fuel_model)} · ` +
     `${esc(unit.sl_dl_index || '')} ${unit.custom_thresholds ? '· custom: ' + esc(unit.custom_thresholds) : ''}`;
   document.querySelectorAll('#units button').forEach(b => b.classList.toggle('on', b.dataset.u === unit.unit));
-  const tools = (S0 && S0.tools) || [];
+  const tools = (S0 && S0.tools) || []; W.tools = tools;
   $('tool-row').style.display = tools.length ? '' : 'none';
   $('tool').innerHTML = tools.map((t, i) => `<option value="${i}">${esc(t.label)}</option>`).join('');
   W.toolClasses = tools.length ? tools[0].classes : null;
@@ -653,6 +768,7 @@ function fillSetup(unit) {
 }
 
 async function loadUnit(unit) {
+  W.custom = []; W.cmp = null; drawCustomList();
   fillSetup(unit);
   setStatus('Loading fires and burned area…');
   const [fires, burned] = await Promise.all([fjson(unit.fires_file).catch(() => []), fjson('burned.json').catch(() => ({}))]);
@@ -681,6 +797,7 @@ async function loadUnit(unit) {
   addStationUI();
   $('run').onclick = run; $('csv').onclick = csv; $('link').onclick = linkToSetup; $('print').onclick = () => window.print();
   $('bp-pct').onclick = () => { setBreaksFromPct(); drawDP(); };
+  $('bp-add').onclick = () => addCustom('breaks'); $('pct-add').onclick = () => addCustom('pct');
   $('breaks').onchange = drawDP; $('dyear').onchange = drawDelta; $('hyear').onchange = drawHistory; $('hmin').onchange = drawHistory;
   $('vy').onchange = $('vr').onchange = () => { W.cfg = cfgFromUI(); drawDelta(); };
   $('fm').onchange = () => fillSetupKeep(); $('idx').onchange = () => { const b = W.S0 && W.S0.breaks && W.S0.breaks[$('idx').value]; $('breaks').value = b ? b.join(',') : ''; run(); };

@@ -172,9 +172,9 @@ function classTable(rows, k, breaks, sorted) {
 }
 
 // ── annual delta (mirrors scorecard() in build_fdop_data.py) ─────────────────
-function annualDelta(rows, cfg, burned) {
+function annualDelta(rows, cfg, burned, k = 'erc') {
   const cal = rows.filter(r => r.year >= cfg.calibFrom && r.year <= cfg.calibTo);
-  const e = cal.map(r => r.erc).filter(v => v !== null).sort((a, b) => a - b);
+  const e = cal.map(r => r[k]).filter(v => v !== null).sort((a, b) => a - b);
   if (e.length < 300) return null;
   const q90 = pctile(e, 90), q97 = pctile(e, 97);
   const byYear = y => rows.filter(r => r.year === y);
@@ -182,25 +182,25 @@ function annualDelta(rows, cfg, burned) {
   const perCal = [...new Set(cal.map(r => r.year))].map(y => { const g = byYear(y); return { fires: g.reduce((s, r) => s + r.fires, 0), lfd: g.reduce((s, r) => s + r.lfd, 0) }; });
   const fm = mean(perCal.map(p => p.fires)), fs = sdev(perCal.map(p => p.fires)) || 1;
   const lm = mean(perCal.map(p => p.lfd)), ls = sdev(perCal.map(p => p.lfd)) || 1;
-  const calLR = logistic(cal.map(r => r.erc), cal.map(r => r.fd));
-  const calL = cal.filter(r => r.lfd && r.erc !== null);
-  const topShare = calL.length ? calL.filter(r => r.erc >= q90).length / calL.length : null;
+  const calLR = logistic(cal.map(r => r[k]), cal.map(r => r.fd));
+  const calL = cal.filter(r => r.lfd && r[k] !== null);
+  const topShare = calL.length ? calL.filter(r => r[k] >= q90).length / calL.length : null;
   const calDoy = median(cal.filter(r => r.fd).map(r => r.doy));
   const out = [];
   for (const y of years) {
-    const g = byYear(y), ev = g.filter(r => r.erc !== null);
+    const g = byYear(y), ev = g.filter(r => r[k] !== null);
     if (ev.length < 30) continue;
     const r = { year: y, days: ev.length, complete: ev.length / g.length };
-    r.ercPctl = mean(ev.map(x => rankPct(e, x.erc)));
-    r.ge90 = ev.filter(x => x.erc >= q90).length; r.ge97 = ev.filter(x => x.erc >= q97).length;
+    r.ercPctl = mean(ev.map(x => rankPct(e, x[k])));
+    r.ge90 = ev.filter(x => x[k] >= q90).length; r.ge97 = ev.filter(x => x[k] >= q97).length;
     r.exp90 = 0.10 * ev.length; r.exp97 = 0.03 * ev.length;
     r.fires = g.reduce((s, x) => s + x.fires, 0); r.lfd = g.reduce((s, x) => s + x.lfd, 0); r.fd = g.reduce((s, x) => s + x.fd, 0);
     r.firesZ = (r.fires - fm) / fs; r.lfdZ = (r.lfd - lm) / ls;
     const fdoy = median(g.filter(x => x.fd).map(x => x.doy));
     r.doyShift = fdoy !== null && calDoy !== null ? fdoy - calDoy : null;
-    const ly = g.filter(x => x.lfd && x.erc !== null);
-    r.lfdHit90 = ly.length ? ly.filter(x => x.erc >= q90).length / ly.length : null;
-    const lr = logistic(g.map(x => x.erc), g.map(x => x.fd)); r.auc = lr ? lr.auc : null;
+    const ly = g.filter(x => x.lfd && x[k] !== null);
+    r.lfdHit90 = ly.length ? ly.filter(x => x[k] >= q90).length / ly.length : null;
+    const lr = logistic(g.map(x => x[k]), g.map(x => x.fd)); r.auc = lr ? lr.auc : null;
     const b = burned && burned.by_year ? burned.by_year[y] : null;
     r.burned = b ? b.pct : 0; r.burnedFires = b ? b.fires : [];
     r.burned5 = burned && burned.trailing5_pct ? (burned.trailing5_pct[y] || 0) : 0;

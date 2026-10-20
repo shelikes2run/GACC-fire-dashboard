@@ -69,7 +69,7 @@
         <datalist id="st-all"></datalist></div>
       <div class="small muted no-print">Check or uncheck stations to build the SIG, then Run. Your station set is remembered in this browser and goes into “Copy link”.</div>
       <div class="form-row">Fuel model <select id="fm"></select>
-        Index <select id="idx"><option value="erc">ERC</option><option value="bi">BI</option><option value="ic">IC</option><option value="sc">SC</option></select></div>
+        Index <select id="idx"><option value="erc">ERC</option><option value="bi">BI</option><option value="ic">IC</option><option value="sc">SC</option><option value="kbdi">KBDI</option></select></div>
       <div class="form-row">Calibration years <input type="number" id="y0" min="2006" max="2030"> – <input type="number" id="y1" min="2006" max="2030"></div>
       <div class="form-row">Fire season <input type="text" id="s0" style="width:64px" placeholder="MM-DD"> to <input type="text" id="s1" style="width:64px" placeholder="MM-DD"></div>
       <div class="form-row">Large fire ≥ <input type="number" id="large" min="1"> ac · Multi-fire day ≥ <input type="number" id="mfd" min="2"> fires</div>
@@ -101,7 +101,7 @@
         <div class="table-wrap"><table class="data" id="vstations"></table></div>
         <p class="note">AUC: chance a fire day has a higher index than a non-fire day (0.5 = no skill, 0.7+ useful, 0.8+ strong).
           R² (McFadden) and the binned R² (observed vs. predicted probability in 10 index classes, as in FireFamily Plus) describe fit;
-          p is the slope's significance. Moisture indices are tested as “drier = higher”.</p>
+          p is the slope's significance. Fuel moistures and GSI are tested as “drier / less green = higher”; KBDI as is.</p>
       </div>
       <div class="tabpane" id="t-dp" style="display:none">
         <h2>Decision points</h2>
@@ -205,12 +205,13 @@ function calRows(rows) { return rows.filter(r => r.year >= W.cfg.calibFrom && r.
 
 function drawValidation() {
   const cfg = W.cfg, events = [['fd', 'Fire day'], ['lfd', `Large fire day (≥${cfg.large} ac)`], ['mfd', `Multi-fire day (≥${cfg.mfd})`]];
-  const idxs = ['erc', 'bi', 'ic', 'sc', 'f100', 'f1000'];
+  const idxs = ['erc', 'bi', 'ic', 'sc', 'f100', 'f1000', 'kbdi', 'gsi'];
   const res = [];
   for (const fm of W.idx.fuel_models) {
     const cal = calRows(W.byFm[fm]); if (!cal.length) continue;
     for (const k of idxs) {
-      if ((k === 'f100' || k === 'f1000') && fm !== cfg.fm) continue;   // dead FM is the same for all fuel models
+      if (FM_FREE.has(k) && fm !== cfg.fm) continue;   // dead FM, KBDI and GSI are the same for all fuel models
+      if (!cal.some(x => x[k] !== null)) continue;     // not in this data yet
       const r = { fm, k };
       for (const [e] of events) r[e] = logistic(sv(cal, k), cal.map(x => x[e]));
       res.push(r);
@@ -699,7 +700,7 @@ function writeAbout() {
 }
 
 function csv() {
-  const k = ['date', 'erc', 'bi', 'ic', 'sc', 'f100', 'f1000', 'nst', 'fires', 'fd', 'lfd', 'mfd'];
+  const k = ['date', 'erc', 'bi', 'ic', 'sc', 'f100', 'f1000', 'kbdi', 'gsi', 'nst', 'fires', 'fd', 'lfd', 'mfd'];
   const lines = [k.join(',')].concat(W.rows.map(r => k.map(x => r[x] === null ? '' : (typeof r[x] === 'number' ? Math.round(r[x] * 100) / 100 : r[x])).join(',')));
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv' }));
   a.download = `${W.unit.unit.replace(/\W+/g, '_')}_${W.cfg.fm}_daily.csv`; a.click();

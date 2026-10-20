@@ -2,8 +2,9 @@
 // year whether they still hold. Data: fdop-data branch (site/build_fdop_data.py).
 const FDATA = (new URLSearchParams(location.search).get('fdata')) ||
   'https://raw.githubusercontent.com/shelikes2run/GACC-fire-dashboard/fdop-data/';
-const IDX_LABEL = { erc: 'ERC', bi: 'BI', ic: 'IC', sc: 'SC', f100: '100-hr FM', f1000: '1000-hr FM' };
-const MOIST = new Set(['f100', 'f1000']);           // lower = drier: tested on the negative
+const IDX_LABEL = { erc: 'ERC', bi: 'BI', ic: 'IC', sc: 'SC', f100: '100-hr FM', f1000: '1000-hr FM', kbdi: 'KBDI', gsi: 'GSI' };
+const MOIST = new Set(['f100', 'f1000', 'gsi']);    // lower = drier / less green: tested on the negative
+const FM_FREE = new Set(['f100', 'f1000', 'kbdi', 'gsi']);   // same value for every fuel model
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const CLASS_NAMES = { 5: ['Low', 'Moderate', 'High', 'Very High', 'Extreme'], 4: ['Low', 'Moderate', 'High', 'Extreme'], 3: ['Low', 'Moderate', 'High'] };
 // R5 Project Activity Level matrix (ERC-Y / IC-Y, updated 13 Apr 2023); the day's PAL is the lower of the two ratings

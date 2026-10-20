@@ -45,8 +45,8 @@ log = logging.getLogger('fdop')
 TZ = ZoneInfo('America/Los_Angeles')
 START_YEAR = 2006
 FMS = ['V', 'W', 'X', 'Y', 'Z']
-IDX = {'erc': 'ERC', 'bi': 'BI', 'ic': 'IC', 'sc': 'SC', 'f100': '100HrFM', 'f1000': '1000HrFM'}
-SCALE = {'erc': 1, 'bi': 1, 'ic': 1, 'sc': 1, 'f100': 10, 'f1000': 10}   # stored as ints (fm ×10)
+IDX = {'erc': 'ERC', 'bi': 'BI', 'ic': 'IC', 'sc': 'SC', 'f100': '100HrFM', 'f1000': '1000HrFM', 'kbdi': 'KBDI', 'gsi': 'GSI'}
+SCALE = {'erc': 1, 'bi': 1, 'ic': 1, 'sc': 1, 'f100': 10, 'f1000': 10, 'kbdi': 1, 'gsi': 100}   # stored as ints (fm ×10, GSI ×100)
 BUFFER_M = 25000
 MEMBERSHIP = ROOT / 'site' / 'fdra_station_membership_2026.csv'
 POLYGONS = ROOT / 'docs' / 'data' / 'fdras.geojson'
@@ -171,6 +171,9 @@ def load_station_history(cache: Path) -> pd.DataFrame:
         o = pd.DataFrame({'sid': d['StationId'].astype(int), 'fm': d['FuelModel'].astype(str).str.upper(),
                           'date': pd.to_datetime(d['ObservationTime']).dt.normalize()})
         for k, c in IDX.items():
+            if c not in d.columns:
+                o[k] = np.nan
+                continue
             v = pd.to_numeric(d[c], errors='coerce')
             o[k] = v.where(v >= 0)
         frames.append(o)

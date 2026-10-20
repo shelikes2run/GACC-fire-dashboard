@@ -1232,9 +1232,23 @@
      "Moderate",
      "High"
     ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-X assumed — index not stated; 16th/47th percentile)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     45,
+     104
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
    }
   ],
-  "notes": "BI-X for staffing and adjective; dispatch Low 0-50, Moderate 50-150, High 150-264. Per-station 90th/97th BI and ERC listed in Table A8.X. 2026 Forest Thresholds sheet lists custom values 45 / 104 without naming the index — not loaded as a tool; confirm with the forest."
+  "notes": "BI-X for staffing and adjective; dispatch Low 0-50, Moderate 50-150, High 150-264. Per-station 90th/97th BI and ERC listed in Table A8.X.  2026 Forest Thresholds sheet custom values 45 / 104 are loaded as a tool on the best-fitting index (assumed; the sheet does not name it) — confirm with the forest."
  },
  "SQF-435": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 9",
@@ -1295,9 +1309,23 @@
      "Moderate",
      "High"
     ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (ERC-Y assumed — index not stated; 39th/69th percentile)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     21,
+     46
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
    }
   ],
-  "notes": "ERC dispatch Low 0-20, Moderate 20-35, High 35-76 (chosen because of tree mortality); BI alternative 0-25/25-45/45+. Station 90th/97th ERC: Park Ridge 61/66, Wolverton 69/72. 2026 Forest Thresholds sheet lists custom values 21 / 46 without naming the index — not loaded as a tool; confirm with the forest."
+  "notes": "ERC dispatch Low 0-20, Moderate 20-35, High 35-76 (chosen because of tree mortality); BI alternative 0-25/25-45/45+. Station 90th/97th ERC: Park Ridge 61/66, Wolverton 69/72.  2026 Forest Thresholds sheet custom values 21 / 46 are loaded as a tool on the best-fitting index (assumed; the sheet does not name it) — confirm with the forest."
  },
  "SQF-440": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 10",
@@ -1342,9 +1370,23 @@
      "Moderate",
      "High"
     ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (ERC-Y assumed — index not stated; 25th/45th percentile)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     13,
+     28
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
    }
   ],
-  "notes": "Dispatch Low 0-21, Moderate 21-35, High 35-67. Station 90th/97th ERC: Johnsondale 56/59, Black Rock 52/56, Peppermint 60/65, Breckenridge 63/67. 2026 Forest Thresholds sheet lists custom values 13 / 28 without naming the index — not loaded as a tool; confirm with the forest."
+  "notes": "Dispatch Low 0-21, Moderate 21-35, High 35-67. Station 90th/97th ERC: Johnsondale 56/59, Black Rock 52/56, Peppermint 60/65, Breckenridge 63/67.  2026 Forest Thresholds sheet custom values 13 / 28 are loaded as a tool on the best-fitting index (assumed; the sheet does not name it) — confirm with the forest."
  },
  "SQF-445": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 13",
@@ -1387,9 +1429,23 @@
      "Very High",
      "Extreme"
     ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (ERC-Y assumed — index not stated; 23rd/68th; on fuel model X these would be the 5th/20th percentile)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     28,
+     53
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
    }
   ],
-  "notes": "ERC-X; station 90th/97th Democrat 107/112, River Kern 110/115 (averaged here). FDOP class graphics not in the text. 2026 Forest Thresholds sheet lists custom values 28 / 53 without naming the index — not loaded as a tool; confirm with the forest."
+  "notes": "ERC-X; station 90th/97th Democrat 107/112, River Kern 110/115 (averaged here). FDOP class graphics not in the text.  2026 Forest Thresholds sheet custom values 28 / 53 are loaded as a tool on the best-fitting index (assumed; the sheet does not name it) — confirm with the forest."
  },
  "INF-461": {
   "source": "Inyo NF Fire Danger Operating Plan, April 2026, Appendix 3, Tables A11.1-A11.2",
@@ -2992,9 +3048,23 @@
      "Med",
      "High"
     ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~58th/82nd percentile)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
    }
   ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the East zone by its stations until the new zone boundaries are loaded. East SIG: 40709, 40921, 40917, 41310, 41311 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 23.9/36.9/52.9/57.9, BI-Y 11.9/21.9/30.9/33.9."
+  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the East zone by its stations until the new zone boundaries are loaded. East SIG: 40709, 40921, 40917, 41310, 41311 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 23.9/36.9/52.9/57.9, BI-Y 11.9/21.9/30.9/33.9. The 2026 sheet's TNF custom 22/30 (index not stated; BI-Y assumed) is loaded as a secondary tool — the June 2026 zone FDOP replaces it."
  },
  "PNF-West": {
   "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
@@ -3160,9 +3230,23 @@
      "Med",
      "High"
     ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~60th/77th percentile)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
    }
   ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the West zone by its stations until the new zone boundaries are loaded. West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9."
+  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the West zone by its stations until the new zone boundaries are loaded. West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9. The 2026 sheet's TNF custom 22/30 (index not stated; BI-Y assumed) is loaded as a secondary tool — the June 2026 zone FDOP replaces it."
  },
  "TNF-354": {
   "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
@@ -3244,9 +3328,23 @@
      "Med",
      "High"
     ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~60th/77th percentile)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
    }
   ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the West zone by its stations until the new zone boundaries are loaded. West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9."
+  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the West zone by its stations until the new zone boundaries are loaded. West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9. The 2026 sheet's TNF custom 22/30 (index not stated; BI-Y assumed) is loaded as a secondary tool — the June 2026 zone FDOP replaces it."
  },
  "SHF-230": {
   "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",

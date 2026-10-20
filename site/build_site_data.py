@@ -70,8 +70,33 @@ def base_id(uid: str) -> str:
 
 
 # ── normals ───────────────────────────────────────────────────────────────────
-def fast_unit_daily(hist: pd.DataFrame, named: dict) -> pd.DataFrame:
-    """cn.unit_daily for ~1,000 units: split history by fuel model once."""
+def load_weights() -> dict:
+    """{unit: {stationId: weight}} from the membership file's optional weight column (FDOP SIG weights;
+    blank = 1). Seasonal units use the same key as cn.load_fdra_membership ('ENF-335 (peak)')."""
+    m = pd.read_csv(MEMBERSHIP, dtype=str).fillna('')
+    if 'weight' not in m:
+        return {}
+    out = {}
+    for _, r in m[m['weight'].str.strip() != ''].iterrows():
+        unit = r['fdra_id'] + (f" ({r['season']})" if r['season'] else '')
+        out.setdefault(unit, {})[int(r['stationId'])] = float(r['weight'])
+    return out
+
+
+def wmean(df: pd.DataFrame, by, cols, wts: dict | None):
+    """Mean of cols per group; with station weights a weighted mean over the stations that reported
+    (FireFamily Plus SIG behaviour: a missing station drops out and the rest are re-weighted)."""
+    if not wts:
+        return df.groupby(by)[cols].mean()
+    w = df['stationId'].map(lambda x: wts.get(int(x), 1.0)).astype(float)
+    X = df[cols].astype(float)
+    num = X.mul(w, axis=0).groupby([df[b] for b in ([by] if isinstance(by, str) else by)]).sum(min_count=1)
+    den = X.notna().mul(w, axis=0).groupby([df[b] for b in ([by] if isinstance(by, str) else by)]).sum()
+    return num / den.where(den > 0)
+
+
+def fast_unit_daily(hist: pd.DataFrame, named: dict, weights: dict | None = None) -> pd.DataFrame:
+    """cn.unit_daily for ~1,000 units: split history by fuel model once (weighted SIGs supported)."""
     by_fm = {fm: g for fm, g in hist.groupby('fm')}
     parts = []
     for uid, members in named.items():
@@ -83,7 +108,7 @@ def fast_unit_daily(hist: pd.DataFrame, named: dict) -> pd.DataFrame:
         sub = pd.concat(pieces) if pieces else pd.DataFrame()
         if sub.empty:
             continue
-        d = sub.groupby('date')[cn.INDICES].mean()
+        d = wmean(sub, 'date', cn.INDICES, (weights or {}).get(uid))
         d['n_reporting'] = sub.groupby('date')['stationId'].nunique()
         d = d.reset_index()
         d.insert(0, 'unit_id', uid)
@@ -101,7 +126,8 @@ def build_normals(out: Path, cache: Path):
     cn.download_history(pairs, y0, y1, cache)
     hist = cn.load_history(pairs, y0, y1, cache)
     named = {fm_name(u, fm, own[u]): m for (u, fm), m in allm.items()}
-    daily = fast_unit_daily(hist, named)
+    wts = load_weights()
+    daily = fast_unit_daily(hist, named, {fm_name(u, fm, own[u]): wts[u] for (u, fm) in allm if u in wts})
     wx_st = pairs[['stationId']].drop_duplicates()
     cn.download_weather(wx_st, y0, y1, cache)
     wx = cn.load_weather_daily(wx_st, y0, y1, cache)
@@ -147,9 +173,9 @@ def fetch_current(pairs: pd.DataFrame, start: str, end: str):
     return n, w
 
 
-def _pick(df: pd.DataFrame, cols):
-    """Per date: mean of observed rows if any, else mean of forecast rows."""
-    g = df.groupby(['date', 'type'])[cols].mean().reset_index()
+def _pick(df: pd.DataFrame, cols, wts: dict | None = None):
+    """Per date: (weighted) mean of observed rows if any, else of forecast rows."""
+    g = wmean(df, ['date', 'type'], cols, wts).reset_index()
     g['rank'] = (g['type'] == 'F').astype(int)
     g = g.sort_values(['date', 'rank']).drop_duplicates('date').drop(columns='rank')
     return g.set_index('date')
@@ -211,6 +237,7 @@ cn_pal_order = ['A', 'B', 'C', 'D', 'Ev', 'E']
 
 SITE = 'https://shelikes2run.github.io/GACC-fire-dashboard/'
 FDOP_START = ROOT / 'docs' / 'data' / 'fdop_start.json'
+WEIGHTS = {}         # unit -> {stationId: SIG weight} (FDOP weighted SIGs)
 LATEST = {}          # (unit, fuel model) -> latest observed / next forecast values, climatology quantiles
 LVL_COL = ['#2e7d32', '#7cb342', '#fbc02d', '#fb8c00', '#e53935', '#8e24aa']
 
@@ -351,6 +378,7 @@ def build_current(out: Path):
     start, end = f'{today.year}-01-01', (today + timedelta(days=10)).isoformat()
     mem, pairs = cn.load_fdra_membership(MEMBERSHIP)
     allm, own = all_fm(mem)
+    WEIGHTS.update(load_weights())
     sids = sorted(pairs['stationId'].astype(int).unique())
     pairs = pd.DataFrame([(s, fm) for s in sids for fm in FMS], columns=['stationId', 'FuelModel'])
     n, w = fetch_current(pairs, start, end)
@@ -369,7 +397,7 @@ def build_current(out: Path):
         if sub.empty:
             continue
         cols = ['erc', 'bi', 'ic', 'sc', 'herb', 'woody', 'fm1', 'fm10', 'fm100', 'fm1000', 'kbdi']
-        d = _pick(sub, cols)
+        d = _pick(sub, cols, WEIGHTS.get(uid))
         d = d[~d.index.duplicated()]
         sids = sorted({s for s, _ in members})
         ww = w[w['stationId'].isin(sids)]

@@ -228,7 +228,7 @@
   ]
  },
  "BDF-660": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45601,
    45113,
@@ -240,10 +240,10 @@
   "large": 30,
   "breaks": {
    "bi": [
-    75,
-    124,
-    175,
-    212
+    90,
+    125,
+    156,
+    181
    ],
    "erc": [
     20,
@@ -259,10 +259,44 @@
    "4",
    "5"
   ],
-  "notes": "BI-X staffing/dispatch 75/124/175/212; ERC-Y preparedness 20/33/48/58. Large fire = 30 ac+. Adjective tables are images in the FDOP.",
+  "notes": "Primary: 2026 operational BI-X staffing 90/125/156/181 (20th/40th/70th/90th percentiles) and dispatch (Moderate 90, High 125, High+ 181) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-X staffing/dispatch 75/124/175/212; ERC-Y preparedness 20/33/48/58. Large fire = 30 ac+. Adjective tables are images in the FDOP.",
   "tools": [
    {
-    "label": "Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "label": "2026 operational staffing (BI-X; FEMS tool / 2026 sheet, 20th/40th/70th/90th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     90,
+     125,
+     156,
+     181
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-X; 2026 sheet)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     90,
+     125,
+     181
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
     "idx": "bi",
     "fm": "X",
     "breaks": [
@@ -280,7 +314,7 @@
     ]
    },
    {
-    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
     "idx": "erc",
     "fm": "Y",
     "breaks": [
@@ -300,7 +334,7 @@
   ]
  },
  "BDF-670": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45604,
    45605,
@@ -311,10 +345,10 @@
   "large": 30,
   "breaks": {
    "bi": [
-    18,
-    30,
-    47,
-    55
+    20,
+    28,
+    32,
+    36
    ],
    "erc": [
     23,
@@ -332,7 +366,41 @@
   ],
   "tools": [
    {
-    "label": "Staffing / dispatch levels (BI-Y; Tables 13-18, 24)",
+    "label": "2026 operational staffing (BI-Y; FEMS tool / 2026 sheet, 22nd/60th/80th/90th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20,
+     28,
+     32,
+     36
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-Y; 2026 sheet)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20,
+     28,
+     36
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-Y; Tables 13-18, 24)",
     "idx": "bi",
     "fm": "Y",
     "breaks": [
@@ -350,7 +418,7 @@
     ]
    },
    {
-    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
     "idx": "erc",
     "fm": "Y",
     "breaks": [
@@ -368,10 +436,10 @@
     ]
    }
   ],
-  "notes": "BI-Y staffing/dispatch 18/30/47/55; ERC-Y preparedness 23/37/50/56. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+  "notes": "Primary: 2026 operational BI-Y staffing 20/28/32/36 (22nd/60th/80th/90th percentiles) and dispatch (Moderate 20, High 28, High+ 36) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-Y staffing/dispatch 18/30/47/55; ERC-Y preparedness 23/37/50/56. Large fire = 30 ac+. Adjective tables are images in the FDOP."
  },
  "BDF-673": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45616,
    45603
@@ -381,10 +449,10 @@
   "large": 30,
   "breaks": {
    "bi": [
-    100,
-    150,
-    200,
-    260
+    113,
+    144,
+    170,
+    193
    ],
    "erc": [
     20,
@@ -402,7 +470,41 @@
   ],
   "tools": [
    {
-    "label": "Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "label": "2026 operational staffing (BI-X; FEMS tool / 2026 sheet, 20th/40th/70th/92nd)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     113,
+     144,
+     170,
+     193
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-X; 2026 sheet)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     113,
+     144,
+     193
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
     "idx": "bi",
     "fm": "X",
     "breaks": [
@@ -420,7 +522,7 @@
     ]
    },
    {
-    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
     "idx": "erc",
     "fm": "Y",
     "breaks": [
@@ -438,10 +540,10 @@
     ]
    }
   ],
-  "notes": "BI-X staffing/dispatch 100/150/200/260; ERC-Y preparedness 20/35/50/61. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+  "notes": "Primary: 2026 operational BI-X staffing 113/144/170/193 (20th/40th/70th/92nd percentiles) and dispatch (Moderate 113, High 144, High+ 193) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-X staffing/dispatch 100/150/200/260; ERC-Y preparedness 20/35/50/61. Large fire = 30 ac+. Adjective tables are images in the FDOP."
  },
  "BDF-692": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45105,
    45101,
@@ -452,10 +554,10 @@
   "large": 30,
   "breaks": {
    "bi": [
-    18,
-    27,
-    38,
-    43
+    19,
+    25,
+    31,
+    35
    ],
    "erc": [
     28,
@@ -473,7 +575,41 @@
   ],
   "tools": [
    {
-    "label": "Staffing / dispatch levels (BI-Y; Tables 13-18, 24)",
+    "label": "2026 operational staffing (BI-Y; FEMS tool / 2026 sheet, 22nd/45th/75th/92nd)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     25,
+     31,
+     35
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-Y; 2026 sheet)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     25,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-Y; Tables 13-18, 24)",
     "idx": "bi",
     "fm": "Y",
     "breaks": [
@@ -491,7 +627,7 @@
     ]
    },
    {
-    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
     "idx": "erc",
     "fm": "Y",
     "breaks": [
@@ -509,10 +645,10 @@
     ]
    }
   ],
-  "notes": "BI-Y staffing/dispatch 18/27/38/43; ERC-Y preparedness 28/42/54/61. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+  "notes": "Primary: 2026 operational BI-Y staffing 19/25/31/35 (22nd/45th/75th/92nd percentiles) and dispatch (Moderate 19, High 25, High+ 35) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-Y staffing/dispatch 18/27/38/43; ERC-Y preparedness 28/42/54/61. Large fire = 30 ac+. Adjective tables are images in the FDOP."
  },
  "BDF-694": {
-  "source": "San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
   "stations": [
    45102,
    45114,
@@ -523,10 +659,10 @@
   "large": 30,
   "breaks": {
    "bi": [
-    75,
-    120,
-    173,
-    204
+    104,
+    127,
+    160,
+    185
    ],
    "erc": [
     25,
@@ -544,7 +680,41 @@
   ],
   "tools": [
    {
-    "label": "Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "label": "2026 operational staffing (BI-X; FEMS tool / 2026 sheet, 20th/40th/70th/90th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     104,
+     127,
+     160,
+     185
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-X; 2026 sheet)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     104,
+     127,
+     185
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
     "idx": "bi",
     "fm": "X",
     "breaks": [
@@ -562,7 +732,7 @@
     ]
    },
    {
-    "label": "Preparedness levels (ERC-Y; Table 23)",
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
     "idx": "erc",
     "fm": "Y",
     "breaks": [
@@ -580,7 +750,7 @@
     ]
    }
   ],
-  "notes": "BI-X staffing/dispatch 75/120/173/204; ERC-Y preparedness 25/40/55/65. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+  "notes": "Primary: 2026 operational BI-X staffing 104/127/160/185 (20th/40th/70th/90th percentiles) and dispatch (Moderate 104, High 127, High+ 185) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-X staffing/dispatch 75/120/173/204; ERC-Y preparedness 25/40/55/65. Large fire = 30 ac+. Adjective tables are images in the FDOP."
  },
  "ANF-Front Country": {
   "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
@@ -1064,7 +1234,7 @@
     ]
    }
   ],
-  "notes": "BI-X for staffing and adjective; dispatch Low 0-50, Moderate 50-150, High 150-264. Per-station 90th/97th BI and ERC listed in Table A8.X."
+  "notes": "BI-X for staffing and adjective; dispatch Low 0-50, Moderate 50-150, High 150-264. Per-station 90th/97th BI and ERC listed in Table A8.X. 2026 Forest Thresholds sheet lists custom values 45 / 104 without naming the index — not loaded as a tool; confirm with the forest."
  },
  "SQF-435": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 9",
@@ -1127,7 +1297,7 @@
     ]
    }
   ],
-  "notes": "ERC dispatch Low 0-20, Moderate 20-35, High 35-76 (chosen because of tree mortality); BI alternative 0-25/25-45/45+. Station 90th/97th ERC: Park Ridge 61/66, Wolverton 69/72."
+  "notes": "ERC dispatch Low 0-20, Moderate 20-35, High 35-76 (chosen because of tree mortality); BI alternative 0-25/25-45/45+. Station 90th/97th ERC: Park Ridge 61/66, Wolverton 69/72. 2026 Forest Thresholds sheet lists custom values 21 / 46 without naming the index — not loaded as a tool; confirm with the forest."
  },
  "SQF-440": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 10",
@@ -1174,7 +1344,7 @@
     ]
    }
   ],
-  "notes": "Dispatch Low 0-21, Moderate 21-35, High 35-67. Station 90th/97th ERC: Johnsondale 56/59, Black Rock 52/56, Peppermint 60/65, Breckenridge 63/67."
+  "notes": "Dispatch Low 0-21, Moderate 21-35, High 35-67. Station 90th/97th ERC: Johnsondale 56/59, Black Rock 52/56, Peppermint 60/65, Breckenridge 63/67. 2026 Forest Thresholds sheet lists custom values 13 / 28 without naming the index — not loaded as a tool; confirm with the forest."
  },
  "SQF-445": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 13",
@@ -1219,7 +1389,7 @@
     ]
    }
   ],
-  "notes": "ERC-X; station 90th/97th Democrat 107/112, River Kern 110/115 (averaged here). FDOP class graphics not in the text."
+  "notes": "ERC-X; station 90th/97th Democrat 107/112, River Kern 110/115 (averaged here). FDOP class graphics not in the text. 2026 Forest Thresholds sheet lists custom values 28 / 53 without naming the index — not loaded as a tool; confirm with the forest."
  },
  "INF-461": {
   "source": "Inyo NF Fire Danger Operating Plan, April 2026, Appendix 3, Tables A11.1-A11.2",
@@ -1405,7 +1575,7 @@
     ]
    }
   ],
-  "notes": "2026 FDOP: one FDRA, SIG of 5 RAWS (Beaver, Bald Mtn, Hellhole, Owens Camp, Steely Fork), fuel model Y, 2016-2025 Jan-Dec. Staffing ERC-Y 0-15/16-31/32-50/51-60/61+; dispatch BI-Y 0-10 smoke check, 11-20 low, 21-29 medium, 30+ high (95th). Large fire = 5 ac; multi-fire day = 2+. FDOP SIG 90th/97th: ERC-Y 57/61, BI-Y 30/32 (ERC-X 88/93, BI-X 147/161). Replaces the peak / non-peak sets. Robbs and Granite Springs to join a future high-elevation FDRA."
+  "notes": "2026 FDOP: one FDRA, SIG of 5 RAWS (Beaver, Bald Mtn, Hellhole, Owens Camp, Steely Fork), fuel model Y, 2016-2025 Jan-Dec. Staffing ERC-Y 0-15/16-31/32-50/51-60/61+; dispatch BI-Y 0-10 smoke check, 11-20 low, 21-29 medium, 30+ high (95th). Large fire = 5 ac; multi-fire day = 2+. FDOP SIG 90th/97th: ERC-Y 57/61, BI-Y 30/32 (ERC-X 88/93, BI-X 147/161). Replaces the peak / non-peak sets. Robbs and Granite Springs to join a future high-elevation FDRA. The 2026 sheet's peak/non-peak entries are superseded by this FDOP (sheet dispatch BI 10/20/28 matches)."
  },
  "CNF-INLAND": {
   "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",

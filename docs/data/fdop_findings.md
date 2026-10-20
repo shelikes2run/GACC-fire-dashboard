@@ -3,7 +3,9 @@
 What was loaded from each forest's current FDOP into the FDOP Workbench / season tracking / map popup,
 and anything that needs the forest's attention. Values are class upper breakpoints.
 
-## San Bernardino NF (BDF) — 2023 FDOP Vol. 1
+## San Bernardino NF (BDF) — 2026 Forest Thresholds sheet (FEMS operational tool) + 2023 FDOP Vol. 1
+- **Primary now: the 2026 sheet's Custom Thresholds, "mirrored in the BDF FEMS operational tool" (K. Osborne)** — BI staffing 660-X 90/125/156/181, 670-Y 20/28/32/36, 673-X 113/144/170/193, 692-Y 19/25/31/35, 694-X 104/127/160/185; dispatch Moderate/High/High+ at the 1st, 2nd and 4th breaks. The 2023 FDOP tables are kept as secondary tools.
+- These differ substantially from the 2023 FDOP; the FDOP needs updating to match operations. With the operational values, 670's top class (BI-Y 36, ~90th) is reachable — resolves the 47/55 issue below.
 - Loaded: FDRAs 660/673/694 BI-X staffing/dispatch; 670/692 BI-Y; preparedness ERC-Y (all five); large fire 30 ac.
 - FDOP Table 18 / 26e put 670 and 692 on **BI-Y** (660, 673, 694 on BI-X). Forest staff say X is the accurate model — the 670/692 tables need X-scale values if they have switched.
 - 670: BI-Y 47 and 55 are never reached at the 3 FDOP stations (2016–2025) — SL4/SL5 cannot occur on Y.

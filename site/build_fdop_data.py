@@ -6,8 +6,8 @@ Everything public and keyless, so it runs unattended in GitHub Actions:
   stations   FEMS NFDR daily summaries (observed), fuel models V W X Y Z, 2006 → today,
              for every RAWS that could go in an FDRA's SIG (FDOP stations from the 2026
              sheet + CA NFDRS RAWS inside or within 25 km of the FDRA)
-  fires      FPA FOD 6th edition (Short 2022, 1992-2020, all sizes) for 2006-2020 +
-             WFIGS incident locations (wildfires) for 2021 → today, assigned to forest FDRAs
+  fires      FPA FOD 7th edition (Short 2026, FPA_FOD_20260615, 1992-2024, all sizes) for 2006-2024 +
+             WFIGS incident locations (wildfires) for 2025 → today, assigned to forest FDRAs
   burned     CAL FIRE FRAP fire perimeters (all agencies) + WFIGS year-to-date perimeters
              → burned acres and % of each FDRA by year (vegetation-change check)
   scorecard  the yearly "are the FDOP indices still good?" delta for every FDRA, using the
@@ -50,14 +50,14 @@ SCALE = {'erc': 1, 'bi': 1, 'ic': 1, 'sc': 1, 'f100': 10, 'f1000': 10}   # store
 BUFFER_M = 25000
 MEMBERSHIP = ROOT / 'site' / 'fdra_station_membership_2026.csv'
 POLYGONS = ROOT / 'docs' / 'data' / 'fdras.geojson'
-FOD_URL = 'https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.6/RDS-2013-0009.6_Data_Format2_GDB.zip'
+FOD_URL = 'https://www.fs.usda.gov/rds/archive/products/RDS-2013-0009.7/RDS-2013-0009.7_Data_Format2_GDB.zip'
 WFIGS = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0'
 FRAP = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/California_Historic_Fire_Perimeters/FeatureServer/0'
 WFIGS_YTD = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Interagency_Perimeters_YearToDate/FeatureServer/0'
 
 # defaults shared with the Workbench (docs/assets/fdop.js) — keep in step
 # Season, large-fire size and multi-fire day follow the R5 FDOP examples (Sierra South, BDF); calibration is the
-# FFP 10-year minimum (here 15 years, all fires: FPA FOD through 2020, WFIGS after). All are editable per FDRA in the Workbench.
+# FFP 10-year minimum (here 15 years, all fires: FPA FOD 7th ed. through 2024, WFIGS after). All are editable per FDRA in the Workbench.
 DEFAULTS = {'season': ['05-01', '11-30'], 'large_fire_ac': 10, 'mfd_n': 2, 'calib': [2011, 2025],
             'veg_yellow_pct': 10, 'veg_red_pct': 20, 'complete_min': 0.8}
 
@@ -202,15 +202,15 @@ def write_station_files(h: pd.DataFrame, out: Path, names: dict):
 # ── fires ─────────────────────────────────────────────────────────────────────
 def fod_fires(cache: Path) -> pd.DataFrame:
     import pyogrio
-    z = cache / 'fod6.zip'
+    z = cache / 'fod7.zip'
     if not z.exists():
-        log.info('downloading FPA FOD 6th edition (~140 MB)')
+        log.info('downloading FPA FOD 7th edition (~160 MB)')
         with requests.get(FOD_URL, stream=True, timeout=900) as r:
             r.raise_for_status()
             with open(z, 'wb') as f:
                 for ch in r.iter_content(1 << 20):
                     f.write(ch)
-    d = cache / 'fod6'
+    d = cache / 'fod7'
     if not d.exists():
         zipfile.ZipFile(z).extractall(d)
     gdb = next(p for p in d.rglob('*.gdb') if p.is_dir())
@@ -499,7 +499,8 @@ def main(out: Path, cache: Path):
     (out / 'index.json').write_text(json.dumps(cn._clean({
         'generated': now.strftime('%Y-%m-%d %H:%M %Z'), 'history_start': f'{START_YEAR}-01-01', 'history_end': last_day,
         'fuel_models': FMS, 'scale': SCALE, 'defaults': DEFAULTS,
-        'sources': {'fires': f'FPA FOD 6th ed. {START_YEAR}-{fod_max}; WFIGS incident locations {fod_max + 1}-{now.year}',
+        'sources': {'fires': f'FPA FOD 7th ed. (RDS-2013-0009.7) {START_YEAR}-{fod_max}; WFIGS incident locations {fod_max + 1}-{now.year}',
+                    'fod_last_year': fod_max,
                     'perimeters': f'CAL FIRE FRAP {START_YEAR}-{frap_max}' + (f'; WFIGS YTD {now.year}' if frap_max < now.year else ''),
                     'nfdrs': 'FEMS daily summaries (observed), NFDRS 2016'},
         'units': units, 'scorecards': cards,

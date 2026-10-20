@@ -220,7 +220,10 @@ def fod_fires(cache: Path) -> pd.DataFrame:
                                          'NWCG_GENERAL_CAUSE', 'LATITUDE', 'LONGITUDE', 'NWCG_REPORTING_AGENCY', 'FIRE_NAME', 'STATE'])
     log.info('FPA FOD read: %d fires nationally', len(df))
     df = df[(df['STATE'].astype(str).str.strip() == 'CA') & (pd.to_numeric(df['FIRE_YEAR']) >= START_YEAR)]
-    out = pd.DataFrame({'date': pd.to_datetime(df['DISCOVERY_DATE']).dt.normalize(), 'acres': pd.to_numeric(df['FIRE_SIZE']),
+    dd = pd.to_datetime(df['DISCOVERY_DATE'])
+    if dd.dt.tz is not None:              # 7th edition stores dates as UTC midnight; keep the calendar date
+        dd = dd.dt.tz_localize(None)
+    out = pd.DataFrame({'date': dd.dt.normalize(), 'acres': pd.to_numeric(df['FIRE_SIZE']),
                         'cause': df['NWCG_CAUSE_CLASSIFICATION'].map({'Human': 'H', 'Natural': 'N'}).fillna('U'),
                         'lat': df['LATITUDE'], 'lon': df['LONGITUDE'], 'agency': df['NWCG_REPORTING_AGENCY'],
                         'name': df['FIRE_NAME'].fillna(''), 'src': 'FOD'})

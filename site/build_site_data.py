@@ -281,7 +281,7 @@ def fdra_tools(fid: str, start: dict):
 
 def popup_html(p: dict, r: dict, start: dict) -> str:
     """Popup for the main-map FDRA layer: latest values and each FDOP decision tool's level; FDRAs
-    without FDOP breakpoints use climatological percentiles (USFWS 80th/95th, USFS and CAL FIRE 90th/97th)."""
+    without FDOP breakpoints use climatological percentiles (USFWS and BLM 80th/95th, USFS and CAL FIRE 90th/97th)."""
     fid, unit = p['fdra_id'], r.get('active_unit')
     s, tools = fdra_tools(fid, start)
     own = (LATEST.get((unit, p.get('fuel_model'))) or {}).get('own') or p.get('fuel_model') or 'Y'
@@ -316,8 +316,9 @@ def popup_html(p: dict, r: dict, start: dict) -> str:
                         f'<td style="text-align:center">{fmt(f_)}<br>{_chip(cls[cf] if cf is not None else "", cf, n)}</td></tr>')
         src = f'Breakpoints: {_esc(s.get("source", "current FDOP"))}.'
     else:
-        lo, hi = (80, 95) if fid.upper().startswith('UFW') else (90, 97)
-        who = 'USFWS' if lo == 80 else ('USFS' if p.get('agency') == 'USFS' else 'CAL FIRE')
+        fed = fid.upper()[:3]
+        lo, hi = (80, 95) if fed in ('UFW', 'BLM') else (90, 97)
+        who = {'UFW': 'USFWS', 'BLM': 'BLM'}.get(fed) if lo == 80 else ('USFS' if p.get('agency') == 'USFS' else 'CAL FIRE')
         for k in ('erc', 'bi'):
             qs = base.get('q', {}).get(k)
             a, b = _q(qs, lo), _q(qs, hi)

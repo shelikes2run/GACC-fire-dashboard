@@ -4039,5 +4039,26 @@
    "12-31"
   ],
   "notes": "The LTBMU SOGs contain no NFDRS breakpoints or SIG table; the 2026 sheet lists standard 90th/97th (ERC/BI Low-Extreme, staffing 1-5) on fuel model Y with these RAWS. SOG trigger: NDF helicopter prepositioned at SLT airport when forecast BI is at or above the 90th percentile or a Red Flag Warning is issued for the SLT area (CAL FIRE-NDF agreement supplement). Popup and Workbench use the USFS 90th/97th percentiles."
+ },
+ "UFW-Eastern Sierra Unit": {
+  "source": "USFWS unit boundary (provided 2026-10-20) — no FDOP",
+  "stations": [
+   43708
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "USFWS Eastern Sierra Unit clipped to the federal non-USFS DPA (BLM, NPS, DoD, USFWS, BIA) outside forest FDRAs — USFS, state (CAL FIRE) and local government DPA removed (CA Wildland Fire Direct Protection Areas, updated 2026-05-27). No FDOP: USFWS standard 80th/95th percentiles. Stations = RAWS inside the area (few for this size; add an FDOP SIG when available)."
+ },
+ "UFW-South Coast Unit": {
+  "source": "USFWS unit boundary (provided 2026-10-20) — no FDOP",
+  "stations": [
+   45620,
+   45127,
+   45128,
+   45129
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "USFWS South Coast Unit clipped to the federal non-USFS DPA (BLM, NPS, DoD, USFWS, BIA) outside forest FDRAs — USFS, state (CAL FIRE) and local government DPA removed (CA Wildland Fire Direct Protection Areas, updated 2026-05-27). No FDOP: USFWS standard 80th/95th percentiles. Stations = RAWS inside the area (few for this size; add an FDOP SIG when available)."
  }
 }

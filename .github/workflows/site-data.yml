@@ -16,7 +16,7 @@ on:
         default: false
   push:
     branches: [main]
-    paths: ['site/**', 'normals/ca_normals.py', '.github/workflows/site-data.yml', 'docs/data/fdras.geojson']
+    paths: ['site/**', 'normals/ca_normals.py', '.github/workflows/site-data.yml', 'docs/data/fdras.geojson', 'docs/data/fdop_start.json']
 
 permissions:
   contents: write

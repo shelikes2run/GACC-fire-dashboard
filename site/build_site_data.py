@@ -210,6 +210,110 @@ cn_pal_order = ['A', 'B', 'C', 'D', 'Ev', 'E']
 
 
 SITE = 'https://shelikes2run.github.io/GACC-fire-dashboard/'
+FDOP_START = ROOT / 'docs' / 'data' / 'fdop_start.json'
+LATEST = {}          # (unit, fuel model) -> latest observed / next forecast values, climatology quantiles
+LVL_COL = ['#2e7d32', '#7cb342', '#fbc02d', '#fb8c00', '#e53935', '#8e24aa']
+
+
+def _esc(t):
+    return str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
+def _lvl(v, breaks):
+    """Class index for value v: a breakpoint is the top of its class (v above it moves up)."""
+    if v is None:
+        return None
+    c = 0
+    for i, b in enumerate(breaks):
+        if v > b:
+            c = i + 1
+    return c
+
+
+def _chip(name, c, n):
+    if c is None:
+        return '<span style="color:#888">–</span>'
+    k = min(len(LVL_COL) - 1, round(c * (len(LVL_COL) - 2) / max(1, n - 1)) + (1 if c == n - 1 and n >= 5 else 0))
+    fg = '#111' if k in (1, 2) else '#fff'
+    return f'<span style="padding:1px 6px;border-radius:3px;background:{LVL_COL[k]};color:{fg};white-space:nowrap">{_esc(name)}</span>'
+
+
+def _q(qs, p):
+    return None if not qs or len(qs) != 101 else qs[p]
+
+
+def fdra_tools(fid: str, start: dict):
+    s = next((v for k, v in start.items() if k.upper() == fid.upper()), None)
+    if not s:
+        return None, []
+    tools = s.get('tools') or [{'label': f'FDOP {i.upper()}', 'idx': i, 'fm': s.get('fm', 'Y'), 'breaks': b,
+                                'classes': s.get('classes') or [str(n + 1) for n in range(len(b) + 1)]}
+                               for i, b in (s.get('breaks') or {}).items()]
+    return s, tools
+
+
+def popup_html(p: dict, r: dict, start: dict) -> str:
+    """Popup for the main-map FDRA layer: latest values and each FDOP decision tool's level; FDRAs
+    without FDOP breakpoints use climatological percentiles (USFWS 80th/95th, USFS and CAL FIRE 90th/97th)."""
+    fid, unit = p['fdra_id'], r.get('active_unit')
+    s, tools = fdra_tools(fid, start)
+    own = (LATEST.get((unit, p.get('fuel_model'))) or {}).get('own') or p.get('fuel_model') or 'Y'
+    L = lambda fm: LATEST.get((unit, fm)) or {}
+    base = L(own)
+    ob, fc = base.get('obs') or {}, base.get('fcst') or {}
+    fmt = lambda v: '–' if v is None else (f'{v:.0f}' if abs(v) >= 100 else f'{v:.1f}')
+    sf = lambda d: sfdi_class(d.get('sfdi'))
+    SF_COL = {'Low': ('#2e7d32', '#fff'), 'Moderate': ('#c0ca33', '#111'), 'High': ('#f9a825', '#111'),
+              'Very High': ('#ef6c00', '#fff'), 'Severe': ('#c62828', '#fff')}
+    def sfchip(d):
+        c = sf(d)
+        if not c:
+            return '<span style="color:#888">No data</span>'
+        bg, fg = SF_COL[c]
+        return f'<span style="padding:1px 6px;border-radius:3px;background:{bg};color:{fg};white-space:nowrap">{c} {fmt(d.get("sfdi"))}</span>'
+    head = (f'<div style="font-size:12px;margin-bottom:6px">SFDI forecast {_esc(fc.get("date") or "–")}: {sfchip(fc)}'
+            f' &nbsp; observed {_esc(ob.get("date") or "–")}: {sfchip(ob)}</div>'
+            f'<div style="font-size:12px;margin-bottom:6px">Fuel model {own} · ERC {fmt(ob.get("erc"))} → {fmt(fc.get("erc"))} · '
+            f'BI {fmt(ob.get("bi"))} → {fmt(fc.get("bi"))} · IC {fmt(ob.get("ic"))} → {fmt(fc.get("ic"))} '
+            f'<span style="color:#888">(observed → forecast)</span></div>')
+    rows = []
+    if tools:
+        for t in tools:
+            d = L(t['fm'])
+            o, f_ = (d.get('obs') or {}).get(t['idx']), (d.get('fcst') or {}).get(t['idx'])
+            n = len(t['breaks']) + 1
+            cls = t.get('classes') or [str(i + 1) for i in range(n)]
+            co, cf = _lvl(o, t['breaks']), _lvl(f_, t['breaks'])
+            rows.append(f'<tr><td>{_esc(t["label"])}<br><span style="color:#888">{t["idx"].upper()}-{t["fm"]} {" / ".join(map(lambda b: f"{b:g}", t["breaks"]))}</span></td>'
+                        f'<td style="text-align:center">{fmt(o)}<br>{_chip(cls[co] if co is not None else "", co, n)}</td>'
+                        f'<td style="text-align:center">{fmt(f_)}<br>{_chip(cls[cf] if cf is not None else "", cf, n)}</td></tr>')
+        src = f'Breakpoints: {_esc(s.get("source", "current FDOP"))}.'
+    else:
+        lo, hi = (80, 95) if fid.upper().startswith('UFW') else (90, 97)
+        who = 'USFWS' if lo == 80 else ('USFS' if p.get('agency') == 'USFS' else 'CAL FIRE')
+        for k in ('erc', 'bi'):
+            qs = base.get('q', {}).get(k)
+            a, b = _q(qs, lo), _q(qs, hi)
+            if a is None:
+                continue
+            names = ['Normal', f'≥ {lo}th', f'≥ {hi}th']
+            lv = lambda v: None if v is None else (2 if v >= b else 1 if v >= a else 0)
+            o, f_ = ob.get(k), fc.get(k)
+            rows.append(f'<tr><td>{k.upper()}-{own} vs {lo}th / {hi}th percentile<br><span style="color:#888">{fmt(a)} / {fmt(b)}</span></td>'
+                        f'<td style="text-align:center">{fmt(o)}<br>{_chip(names[lv(o)] if lv(o) is not None else "", lv(o), 3)}</td>'
+                        f'<td style="text-align:center">{fmt(f_)}<br>{_chip(names[lv(f_)] if lv(f_) is not None else "", lv(f_), 3)}</td></tr>')
+        src = f'No FDOP breakpoints loaded — {who} standard {lo}th / {hi}th percentiles of all {base.get("years", [0])[0] if base.get("years") else ""}–{base.get("years", [0])[-1] if base.get("years") else ""} days.'
+    q = base.get('q', {})
+    clim = (f' 90th / 97th (FM {own}): ERC {fmt(_q(q.get("erc"), 90))} / {fmt(_q(q.get("erc"), 97))} · '
+            f'BI {fmt(_q(q.get("bi"), 90))} / {fmt(_q(q.get("bi"), 97))}.') if tools and q.get('erc') else ''
+    table = ('<table style="width:100%;font-size:12px;border-collapse:collapse"><tr><th style="text-align:left">Decision tool</th>'
+             f'<th>Observed<br>{_esc(ob.get("date") or "")}</th><th>Forecast<br>{_esc(fc.get("date") or "")}</th></tr>' + ''.join(rows) + '</table>') if rows else \
+        '<p style="font-size:12px">No current NFDRS data for this FDRA\'s stations.</p>'
+    links = (f'<p style="font-size:12px;margin:6px 0 0"><a href="{SITE}fdra.html?id={requests.utils.quote(fid)}" target="_blank">Season tracking charts ▸</a> · '
+             f'<a href="{SITE}fdop.html?id={requests.utils.quote(fid)}" target="_blank">FDOP Workbench ▸</a></p>')
+    foot = (f'<p style="font-size:11px;color:#666;margin:6px 0 0">{src}{clim} FDRA value = mean of the FDOP stations '
+            f'({base.get("n_st", "–")}) from FEMS daily summaries; levels: breakpoint = top of its class.</p>')
+    return head + table + links + foot
 
 
 def write_sfdi_geojson(out: Path, polys: dict, rows: list, now):
@@ -217,6 +321,7 @@ def write_sfdi_geojson(out: Path, polys: dict, rows: list, now):
     main-map layer in AGOL (GeoJSON layer read from the site-data branch, refreshed by the map)."""
     from shapely.geometry import mapping, shape
     by = {r['fdra_id']: r for r in rows}
+    start = json.loads(FDOP_START.read_text()) if FDOP_START.exists() else {}
     feats = []
     for f in polys['features']:
         p = f['properties']
@@ -231,6 +336,7 @@ def write_sfdi_geojson(out: Path, polys: dict, rows: list, now):
             'sfdi_obs': val(ob, 'sfdi'), 'sfdi_class_obs': sfdi_class(ob.get('sfdi')) or 'No data', 'obs_date': ob.get('date') or '',
             'erc': val(ob, 'erc'), 'erc_p': val(ob, 'erc_p'), 'bi': val(ob, 'bi'), 'bi_p': val(ob, 'bi_p'),
             'erc_f': val(fc, 'erc'), 'bi_f': val(fc, 'bi'),
+            'popup_html': popup_html(p, r, start),
             'charts': SITE + 'fdra.html?id=' + requests.utils.quote(p['fdra_id']),
             'workbench': SITE + 'fdop.html?id=' + requests.utils.quote(p['fdra_id']),
             'generated': now.strftime('%Y-%m-%d %H:%M %Z')}})
@@ -302,7 +408,7 @@ def build_current(out: Path):
         last_o = obs.index.max() if len(obs) else None
         fc = d[(d['type'] == 'F') & (d.index >= pd.Timestamp(today))]
         snap = lambda r: None if r is None else {k: (None if pd.isna(r[k]) else round(float(r[k]), 1))
-                                                   for k in ['erc', 'bi', 'erc_p', 'bi_p', 'sfdi']}
+                                                   for k in ['erc', 'bi', 'ic', 'erc_p', 'bi_p', 'sfdi']}
         o_row = d.loc[last_o] if last_o is not None else None
         f_row = fc.iloc[0] if len(fc) else None
         bid = base_id(uid)
@@ -311,6 +417,9 @@ def build_current(out: Path):
                 'has_normals': bool(climo), 'normal_years': climo.get('years', []),
                 'latest_obs': {'date': last_o.strftime('%Y-%m-%d') if last_o is not None else None, **(snap(o_row) or {})},
                 'next_fcst': {'date': fc.index[0].strftime('%Y-%m-%d') if len(fc) else None, **(snap(f_row) or {})}}
+        LATEST[(uid, fmk)] = {'obs': unit['latest_obs'], 'fcst': unit['next_fcst'], 'own': own[uid],
+                              'q': {k: climo.get(k + '_q') for k in ('erc', 'bi')}, 'years': climo.get('years', []),
+                              'n_st': len(sids)}
         unit['sfdi_class_fcst'] = sfdi_class(unit['next_fcst'].get('sfdi'))
         unit['sfdi_class_obs'] = sfdi_class(unit['latest_obs'].get('sfdi'))
         doc = {**unit, 'generated': now.strftime('%Y-%m-%d %H:%M %Z'), 'series': series, 'station_table': st_rows,

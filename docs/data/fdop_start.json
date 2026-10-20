@@ -4023,5 +4023,21 @@
    }
   ],
   "notes": "Plumas-Tahoe zone FDRA West (boundary PNF_TNF_FDRA_Bndy_20250529, clipped to the forests; non-forest land stays with the CAL FIRE FDRAs). West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9."
+ },
+ "TMU-335": {
+  "source": "Lake Tahoe Basin MU Standard Operating Guidelines 2026 (signed) + 2026 Forest Thresholds sheet",
+  "stations": [
+   42616,
+   41909,
+   261205,
+   260117
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "notes": "The LTBMU SOGs contain no NFDRS breakpoints or SIG table; the 2026 sheet lists standard 90th/97th (ERC/BI Low-Extreme, staffing 1-5) on fuel model Y with these RAWS. SOG trigger: NDF helicopter prepositioned at SLT airport when forecast BI is at or above the 90th percentile or a Red Flag Warning is issued for the SLT area (CAL FIRE-NDF agreement supplement). Popup and Workbench use the USFS 90th/97th percentiles."
  }
 }

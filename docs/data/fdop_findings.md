@@ -109,6 +109,11 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - Old 2026-sheet SRF values (BI 90th/97th 31.1/34.7 etc.) retired.
 - **Redwood NP (RWP) has no polygon on the map** — it is in the station membership and the FDOP, but the statewide FDRA layer has no RWP boundary, so it only shows in the Workbench/season tracking by id. Need an RWP FDRA boundary.
 
+## Lake Tahoe Basin MU (TMU) — 2026 Standard Operating Guidelines (signed)
+- The SOGs hold no NFDRS breakpoints, SIG or fuel-model tables; TMU-335 stays on the standard USFS 90th/97th (2026 sheet: fuel model Y; RAWS 42616, 41909, 261205, 260117).
+- Fire-danger trigger in the SOGs: NDF helicopter prepositioned at the SLT airport when forecast BI ≥ 90th percentile or a Red Flag Warning is issued (CAL FIRE–NDF agreement supplement).
+- No FDOP yet — the sheet notes analysis pending; an FDOP with SIG and thresholds is still needed.
+
 ## Cross-forest
 - Station weighting: the 2026 Forest Thresholds sheet has no SIG/weight columns, and 'Raws to PSA.xlsx' groups RAWS into South Ops PSAs (SC01–SC16), not FDRA SIGs. SIGs and weights are taken from each FDOP; only SNF-532 is unequally weighted. The membership file now has a weight column, used everywhere SIG values are averaged.
 - 2025 R5 PAL matrix now in the Workbench PAL check.

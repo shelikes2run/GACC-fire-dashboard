@@ -2640,6 +2640,121 @@
   }
  },
  {
+  "fdra_id": "BLM-Ca_Nod",
+  "file": "climo/BLM-Ca_Nod.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 276,
+   "50": 284,
+   "75": 302,
+   "90": 311
+  }
+ },
+ {
+  "fdra_id": "BLM-Ca_Nod__V",
+  "file": "climo/BLM-Ca_Nod__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 295,
+   "50": 303,
+   "75": 311,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "BLM-Ca_Nod__W",
+  "file": "climo/BLM-Ca_Nod__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 296,
+   "50": 303,
+   "75": 312,
+   "90": 321
+  }
+ },
+ {
+  "fdra_id": "BLM-Ca_Nod__X",
+  "file": "climo/BLM-Ca_Nod__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 296,
+   "50": 303,
+   "75": 312,
+   "90": 321
+  }
+ },
+ {
+  "fdra_id": "BLM-Ca_Nod__Z",
+  "file": "climo/BLM-Ca_Nod__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 281,
+   "50": 293,
+   "75": 308,
+   "90": 314
+  }
+ },
+ {
   "fdra_id": "BLM-NOD-260",
   "file": "climo/BLM-NOD-260.json",
   "years": [

@@ -109,6 +109,16 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - Old 2026-sheet SRF values (BI 90th/97th 31.1/34.7 etc.) retired.
 - **Redwood NP (RWP) has no polygon on the map** — it is in the station membership and the FDOP, but the statewide FDRA layer has no RWP boundary, so it only shows in the Workbench/season tracking by id. Need an RWP FDRA boundary.
 
+## Lake Tahoe Basin MU (TMU) — 2026 Standard Operating Guidelines (signed)
+- The SOGs hold no NFDRS breakpoints, SIG or fuel-model tables; TMU-335 stays on the standard USFS 90th/97th (2026 sheet: fuel model Y; RAWS 42616, 41909, 261205, 260117).
+- Fire-danger trigger in the SOGs: NDF helicopter prepositioned at the SLT airport when forecast BI ≥ 90th percentile or a Red Flag Warning is issued (CAL FIRE–NDF agreement supplement).
+- No FDOP yet — the sheet notes analysis pending; an FDOP with SIG and thresholds is still needed.
+
+## USFWS units (Eastern Sierra, South Coast) — boundaries provided 2026-10-20
+- Added as FDRAs UFW-Eastern Sierra Unit (5.62M ac) and UFW-South Coast Unit (13.84M ac): each unit clipped around USFS, state (CAL FIRE) and local government DPA, using the authoritative CA Wildland Fire Direct Protection Areas layer (updated 2026-05-27), and outside forest FDRAs. 13 CAL FIRE pieces trimmed (e.g. BDU-Unit-wide 13.8M → 1.5M ac, RRU-West, MVU-Unit-wide, BDU-Desert, BDU-Owens Valley).
+- What remains is mostly BLM, NPS and DoD land, not refuge land: Eastern Sierra = NPS 3.0M, BLM 2.2M, DoD 0.46M, USFWS 0; South Coast = BLM 8.6M, DoD 2.6M, NPS 2.5M, USFWS 58K (TNR), BIA 22K. Confirm these are the intended areas.
+- No FDOP: USFWS 80th/95th percentiles. Only 1 RAWS (Benton) inside Eastern Sierra and 4 inside South Coast in our station list — an FDOP SIG is needed.
+
 ## Cross-forest
 - Station weighting: the 2026 Forest Thresholds sheet has no SIG/weight columns, and 'Raws to PSA.xlsx' groups RAWS into South Ops PSAs (SC01–SC16), not FDRA SIGs. SIGs and weights are taken from each FDOP; only SNF-532 is unequally weighted. The membership file now has a weight column, used everywhere SIG values are averaged.
 - 2025 R5 PAL matrix now in the Workbench PAL check.

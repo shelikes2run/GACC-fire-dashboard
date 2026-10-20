@@ -40,7 +40,10 @@
 <script>
 (async function () {
   const embed = new URLSearchParams(location.search).get('embed') === '1';
+  const noMap = new URLSearchParams(location.search).get('map') === '0';   // the app's main map already shows SFDI
+  if (noMap) { const mp = document.getElementById('map').closest('section'); mp.style.display = 'none'; }
   const map = L.map('map', { zoomSnap: 0.25 }).setView([37.3, -119.6], 6);
+  if (noMap) document.getElementById('q').insertAdjacentHTML('beforebegin', `<p class="muted small" style="margin:0 0 8px">Data currency: ${''}<span id="gen2"></span> · colors on the main map = today's forecast SFDI.</p>`);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     { maxZoom: 13, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
   const [polys, idx] = await Promise.all([
@@ -48,6 +51,7 @@
     getJSON('fdras.json').catch(() => ({ generated: 'not yet available', fdras: [] })),
   ]);
   document.getElementById('gen').textContent = idx.generated;
+  if (noMap) document.getElementById('gen2').textContent = idx.generated;
   const byId = Object.fromEntries(idx.fdras.map(r => [r.fdra_id, r]));
   const link = id => 'fdra.html?id=' + encodeURIComponent(id) + (embed ? '&embed=1' : '');
   const layer = L.geoJSON(polys, {

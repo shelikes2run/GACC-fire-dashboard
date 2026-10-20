@@ -102,7 +102,7 @@ const sdev = a => { if (a.length < 2) return null; const m = mean(a); return Mat
 const median = a => { if (!a.length) return null; const s = a.slice().sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 
 // ── daily dataset: SIG mean of chosen stations + fire events ─────────────────
-function buildDaily(stFiles, fires, cfg, scale) {
+function buildDaily(stFiles, fires, cfg, scale, weights) {   // weights: {stationId: w} for an FDOP weighted SIG (missing = 1)
   const files = stFiles.filter(Boolean);
   if (!files.length) return [];
   const start = new Date(files[0].start + 'T00:00:00Z'), n = Math.max(...files.map(f => f.n));
@@ -119,8 +119,9 @@ function buildDaily(stFiles, fires, cfg, scale) {
     let nst = 0;
     for (const k of Object.keys(IDX_LABEL)) {
       let s = 0, c = 0;
-      for (const f of files) { const v = f[k] && f[k][i]; if (v !== null && v !== undefined) { s += v / (scale[k] || 1); c++; } }
-      row[k] = c ? s / c : null; if (k === 'erc') nst = c;
+      let wsum = 0;
+      for (const f of files) { const v = f[k] && f[k][i]; if (v !== null && v !== undefined) { const w = (weights && weights[f.sid]) || 1; s += w * v / (scale[k] || 1); wsum += w; c++; } }
+      row[k] = c ? s / wsum : null; if (k === 'erc') nst = c;
     }
     row.nst = nst;
     const fr = fireBy.get(ds) || { n: 0, large: 0 };

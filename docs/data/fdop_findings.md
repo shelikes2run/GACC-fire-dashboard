@@ -12,7 +12,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 ## Sierra South (STF, SNF, SQF) — Interagency FDOP signed 2023-03-20 (v. 2023-05-05)
 - Loaded: STF-348/370, SNF-528/532/533, SQF-435/438/440/445 (manager + FFP bins, tools).
 - STF-348: manager ERC-Y 67/75 sit at the 99th/100th percentile — top classes almost never occur.
-- SNF-532: FDOP SIG is weighted 30/30/10/30; the Workbench averages stations equally.
+- SNF-532: FDOP SIG is weighted (Fence Meadow 30, Minarets 30, Wawona 10, Mt Rest 30) — now applied in the season tracking, map popup, Workbench and annual scorecards (only weighted SIG found in any FDOP; all others are equal weight).
 - SNF-528: climatology May 1–Nov 30, but Table A6.1 lists Jun 15–Oct 1 for thresholds.
 - SQF-445: 90th/97th averaged across stations.
 - SQF-435: an outside-NF piece's Y station had been averaged into the X data — fixed (separate unit).
@@ -69,6 +69,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
   - 162 West: Eel River 41005 + Soda Creek 41406, fuel model Z (we had 4 stations, Y).
   - 165 High Country: Alder Springs 41101 + Mendocino Pass 41018, Z (we had a typo station "411018", Y).
   - 170 East: Eagle Peak 40802, High Glade Lookout 41402, Stonyford 41503, Y (we had 40816 added, Z).
+- **162 West breakpoints look too high for its SIG on fuel model Z**: at Eel River + Soda Creek, BI-Z 90th/97th (2016–2025) is 59/65, but SL4 starts at 72 and SL5 at 92 (dispatch High at 72+) — SL4/SL5 and High dispatch would almost never occur. ERC-Z extreme (111+) is also above the 97th (106). 165 (BI-Z 86/96) and 170 (BI-Y 39/43) fit their tables. Possibly copied from 165 or computed with different stations.
 - 165 dispatch: Table 14/17 high at BI 70+ (Grindstone, Table 15), but Table 15 also lists 165 at 72+ under Upperlake/Covelo.
 - Analysis years, season and large-fire size are not stated in the text (in FFP graphics) — Workbench defaults used.
 - Severity triggers in Vol. 2 still reference ERC fuel model G (1978) for PSAs NC02/NC05 in places, alongside fuel model Y elsewhere.
@@ -102,7 +103,9 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - Dataset years: text says 2005–2022 gap-filled; the staffing table says 2005–2025.
 - RWP: only 3 large-fire days (5 ac+) in 2015–2024 — FDOP notes the sample is too small for statistical inference.
 - Old 2026-sheet SRF values (BI 90th/97th 31.1/34.7 etc.) retired.
+- **Redwood NP (RWP) has no polygon on the map** — it is in the station membership and the FDOP, but the statewide FDRA layer has no RWP boundary, so it only shows in the Workbench/season tracking by id. Need an RWP FDRA boundary.
 
 ## Cross-forest
+- Station weighting: the 2026 Forest Thresholds sheet has no SIG/weight columns, and 'Raws to PSA.xlsx' groups RAWS into South Ops PSAs (SC01–SC16), not FDRA SIGs. SIGs and weights are taken from each FDOP; only SNF-532 is unequally weighted. The membership file now has a weight column, used everywhere SIG values are averaged.
 - 2025 R5 PAL matrix now in the Workbench PAL check.
 - Breakpoint convention made consistent: a breakpoint is the top of its class everywhere (popup, tracking, Workbench).

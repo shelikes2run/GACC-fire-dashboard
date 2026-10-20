@@ -21700,6 +21700,236 @@
   }
  },
  {
+  "fdra_id": "UFW-Eastern_Sierra_Unit",
+  "file": "climo/UFW-Eastern_Sierra_Unit.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 290,
+   "50": 300,
+   "75": 310,
+   "90": 324
+  }
+ },
+ {
+  "fdra_id": "UFW-Eastern_Sierra_Unit__V",
+  "file": "climo/UFW-Eastern_Sierra_Unit__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 295,
+   "75": 312,
+   "90": 320
+  }
+ },
+ {
+  "fdra_id": "UFW-Eastern_Sierra_Unit__W",
+  "file": "climo/UFW-Eastern_Sierra_Unit__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 290,
+   "50": 301,
+   "75": 313,
+   "90": 322
+  }
+ },
+ {
+  "fdra_id": "UFW-Eastern_Sierra_Unit__X",
+  "file": "climo/UFW-Eastern_Sierra_Unit__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 290,
+   "50": 301,
+   "75": 313,
+   "90": 321
+  }
+ },
+ {
+  "fdra_id": "UFW-Eastern_Sierra_Unit__Z",
+  "file": "climo/UFW-Eastern_Sierra_Unit__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 281,
+   "50": 299,
+   "75": 309,
+   "90": 323
+  }
+ },
+ {
+  "fdra_id": "UFW-South_Coast_Unit",
+  "file": "climo/UFW-South_Coast_Unit.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 264,
+   "50": 284,
+   "75": 308,
+   "90": 328
+  }
+ },
+ {
+  "fdra_id": "UFW-South_Coast_Unit__V",
+  "file": "climo/UFW-South_Coast_Unit__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 315,
+   "50": 320,
+   "75": 337,
+   "90": 343
+  }
+ },
+ {
+  "fdra_id": "UFW-South_Coast_Unit__W",
+  "file": "climo/UFW-South_Coast_Unit__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 309,
+   "50": 316,
+   "75": 337,
+   "90": 344
+  }
+ },
+ {
+  "fdra_id": "UFW-South_Coast_Unit__X",
+  "file": "climo/UFW-South_Coast_Unit__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 309,
+   "50": 316,
+   "75": 337,
+   "90": 345
+  }
+ },
+ {
+  "fdra_id": "UFW-South_Coast_Unit__Z",
+  "file": "climo/UFW-South_Coast_Unit__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 267,
+   "50": 291,
+   "75": 307,
+   "90": 325
+  }
+ },
+ {
   "fdra_id": "UFW-Ufw-Lkr",
   "file": "climo/UFW-Ufw-Lkr.json",
   "years": [

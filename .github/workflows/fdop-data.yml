@@ -37,9 +37,23 @@ jobs:
         run: |
           set +e
           python src/site/build_fdop_data.py out fdop_cache > build.log 2>&1
-          echo "exit $?" >> build.log
+          rc=$?
+          echo "exit $rc" >> build.log
+          echo "rc=$rc" >> "$GITHUB_ENV"
           mkdir -p out && tail -300 build.log > out/build_log.txt
+      - name: Keep the published data when the build fails (log only)
+        if: env.rc != '0'
+        run: |
+          git clone -q --depth 1 --branch fdop-data "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" keep
+          cp out/build_log.txt keep/build_log.txt
+          cd keep
+          git config user.name  "fdop-data bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -qam "FDOP data build FAILED $(date -u +%FT%TZ) — data unchanged, see build_log.txt"
+          git push -q origin fdop-data
+          exit 1
       - name: Publish (single commit)
+        if: env.rc == '0'
         run: |
           cd out
           git init -q -b fdop-data

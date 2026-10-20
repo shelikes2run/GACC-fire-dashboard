@@ -317,7 +317,7 @@ def popup_html(p: dict, r: dict, start: dict) -> str:
         src = f'Breakpoints: {_esc(s.get("source", "current FDOP"))}.'
     else:
         fed = fid.upper()[:3]
-        lo, hi = (80, 95) if fed in ('UFW', 'BLM') else (90, 97)
+        lo, hi = (80, 95) if fed == 'UFW' or (fed == 'BLM' and p.get('agency') == 'BLM') else (90, 97)
         who = {'UFW': 'USFWS', 'BLM': 'BLM'}.get(fed) if lo == 80 else ('USFS' if p.get('agency') == 'USFS' else 'CAL FIRE')
         for k in ('erc', 'bi'):
             qs = base.get('q', {}).get(k)

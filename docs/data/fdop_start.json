@@ -4078,7 +4078,7 @@
   ],
   "fm": "W",
   "idx": "bi",
-  "notes": "CA-NOD FDOP 2017 is a draft: the decision summary table and staffing/dispatch breakpoints were never filled in. FDRA 265 Eagle Lake FO (SIG Blue Door 40725, Bull Flat 40728, Buffalo Creek 260113 NV, Horse Lake 40727, Ravendale 40714, Hidden Valley 40732) and FDRA 260 Applegate FO/Surprise (Barrel Springs 260111 NV, Juniper Creek 40308, Juniper Springs 260112 NV, Fox Mtn 260110 NV, Surprise Valley 43690). Plan recommends one SIG of all 11 stations for both FDRAs (one daily BI/dispatch level for NOD, matching SIFC practice) — used here. Plan uses BLM 80th/95th BI climatological breakpoints on NFDRS 1978 fuel model T: 265 70.0/85.6, 260 70.75/87.6, all 69.3/85.8 (1997–2016) — not comparable with NFDRS 2016; fuel model W (grass-shrub, the NFDRS 2016 equivalent of T) is used, with BLM 80th/95th percentiles computed from FEMS. Hidden Valley has only ~5 years of data. FDRA polygons are the CA part only (both FDRAs extend into Nevada); built from BLM DPA split at the Modoc/Lassen county line."
+  "notes": "CA-NOD FDOP 2017 is a draft: the decision summary table and staffing/dispatch breakpoints were never filled in. FDRA 265 Eagle Lake FO (SIG Blue Door 40725, Bull Flat 40728, Buffalo Creek 260113 NV, Horse Lake 40727, Ravendale 40714, Hidden Valley 40732) and FDRA 260 Applegate FO/Surprise (Barrel Springs 260111 NV, Juniper Creek 40308, Juniper Springs 260112 NV, Fox Mtn 260110 NV, Surprise Valley 43690). Plan recommends one SIG of all 11 stations for both FDRAs (one daily BI/dispatch level for NOD, matching SIFC practice) — used here. Plan uses BLM 80th/95th BI climatological breakpoints on NFDRS 1978 fuel model T: 265 70.0/85.6, 260 70.75/87.6, all 69.3/85.8 (1997–2016) — not comparable with NFDRS 2016; fuel model W (grass-shrub, the NFDRS 2016 equivalent of T) is used, with BLM 80th/95th percentiles computed from FEMS. Hidden Valley has only ~5 years of data. FDRA polygons are the CA part only (both FDRAs extend into Nevada); BLM-owned land (NIFC Jurisdictional Units) split at the Modoc/Lassen county line."
  },
  "BLM-NOD-265": {
   "source": "BLM CA-NOD Fire Danger Operating Plan 2017 (draft) — no FDOP breakpoints",
@@ -4097,7 +4097,7 @@
   ],
   "fm": "W",
   "idx": "bi",
-  "notes": "CA-NOD FDOP 2017 is a draft: the decision summary table and staffing/dispatch breakpoints were never filled in. FDRA 265 Eagle Lake FO (SIG Blue Door 40725, Bull Flat 40728, Buffalo Creek 260113 NV, Horse Lake 40727, Ravendale 40714, Hidden Valley 40732) and FDRA 260 Applegate FO/Surprise (Barrel Springs 260111 NV, Juniper Creek 40308, Juniper Springs 260112 NV, Fox Mtn 260110 NV, Surprise Valley 43690). Plan recommends one SIG of all 11 stations for both FDRAs (one daily BI/dispatch level for NOD, matching SIFC practice) — used here. Plan uses BLM 80th/95th BI climatological breakpoints on NFDRS 1978 fuel model T: 265 70.0/85.6, 260 70.75/87.6, all 69.3/85.8 (1997–2016) — not comparable with NFDRS 2016; fuel model W (grass-shrub, the NFDRS 2016 equivalent of T) is used, with BLM 80th/95th percentiles computed from FEMS. Hidden Valley has only ~5 years of data. FDRA polygons are the CA part only (both FDRAs extend into Nevada); built from BLM DPA split at the Modoc/Lassen county line."
+  "notes": "CA-NOD FDOP 2017 is a draft: the decision summary table and staffing/dispatch breakpoints were never filled in. FDRA 265 Eagle Lake FO (SIG Blue Door 40725, Bull Flat 40728, Buffalo Creek 260113 NV, Horse Lake 40727, Ravendale 40714, Hidden Valley 40732) and FDRA 260 Applegate FO/Surprise (Barrel Springs 260111 NV, Juniper Creek 40308, Juniper Springs 260112 NV, Fox Mtn 260110 NV, Surprise Valley 43690). Plan recommends one SIG of all 11 stations for both FDRAs (one daily BI/dispatch level for NOD, matching SIFC practice) — used here. Plan uses BLM 80th/95th BI climatological breakpoints on NFDRS 1978 fuel model T: 265 70.0/85.6, 260 70.75/87.6, all 69.3/85.8 (1997–2016) — not comparable with NFDRS 2016; fuel model W (grass-shrub, the NFDRS 2016 equivalent of T) is used, with BLM 80th/95th percentiles computed from FEMS. Hidden Valley has only ~5 years of data. FDRA polygons are the CA part only (both FDRAs extend into Nevada); BLM-owned land (NIFC Jurisdictional Units) split at the Modoc/Lassen county line."
  },
  "BLM-CND-B11": {
   "source": "BLM CA-CND SQFCND FireFamily Plus analysis (2016) — NFDRS 1978 only",
@@ -4112,7 +4112,7 @@
   ],
   "large": 10,
   "mfd": 5,
-  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Carrizo 44916 (model 7A, grass). BI-A decision points 12/25/51/61 (5 classes, max 90); preparedness BI-A 26. NFDRS 2016 fuel model V (grass) used. Polygon = Bakersfield FO DPA, Carrizo Plain / Temblor / Caliente south of 35.55°N."
+  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Carrizo 44916 (model 7A, grass). BI-A decision points 12/25/51/61 (5 classes, max 90); preparedness BI-A 26. NFDRS 2016 fuel model V (grass) used. Polygon = BLM-owned land (NIFC Jurisdictional Units), Bakersfield FO, Carrizo Plain / Temblor / Caliente south of 35.55°N."
  },
  "BLM-CND-B12": {
   "source": "BLM CA-CND SQFCND FireFamily Plus analysis (2016) — NFDRS 1978 only",
@@ -4128,7 +4128,7 @@
   ],
   "large": 10,
   "mfd": 5,
-  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Kettleman Hills 44602 (0.5) + Carrizo 44916 (0.5), model 7A. BI-A decision points 12/24/49/56 (max 79); preparedness BI-A 26. NFDRS 2016 fuel model V used. Polygon = Bakersfield FO DPA west of 119.3°W, north of 35.55°N (Kettleman Hills / Coalinga / north Temblor)."
+  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Kettleman Hills 44602 (0.5) + Carrizo 44916 (0.5), model 7A. BI-A decision points 12/24/49/56 (max 79); preparedness BI-A 26. NFDRS 2016 fuel model V used. Polygon = BLM-owned land (NIFC Jurisdictional Units), Bakersfield FO west of 119.3°W, north of 35.55°N (Kettleman Hills / Coalinga / north Temblor)."
  },
  "BLM-CND-B13": {
   "source": "BLM CA-CND SQFCND FireFamily Plus analysis (2016) — NFDRS 1978 only",
@@ -4143,6 +4143,6 @@
   ],
   "large": 10,
   "mfd": 5,
-  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Bear Peak 44730 (model 7T, sagebrush-grass). BI-T decision points 24/49/99/122 (max 195); preparedness ERC-T 13. NFDRS 2016 fuel model W used. Polygon = Bakersfield FO DPA east of 118.75°W (Kern River Valley / Piute / Kern Plateau / Walker Pass)."
+  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Bear Peak 44730 (model 7T, sagebrush-grass). BI-T decision points 24/49/99/122 (max 195); preparedness ERC-T 13. NFDRS 2016 fuel model W used. Polygon = BLM-owned land (NIFC Jurisdictional Units), Bakersfield FO east of 118.75°W (Kern River Valley / Piute / Kern Plateau / Walker Pass)."
  }
 }

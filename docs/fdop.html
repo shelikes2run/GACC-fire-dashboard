@@ -69,7 +69,7 @@
         <datalist id="st-all"></datalist></div>
       <div class="small muted no-print">Check or uncheck stations to build the SIG, then Run. Your station set is remembered in this browser and goes into “Copy link”.</div>
       <div class="form-row">Fuel model <select id="fm"></select>
-        Index <select id="idx"><option value="erc">ERC</option><option value="bi">BI</option><option value="ic">IC</option><option value="sc">SC</option><option value="kbdi">KBDI</option></select></div>
+        Index <select id="idx"><option value="erc">ERC</option><option value="bi">BI</option><option value="ic">IC</option><option value="sc">SC</option><option value="kbdi">KBDI</option><option value="gsic">GSI (green-up / curing)</option></select></div>
       <div class="form-row">Calibration years <input type="number" id="y0" min="2006" max="2030"> – <input type="number" id="y1" min="2006" max="2030"></div>
       <div class="form-row">Fire season <input type="text" id="s0" style="width:64px" placeholder="MM-DD"> to <input type="text" id="s1" style="width:64px" placeholder="MM-DD"></div>
       <div class="form-row">Large fire ≥ <input type="number" id="large" min="1"> ac · Multi-fire day ≥ <input type="number" id="mfd" min="2"> fires</div>
@@ -170,7 +170,7 @@ function cfgFromUI() {
     fm: $('fm').value, idx: $('idx').value, calibFrom: +$('y0').value, calibTo: +$('y1').value,
     season: [$('s0').value.trim() || '05-01', $('s1').value.trim() || '11-30'],
     large: +$('large').value, mfd: +$('mfd').value, yearsFrom: 2006,
-    breaks: $('breaks').value.split(',').map(s => parseFloat(s)).filter(v => !isNaN(v)).sort((a, b) => a - b),
+    breaks: readBreaks($('idx').value),
     vegYellow: +$('vy').value, vegRed: +$('vr').value, completeMin: W.idx.defaults.complete_min,
   };
 }
@@ -227,7 +227,7 @@ function drawValidation() {
   $('vtable').innerHTML = `<thead><tr><th class="l">Fuel model</th><th class="l">Index</th>${events.map(([, l]) =>
     `<th colspan="3" style="text-align:center">${l}</th>`).join('')}</tr><tr><th></th><th></th>${events.map(() =>
     '<th>AUC</th><th>R² / bin R²</th><th>p</th>').join('')}</tr></thead><tbody>${res.map(r =>
-    `<tr${r.fm === cfg.fm && r.k === cfg.idx ? ' style="background:#30353a"' : ''}><td class="l">${r.fm}</td><td class="l">${IDX_LABEL[r.k]}</td>${events.map(([e]) => cell(r, e)).join('')}</tr>`).join('')}</tbody>`;
+    `<tr${r.fm === cfg.fm && (r.k === cfg.idx || (r.k === 'gsi' && cfg.idx === 'gsic')) ? ' style="background:#30353a"' : ''}><td class="l">${r.fm}</td><td class="l">${IDX_LABEL[r.k]}</td>${events.map(([e]) => cell(r, e)).join('')}</tr>`).join('')}</tbody>`;
   const cal = calRows(W.rows);
   const fd = cal.filter(r => r.fd).length, lf = cal.filter(r => r.lfd).length, mf = cal.filter(r => r.mfd).length;
   $('valid-note').textContent = `Calibration ${cfg.calibFrom}–${cfg.calibTo}, ${seasonLabel(cfg)}: ${cal.length.toLocaleString()} days, ` +
@@ -239,22 +239,26 @@ function drawValidation() {
     const s = logistic(sv(cal, cfg.idx), cal.map(x => x[e])); if (!s) continue;
     const sign = MOIST.has(cfg.idx) ? -1 : 1;
     const xs = W.sorted.length ? Array.from({ length: 60 }, (_, i) => W.sorted[0] + (W.sorted[W.sorted.length - 1] - W.sorted[0]) * i / 59) : [];
-    tr.push({ x: xs, y: xs.map(x => 1 / (1 + Math.exp(-(s.b0 + s.b1 * sign * x)))), name: l + ' (model)', mode: 'lines', line: { color: cols[e], width: 2 } });
-    tr.push({ x: s.bins.map(b => sign * b.x), y: s.bins.map(b => b.obs), name: l + ' (observed, 10 classes)', mode: 'markers', marker: { color: cols[e], size: 8, symbol: 'circle-open' } });
+    tr.push({ x: xs.map(x => dv(cfg.idx, x)), y: xs.map(x => 1 / (1 + Math.exp(-(s.b0 + s.b1 * sign * x)))), name: l + ' (model)', mode: 'lines', line: { color: cols[e], width: 2 } });
+    tr.push({ x: s.bins.map(b => dv(cfg.idx, sign * b.x)), y: s.bins.map(b => b.obs), name: l + ' (observed, 10 classes)', mode: 'markers', marker: { color: cols[e], size: 8, symbol: 'circle-open' } });
   }
   PL('vchart', tr, { title: { text: `Probability vs ${IDX_LABEL[cfg.idx]} (fuel model ${cfg.fm})`, font: { size: 14 } },
-    xaxis: { title: IDX_LABEL[cfg.idx], gridcolor: '#43484e' }, yaxis: { title: 'probability', gridcolor: '#43484e', rangemode: 'tozero' } });
+    xaxis: { title: IDX_LABEL[cfg.idx], gridcolor: '#43484e', autorange: NEG(cfg.idx) ? 'reversed' : true }, yaxis: { title: 'probability', gridcolor: '#43484e', rangemode: 'tozero' } });
 }
 
+function readBreaks(k) {   // the breakpoints box, in index units → internal values, ascending
+  return $('breaks').value.split(',').map(s => parseFloat(s)).filter(v => !isNaN(v)).map(v => NEG(k) ? -v : v).sort((a, b) => a - b);
+}
+function writeBreaks(k, arr) { $('breaks').value = arr.filter(v => v !== null).map(v => NEG(k) ? (-v).toFixed(2) : v).join(','); }
 function setBreaksFromPct() {
-  const ps = $('bp-pcts').value.split(',').map(Number).filter(v => !isNaN(v));
-  $('breaks').value = ps.map(p => { const v = pctile(W.sorted, p); return v === null ? '' : (Math.round(v * 10) / 10); }).join(',');
-  W.cfg && (W.cfg.breaks = $('breaks').value.split(',').map(Number));
+  const ps = $('bp-pcts').value.split(',').map(Number).filter(v => !isNaN(v)), k = $('idx').value;
+  writeBreaks(k, ps.map(p => { const v = pctile(W.sorted, p); return v === null ? null : NEG(k) ? Math.round(v * 100) / 100 : (Math.round(v * 10) / 10); }));
+  W.cfg && (W.cfg.breaks = readBreaks(k));
 }
 
 function drawDP() {
   const cfg = W.cfg, cal = calRows(W.rows), k = cfg.idx;
-  const breaks = $('breaks').value.split(',').map(parseFloat).filter(v => !isNaN(v)).sort((a, b) => a - b);
+  const breaks = readBreaks(k);
   if (!breaks.length) return;
   const t = classTable(cal, k, breaks, W.sorted);
   drawOptions(cal, k, breaks);
@@ -265,7 +269,7 @@ function drawDP() {
     : (W.S0 && W.S0.classes && W.S0.classes.length === t.classes.length) ? W.S0.classes : (CLASS_NAMES[t.classes.length] || []);
   $('dptable').innerHTML = `<thead><tr><th class="l">Class</th><th>${IDX_LABEL[k]} range</th><th>Percentile</th><th>Days</th><th>% days</th>
     <th>Fires / day</th><th>P(fire day)</th><th>P(large)</th><th>P(multi)</th><th>Share of large fire days</th></tr></thead><tbody>${t.classes.map(o =>
-    `<tr><td class="l"><b>${o.cls}</b> ${names[o.cls - 1] || ''}</td><td>${f2(o.lo, 0)}–${f2(o.hi, 0)}</td><td>${f2(o.pLo, 0)}–${f2(o.pHi, 0)}</td><td>${o.days}</td><td>${pct(o.pct)}</td>
+    `<tr><td class="l"><b>${o.cls}</b> ${names[o.cls - 1] || ''}</td><td>${rng(k, o.lo, o.hi)}</td><td>${f2(o.pLo, 0)}–${f2(o.pHi, 0)}</td><td>${o.days}</td><td>${pct(o.pct)}</td>
     <td>${f2(o.fpd)}</td><td>${pct(o.pFD)}</td><td>${pct(o.pLFD)}</td><td>${pct(o.pMFD)}</td><td>${pct(o.shareL)}</td></tr>`).join('')}</tbody>`;
   PL('dpchart', [
     { x: t.classes.map(o => 'Class ' + o.cls), y: t.classes.map(o => o.pFD), name: 'P(fire day)', type: 'bar', marker: { color: '#7fb3ff' } },
@@ -277,14 +281,14 @@ function drawDP() {
   drawCompare(cal, k, breaks);
   drawPAL(cal);
   const sheet = parseBreaks(W.unit.custom_thresholds, IDX_LABEL[k]);
-  $('dp-note').innerHTML = `Calibration climatology: 90th = <b>${f2(q90, 1)}</b>, 97th = <b>${f2(q97, 1)}</b> (${IDX_LABEL[k]}, fuel model ${cfg.fm}). ` +
+  $('dp-note').innerHTML = `Calibration climatology: 90th = <b>${fv(k, q90, 1)}</b>, 97th = <b>${fv(k, q97, 1)}</b> (${IDX_LABEL[k]}, fuel model ${cfg.fm}${NEG(k) ? '; for GSI the 90th/97th are the 10th/3rd percentile of GSI, the most cured days' : ''}). ` +
     (sheet ? `The 2026 sheet's ${IDX_LABEL[k]} class tops are <b>${sheet.join(', ')}</b> — <a href="#" id="use-sheet">use them</a>. ` : '') +
     'A good class set has probabilities that climb class to class and puts most large fire days in the top one or two classes.';
   const us = $('use-sheet'); if (us) us.onclick = ev => { ev.preventDefault(); $('breaks').value = sheet.join(','); drawDP(); };
 }
 
 // ── breakpoint options ─────────────────────────────────────────────────────────
-function rnd(v) { return v === null || isNaN(v) ? null : Math.abs(v) >= 10 ? Math.round(v) : Math.round(v * 10) / 10; }
+function rnd(v) { return v === null || isNaN(v) ? null : Math.abs(v) >= 10 ? Math.round(v) : Math.abs(v) < 1.5 ? Math.round(v * 100) / 100 : Math.round(v * 10) / 10; }
 function evalBreaks(cal, k, b) {
   const t = classTable(cal, k, b, W.sorted), C = t.classes;
   const tot = C.reduce((s, o) => s + o.days, 0), F = C.reduce((s, o) => s + o.fd, 0), L = C.reduce((s, o) => s + o.lfd, 0);
@@ -364,7 +368,7 @@ function breakOptions(cal, k, cur) {
   // user-added options (left panel) — any number of classes; percentile sets are re-read on every run
   for (const c of (W.custom || [])) {
     if (c.pcts) opts.push({ key: c.key, name: `Your percentiles ${c.pcts.join('/')}`, why: 'Added from the percentile box — breakpoints are these calibration percentiles.', b: c.pcts.map(P), custom: true });
-    else if (c.idx === k && c.fm === W.cfg.fm) opts.push({ key: c.key, name: `Your breakpoints ${c.b.join('/')}`, why: 'Added from the breakpoints box.', b: c.b, custom: true });
+    else if (c.idx === k && c.fm === W.cfg.fm) opts.push({ key: c.key, name: `Your breakpoints ${fb(k, c.b)}`, why: 'Added from the breakpoints box.', b: c.b, custom: true });
   }
   opts.forEach(o => { o.b = o.b.filter(v => v !== null).sort((x, y) => x - y); o.ev = o.b.length && (o.custom || o.base || o.b.length === nb) ? evalBreaks(cal, k, o.b) : null; });
   return opts.filter(o => o.ev);
@@ -384,11 +388,11 @@ function drawOptions(cal, k, cur) {
       const e = o.ev, rise = e.t.monoFD && e.t.monoLFD ? '✓' : `<span style="color:${FLAG[1]}">no (${[!e.t.monoFD && 'fire', !e.t.monoLFD && 'large'].filter(Boolean).join(', ')})</span>`;
       const cl = [o === bestO && 'best', o === curO && 'cmp-base', o.key === W.cmp && 'cmp-sel'].filter(Boolean).join(' ');
       return `<tr data-k="${o.key}"${cl ? ` class="${cl}"` : ''}${o === curO ? ' style="background:#30353a"' : ''}><td class="l" title="${esc(o.why)}"><b>${esc(o.name)}</b>${o === curO && opts.some(x => x.base) ? ' <span class="badge" style="background:#5f6368">baseline</span>' : ''}${o === bestO ? ' <span class="badge" style="background:#2e7d32">strongest</span>' : ''}${o.custom ? ` <button class="mini" data-x="${o.key}" title="Remove this option">✕</button>` : ''}</td>
-        <td><b>${o.b.join(' / ')}</b></td><td>${o.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')}</td><td>${pr(o)}</td><td>${pl(o)}</td><td>${rise}${e.empty ? ` <span style="color:${FLAG[2]}">${e.empty} empty</span>` : ''}${e.thin ? ` <span class="muted">${e.thin} thin</span>` : ''}</td>
+        <td><b>${fb(k, o.b)}</b></td><td>${o.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')}</td><td>${pr(o)}</td><td>${pl(o)}</td><td>${rise}${e.empty ? ` <span style="color:${FLAG[2]}">${e.empty} empty</span>` : ''}${e.thin ? ` <span class="muted">${e.thin} thin</span>` : ''}</td>
         <td>${f2(e.r2fd)} / ${f2(e.r2l)}</td><td>${pct(e.capL)} <span class="muted">of ${pct(e.shareTop2)} days</span></td><td>${f2(e.dpyTop2, 0)} · ${f2(e.dpyTop, 0)}</td><td>${e.lift === null ? '–' : f2(e.lift, 1) + '×'}</td>
         <td class="no-print"><button class="mini" data-o="${o.key}" title="Load into the setup box (Current breakpoints table below)">use</button></td></tr>`; }).join('')}</tbody>`;
   $('opttable').querySelectorAll('button[data-o]').forEach(b => b.onclick = ev => { ev.stopPropagation(); const o = W.opts.find(x => x.key === b.dataset.o);
-    W.cmp = o.key; $('breaks').value = o.b.join(','); W.cfg.breaks = o.b; drawDP(); });
+    W.cmp = o.key; writeBreaks(k, o.b); W.cfg.breaks = o.b; drawDP(); });
   $('opttable').querySelectorAll('button[data-x]').forEach(b => b.onclick = ev => { ev.stopPropagation(); W.custom = (W.custom || []).filter(c => c.key !== b.dataset.x); drawCustomList(); drawDP(); });
   $('opttable').querySelectorAll('tbody tr[data-k]').forEach(tr => tr.onclick = () => { W.cmp = tr.dataset.k;
     $('opttable').querySelectorAll('tbody tr').forEach(x => x.classList.toggle('cmp-sel', x === tr)); drawOptCompare(cal, k); });
@@ -396,11 +400,11 @@ function drawOptions(cal, k, cur) {
   const lines = [];
   if (curO) {
     const e = curO.ev, never = curO.b.filter(v => rankPct(W.sorted, v) >= 99.5);
-    lines.push(`<b>${esc(curO.name)}:</b> ${curO.b.join(' / ')} (${curO.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')} percentile) — ` +
+    lines.push(`<b>${esc(curO.name)}:</b> ${fb(k, curO.b)} (${curO.b.map(v => ord(rankPct(W.sorted, v))).join(' / ')} percentile) — ` +
       `${e.t.monoFD && e.t.monoLFD ? 'probabilities rise class to class' : 'probabilities do not rise every class'}; top two classes hold ${pct(e.capL)} of large fire days on ${f2(e.dpyTop2, 0)} days a year` +
       (never.length ? `; <b style="color:${FLAG[2]}">${never.join(', ')} ${never.length > 1 ? 'are' : 'is'} above the 99.5th percentile — ${never.length > 1 ? 'those classes almost never occur' : 'that class almost never occurs'} with this station set and fuel model</b>` : '') + '.');
   }
-  if (bestO && bestO !== curO) lines.push(`<b>Strongest separation:</b> ${esc(bestO.name)} — ${bestO.b.join(' / ')}; top two classes hold ${pct(bestO.ev.capL)} of large fire days on ${f2(bestO.ev.dpyTop2, 0)} days a year, top-class large-fire rate ${bestO.ev.lift ? f2(bestO.ev.lift, 1) + '×' : '–'} the season average.`);
+  if (bestO && bestO !== curO) lines.push(`<b>Strongest separation:</b> ${esc(bestO.name)} — ${fb(k, bestO.b)}; top two classes hold ${pct(bestO.ev.capL)} of large fire days on ${f2(bestO.ev.dpyTop2, 0)} days a year, top-class large-fire rate ${bestO.ev.lift ? f2(bestO.ev.lift, 1) + '×' : '–'} the season average.`);
   else if (bestO === curO) lines.push('<b>The current breakpoints already give the strongest separation of the options tested.</b>');
   $('opt-summary').innerHTML = lines.join('<br>');
   // chart: P(large fire day) by class for each option
@@ -432,7 +436,7 @@ function drawOptCompare(cal, k) {
   };
   const topP = e => e.t.classes[e.t.classes.length - 1].pLFD;
   const rows = [
-    ['Breakpoints', A.b.join(' / '), B.b.join(' / '), ''],
+    ['Breakpoints', fb(k, A.b), fb(k, B.b), ''],
     ['As percentiles', A.b.map(v => ord(rankPct(W.sorted, v))).join(' / '), B.b.map(v => ord(rankPct(W.sorted, v))).join(' / '), ''],
     ['Classes', A.b.length + 1, B.b.length + 1, ''],
     ['Probabilities rise every class', ea.t.monoFD && ea.t.monoLFD ? '✓' : 'no', eb.t.monoFD && eb.t.monoLFD ? '✓' : 'no', ''],
@@ -456,7 +460,7 @@ function drawOptCompare(cal, k) {
   }
   const side = (o, e) => { const n = e.t.classes.length, names = nm(o, n);
     return `<div><div class="small"><b>${esc(o.name)}</b>${o.base && o.label ? ` <span class="muted">— ${esc(o.label)}</span>` : ''}</div><div class="table-wrap"><table class="data"><thead><tr><th class="l">Class</th><th>${IDX_LABEL[k]}</th><th>Pctile</th><th>Days/yr</th><th>P(fire)</th><th>P(large)</th><th>Share of large</th></tr></thead><tbody>${e.t.classes.map(c =>
-      `<tr><td class="l"><b>${c.cls}</b> ${esc(names[c.cls - 1] || '')}</td><td>${f2(c.lo, 0)}–${f2(c.hi, 0)}</td><td>${f2(c.pLo, 0)}–${f2(c.pHi, 0)}</td><td>${f2(c.days / nY, 0)}</td><td>${pct(c.pFD)}</td><td>${pct(c.pLFD)}</td><td>${pct(c.shareL)}</td></tr>`).join('')}</tbody></table></div></div>`; };
+      `<tr><td class="l"><b>${c.cls}</b> ${esc(names[c.cls - 1] || '')}</td><td>${rng(k, c.lo, c.hi)}</td><td>${f2(c.pLo, 0)}–${f2(c.pHi, 0)}</td><td>${f2(c.days / nY, 0)}</td><td>${pct(c.pFD)}</td><td>${pct(c.pLFD)}</td><td>${pct(c.shareL)}</td></tr>`).join('')}</tbody></table></div></div>`; };
   $('optcmp').innerHTML = `<div class="cmpbox"><h3>Compare: ${esc(B.name)} <span class="muted">vs</span> ${esc(A.name)}</h3>
     <div class="table-wrap"><table class="data"><thead><tr><th class="l">Measure</th><th>${esc(A.name)}</th><th>${esc(B.name)}</th><th>Change</th></tr></thead><tbody>${rows.map(r =>
       `<tr><td class="l">${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>
@@ -475,7 +479,7 @@ function drawOptCompare(cal, k) {
 }
 function drawCustomList() {
   const c = W.custom || [];
-  $('custom-list').innerHTML = c.length ? 'Added to compare: ' + c.map(x => `<span>${x.pcts ? 'pctiles ' + x.pcts.join('/') : `${x.idx.toUpperCase()}-${x.fm} ${x.b.join('/')}`}</span>`).join('') : '';
+  $('custom-list').innerHTML = c.length ? 'Added to compare: ' + c.map(x => `<span>${x.pcts ? 'pctiles ' + x.pcts.join('/') : `${x.idx === 'gsic' ? 'GSI' : x.idx.toUpperCase()}-${x.fm} ${fb(x.idx, x.b)}`}</span>`).join('') : '';
 }
 function addCustom(kind) {
   W.custom = W.custom || [];
@@ -483,7 +487,7 @@ function addCustom(kind) {
   let c;
   if (kind === 'pct') { const p = nums('bp-pcts').filter(v => v > 0 && v < 100); if (!p.length) { setStatus('Enter percentiles, e.g. 25,60,90,97'); return; }
     c = W.custom.find(x => x.pcts && x.pcts.join() === p.join()) || { key: 'u' + Date.now(), pcts: p }; }
-  else { const b = nums('breaks'); if (!b.length) { setStatus('Enter breakpoints, e.g. 21,39,54,61'); return; }
+  else { const b = readBreaks(W.cfg.idx); if (!b.length) { setStatus('Enter breakpoints, e.g. 21,39,54,61'); return; }
     c = W.custom.find(x => x.b && x.idx === W.cfg.idx && x.fm === W.cfg.fm && x.b.join() === b.join()) || { key: 'u' + Date.now(), b, idx: W.cfg.idx, fm: W.cfg.fm }; }
   if (!W.custom.includes(c)) W.custom.push(c);
   W.cmp = c.key; drawCustomList(); drawDP();
@@ -498,16 +502,16 @@ function drawFFP(cal, k, breaks) {
   const pts = Array.from({ length: 101 }, (_, p) => pctile(sorted, p));
   const ev = (key, col, name, sym) => {
     const d = cal.filter(r => r[key] && r[k] !== null);
-    return { x: d.map(r => r[k]), y: d.map(r => rankPct(sorted, r[k])), mode: 'markers', name: `${name} (${d.length})`,
-      marker: { color: col, size: key === 'fd' ? 5 : 9, symbol: sym, line: { width: 1, color: '#111' } }, text: d.map(r => r.date), hovertemplate: '%{text}: %{x:.0f} (%{y:.0f}th)' };
+    return { x: d.map(r => dv(k, r[k])), y: d.map(r => rankPct(sorted, r[k])), mode: 'markers', name: `${name} (${d.length})`,
+      marker: { color: col, size: key === 'fd' ? 5 : 9, symbol: sym, line: { width: 1, color: '#111' } }, text: d.map(r => r.date), hovertemplate: `%{text}: %{x:${NEG(k) ? '.2f' : '.0f'}} (%{y:.0f}th)` };
   };
-  const shapes = breaks.map(b => ({ type: 'line', xref: 'x', yref: 'paper', x0: b, x1: b, y0: 0, y1: 1, line: { color: '#ffd27f', width: 1, dash: 'dot' } }));
-  const ann = breaks.map((b, i) => ({ x: b, y: 1, xref: 'x', yref: 'paper', yanchor: 'bottom', text: `${f2(b, 0)} (${f2(rankPct(sorted, b), 0)}th)`, showarrow: false, font: { size: 10, color: '#ffd27f' } }));
+  const shapes = breaks.map(b => ({ type: 'line', xref: 'x', yref: 'paper', x0: dv(k, b), x1: dv(k, b), y0: 0, y1: 1, line: { color: '#ffd27f', width: 1, dash: 'dot' } }));
+  const ann = breaks.map((b, i) => ({ x: dv(k, b), y: 1, xref: 'x', yref: 'paper', yanchor: 'bottom', text: `${fv(k, b)} (${f2(rankPct(sorted, b), 0)}th)`, showarrow: false, font: { size: 10, color: '#ffd27f' } }));
   PL('dpffp', [
-    { x: pts, y: Array.from({ length: 101 }, (_, p) => p), mode: 'lines', name: 'cumulative % of days', line: { color: '#9aa0a6', width: 2 }, hoverinfo: 'skip' },
+    { x: pts.map(v => dv(k, v)), y: Array.from({ length: 101 }, (_, p) => p), mode: 'lines', name: 'cumulative % of days', line: { color: '#9aa0a6', width: 2 }, hoverinfo: 'skip' },
     ev('fd', '#7fb3ff', 'fire days', 'circle'), ev('mfd', '#ffd27f', `multi-fire days (≥${W.cfg.mfd})`, 'diamond'), ev('lfd', '#e5534b', `large fire days (≥${W.cfg.large} ac)`, 'star'),
   ], { title: { text: `Decision points — ${IDX_LABEL[k]}-${W.cfg.fm}, ${W.cfg.calibFrom}–${W.cfg.calibTo}, ${seasonLabel(W.cfg)}`, font: { size: 14 } },
-    xaxis: { title: IDX_LABEL[k], gridcolor: '#43484e' }, yaxis: { title: 'percentile', range: [0, 101], gridcolor: '#43484e' }, shapes, annotations: ann });
+    xaxis: { title: IDX_LABEL[k], gridcolor: '#43484e', autorange: NEG(k) ? 'reversed' : true }, yaxis: { title: 'percentile', range: [0, 101], gridcolor: '#43484e' }, shapes, annotations: ann });
 }
 function drawCompare(cal, k, breaks) {
   const ps = $('bp-pcts').value.split(',').map(Number).filter(v => !isNaN(v));
@@ -518,8 +522,8 @@ function drawCompare(cal, k, breaks) {
   for (let i = 0; i < n; i++) {
     const x = a[i], y = b[i];
     rows += `<tr><td class="l">${i + 1} ${names[i] || ''}</td>
-      <td>${x ? `${f2(x.lo, 0)}–${f2(x.hi, 0)}` : '–'}</td><td>${x ? pct(x.pFD) : '–'}</td><td>${x ? pct(x.pLFD) : '–'}</td><td>${x ? pct(x.shareL) : '–'}</td>
-      <td>${y ? `${f2(y.lo, 0)}–${f2(y.hi, 0)}` : '–'}</td><td>${y ? `${f2(y.pLo, 0)}–${f2(y.pHi, 0)}` : '–'}</td><td>${y ? pct(y.pFD) : '–'}</td><td>${y ? pct(y.pLFD) : '–'}</td><td>${y ? pct(y.shareL) : '–'}</td></tr>`;
+      <td>${x ? rng(k, x.lo, x.hi) : '–'}</td><td>${x ? pct(x.pFD) : '–'}</td><td>${x ? pct(x.pLFD) : '–'}</td><td>${x ? pct(x.shareL) : '–'}</td>
+      <td>${y ? rng(k, y.lo, y.hi) : '–'}</td><td>${y ? `${f2(y.pLo, 0)}–${f2(y.pHi, 0)}` : '–'}</td><td>${y ? pct(y.pFD) : '–'}</td><td>${y ? pct(y.pLFD) : '–'}</td><td>${y ? pct(y.shareL) : '–'}</td></tr>`;
   }
   $('dpcompare').innerHTML = `<thead><tr><th class="l"></th><th colspan="4" style="text-align:center">Percentile bins (${ps.join(' / ')})</th>
     <th colspan="5" style="text-align:center">Your bins</th></tr><tr><th class="l">Class</th><th>${IDX_LABEL[k]}</th><th>P(fire day)</th><th>P(large)</th><th>Share of large</th>
@@ -751,7 +755,7 @@ function fillSetup(unit) {
   $('mfd').value = (fromUrl && q('mfd')) || (saved && saved.mfd) || (S0 && S0.mfd) || d.mfd_n;
   const fdopBp = S0 && S0.breaks && S0.breaks[$('idx').value];
   const sheetBp = parseBreaks(unit.custom_thresholds, $('idx').value.toUpperCase());
-  $('breaks').value = (fromUrl && q('bp')) || (saved && saved.breaks && saved.breaks.join(',')) || (fdopBp ? fdopBp.join(',') : sheetBp ? sheetBp.join(',') : '');
+  $('breaks').value = (fromUrl && q('bp')) || (saved && saved.breaks && saved.breaks.map(v => NEG(saved.idx) ? (-v).toFixed(2) : v).join(',')) || (fdopBp ? fdopBp.join(',') : sheetBp ? sheetBp.join(',') : '');
   $('vy').value = (saved && saved.vegYellow) || d.veg_yellow_pct; $('vr').value = (saved && saved.vegRed) || d.veg_red_pct;
   $('sheetline').innerHTML = (S0 ? `<b>Starting point — current FDOP:</b> ${esc(S0.source)}${S0.notes ? ' — ' + esc(S0.notes) : ''}
     <button class="btn ghost no-print" id="reset-fdop" style="padding:2px 8px;margin-left:6px">Reset to FDOP</button><br>` : '<b>No signed FDOP loaded for this FDRA yet</b> — starting from the 2026 sheet / climatology.<br>') + `2026 sheet: FDOP stations ${unit.sheet_stations.join(', ')} · fuel model ${esc(unit.fuel_model)} · ` +

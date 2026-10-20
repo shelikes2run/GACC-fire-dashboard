@@ -2,7 +2,14 @@
 // year whether they still hold. Data: fdop-data branch (site/build_fdop_data.py).
 const FDATA = (new URLSearchParams(location.search).get('fdata')) ||
   'https://raw.githubusercontent.com/shelikes2run/GACC-fire-dashboard/fdop-data/';
-const IDX_LABEL = { erc: 'ERC', bi: 'BI', ic: 'IC', sc: 'SC', f100: '100-hr FM', f1000: '1000-hr FM', kbdi: 'KBDI', gsi: 'GSI' };
+const IDX_LABEL = { erc: 'ERC', bi: 'BI', ic: 'IC', sc: 'SC', f100: '100-hr FM', f1000: '1000-hr FM', kbdi: 'KBDI', gsi: 'GSI', gsic: 'GSI (lower = more cured)' };
+// GSI as a breakpoint index: lower GSI = more cured = higher class. Internally the value is negated ('gsic' = −GSI) so every
+// class / percentile / option routine keeps "higher = worse"; the helpers below show and read real GSI values.
+const NEG = k => k === 'gsic';
+const dv = (k, v) => (v === null || v === undefined || isNaN(v)) ? v : NEG(k) ? -v : v;
+const fv = (k, v, d = 0) => { const x = dv(k, v); return x === null || x === undefined || isNaN(x) ? '–' : NEG(k) ? x.toFixed(2) : Number(x).toFixed(d); };
+const fb = (k, arr) => arr.map(v => NEG(k) ? (-v).toFixed(2) : v).join(' / ');
+const rng = (k, lo, hi) => `${fv(k, lo)}–${fv(k, hi)}`;
 const MOIST = new Set(['f100', 'f1000', 'gsi']);    // lower = drier / less green: tested on the negative
 const FM_FREE = new Set(['f100', 'f1000', 'kbdi', 'gsi']);   // same value for every fuel model
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -119,11 +126,13 @@ function buildDaily(stFiles, fires, cfg, scale, weights) {   // weights: {statio
     const row = { date: ds, year: y, doy: Math.floor((dt - Date.UTC(y, 0, 1)) / 864e5) + 1 };
     let nst = 0;
     for (const k of Object.keys(IDX_LABEL)) {
+      if (k === 'gsic') continue;
       let s = 0, c = 0;
       let wsum = 0;
       for (const f of files) { const v = f[k] && f[k][i]; if (v !== null && v !== undefined) { const w = (weights && weights[f.sid]) || 1; s += w * v / (scale[k] || 1); wsum += w; c++; } }
       row[k] = c ? s / wsum : null; if (k === 'erc') nst = c;
     }
+    row.gsic = row.gsi === null || row.gsi === undefined ? null : -row.gsi;
     row.nst = nst;
     const fr = fireBy.get(ds) || { n: 0, large: 0 };
     row.fires = fr.n; row.fd = fr.n > 0 ? 1 : 0; row.lfd = fr.large > 0 ? 1 : 0; row.mfd = fr.n >= cfg.mfd ? 1 : 0;

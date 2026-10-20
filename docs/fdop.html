@@ -128,6 +128,10 @@
           <span class="small muted">Burned-area flags: watch ≥ <input type="number" id="vy" style="width:56px">% · review ≥ <input type="number" id="vr" style="width:56px">% of the FDRA burned in the last 5 years</span></div>
         <div id="verdict"></div>
         <div class="table-wrap"><table class="data" id="dtable"></table></div>
+        <h3 class="small" style="text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px">Every FDOP decision tool — does each index and its breakpoints still hold this year?</h3>
+        <div id="dtools-note" class="small muted" style="margin-bottom:6px"></div>
+        <div class="table-wrap"><table class="data" id="dtools"></table></div>
+        <div id="dchart4" class="chart sm"></div>
         <div id="dchart1" class="chart sm"></div>
         <div id="dchart2" class="chart sm"></div>
         <div id="dchart3" class="chart sm"></div>
@@ -564,7 +568,7 @@ async function drawStations() {
 }
 
 function drawDelta() {
-  const cfg = W.cfg, D = annualDelta(W.rows, { ...cfg, }, W.burned);
+  const cfg = W.cfg, D = annualDelta(W.rows, { ...cfg, }, W.burned, cfg.idx), K = IDX_LABEL[cfg.idx];
   if (!D) { $('verdict').innerHTML = '<div class="warn">Not enough calibration data for this setup.</div>'; return; }
   W.delta = D;
   const ys = D.years.map(r => r.year);
@@ -574,13 +578,13 @@ function drawDelta() {
   const r = D.years.find(x => x.year === +sel.value) || D.years[D.years.length - 1];
   const vt = ['Indices look current', 'Watch — review breakpoints with the unit', 'Recalibrate — the calibration no longer matches'][r.verdict];
   $('verdict').innerHTML = `<span class="verdict" style="background:${FLAG[r.verdict]}">${r.year}: ${vt}</span>
-    <div class="small muted">Compared with ${cfg.calibFrom}–${cfg.calibTo} (${seasonLabel(cfg)}), ${IDX_LABEL.erc} fuel model ${cfg.fm}, stations ${cfg.stations.join(', ')}.${r.year === new Date().getFullYear() ? ' Current year is partial.' : ''}</div>`;
+    <div class="small muted">Compared with ${cfg.calibFrom}–${cfg.calibTo} (${seasonLabel(cfg)}), ${K} fuel model ${cfg.fm}, stations ${cfg.stations.join(', ')}.${r.year === new Date().getFullYear() ? ' Current year is partial.' : ''}</div>`;
   const yr = W.idx.sources;
   const rowsT = [
-    ['Weather / fire danger', r.flags.weather, `Days ≥ 90th: <b>${r.ge90}</b> (expected ${f2(r.exp90, 0)}); ≥ 97th: <b>${r.ge97}</b> (expected ${f2(r.exp97, 0)}). Mean ERC percentile ${f2(r.ercPctl, 0)}.`],
+    ['Weather / fire danger', r.flags.weather, `Days ≥ 90th: <b>${r.ge90}</b> (expected ${f2(r.exp90, 0)}); ≥ 97th: <b>${r.ge97}</b> (expected ${f2(r.exp97, 0)}). Mean ${K} percentile ${f2(r.ercPctl, 0)}.`],
     ['Fire occurrence', r.flags.fire, `Fires <b>${r.fires}</b> (calibration ${f2(D.fm, 1)} ± ${f2(D.fs, 1)}, z ${f2(r.firesZ, 1)}); large fire days <b>${r.lfd}</b> (${f2(D.lm, 1)} ± ${f2(D.ls, 1)}, z ${f2(r.lfdZ, 1)}).`],
     ['Fire timing', r.flags.timing, r.doyShift === null ? 'No fire days.' : `Median fire-day date ${r.doyShift >= 0 ? 'later' : 'earlier'} by <b>${Math.abs(Math.round(r.doyShift))}</b> days than the calibration median.`],
-    ['Index performance', r.flags.index, `ERC AUC for fire days <b>${f2(r.auc)}</b> (calibration ${f2(D.calAUC)}); large fire days at/above the 90th: <b>${pct(r.lfdHit90)}</b> (calibration ${pct(D.topShare)}).`],
+    ['Index performance', r.flags.index, `${K} AUC for fire days <b>${f2(r.auc)}</b> (calibration ${f2(D.calAUC)}); large fire days at/above the 90th: <b>${pct(r.lfdHit90)}</b> (calibration ${pct(D.topShare)}).`],
     ['Vegetation change (fire)', r.flags.veg, `<b>${f2(r.burned, 1)}%</b> of the FDRA burned this year; <b>${f2(r.burned5, 1)}%</b> in the last 5 years${r.burnedFires && r.burnedFires.length ? ' — ' + r.burnedFires.slice(0, 6).map(esc).join(', ') : ''}.`],
     ['Station data', r.flags.station, `SIG reported on <b>${pct(r.complete)}</b> of season days.`],
   ];
@@ -597,11 +601,67 @@ function drawDelta() {
     { x: ys, y: ys.map(() => cfg.vegYellow), name: 'watch', mode: 'lines', line: { color: FLAG[1], dash: 'dot' } },
     { x: ys, y: ys.map(() => cfg.vegRed), name: 'review', mode: 'lines', line: { color: FLAG[2], dash: 'dot' } }],
     { title: { text: 'Vegetation change from fire (CAL FIRE FRAP perimeters)', font: { size: 14 } }, yaxis: { title: '% of FDRA', gridcolor: '#43484e' } });
-  PL('dchart3', [{ x: ys, y: D.years.map(x => x.auc), name: 'ERC AUC (fire days)', mode: 'lines+markers', line: { color: '#7fb3ff' } },
+  PL('dchart3', [{ x: ys, y: D.years.map(x => x.auc), name: K + ' AUC (fire days)', mode: 'lines+markers', line: { color: '#7fb3ff' } },
     { x: ys, y: ys.map(() => D.calAUC), name: 'calibration AUC', mode: 'lines', line: { color: '#9aa0a6', dash: 'dot' } },
     { x: ys, y: D.years.map(x => x.ge97 / Math.max(x.exp97, 1)), name: 'days ≥97th ÷ expected', yaxis: 'y2', type: 'bar', opacity: 0.45, marker: { color: '#e5534b' } }],
     { title: { text: 'Does the index still separate fire days? Is the weather outside the calibration?', font: { size: 14 } },
       yaxis: { title: 'AUC', range: [0.4, 1], gridcolor: '#43484e' }, yaxis2: { overlaying: 'y', side: 'right', title: 'ratio', showgrid: false } });
+  drawToolDelta(r.year);
+}
+
+// annual check of every FDOP decision tool (each on its own index, fuel model and breakpoints, same stations / season)
+function toolDelta(t, year) {
+  const rows = W.byFm[t.fm], k = t.idx, cfg = W.cfg;
+  if (!rows || !rows.length) return { why: `no ${t.fm} data for these stations` };
+  const cal = rows.filter(r => r.year >= cfg.calibFrom && r.year <= cfg.calibTo && r[k] !== null && r[k] !== undefined);
+  const yr = rows.filter(r => r.year === year && r[k] !== null && r[k] !== undefined);
+  if (cal.length < 300) return { why: `${IDX_LABEL[k] || k}-${t.fm} not in the station data` };
+  if (yr.length < 30) return { why: `only ${yr.length} ${year} days with ${IDX_LABEL[k] || k}-${t.fm}` };
+  const sorted = cal.map(r => r[k]).sort((a, b) => a - b), b = t.breaks.slice().sort((x, y) => x - y), n = b.length + 1;
+  const C = classTable(cal, k, b, sorted).classes, Y = classTable(yr, k, b, sorted).classes;
+  const top = n - 1, top2 = [n - 2, n - 1].filter(i => i >= 0);
+  const expTop = C[top].pct * yr.length, obsTop = Y[top].days;
+  const sum = (A, idx, key) => idx.reduce((s, i) => s + A[i][key], 0);
+  const calL = sum(C, C.map((_, i) => i), 'lfd'), yrL = sum(Y, Y.map((_, i) => i), 'lfd');
+  const capCal = calL ? sum(C, top2, 'lfd') / calL : null, capYr = yrL ? sum(Y, top2, 'lfd') / yrL : null;
+  const aCal = logistic(cal.map(r => r[k]), cal.map(r => r.fd)), aYr = logistic(yr.map(r => r[k]), yr.map(r => r.fd));
+  const unreach = b.filter(v => rankPct(sorted, v) >= 99.5);
+  const meanP = mean(yr.map(r => rankPct(sorted, r[k])));
+  const f = {};
+  f.reach = unreach.length ? 2 : 0;
+  f.dist = (expTop >= 3 && (obsTop > 3 * expTop || (obsTop === 0 && year < new Date().getFullYear()))) ? 1 : 0;
+  const drop = aCal && aYr ? aCal.auc - aYr.auc : null;
+  f.skill = drop === null ? 0 : drop >= 0.10 ? 2 : drop >= 0.05 ? 1 : 0;
+  f.catch = capCal !== null && capYr !== null && yrL >= 3 && capYr < capCal - 0.25 ? 1 : 0;
+  f.rise = C.every((o, i) => i === 0 || o.pFD === null || C[i - 1].pFD === null || o.pFD >= C[i - 1].pFD - 1e-9) ? 0 : 1;
+  const v = Object.values(f);
+  const verdict = v.includes(2) || v.filter(x => x === 1).length >= 2 ? (v.includes(2) ? 2 : 1) : v.includes(1) ? 1 : 0;
+  return { C, Y, n, expTop, obsTop, capCal, capYr, yrL, aCal: aCal && aCal.auc, aYr: aYr && aYr.auc, unreach, meanP, f, verdict, days: yr.length };
+}
+function drawToolDelta(year) {
+  const S0 = W.S0, tools = (W.tools && W.tools.length) ? W.tools : [];
+  const list = tools.length ? tools.map(t => ({ ...t, src: 'FDOP' }))
+    : (W.cfg.breaks.length ? [{ label: 'Setup box breakpoints (no FDOP decision tools loaded)', idx: W.cfg.idx, fm: W.cfg.fm, breaks: W.cfg.breaks, src: 'setup' }] : []);
+  const old = S0 && /1978/.test(S0.notes || '') && !tools.length;
+  $('dtools-note').innerHTML = (old ? `<b style="color:${FLAG[1]}">This FDRA's FDOP breakpoints are on NFDRS 1978 fuel models, which FEMS no longer produces — they cannot be checked here; build NFDRS 2016 breakpoints in the Decision points tab.</b> ` : '') +
+    `${year}: each tool is checked on its own index and fuel model with the setup's stations, season (${seasonLabel(W.cfg)}) and calibration years ${W.cfg.calibFrom}–${W.cfg.calibTo}. ` +
+    '<b>Reach</b>: a breakpoint above the 99.5th percentile (that class never occurs). <b>Days in top class</b>: this year vs. what the calibration predicts. <b>Skill</b>: AUC for fire days this year vs. calibration. <b>Top-2 catch</b>: share of large fire days in the two highest classes. <b>Rises</b>: fire-day probability climbs class to class in the calibration.';
+  if (!list.length) { $('dtools').innerHTML = ''; PL('dchart4', [], {}); return; }
+  const res = list.map(t => ({ t, d: toolDelta(t, year) }));
+  const fl = (x, txt) => `<span class="flag" style="background:${FLAG[x]}" title="${esc(txt || '')}">${FLAG_TXT[x]}</span>`;
+  $('dtools').innerHTML = `<thead><tr><th class="l">Decision tool</th><th>Index</th><th>Breakpoints</th><th>Overall</th><th>Reach</th><th>Days in top class (exp.)</th><th>Mean pctile</th>
+    <th>Skill AUC ${year} (cal.)</th><th>Top-2 catch ${year} (cal.)</th><th>Rises</th></tr></thead><tbody>${res.map(({ t, d }) => d.why
+      ? `<tr><td class="l">${esc(t.label)}</td><td>${(IDX_LABEL[t.idx] || t.idx)}-${t.fm}</td><td>${fb(t.idx, t.breaks)}</td><td colspan="7" class="l"><span class="flag" style="background:#6b7280">Not checked</span> ${esc(d.why)}</td></tr>`
+      : `<tr><td class="l">${esc(t.label)}</td><td>${(IDX_LABEL[t.idx] || t.idx)}-${t.fm}</td><td>${fb(t.idx, t.breaks)}</td><td>${fl(d.verdict)}</td>
+        <td>${fl(d.f.reach)}${d.unreach.length ? ` <span class="small">${fb(t.idx, d.unreach)} never reached</span>` : ''}</td>
+        <td>${fl(d.f.dist)} ${d.obsTop} (${f2(d.expTop, 0)})</td><td>${f2(d.meanP, 0)}</td>
+        <td>${fl(d.f.skill)} ${f2(d.aYr)} (${f2(d.aCal)})</td><td>${fl(d.f.catch)} ${d.yrL ? pct(d.capYr) : '–'} (${pct(d.capCal)})</td><td>${fl(d.f.rise)}</td></tr>`).join('')}</tbody>`;
+  const ok = res.filter(x => !x.d.why);
+  PL('dchart4', ok.flatMap(({ t, d }, i) => [
+    { x: d.C.map(c => `${t.label.slice(0, 28)}… ${c.cls}`), y: d.C.map(c => c.pct), name: `${t.label.slice(0, 40)} — calibration`, type: 'bar', marker: { color: '#9aa0a6' }, legendgroup: 'g' + i, showlegend: i === 0 },
+    { x: d.Y.map(c => `${t.label.slice(0, 28)}… ${c.cls}`), y: d.Y.map(c => d.days ? c.days / d.days : null), name: `${year}`, type: 'bar', marker: { color: '#e5534b' }, legendgroup: 'y' + i, showlegend: i === 0 }]).map((tr, j) => ({ ...tr, name: j % 2 ? String(year) : 'calibration' })),
+    { title: { text: `Share of days in each class — ${year} vs calibration, every decision tool`, font: { size: 14 } }, barmode: 'group',
+      yaxis: { title: '% of days', tickformat: '.0%', gridcolor: '#43484e' }, xaxis: { tickangle: -40, tickfont: { size: 9 } }, margin: { b: 140 } });
 }
 
 // last year covered by FPA FOD (WFIGS after) — from the data build, so a new FOD edition moves it automatically
@@ -699,7 +759,7 @@ function writeAbout() {
     <br>• <i>Weather</i>: days ≥ 90th / 97th percentile vs. the 10% / 3% expected (watch if > 2× at the 90th, review if > 3× at the 97th).
     <br>• <i>Fire occurrence</i>: fires and large fire days as z-scores against the calibration years (watch |z| ≥ 1, review |z| ≥ 2).
     <br>• <i>Timing</i>: shift in the median fire-day date (watch ≥ 15 days, review ≥ 30).
-    <br>• <i>Index performance</i>: the ERC AUC for fire days that year vs. the calibration AUC (watch a drop ≥ 0.05, review ≥ 0.10), and the share of large fire days at/above the 90th.
+    <br>• <i>Index performance</i>: the AUC of the setup index (ERC, BI, IC, SC, KBDI or GSI) for fire days that year vs. the calibration AUC (watch a drop ≥ 0.05, review ≥ 0.10), and the share of large fire days at/above the 90th.<br>• <i>Every FDOP decision tool</i>: each staffing, dispatch, adjective and preparedness tool is checked on its own index, fuel model and breakpoints — breakpoints that are never reached (above the 99.5th percentile), days in the top class vs. expected, skill (AUC) vs. calibration, large fire days caught by the top two classes, and whether fire-day probability rises class to class. Tools whose index or fuel model is not in the station data (e.g. NFDRS 1978 models) are listed as not checked.
     <br>• <i>Vegetation</i>: share of the FDRA burned in the trailing 5 years (default watch ${c.vegYellow}%, review ${c.vegRed}% — set these to the unit's own judgment).
     <br>• <i>Stations</i>: SIG data completeness (watch < ${Math.round(100 * c.completeMin)}%, review < 60%).
     <br>Recalibrate when the vegetation check is red or two checks are red; review when one is red or two are yellow.</p>

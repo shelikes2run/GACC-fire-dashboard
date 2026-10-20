@@ -36,9 +36,10 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 ## Cleveland NF (CNF) — San Diego Interagency FEMS Transition Amendment (signed Sept–Oct 2025) to the Jan 2022 FDOP
 - Loaded: Inland and Mountain BI-X staffing/adjective (52/105/211/239; 46/94/188/212), dispatch (119/188; 111/167), seasonal ERC-X (61+; 65+); 2013–2022, calendar year, large fire 1 ac.
 - Amendment 90th/97th (Inland 211/239, Mountain 188/212) agree with ours (207/235, 185/211).
-- The 2022 FDOP PDF is scanned (no text) — station SIGs taken from the 2026 thresholds sheet; need confirmation.
+- 2022 FDOP (scanned; read by OCR) confirms the SIGs: Coast/Inland = Bud Hill, Oak Grove, Cameron, Sweetwater, Valley Center, Ranchita; Mountain/Desert = Descanso, Julian, Mt Laguna, Corona 2, Pine Hills, Temescal 2, Palomar, El Cariso — fuel model X, equal weights (the 2026 sheet marks CNF as Y). 2022 analysis 2010–2019, BI Apr 1–Nov 19, ERC calendar year; SIG 90th/97th BI-X 170/202 (Coastal/Inland) and 160/183 (Mountain/Desert).
+- The interagency FDRAs also cover CAL FIRE SDU: SDU-Inland, SDU-Mountain and SDU-Desert now use the same SIGs (fuel model X) and amendment thresholds (they had been on fuel model Y with the RAWS inside them).
+- 2024 interagency FDRA shapefile (FDRA_SDU: Coastal, Inland, Mountain, Desert) matches our boundaries (CNF-INLAND 128,373 vs 128,762 ac USFS Inland; SDU pieces likewise) — no boundary change needed.
 - CNF-Inland / CNF-Mountain had no station rows in the membership file — fixed.
-- 2024 interagency FDRA shapefile (Coastal and Mountain) available; map still uses the sheet boundaries.
 - Full FDOP rewrite planned for 2026 (Coastal/Desert FDRAs, Mountain North, other fuel models).
 
 ## Inyo NF (INF) — FDOP April 2026
@@ -82,7 +83,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
   - North (Quincy, Pierce, Cashman): staffing BI-Y 18/25/30/38; dispatch 18/25.
   - East (Laufman, Denten Creek, Coyote, Stampede, Rice Canyon): staffing 14/22/28/34; dispatch 19/29.
   - West (Saddleback, Pike County LO, White Cloud, Duncan, Seed Orchard): staffing 11/23/32/38; dispatch 19/29.
-- **New zone boundaries are only a map image in the FDOP** — our six older polygons (PNF West/Central/East, TNF 350/354/380) are mapped to the zones by station (Central→North; PNF-East, TNF-380→East; PNF-West, TNF-350, TNF-354→West) and given the zone SIG and thresholds. Need the zone FDRA shapefile to replace them.
+- Zone boundaries loaded from PNF_TNF_FDRA_Bndy_20250529 (North 576,461 / East 1,275,912 / West 1,083,779 ac, matching FDOP Table 1): the six older polygons (PNF West/Central/East, TNF 350/354/380) are replaced by PTZ-North, PTZ-East and PTZ-West, clipped to the forests (non-forest land stays with the CAL FIRE FDRAs, e.g. NEU-Plumas). 88,905 ac of forest land just outside the zone lines was given to the adjoining zone.
 - East/West dispatch: main section and summary boxes say 0-19 / 20-29 / 30+; the appendix analysis text derives 0-24.9 / 25-31.9 / 32+. Both loaded; forest should confirm.
 - East SIG: Table 3 and staffing table use Coyote (40917); the East dispatch analysis lists Dog Valley (41302) instead.
 - West fire summary: "Lightning caused (3215)" of 940 fires — typo; and the period is given as both 2005–2022 and 2014–2023.

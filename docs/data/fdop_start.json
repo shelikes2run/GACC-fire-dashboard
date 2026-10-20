@@ -1719,7 +1719,7 @@
     ]
    }
   ],
-  "notes": "Coastal/Inland FDRA. 2025 FEMS amendment: dispatch BI-X 0-119 / 120-188 / 189+; staffing & adjective BI-X 0-52/53-105/106-211/212-239/240+ (90th 211, 97th 239); seasonal staffing ERC-X 61+ (90% of fires ≥1 ac, 2013-2022, calendar year, large fire 1 ac). Stations from the 2026 thresholds sheet (2022 FDOP SIG table is scanned)."
+  "notes": "Coastal/Inland FDRA. 2025 FEMS amendment: dispatch BI-X 0-119 / 120-188 / 189+; staffing & adjective BI-X 0-52/53-105/106-211/212-239/240+ (90th 211, 97th 239); seasonal staffing ERC-X 61+ (90% of fires ≥1 ac, 2013-2022, calendar year, large fire 1 ac). SIG confirmed from the 2022 FDOP (OCR of the scanned PDF): fuel model X, equal weights, analysis Apr 1-Nov 19."
  },
  "CNF-MOUNTAIN": {
   "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
@@ -1809,7 +1809,7 @@
     ]
    }
   ],
-  "notes": "Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). Stations from the 2026 thresholds sheet."
+  "notes": "Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). SIG confirmed from the 2022 FDOP: fuel model X, equal weights."
  },
  "KNF-200": {
   "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
@@ -2816,536 +2816,6 @@
   ],
   "notes": "FDRA 170 East; SIG Eagle Peak, High Glade Lookout, Stonyford (fuel model Y). FDOP tables list the start of each class: staffing BI-Y starts 0/23/29/35/44; dispatch high at BI 35+; adjective ERC-Y starts 0/29/40/52/62. Loaded as class tops. Analysis years, season and large-fire size not stated in the text — Workbench defaults."
  },
- "PNF-Central": {
-  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
-  "stations": [
-   40910,
-   40915,
-   40916
-  ],
-  "fm": "Y",
-  "idx": "bi",
-  "season": [
-   "05-01",
-   "10-31"
-  ],
-  "calib": [
-   2006,
-   2022
-  ],
-  "breaks": {
-   "bi": [
-    18,
-    25,
-    30,
-    38
-   ]
-  },
-  "classes": [
-   "1",
-   "2",
-   "3",
-   "4",
-   "5"
-  ],
-  "tools": [
-   {
-    "label": "Staffing levels (North FDRA; BI-Y, Table 6)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     18,
-     25,
-     30,
-     38
-    ],
-    "classes": [
-     "SL1",
-     "SL2",
-     "SL3",
-     "SL4 (90th)",
-     "SL5 (97th)"
-    ]
-   },
-   {
-    "label": "Dispatch levels (North FDRA; BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     18,
-     25
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   }
-  ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the North zone by its stations until the new zone boundaries are loaded. North SIG: 40910, 40915, 40916 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Adjective matrix axes: ERC-Y 24.9/36.9/51.9/58.9, BI-Y 19.9/26.9/34.9/39.9."
- },
- "PNF-East": {
-  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
-  "stations": [
-   40709,
-   40921,
-   40917,
-   41310,
-   41311
-  ],
-  "fm": "Y",
-  "idx": "bi",
-  "season": [
-   "05-01",
-   "10-31"
-  ],
-  "calib": [
-   2006,
-   2022
-  ],
-  "breaks": {
-   "bi": [
-    14,
-    22,
-    28,
-    34
-   ]
-  },
-  "classes": [
-   "1",
-   "2",
-   "3",
-   "4",
-   "5"
-  ],
-  "tools": [
-   {
-    "label": "Staffing levels (East FDRA; BI-Y, Table 6)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     14,
-     22,
-     28,
-     34
-    ],
-    "classes": [
-     "SL1",
-     "SL2",
-     "SL3",
-     "SL4 (90th)",
-     "SL5 (97th)"
-    ]
-   },
-   {
-    "label": "Dispatch levels (East FDRA; BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     19,
-     29
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   },
-   {
-    "label": "Dispatch levels as derived in the East analysis text (BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     24.9,
-     31.9
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   }
-  ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the East zone by its stations until the new zone boundaries are loaded. East SIG: 40709, 40921, 40917, 41310, 41311 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 23.9/36.9/52.9/57.9, BI-Y 11.9/21.9/30.9/33.9."
- },
- "TNF-380": {
-  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
-  "stations": [
-   40709,
-   40921,
-   40917,
-   41310,
-   41311
-  ],
-  "fm": "Y",
-  "idx": "bi",
-  "season": [
-   "05-01",
-   "10-31"
-  ],
-  "calib": [
-   2006,
-   2022
-  ],
-  "breaks": {
-   "bi": [
-    14,
-    22,
-    28,
-    34
-   ]
-  },
-  "classes": [
-   "1",
-   "2",
-   "3",
-   "4",
-   "5"
-  ],
-  "tools": [
-   {
-    "label": "Staffing levels (East FDRA; BI-Y, Table 6)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     14,
-     22,
-     28,
-     34
-    ],
-    "classes": [
-     "SL1",
-     "SL2",
-     "SL3",
-     "SL4 (90th)",
-     "SL5 (97th)"
-    ]
-   },
-   {
-    "label": "Dispatch levels (East FDRA; BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     19,
-     29
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   },
-   {
-    "label": "Dispatch levels as derived in the East analysis text (BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     24.9,
-     31.9
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   },
-   {
-    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~58th/82nd percentile)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     22,
-     30
-    ],
-    "classes": [
-     "Low",
-     "Medium",
-     "High"
-    ]
-   }
-  ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the East zone by its stations until the new zone boundaries are loaded. East SIG: 40709, 40921, 40917, 41310, 41311 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 23.9/36.9/52.9/57.9, BI-Y 11.9/21.9/30.9/33.9. The 2026 sheet's TNF custom 22/30 (index not stated; BI-Y assumed) is loaded as a secondary tool — the June 2026 zone FDOP replaces it."
- },
- "PNF-West": {
-  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
-  "stations": [
-   41304,
-   41701,
-   41806,
-   41901,
-   41908
-  ],
-  "fm": "Y",
-  "idx": "bi",
-  "season": [
-   "05-01",
-   "10-31"
-  ],
-  "calib": [
-   2006,
-   2022
-  ],
-  "breaks": {
-   "bi": [
-    11,
-    23,
-    32,
-    38
-   ]
-  },
-  "classes": [
-   "1",
-   "2",
-   "3",
-   "4",
-   "5"
-  ],
-  "tools": [
-   {
-    "label": "Staffing levels (West FDRA; BI-Y, Table 6)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     11,
-     23,
-     32,
-     38
-    ],
-    "classes": [
-     "SL1",
-     "SL2",
-     "SL3",
-     "SL4 (90th)",
-     "SL5 (97th)"
-    ]
-   },
-   {
-    "label": "Dispatch levels (West FDRA; BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     19,
-     29
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   },
-   {
-    "label": "Dispatch levels as derived in the West analysis text (BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     24.9,
-     31.9
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   }
-  ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the West zone by its stations until the new zone boundaries are loaded. West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9."
- },
- "TNF-350": {
-  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
-  "stations": [
-   41304,
-   41701,
-   41806,
-   41901,
-   41908
-  ],
-  "fm": "Y",
-  "idx": "bi",
-  "season": [
-   "05-01",
-   "10-31"
-  ],
-  "calib": [
-   2006,
-   2022
-  ],
-  "breaks": {
-   "bi": [
-    11,
-    23,
-    32,
-    38
-   ]
-  },
-  "classes": [
-   "1",
-   "2",
-   "3",
-   "4",
-   "5"
-  ],
-  "tools": [
-   {
-    "label": "Staffing levels (West FDRA; BI-Y, Table 6)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     11,
-     23,
-     32,
-     38
-    ],
-    "classes": [
-     "SL1",
-     "SL2",
-     "SL3",
-     "SL4 (90th)",
-     "SL5 (97th)"
-    ]
-   },
-   {
-    "label": "Dispatch levels (West FDRA; BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     19,
-     29
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   },
-   {
-    "label": "Dispatch levels as derived in the West analysis text (BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     24.9,
-     31.9
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   },
-   {
-    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~60th/77th percentile)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     22,
-     30
-    ],
-    "classes": [
-     "Low",
-     "Medium",
-     "High"
-    ]
-   }
-  ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the West zone by its stations until the new zone boundaries are loaded. West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9. The 2026 sheet's TNF custom 22/30 (index not stated; BI-Y assumed) is loaded as a secondary tool — the June 2026 zone FDOP replaces it."
- },
- "TNF-354": {
-  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
-  "stations": [
-   41304,
-   41701,
-   41806,
-   41901,
-   41908
-  ],
-  "fm": "Y",
-  "idx": "bi",
-  "season": [
-   "05-01",
-   "10-31"
-  ],
-  "calib": [
-   2006,
-   2022
-  ],
-  "breaks": {
-   "bi": [
-    11,
-    23,
-    32,
-    38
-   ]
-  },
-  "classes": [
-   "1",
-   "2",
-   "3",
-   "4",
-   "5"
-  ],
-  "tools": [
-   {
-    "label": "Staffing levels (West FDRA; BI-Y, Table 6)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     11,
-     23,
-     32,
-     38
-    ],
-    "classes": [
-     "SL1",
-     "SL2",
-     "SL3",
-     "SL4 (90th)",
-     "SL5 (97th)"
-    ]
-   },
-   {
-    "label": "Dispatch levels (West FDRA; BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     19,
-     29
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   },
-   {
-    "label": "Dispatch levels as derived in the West analysis text (BI-Y)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     24.9,
-     31.9
-    ],
-    "classes": [
-     "Low",
-     "Med",
-     "High"
-    ]
-   },
-   {
-    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~60th/77th percentile)",
-    "idx": "bi",
-    "fm": "Y",
-    "breaks": [
-     22,
-     30
-    ],
-    "classes": [
-     "Low",
-     "Medium",
-     "High"
-    ]
-   }
-  ],
-  "notes": "Plumas and Tahoe now share three zone FDRAs (North, East, West). This polygon is mapped to the West zone by its stations until the new zone boundaries are loaded. West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9. The 2026 sheet's TNF custom 22/30 (index not stated; BI-Y assumed) is loaded as a secondary tool — the June 2026 zone FDOP replaces it."
- },
  "SHF-230": {
   "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
   "stations": [
@@ -4021,5 +3491,537 @@
   ],
   "large": 5,
   "notes": "FDRA RWP (Redwood NP); SIG Gasquet 2, Schoolhouse (50% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. RWP uses ERC and has no dispatch levels; large fire 5 ac (only 3 large-fire days 2015-2024)."
+ },
+ "SDU-Inland": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45745,
+   45710,
+   45704,
+   45744,
+   45734,
+   45729
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    52,
+    105,
+    211,
+    239
+   ],
+   "erc": [
+    60
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     52,
+     105,
+     211,
+     239
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     119,
+     188
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 61+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     60
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 61+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE San Diego Unit part of the interagency Coast/Inland FDRA (CNF / CAL FIRE SDU / USFWS FDOP, Jan 2022, and the 2025 FEMS amendment): same SIG, fuel model X and thresholds as CNF-INLAND. Coastal/Inland FDRA. 2025 FEMS amendment: dispatch BI-X 0-119 / 120-188 / 189+; staffing & adjective BI-X 0-52/53-105/106-211/212-239/240+ (90th 211, 97th 239); seasonal staffing ERC-X 61+ (90% of fires ≥1 ac, 2013-2022, calendar year, large fire 1 ac). Stations from the 2026 thresholds sheet (2022 FDOP SIG table is scanned)."
+ },
+ "SDU-Mountain": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45707,
+   45708,
+   45709,
+   45636,
+   45711,
+   45635,
+   45740,
+   45619
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    46,
+    94,
+    188,
+    212
+   ],
+   "erc": [
+    64
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     46,
+     94,
+     188,
+     212
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     111,
+     167
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 65+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 65+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE San Diego Unit part of the interagency Mountain/Desert FDRA (CNF / CAL FIRE SDU / USFWS FDOP, Jan 2022, and the 2025 FEMS amendment): same SIG, fuel model X and thresholds as CNF-MOUNTAIN. Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). Stations from the 2026 thresholds sheet."
+ },
+ "SDU-Desert": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45707,
+   45708,
+   45709,
+   45636,
+   45711,
+   45635,
+   45740,
+   45619
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    46,
+    94,
+    188,
+    212
+   ],
+   "erc": [
+    64
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     46,
+     94,
+     188,
+     212
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     111,
+     167
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 65+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 65+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE San Diego Unit part of the interagency Mountain/Desert FDRA (CNF / CAL FIRE SDU / USFWS FDOP, Jan 2022, and the 2025 FEMS amendment): same SIG, fuel model X and thresholds as CNF-MOUNTAIN. The Desert FDRA has no RAWS and is evaluated with Mountain. Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). Stations from the 2026 thresholds sheet."
+ },
+ "PTZ-North": {
+  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
+  "stations": [
+   40910,
+   40915,
+   40916
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    18,
+    25,
+    30,
+    38
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (North FDRA; BI-Y, Table 6)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     18,
+     25,
+     30,
+     38
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4 (90th)",
+     "SL5 (97th)"
+    ]
+   },
+   {
+    "label": "Dispatch levels (North FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     18,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Plumas-Tahoe zone FDRA North (boundary PNF_TNF_FDRA_Bndy_20250529, clipped to the forests; non-forest land stays with the CAL FIRE FDRAs). North SIG: 40910, 40915, 40916 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Adjective matrix axes: ERC-Y 24.9/36.9/51.9/58.9, BI-Y 19.9/26.9/34.9/39.9."
+ },
+ "PTZ-East": {
+  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
+  "stations": [
+   40709,
+   40921,
+   40917,
+   41310,
+   41311
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    14,
+    22,
+    28,
+    34
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (East FDRA; BI-Y, Table 6)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     14,
+     22,
+     28,
+     34
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4 (90th)",
+     "SL5 (97th)"
+    ]
+   },
+   {
+    "label": "Dispatch levels (East FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     29
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch levels as derived in the East analysis text (BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     24.9,
+     31.9
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~58th/82nd percentile)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Plumas-Tahoe zone FDRA East (boundary PNF_TNF_FDRA_Bndy_20250529, clipped to the forests; non-forest land stays with the CAL FIRE FDRAs). East SIG: 40709, 40921, 40917, 41310, 41311 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 23.9/36.9/52.9/57.9, BI-Y 11.9/21.9/30.9/33.9."
+ },
+ "PTZ-West": {
+  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
+  "stations": [
+   41304,
+   41701,
+   41806,
+   41901,
+   41908
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    11,
+    23,
+    32,
+    38
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (West FDRA; BI-Y, Table 6)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     11,
+     23,
+     32,
+     38
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4 (90th)",
+     "SL5 (97th)"
+    ]
+   },
+   {
+    "label": "Dispatch levels (West FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     29
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch levels as derived in the West analysis text (BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     24.9,
+     31.9
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~60th/77th percentile)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Plumas-Tahoe zone FDRA West (boundary PNF_TNF_FDRA_Bndy_20250529, clipped to the forests; non-forest land stays with the CAL FIRE FDRAs). West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9."
  }
 }

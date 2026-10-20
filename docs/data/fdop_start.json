@@ -1,5 +1,5 @@
 {
- "_about": "Starting points for the FDOP Workbench taken from the current signed FDOPs. Values here win over the 2026 thresholds sheet when the Workbench opens an FDRA; users can change everything from there.",
+ "_about": "Starting points for the FDOP Workbench taken from the current signed FDOPs. Values here win over the 2026 thresholds sheet when the Workbench opens an FDRA; users can change everything from there. Optional \"weights\": {stationId: weight} gives a weighted SIG (FDOP SIG tables); stations without a weight count 1.",
  "STF-348": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 2",
   "stations": [
@@ -1010,7 +1010,13 @@
     ]
    }
   ],
-  "notes": "Manager bins 0-39/40-53/54-64/65-70/71+ (FFP 0-48/49-56/57-68/69-72/73+). The FDOP SIG is weighted (Fence Meadow 30, Minarets 30, Mt Rest 30, Wawona 10); the Workbench averages stations equally."
+  "notes": "Manager bins 0-39/40-53/54-64/65-70/71+ (FFP 0-48/49-56/57-68/69-72/73+). The FDOP SIG is weighted (Fence Meadow 30, Minarets 30, Mt Rest 30, Wawona 10); the Workbench, season tracking and map use these weights (stations not reporting drop out and the rest are re-weighted).",
+  "weights": {
+   "44503": 30,
+   "44203": 30,
+   "44109": 10,
+   "44505": 30
+  }
  },
  "SQF-438": {
   "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 8",

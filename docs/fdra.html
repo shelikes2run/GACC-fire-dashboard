@@ -23,6 +23,11 @@
     <dl class="facts" id="facts"></dl></details>
   </section>
 
+  <section class="panel" id="today-panel" style="display:none">
+    <h2>Today — fire danger and FDOP levels</h2>
+    <div id="today" class="today-box"></div>
+  </section>
+
   <section class="panel">
     <h2>Season tracking</h2>
     <div id="nonorm"></div>
@@ -409,6 +414,10 @@ async function loadUnit(unit, fm) {
   const t = new Date(); S.today = new Date(t.getTime() - t.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   try { S.chart = localStorage.getItem('fdra_chart') || 'ERC %'; } catch (e) { S.chart = 'ERC %'; }
   if (!CHARTS[S.chart]) S.chart = 'ERC %';
+  getJSON('popups.json').then(pp => {        // same summary as the map popup (built twice a day)
+    const h = pp.fdras && (pp.fdras[id] || Object.entries(pp.fdras).find(([k]) => k.toUpperCase() === id.replace(/\s*\((?:peak|non-peak)\)$/, '').toUpperCase())?.[1]);
+    if (h) { document.getElementById('today').innerHTML = h; document.getElementById('today-panel').style.display = ''; }
+  }).catch(() => {});
   const [polys, idx, start] = await Promise.all([fetch('data/fdras.geojson').then(r => r.json()), getJSON('fdras.json'),
     fetch('data/fdop_start.json?t=' + Math.floor(Date.now() / 6e5)).then(r => r.json()).catch(() => ({}))]);
   const base = id.replace(/\s*\((?:peak|non-peak)\)$/, '').toUpperCase();

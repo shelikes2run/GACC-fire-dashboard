@@ -477,6 +477,9 @@ function drawDelta() {
       yaxis: { title: 'AUC', range: [0.4, 1], gridcolor: '#43484e' }, yaxis2: { overlaying: 'y', side: 'right', title: 'ratio', showgrid: false } });
 }
 
+// last year covered by FPA FOD (WFIGS after) — from the data build, so a new FOD edition moves it automatically
+function fodCut() { const s = W.idx && W.idx.sources; return (s && s.fod_last_year) || +((s && s.fires || '').match(/(\d{4})-(\d{4});/) || [0, 0, 2024])[2]; }
+
 function drawHistory() {
   const cfg = W.cfg, fires = W.firesAll;
   const years = [...new Set(fires.map(f => +f[0].slice(0, 4)))].sort();
@@ -492,8 +495,8 @@ function drawHistory() {
     { x: years, y: byY.map(g => g.filter(f => f[1] >= cfg.large).length), name: `≥ ${cfg.large} ac`, yaxis: 'y2', mode: 'lines+markers', line: { color: '#e5534b' } }],
     { title: { text: 'Fires per year by cause', font: { size: 14 } }, barmode: 'stack', yaxis: { title: 'fires', gridcolor: '#43484e' },
       yaxis2: { overlaying: 'y', side: 'right', title: 'large fires', showgrid: false },
-      shapes: [{ type: 'line', xref: 'x', yref: 'paper', x0: 2020.5, x1: 2020.5, y0: 0, y1: 1, line: { color: '#777', dash: 'dot' } }],
-      annotations: [{ x: 2020.5, y: 1, xref: 'x', yref: 'paper', text: ' FPA FOD | WFIGS', showarrow: false, xanchor: 'left', font: { size: 10, color: '#aaa' } }] });
+      shapes: [{ type: 'line', xref: 'x', yref: 'paper', x0: fodCut() + 0.5, x1: fodCut() + 0.5, y0: 0, y1: 1, line: { color: '#777', dash: 'dot' } }],
+      annotations: [{ x: fodCut() + 0.5, y: 1, xref: 'x', yref: 'paper', text: ' FPA FOD | WFIGS', showarrow: false, xanchor: 'left', font: { size: 10, color: '#aaa' } }] });
   const calF = fires.filter(f => { const y = +f[0].slice(0, 4); return y >= cfg.calibFrom && y <= cfg.calibTo; });
   const nCal = Math.max(1, cfg.calibTo - cfg.calibFrom + 1);
   const sy = +($('hyear').value || years[years.length - 1]);
@@ -542,7 +545,7 @@ function drawSizePct(fires, calF, sy) {
   $('hpct').innerHTML = `<thead><tr><th class="l">Fires</th><th>n</th>${SIZE_P.map(p => `<th>${ord(p)}</th>`).join('')}<th>${cfg.large} ac is the</th><th>Largest</th></tr></thead><tbody>${rows}</tbody>`;
   $('hpct').querySelectorAll('button[data-ac]').forEach(b => b.onclick = () => { $('large').value = b.dataset.ac; run(); });
   const cs = srt(calF);
-  $('hpctnote').innerHTML = `Fire size (acres) at each percentile of all fires in the FDRA (FPA FOD through 2020, WFIGS after). ` +
+  $('hpctnote').innerHTML = `Fire size (acres) at each percentile of all fires in the FDRA (FPA FOD through ${fodCut()}, WFIGS after). ` +
     `The current large fire size, <b>${cfg.large} ac</b>, is the <b>${cs.length ? ord(rankPct(cs, cfg.large - 1e-9)) : '–'}</b> percentile fire in the calibration years — ` +
     `${cs.length ? `${cs.filter(v => v >= cfg.large).length.toLocaleString()} of ${cs.length.toLocaleString()} fires reached it` : 'no fires'}. ` +
     `FDOPs commonly set the large fire size near the 90th–95th percentile; press <b>use</b> to try a value (the validation and decision points recompute). ` +
@@ -573,8 +576,8 @@ function writeAbout() {
     <br>• <i>Vegetation</i>: share of the FDRA burned in the trailing 5 years (default watch ${c.vegYellow}%, review ${c.vegRed}% — set these to the unit's own judgment).
     <br>• <i>Stations</i>: SIG data completeness (watch < ${Math.round(100 * c.completeMin)}%, review < 60%).
     <br>Recalibrate when the vegetation check is red or two checks are red; review when one is red or two are yellow.</p>
-    <p><b>Cautions.</b> Fire records include every wildfire, all agencies and sizes: FPA FOD through 2020 and WFIGS from 2021 (complex members
-    counted individually). The two sources were compiled differently, so check the fire-per-year chart for a step at 2021 before trusting trends across it.
+    <p><b>Cautions.</b> Fire records include every wildfire, all agencies and sizes: FPA FOD (7th edition) through ${fodCut()} and WFIGS from ${fodCut() + 1} (complex members
+    counted individually). The two sources were compiled differently, so check the fire-per-year chart for a step at ${fodCut() + 1} before trusting trends across it.
     Fire perimeters miss small fires and can over-map old ones. Thresholds here are screening rules, not policy: confirm any recalibration in FireFamily Plus with the unit.</p>`;
 }
 

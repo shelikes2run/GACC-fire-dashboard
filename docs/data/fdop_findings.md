@@ -12,7 +12,7 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 ## Sierra South (STF, SNF, SQF) — Interagency FDOP signed 2023-03-20 (v. 2023-05-05)
 - Loaded: STF-348/370, SNF-528/532/533, SQF-435/438/440/445 (manager + FFP bins, tools).
 - STF-348: manager ERC-Y 67/75 sit at the 99th/100th percentile — top classes almost never occur.
-- SNF-532: FDOP SIG is weighted 30/30/10/30; the Workbench averages stations equally.
+- SNF-532: FDOP SIG is weighted (Fence Meadow 30, Minarets 30, Wawona 10, Mt Rest 30) — now applied in the season tracking, map popup, Workbench and annual scorecards (only weighted SIG found in any FDOP; all others are equal weight).
 - SNF-528: climatology May 1–Nov 30, but Table A6.1 lists Jun 15–Oct 1 for thresholds.
 - SQF-445: 90th/97th averaged across stations.
 - SQF-435: an outside-NF piece's Y station had been averaged into the X data — fixed (separate unit).
@@ -106,5 +106,6 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - **Redwood NP (RWP) has no polygon on the map** — it is in the station membership and the FDOP, but the statewide FDRA layer has no RWP boundary, so it only shows in the Workbench/season tracking by id. Need an RWP FDRA boundary.
 
 ## Cross-forest
+- Station weighting: the 2026 Forest Thresholds sheet has no SIG/weight columns, and 'Raws to PSA.xlsx' groups RAWS into South Ops PSAs (SC01–SC16), not FDRA SIGs. SIGs and weights are taken from each FDOP; only SNF-532 is unequally weighted. The membership file now has a weight column, used everywhere SIG values are averaged.
 - 2025 R5 PAL matrix now in the Workbench PAL check.
 - Breakpoint convention made consistent: a breakpoint is the top of its class everywhere (popup, tracking, Workbench).

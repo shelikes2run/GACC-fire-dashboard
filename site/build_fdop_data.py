@@ -350,12 +350,18 @@ def logistic(x: np.ndarray, y: np.ndarray):
             'r2': round(float(1 - ll / ll0), 3), 'n': int(len(y)), 'events': int(n1)}
 
 
-def sig_daily(hist: pd.DataFrame, members, fm_default):
+def sig_daily(hist: pd.DataFrame, members, fm_default, weights: dict | None = None):
+    """SIG daily mean; with FDOP station weights a weighted mean over the stations that reported."""
     pairs = {(int(s), (f or fm_default)) for s, f in members}
     sub = hist[[(s, f) in pairs for s, f in zip(hist['sid'], hist['fm'])]]
     if sub.empty:
         return pd.DataFrame()
-    d = sub.groupby('date')[list(IDX)].mean()
+    if weights:
+        w = sub['sid'].map(lambda x: weights.get(int(x), 1.0)).astype(float)
+        X = sub[list(IDX)].astype(float)
+        d = X.mul(w, axis=0).groupby(sub['date']).sum(min_count=1) / X.notna().mul(w, axis=0).groupby(sub['date']).sum().replace(0, np.nan)
+    else:
+        d = sub.groupby('date')[list(IDX)].mean()
     d['n_st'] = sub.groupby('date')['sid'].nunique()
     return d
 
@@ -369,9 +375,9 @@ def event_table(days: pd.DatetimeIndex, fires, large_ac, mfd_n):
     return pd.DataFrame({'fires': c, 'fd': (c > 0).astype(int), 'lfd': (lg > 0).astype(int), 'mfd': (c >= mfd_n).astype(int)})
 
 
-def scorecard(unit, members, fm, hist, fires, burned, cfg=DEFAULTS):
+def scorecard(unit, members, fm, hist, fires, burned, cfg=DEFAULTS, weights=None):
     """Yearly delta for one FDRA unit: rows per year with metrics + flags vs the calibration window."""
-    d = sig_daily(hist, members, fm)
+    d = sig_daily(hist, members, fm, weights)
     if d.empty:
         return None
     md = d.index.strftime('%m-%d')
@@ -490,7 +496,9 @@ def main(out: Path, cache: Path):
                       'sl_dl_index': props.get('sl_dl_index'), 'standard_90_97': props.get('standard_90_97'),
                       'custom_thresholds': props.get('custom_thresholds'), 'acres': props.get('acres'),
                       'fires_file': f'fires/{safe(props.get("fdra_id", base_id(unit)))}.json', 'candidates': cands})
-        sc = scorecard(unit, members, fm, hist, by_fdra.get(props.get('fdra_id', base_id(unit)), []), burned)
+        wts = ({int(a): float(b) for a, b in zip(grp.stationId, grp.weight) if str(b).strip() not in ('', 'nan')}
+               if 'weight' in grp else {})
+        sc = scorecard(unit, members, fm, hist, by_fdra.get(props.get('fdra_id', base_id(unit)), []), burned, weights=wts or None)
         if sc:
             (out / 'scorecards').mkdir(exist_ok=True)
             (out / 'scorecards' / f'{safe(unit)}.json').write_text(json.dumps(cn._clean(sc), separators=(',', ':'), default=float))

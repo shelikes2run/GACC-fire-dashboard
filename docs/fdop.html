@@ -172,10 +172,12 @@ async function run() {
   await Promise.all(W.idx.fuel_models.map(async fm => { allFm[fm] = await Promise.all(cfg.stations.map(s => stationFile(s, fm))); }));
   const fires = W.fires;
   W.byFm = {};
-  for (const fm of W.idx.fuel_models) W.byFm[fm] = buildDaily(allFm[fm], fires, cfg, scale);
+  const wts = W.S0 && W.S0.weights;   // FDOP weighted SIG (stations not in it count 1)
+  for (const fm of W.idx.fuel_models) W.byFm[fm] = buildDaily(allFm[fm], fires, cfg, scale, wts);
   W.rows = W.byFm[cfg.fm];
   const missing = cfg.stations.filter((s, i) => !allFm[cfg.fm][i]);
   setStatus(`${W.rows.length.toLocaleString()} season days · ${fires.length.toLocaleString()} fires in the FDRA` +
+    (wts ? ` · weighted SIG (${cfg.stations.map(s => s + ':' + (wts[s] || 1)).join(', ')})` : '') +
     (missing.length ? ` · no ${cfg.fm} data for ${missing.join(', ')}` : ''));
   const sorted = W.rows.filter(r => r.year >= cfg.calibFrom && r.year <= cfg.calibTo).map(r => r[cfg.idx]).filter(v => v !== null).sort((a, b) => a - b);
   W.sorted = sorted;

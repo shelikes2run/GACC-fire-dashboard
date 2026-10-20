@@ -279,6 +279,103 @@ def fdra_tools(fid: str, start: dict):
     return s, tools
 
 
+
+ADJ_NAMES = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
+ADJ_COL = [('#2e7d32', '#fff'), ('#1565c0', '#fff'), ('#fdd835', '#111'), ('#fb8c00', '#111'), ('#c62828', '#fff')]
+# NFDRS / WIMS adjective class from staffing level (rows, 1-5) and ignition component (columns: 0-20, 21-45, 46-65, 66-80, 81-100)
+ADJ_MATRIX = [[0, 0, 0, 1, 1], [0, 1, 1, 1, 2], [1, 1, 2, 2, 3], [1, 2, 3, 3, 4], [2, 3, 3, 4, 4]]
+
+
+def _adj_chip(a):
+    if a is None:
+        return '<span style="color:#888">–</span>'
+    bg, fg = ADJ_COL[a]
+    return f'<span style="padding:1px 6px;border-radius:3px;background:{bg};color:{fg};white-space:nowrap">{ADJ_NAMES[a]}</span>'
+
+
+def _adj_from(sl5, ic):
+    if sl5 is None or ic is None:
+        return None
+    col = 0 if ic <= 20 else 1 if ic <= 45 else 2 if ic <= 65 else 3 if ic <= 80 else 4
+    return ADJ_MATRIX[sl5][col]
+
+
+def _to5(c, n):
+    return None if c is None else int(round(c * 4 / max(1, n - 1)))
+
+
+def _tool_pick(tools, pat, avoid=None):
+    import re as _re
+    c = [t for t in tools if _re.search(pat, t['label'], _re.I) and not (avoid and _re.search(avoid, t['label'], _re.I))]
+    return c[0] if c else None
+
+
+def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
+    """Today at a glance: SFDI, staffing level, adjective (Smokey Bear sign) and dispatch — with what each is based on."""
+    rows = []
+    def cell(v, chip):
+        return f'<td style="text-align:center">{fmt(v) if v is not None else ""}<br>{chip}</td>' if v is not None else f'<td style="text-align:center">{chip}</td>'
+    rows.append(f'<tr><td><b>Fire danger (SFDI)</b><br><span style="color:#888">Severe Fire Danger Index, fuel model {own}</span></td>'
+                f'<td style="text-align:center">{sfchip(ob)}</td><td style="text-align:center">{sfchip(fc)}</td></tr>')
+    lo, hi = (80, 95) if (p['fdra_id'].upper().startswith('UFW') or (p['fdra_id'].upper().startswith('BLM') and p.get('agency') == 'BLM')) else (90, 97)
+    st = _tool_pick(tools, r'staffing|preparedness', r'^2023 FDOP') or _tool_pick(tools, r'staffing|preparedness')
+    sl = {}
+    if st:
+        d = L(st['fm'])
+        n = len(st['breaks']) + 1
+        names = st.get('classes') if st.get('classes') and len(st['classes']) == n else [f'SL {i + 1}' for i in range(n)]
+        for key, dd in (('o', d.get('obs') or {}), ('f', d.get('fcst') or {})):
+            v = dd.get(st['idx']); c = _lvl(v, st['breaks'])
+            sl[key] = (v, c, n, names)
+        used = f'{st["idx"].upper()}-{st["fm"]} {" / ".join(f"{b:g}" for b in st["breaks"])} · {_esc(st["label"])}'
+    else:
+        sli = (p.get('sl_dl_index') or '').upper()
+        k = 'bi' if ('BI' in sli and 'ERC' not in sli) else 'erc'
+        qs = (base.get('q') or {}).get(k)
+        br = [_q(qs, x) for x in (10, 20, lo, hi)]
+        if all(b is not None for b in br):
+            names = [f'SL {i + 1}' for i in range(5)]
+            for key, dd in (('o', ob), ('f', fc)):
+                v = dd.get(k); sl[key] = (v, _lvl(v, br), 5, names)
+            used = (f'{k.upper()}-{own} climatology (no FDOP staffing tool): SL 4 above the {lo}th ({fmt(br[2])}), '
+                    f'SL 5 above the {hi}th ({fmt(br[3])})')
+        else:
+            used = 'no data'
+    if sl:
+        rows.append(f'<tr><td><b>Staffing level</b><br><span style="color:#888">{used}</span></td>' +
+                    ''.join(cell(sl[key][0], _chip(sl[key][3][sl[key][1]] if sl[key][1] is not None else "", sl[key][1], sl[key][2])) for key in ('o', 'f')) + '</tr>')
+    adj = _tool_pick(tools, r'adjective')
+    if adj:
+        d = L(adj['fm']); n = len(adj['breaks']) + 1
+        cs = []
+        for dd in (d.get('obs') or {}, d.get('fcst') or {}):
+            v = dd.get(adj['idx']); c = _lvl(v, adj['breaks'])
+            cs.append(cell(v, _adj_chip(_to5(c, n))))
+        used = f'{adj["idx"].upper()}-{adj["fm"]} {" / ".join(f"{b:g}" for b in adj["breaks"])} · {_esc(adj["label"])}'
+    elif sl:
+        cs = []
+        for key, dd in (('o', ob), ('f', fc)):
+            v, c, n, _ = sl[key]
+            cs.append(cell(dd.get('ic'), _adj_chip(_adj_from(_to5(c, n), dd.get('ic')))))
+        used = f'NFDRS matrix: staffing level × IC-{own} (value shown is IC)'
+    else:
+        cs = None
+    if cs:
+        rows.append(f'<tr><td><b>Adjective rating</b> (Smokey Bear sign)<br><span style="color:#888">{used}</span></td>{"".join(cs)}</tr>')
+    dp = _tool_pick(tools, r'dispatch|response', r'^2023 FDOP')
+    if dp and dp is not st and dp is not adj:
+        d = L(dp['fm']); n = len(dp['breaks']) + 1
+        names = dp.get('classes') if dp.get('classes') and len(dp['classes']) == n else [str(i + 1) for i in range(n)]
+        cs = []
+        for dd in (d.get('obs') or {}, d.get('fcst') or {}):
+            v = dd.get(dp['idx']); c = _lvl(v, dp['breaks'])
+            cs.append(cell(v, _chip(names[c] if c is not None else '', c, n)))
+        rows.append(f'<tr><td><b>Dispatch level</b><br><span style="color:#888">{dp["idx"].upper()}-{dp["fm"]} {" / ".join(f"{b:g}" for b in dp["breaks"])} · {_esc(dp["label"])}</span></td>{"".join(cs)}</tr>')
+    return ('<table style="width:100%;font-size:12px;border-collapse:collapse;margin-bottom:8px">'
+            f'<tr><th style="text-align:left">Today</th><th>Observed<br>{_esc(ob.get("date") or "")}</th><th>Forecast<br>{_esc(fc.get("date") or "")}</th></tr>'
+            + ''.join(rows) + '</table>')
+
+
 def popup_html(p: dict, r: dict, start: dict) -> str:
     """Popup for the main-map FDRA layer: latest values and each FDOP decision tool's level; FDRAs
     without FDOP breakpoints use climatological percentiles (USFWS and BLM 80th/95th, USFS and CAL FIRE 90th/97th)."""
@@ -298,9 +395,7 @@ def popup_html(p: dict, r: dict, start: dict) -> str:
             return '<span style="color:#888">No data</span>'
         bg, fg = SF_COL[c]
         return f'<span style="padding:1px 6px;border-radius:3px;background:{bg};color:{fg};white-space:nowrap">{c} {fmt(d.get("sfdi"))}</span>'
-    head = (f'<div style="font-size:12px;margin-bottom:6px">SFDI forecast {_esc(fc.get("date") or "–")}: {sfchip(fc)}'
-            f' &nbsp; observed {_esc(ob.get("date") or "–")}: {sfchip(ob)}</div>'
-            f'<div style="font-size:12px;margin-bottom:6px">Fuel model {own} · ERC {fmt(ob.get("erc"))} → {fmt(fc.get("erc"))} · '
+    head = (f'<div style="font-size:12px;margin-bottom:6px">Fuel model {own} · ERC {fmt(ob.get("erc"))} → {fmt(fc.get("erc"))} · '
             f'BI {fmt(ob.get("bi"))} → {fmt(fc.get("bi"))} · IC {fmt(ob.get("ic"))} → {fmt(fc.get("ic"))} '
             f'<span style="color:#888">(observed → forecast)</span></div>')
     rows = []
@@ -341,7 +436,9 @@ def popup_html(p: dict, r: dict, start: dict) -> str:
              f'<a href="{SITE}fdop.html?id={requests.utils.quote(fid)}" target="_blank">FDOP Workbench ▸</a></p>')
     foot = (f'<p style="font-size:11px;color:#666;margin:6px 0 0">{src}{clim} FDRA value = mean of the FDOP stations '
             f'({base.get("n_st", "–")}) from FEMS daily summaries; levels: breakpoint = top of its class.</p>')
-    return head + table + links + foot
+    top = headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc)
+    table = '<div style="font-size:12px;font-weight:600;margin:4px 0 2px">All decision tools</div>' + table if rows else table
+    return top + head + table + links + foot
 
 
 def write_sfdi_geojson(out: Path, polys: dict, rows: list, now):

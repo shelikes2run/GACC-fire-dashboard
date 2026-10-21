@@ -5110,7 +5110,7 @@
     ]
    }
   ],
-  "notes": "DOI Pacific Islands Zone (NPS/USFWS Region 12). Staffing classes 1-5 = adjective classes. Step-up / severity when both Kilauea ERC-Y stations reach the 90th (SL 4), or one does and Kealakomo KBDI (496024) > 599, or Kealakomo KBDI reaches its 90th (650; SL 2-5 KBDI 162/325/650/718), or Kahuku ERC-Y reaches its 90th with drought. Fire history here comes from FPA FOD / WFIGS Hawaii records. Plan breakpoints are per station: Keaumo 496006 SL 2-5 at 15.25/30.5/61/69, Pali 2 496009 at 14.25/28.5/57/61; the FDRA value here is the mean of the two stations, so the mean of the breakpoints is used."
+  "notes": "DOI Pacific Islands Zone (NPS/USFWS Region 12). Staffing classes 1-5 = adjective classes. Step-up / severity when both Kilauea ERC-Y stations reach the 90th (SL 4), or one does and Kealakomo KBDI (496024) > 599, or Kealakomo KBDI reaches its 90th (650; SL 2-5 KBDI 162/325/650/718), or Kahuku ERC-Y reaches its 90th with drought. Fire history comes from FPA FOD / WFIGS Hawaii records; Kahuku Unit polygon from the HAVO Kahuku Unit boundary layer. Plan breakpoints are per station: Keaumo 496006 SL 2-5 at 15.25/30.5/61/69, Pali 2 496009 at 14.25/28.5/57/61; the FDRA value here is the mean of the two stations, so the mean of the breakpoints is used."
  },
  "NPS-HAVO-Kahuku": {
   "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
@@ -5172,7 +5172,7 @@
     ]
    }
   ],
-  "notes": "DOI Pacific Islands Zone (NPS/USFWS Region 12). Staffing classes 1-5 = adjective classes. Step-up / severity when both Kilauea ERC-Y stations reach the 90th (SL 4), or one does and Kealakomo KBDI (496024) > 599, or Kealakomo KBDI reaches its 90th (650; SL 2-5 KBDI 162/325/650/718), or Kahuku ERC-Y reaches its 90th with drought. Fire history here comes from FPA FOD / WFIGS Hawaii records."
+  "notes": "DOI Pacific Islands Zone (NPS/USFWS Region 12). Staffing classes 1-5 = adjective classes. Step-up / severity when both Kilauea ERC-Y stations reach the 90th (SL 4), or one does and Kealakomo KBDI (496024) > 599, or Kealakomo KBDI reaches its 90th (650; SL 2-5 KBDI 162/325/650/718), or Kahuku ERC-Y reaches its 90th with drought. Fire history comes from FPA FOD / WFIGS Hawaii records; Kahuku Unit polygon from the HAVO Kahuku Unit boundary layer."
  },
  "SHU-1": {
   "source": "CAL FIRE Shasta-Trinity Unit (SHU) Fire Danger Operating Plan 2026 (signed May 1, 2026)",
@@ -5437,5 +5437,357 @@
    }
   ],
   "notes": "2026 SHU FDOP (signed May 1, 2026). Dispatch levels on BI-Y every two hours (SIG mean where a SIG exists). GSI step-down in shoulder seasons for zones 2, 3 and 5: dispatch is lowered one level while GSI exceeds 0.30 / 0.15 / 0.30 (Apr-May zone 3, Apr-Jun zones 2 and 5). Adjective High / Very High / Extreme start at the 80th / 90th / 97th ERC-Y percentile (used for cooperator and public notification)."
+ },
+ "UFW-Hakalau Forest NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   150105
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "breaks": {
+   "erc": [
+    13,
+    26,
+    52,
+    59
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (ERC-Y, 150105)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     13,
+     26,
+     52,
+     59
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     13,
+     26,
+     52,
+     59
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes."
+ },
+ "NPS-KAHO": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   496017
+  ],
+  "fm": "Y",
+  "idx": "kbdi",
+  "breaks": {
+   "kbdi": [
+    300,
+    500,
+    600,
+    700
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (KBDI, Kaloko-Honokohau 496017)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes. KBDI SL 2-5 at 300/500/600/700."
+ },
+ "UFW-Kealia Pond NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   498013
+  ],
+  "fm": "Y",
+  "idx": "kbdi",
+  "breaks": {
+   "kbdi": [
+    300,
+    500,
+    600,
+    700
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (KBDI, Kealia Pond 498013)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes. KBDI SL 2-5 at 300/500/600/700."
+ },
+ "NPS-KALA": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   494001
+  ],
+  "fm": "Y",
+  "idx": "kbdi",
+  "breaks": {
+   "kbdi": [
+    300,
+    500,
+    600,
+    700
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (KBDI, Kalaupapa 494001)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes. KBDI SL 2-5 at 300/500/600/700. NPS-owned land here is small (most of the park is leased or state land)."
+ },
+ "UFW-James Campbell NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   150301
+  ],
+  "fm": "Y",
+  "idx": "kbdi",
+  "breaks": {
+   "kbdi": [
+    300,
+    500,
+    600,
+    700
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (KBDI, James Campbell 150301)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes. KBDI SL 2-5 at 300/500/600/700."
+ },
+ "NPS-HALE": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "NPS-WAPA": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "UFW-Guam NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "NPS-AMME": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "NPS-NPSA": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "UFW-Rose Atoll NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
  }
 }

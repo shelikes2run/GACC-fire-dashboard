@@ -540,7 +540,7 @@ def build_current(out: Path):
         last_o = obs.index.max() if len(obs) else None
         fc = d[(d['type'] == 'F') & (d.index >= pd.Timestamp(today))]
         snap = lambda r: None if r is None else {k: (None if pd.isna(r[k]) else round(float(r[k]), 1))
-                                                   for k in ['erc', 'bi', 'ic', 'erc_p', 'bi_p', 'sfdi']}
+                                                   for k in ['erc', 'bi', 'ic', 'erc_p', 'bi_p', 'sfdi', 'kbdi', 'gsi'] if k in r.index}
         o_row = d.loc[last_o] if last_o is not None else None
         f_row = fc.iloc[0] if len(fc) else None
         bid = base_id(uid)

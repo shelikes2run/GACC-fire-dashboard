@@ -3445,6 +3445,466 @@
   }
  },
  {
+  "fdra_id": "CDIFP-Lower_Desert",
+  "file": "climo/CDIFP-Lower_Desert.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 263,
+   "50": 296,
+   "75": 299,
+   "90": 305
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Lower_Desert__V",
+  "file": "climo/CDIFP-Lower_Desert__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3604,
+  "season_end_quantiles": {
+   "25": 304,
+   "50": 315,
+   "75": 319,
+   "90": 333
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Lower_Desert__W",
+  "file": "climo/CDIFP-Lower_Desert__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 303,
+   "50": 308,
+   "75": 315,
+   "90": 333
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Lower_Desert__X",
+  "file": "climo/CDIFP-Lower_Desert__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 304,
+   "50": 308,
+   "75": 315,
+   "90": 333
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Lower_Desert__Z",
+  "file": "climo/CDIFP-Lower_Desert__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 263,
+   "50": 295,
+   "75": 299,
+   "90": 321
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Mojave_Desert",
+  "file": "climo/CDIFP-Mojave_Desert.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 240,
+   "50": 267,
+   "75": 302,
+   "90": 313
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Mojave_Desert__V",
+  "file": "climo/CDIFP-Mojave_Desert__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 324,
+   "50": 339,
+   "75": 346,
+   "90": 355
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Mojave_Desert__W",
+  "file": "climo/CDIFP-Mojave_Desert__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 315,
+   "50": 330,
+   "75": 345,
+   "90": 348
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Mojave_Desert__X",
+  "file": "climo/CDIFP-Mojave_Desert__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 317,
+   "50": 330,
+   "75": 345,
+   "90": 348
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Mojave_Desert__Z",
+  "file": "climo/CDIFP-Mojave_Desert__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 272,
+   "50": 309,
+   "75": 327,
+   "90": 338
+  }
+ },
+ {
+  "fdra_id": "CDIFP-South_Coast",
+  "file": "climo/CDIFP-South_Coast.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 324,
+   "50": 326,
+   "75": 355,
+   "90": 357
+  }
+ },
+ {
+  "fdra_id": "CDIFP-South_Coast__V",
+  "file": "climo/CDIFP-South_Coast__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 339,
+   "50": 348,
+   "75": 355,
+   "90": 357
+  }
+ },
+ {
+  "fdra_id": "CDIFP-South_Coast__W",
+  "file": "climo/CDIFP-South_Coast__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 333,
+   "50": 344,
+   "75": 354,
+   "90": 357
+  }
+ },
+ {
+  "fdra_id": "CDIFP-South_Coast__X",
+  "file": "climo/CDIFP-South_Coast__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 333,
+   "50": 344,
+   "75": 354,
+   "90": 357
+  }
+ },
+ {
+  "fdra_id": "CDIFP-South_Coast__Z",
+  "file": "climo/CDIFP-South_Coast__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 324,
+   "50": 331,
+   "75": 354,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Upper_Desert",
+  "file": "climo/CDIFP-Upper_Desert.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 263,
+   "50": 296,
+   "75": 324,
+   "90": 329
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Upper_Desert__V",
+  "file": "climo/CDIFP-Upper_Desert__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 309,
+   "50": 314,
+   "75": 331,
+   "90": 339
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Upper_Desert__W",
+  "file": "climo/CDIFP-Upper_Desert__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 307,
+   "50": 314,
+   "75": 331,
+   "90": 341
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Upper_Desert__X",
+  "file": "climo/CDIFP-Upper_Desert__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 307,
+   "50": 314,
+   "75": 331,
+   "90": 341
+  }
+ },
+ {
+  "fdra_id": "CDIFP-Upper_Desert__Z",
+  "file": "climo/CDIFP-Upper_Desert__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 285,
+   "50": 298,
+   "75": 324,
+   "90": 339
+  }
+ },
+ {
   "fdra_id": "CNF-INLAND",
   "file": "climo/CNF-INLAND.json",
   "years": [
@@ -13450,6 +13910,1156 @@
   }
  },
  {
+  "fdra_id": "NPS-HAVO-Kahuku",
+  "file": "climo/NPS-HAVO-Kahuku.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 351,
+   "50": 356,
+   "75": 362,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kahuku__V",
+  "file": "climo/NPS-HAVO-Kahuku__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 364,
+   "50": 364,
+   "75": 364,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kahuku__W",
+  "file": "climo/NPS-HAVO-Kahuku__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 361,
+   "50": 363,
+   "75": 364,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kahuku__X",
+  "file": "climo/NPS-HAVO-Kahuku__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 365,
+   "50": 365,
+   "75": 365,
+   "90": 365
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kahuku__Z",
+  "file": "climo/NPS-HAVO-Kahuku__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 351,
+   "50": 357,
+   "75": 362,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kilauea",
+  "file": "climo/NPS-HAVO-Kilauea.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 314,
+   "50": 318,
+   "75": 353,
+   "90": 362
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kilauea__V",
+  "file": "climo/NPS-HAVO-Kilauea__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 361,
+   "50": 363,
+   "75": 364,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kilauea__W",
+  "file": "climo/NPS-HAVO-Kilauea__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 361,
+   "50": 363,
+   "75": 364,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kilauea__X",
+  "file": "climo/NPS-HAVO-Kilauea__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 363,
+   "50": 364,
+   "75": 365,
+   "90": 365
+  }
+ },
+ {
+  "fdra_id": "NPS-HAVO-Kilauea__Z",
+  "file": "climo/NPS-HAVO-Kilauea__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 335,
+   "50": 357,
+   "75": 363,
+   "90": 363
+  }
+ },
+ {
+  "fdra_id": "NPS-LAVO",
+  "file": "climo/NPS-LAVO.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 286,
+   "50": 292,
+   "75": 309,
+   "90": 323
+  }
+ },
+ {
+  "fdra_id": "NPS-LAVO__V",
+  "file": "climo/NPS-LAVO__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 292,
+   "50": 301,
+   "75": 308,
+   "90": 314
+  }
+ },
+ {
+  "fdra_id": "NPS-LAVO__W",
+  "file": "climo/NPS-LAVO__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 292,
+   "50": 301,
+   "75": 308,
+   "90": 315
+  }
+ },
+ {
+  "fdra_id": "NPS-LAVO__X",
+  "file": "climo/NPS-LAVO__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 293,
+   "50": 304,
+   "75": 309,
+   "90": 315
+  }
+ },
+ {
+  "fdra_id": "NPS-LAVO__Z",
+  "file": "climo/NPS-LAVO__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 284,
+   "50": 297,
+   "75": 308,
+   "90": 316
+  }
+ },
+ {
+  "fdra_id": "NPS-PINN",
+  "file": "climo/NPS-PINN.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 315,
+   "50": 326,
+   "75": 347,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "NPS-PINN__V",
+  "file": "climo/NPS-PINN__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 316,
+   "50": 326,
+   "75": 347,
+   "90": 359
+  }
+ },
+ {
+  "fdra_id": "NPS-PINN__W",
+  "file": "climo/NPS-PINN__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 315,
+   "50": 326,
+   "75": 347,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "NPS-PINN__Y",
+  "file": "climo/NPS-PINN__Y.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 284,
+   "50": 290,
+   "75": 319,
+   "90": 328
+  }
+ },
+ {
+  "fdra_id": "NPS-PINN__Z",
+  "file": "climo/NPS-PINN__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 291,
+   "50": 300,
+   "75": 318,
+   "90": 328
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-435",
+  "file": "climo/NPS-SEKI-435.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 302,
+   "50": 325,
+   "75": 345,
+   "90": 351
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-435__V",
+  "file": "climo/NPS-SEKI-435__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 341,
+   "75": 353,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-435__W",
+  "file": "climo/NPS-SEKI-435__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 341,
+   "75": 353,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-435__X",
+  "file": "climo/NPS-SEKI-435__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 341,
+   "75": 353,
+   "90": 356
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-435__Z",
+  "file": "climo/NPS-SEKI-435__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 324,
+   "50": 326,
+   "75": 346,
+   "90": 353
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-438",
+  "file": "climo/NPS-SEKI-438.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 324,
+   "50": 327,
+   "75": 337,
+   "90": 345
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-438__V",
+  "file": "climo/NPS-SEKI-438__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 323,
+   "50": 327,
+   "75": 337,
+   "90": 345
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-438__W",
+  "file": "climo/NPS-SEKI-438__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 323,
+   "50": 327,
+   "75": 337,
+   "90": 345
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-438__Y",
+  "file": "climo/NPS-SEKI-438__Y.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 282,
+   "50": 302,
+   "75": 309,
+   "90": 324
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-438__Z",
+  "file": "climo/NPS-SEKI-438__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 291,
+   "50": 302,
+   "75": 325,
+   "90": 344
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-440",
+  "file": "climo/NPS-SEKI-440.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 308,
+   "50": 325,
+   "75": 345,
+   "90": 350
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-440__V",
+  "file": "climo/NPS-SEKI-440__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 326,
+   "50": 343,
+   "75": 353,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-440__W",
+  "file": "climo/NPS-SEKI-440__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 324,
+   "50": 343,
+   "75": 353,
+   "90": 355
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-440__X",
+  "file": "climo/NPS-SEKI-440__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 324,
+   "50": 343,
+   "75": 353,
+   "90": 355
+  }
+ },
+ {
+  "fdra_id": "NPS-SEKI-440__Z",
+  "file": "climo/NPS-SEKI-440__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 318,
+   "50": 325,
+   "75": 344,
+   "90": 354
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-High",
+  "file": "climo/NPS-YOSE-High.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 306,
+   "50": 311,
+   "75": 322,
+   "90": 326
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-High__V",
+  "file": "climo/NPS-YOSE-High__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 317,
+   "50": 327,
+   "75": 339,
+   "90": 350
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-High__W",
+  "file": "climo/NPS-YOSE-High__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 316,
+   "50": 325,
+   "75": 337,
+   "90": 350
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-High__X",
+  "file": "climo/NPS-YOSE-High__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 316,
+   "50": 325,
+   "75": 337,
+   "90": 350
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-High__Z",
+  "file": "climo/NPS-YOSE-High__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 310,
+   "50": 320,
+   "75": 329,
+   "90": 337
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Low",
+  "file": "climo/NPS-YOSE-Low.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 288,
+   "50": 294,
+   "75": 309,
+   "90": 323
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Low__V",
+  "file": "climo/NPS-YOSE-Low__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 298,
+   "50": 303,
+   "75": 322,
+   "90": 326
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Low__W",
+  "file": "climo/NPS-YOSE-Low__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 298,
+   "50": 303,
+   "75": 322,
+   "90": 326
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Low__X",
+  "file": "climo/NPS-YOSE-Low__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 298,
+   "50": 303,
+   "75": 322,
+   "90": 326
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Low__Z",
+  "file": "climo/NPS-YOSE-Low__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 288,
+   "50": 294,
+   "75": 309,
+   "90": 319
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Mid",
+  "file": "climo/NPS-YOSE-Mid.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 295,
+   "50": 306,
+   "75": 320,
+   "90": 327
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Mid__V",
+  "file": "climo/NPS-YOSE-Mid__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 329,
+   "50": 346,
+   "75": 355,
+   "90": 358
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Mid__W",
+  "file": "climo/NPS-YOSE-Mid__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 325,
+   "50": 346,
+   "75": 353,
+   "90": 358
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Mid__X",
+  "file": "climo/NPS-YOSE-Mid__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 329,
+   "50": 346,
+   "75": 353,
+   "90": 358
+  }
+ },
+ {
+  "fdra_id": "NPS-YOSE-Mid__Z",
+  "file": "climo/NPS-YOSE-Mid__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 320,
+   "50": 326,
+   "75": 346,
+   "90": 350
+  }
+ },
+ {
   "fdra_id": "ORC-Orange_County_Coastal",
   "file": "climo/ORC-Orange_County_Coastal.json",
   "years": [
@@ -16802,8 +18412,8 @@
   "n_days": 3653,
   "season_end_quantiles": {
    "25": 277,
-   "50": 289,
-   "75": 311,
+   "50": 291,
+   "75": 306,
    "90": 319
   }
  },
@@ -16824,10 +18434,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 292,
-   "50": 299,
-   "75": 310,
-   "90": 321
+   "25": 291,
+   "50": 298,
+   "75": 307,
+   "90": 311
   }
  },
  {
@@ -16847,10 +18457,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 282,
-   "50": 291,
-   "75": 304,
-   "90": 310
+   "25": 284,
+   "50": 296,
+   "75": 307,
+   "90": 311
   }
  },
  {
@@ -16870,10 +18480,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 282,
-   "50": 291,
-   "75": 304,
-   "90": 311
+   "25": 290,
+   "50": 296,
+   "75": 307,
+   "90": 313
   }
  },
  {
@@ -16895,7 +18505,7 @@
   "season_end_quantiles": {
    "25": 276,
    "50": 291,
-   "75": 306,
+   "75": 305,
    "90": 315
   }
  },
@@ -16916,9 +18526,9 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 278,
-   "50": 297,
-   "75": 312,
+   "25": 277,
+   "50": 292,
+   "75": 309,
    "90": 319
   }
  },
@@ -16939,10 +18549,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 296,
-   "50": 309,
-   "75": 323,
-   "90": 330
+   "25": 303,
+   "50": 313,
+   "75": 327,
+   "90": 336
   }
  },
  {
@@ -16962,10 +18572,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 293,
-   "50": 309,
-   "75": 321,
-   "90": 330
+   "25": 303,
+   "50": 313,
+   "75": 327,
+   "90": 336
   }
  },
  {
@@ -16985,10 +18595,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 294,
-   "50": 309,
-   "75": 323,
-   "90": 330
+   "25": 307,
+   "50": 318,
+   "75": 334,
+   "90": 342
   }
  },
  {
@@ -17008,7 +18618,7 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 282,
+   "25": 275,
    "50": 292,
    "75": 308,
    "90": 316
@@ -17146,10 +18756,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 278,
-   "50": 297,
-   "75": 312,
-   "90": 319
+   "25": 277,
+   "50": 293,
+   "75": 309,
+   "90": 316
   }
  },
  {
@@ -17170,9 +18780,9 @@
   "n_days": 3653,
   "season_end_quantiles": {
    "25": 296,
-   "50": 309,
-   "75": 323,
-   "90": 330
+   "50": 308,
+   "75": 314,
+   "90": 321
   }
  },
  {
@@ -17192,10 +18802,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 293,
-   "50": 309,
-   "75": 321,
-   "90": 330
+   "25": 291,
+   "50": 304,
+   "75": 313,
+   "90": 321
   }
  },
  {
@@ -17216,9 +18826,9 @@
   "n_days": 3653,
   "season_end_quantiles": {
    "25": 294,
-   "50": 309,
-   "75": 323,
-   "90": 330
+   "50": 308,
+   "75": 314,
+   "90": 321
   }
  },
  {
@@ -17238,10 +18848,10 @@
   ],
   "n_days": 3653,
   "season_end_quantiles": {
-   "25": 282,
+   "25": 276,
    "50": 292,
    "75": 308,
-   "90": 316
+   "90": 315
   }
  },
  {

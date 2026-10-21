@@ -1,0 +1,9 @@
+[22:08:46] CA stations: 222 ({'ONCC_CA': 122, 'OSCC': 78, 'ONCC_HI': 22})
+[22:08:47] FEMS station history: 54 batch-years to fetch
+[22:13:27] FPA FOD read: 2661383 fires nationally
+[22:13:28] FPA FOD CA fires 2006-2024: 180072
+[22:13:33] WFIGS 2025: 13146 CA wildfires
+[22:13:38] WFIGS 2026: 8830 CA wildfires
+[22:14:22] burned area: FRAP 2006-2025 (+WFIGS YTD 2026)
+[22:32:21] FDOP data: 220 units, 1395 stations × fuel models, 213 FDRAs with fires
+exit 0

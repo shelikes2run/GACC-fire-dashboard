@@ -14140,6 +14140,236 @@
   }
  },
  {
+  "fdra_id": "NPS-KAHO",
+  "file": "climo/NPS-KAHO.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 315,
+   "50": 334,
+   "75": 351,
+   "90": 355
+  }
+ },
+ {
+  "fdra_id": "NPS-KAHO__V",
+  "file": "climo/NPS-KAHO__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 362,
+   "50": 362,
+   "75": 363,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-KAHO__W",
+  "file": "climo/NPS-KAHO__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 362,
+   "50": 362,
+   "75": 363,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-KAHO__X",
+  "file": "climo/NPS-KAHO__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 362,
+   "50": 362,
+   "75": 363,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-KAHO__Z",
+  "file": "climo/NPS-KAHO__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 328,
+   "50": 337,
+   "75": 352,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-KALA",
+  "file": "climo/NPS-KALA.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 259,
+   "50": 277,
+   "75": 288,
+   "90": 299
+  }
+ },
+ {
+  "fdra_id": "NPS-KALA__V",
+  "file": "climo/NPS-KALA__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 362,
+   "50": 362,
+   "75": 364,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-KALA__W",
+  "file": "climo/NPS-KALA__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 362,
+   "50": 362,
+   "75": 363,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-KALA__X",
+  "file": "climo/NPS-KALA__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 361,
+   "50": 362,
+   "75": 362,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "NPS-KALA__Z",
+  "file": "climo/NPS-KALA__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 294,
+   "50": 310,
+   "75": 329,
+   "90": 342
+  }
+ },
+ {
   "fdra_id": "NPS-LAVO",
   "file": "climo/NPS-LAVO.json",
   "years": [
@@ -23997,6 +24227,351 @@
    "50": 299,
    "75": 309,
    "90": 323
+  }
+ },
+ {
+  "fdra_id": "UFW-Hakalau_Forest_NWR",
+  "file": "climo/UFW-Hakalau_Forest_NWR.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 289,
+   "50": 327,
+   "75": 342,
+   "90": 347
+  }
+ },
+ {
+  "fdra_id": "UFW-Hakalau_Forest_NWR__V",
+  "file": "climo/UFW-Hakalau_Forest_NWR__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 363,
+   "50": 364,
+   "75": 364,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "UFW-Hakalau_Forest_NWR__W",
+  "file": "climo/UFW-Hakalau_Forest_NWR__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 362,
+   "50": 364,
+   "75": 364,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "UFW-Hakalau_Forest_NWR__X",
+  "file": "climo/UFW-Hakalau_Forest_NWR__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 363,
+   "50": 364,
+   "75": 364,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "UFW-Hakalau_Forest_NWR__Z",
+  "file": "climo/UFW-Hakalau_Forest_NWR__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 348,
+   "50": 355,
+   "75": 357,
+   "90": 361
+  }
+ },
+ {
+  "fdra_id": "UFW-James_Campbell_NWR",
+  "file": "climo/UFW-James_Campbell_NWR.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 267,
+   "50": 286,
+   "75": 308,
+   "90": 323
+  }
+ },
+ {
+  "fdra_id": "UFW-James_Campbell_NWR__V",
+  "file": "climo/UFW-James_Campbell_NWR__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 355,
+   "50": 360,
+   "75": 360,
+   "90": 363
+  }
+ },
+ {
+  "fdra_id": "UFW-James_Campbell_NWR__W",
+  "file": "climo/UFW-James_Campbell_NWR__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 355,
+   "50": 360,
+   "75": 363,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "UFW-James_Campbell_NWR__X",
+  "file": "climo/UFW-James_Campbell_NWR__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 358,
+   "50": 361,
+   "75": 363,
+   "90": 364
+  }
+ },
+ {
+  "fdra_id": "UFW-James_Campbell_NWR__Z",
+  "file": "climo/UFW-James_Campbell_NWR__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3653,
+  "season_end_quantiles": {
+   "25": 298,
+   "50": 309,
+   "75": 331,
+   "90": 350
+  }
+ },
+ {
+  "fdra_id": "UFW-Kealia_Pond_NWR",
+  "file": "climo/UFW-Kealia_Pond_NWR.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3591,
+  "season_end_quantiles": {
+   "25": 275,
+   "50": 290,
+   "75": 314,
+   "90": 323
+  }
+ },
+ {
+  "fdra_id": "UFW-Kealia_Pond_NWR__V",
+  "file": "climo/UFW-Kealia_Pond_NWR__V.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3591,
+  "season_end_quantiles": {
+   "25": 341,
+   "50": 352,
+   "75": 360,
+   "90": 362
+  }
+ },
+ {
+  "fdra_id": "UFW-Kealia_Pond_NWR__W",
+  "file": "climo/UFW-Kealia_Pond_NWR__W.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3591,
+  "season_end_quantiles": {
+   "25": 339,
+   "50": 352,
+   "75": 360,
+   "90": 362
+  }
+ },
+ {
+  "fdra_id": "UFW-Kealia_Pond_NWR__X",
+  "file": "climo/UFW-Kealia_Pond_NWR__X.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3591,
+  "season_end_quantiles": {
+   "25": 339,
+   "50": 352,
+   "75": 360,
+   "90": 362
+  }
+ },
+ {
+  "fdra_id": "UFW-Kealia_Pond_NWR__Z",
+  "file": "climo/UFW-Kealia_Pond_NWR__Z.json",
+  "years": [
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "n_days": 3591,
+  "season_end_quantiles": {
+   "25": 303,
+   "50": 326,
+   "75": 344,
+   "90": 350
   }
  },
  {

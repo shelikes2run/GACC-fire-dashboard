@@ -286,11 +286,11 @@ ADJ_COL = [('#2e7d32', '#fff'), ('#1565c0', '#fff'), ('#fdd835', '#111'), ('#fb8
 ADJ_MATRIX = [[0, 0, 0, 1, 1], [0, 1, 1, 1, 2], [1, 1, 2, 2, 3], [1, 2, 3, 3, 4], [2, 3, 3, 4, 4]]
 
 
-def _adj_chip(a):
+def _adj_chip(a, label=None):
     if a is None:
         return '<span style="color:#888">–</span>'
     bg, fg = ADJ_COL[a]
-    return f'<span style="padding:1px 6px;border-radius:3px;background:{bg};color:{fg};white-space:nowrap">{ADJ_NAMES[a]}</span>'
+    return f'<span style="padding:1px 6px;border-radius:3px;background:{bg};color:{fg};white-space:nowrap">{label or ADJ_NAMES[a]}</span>'
 
 
 def _adj_from(sl5, ic):
@@ -350,7 +350,9 @@ def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
         cs = []
         for dd in (d.get('obs') or {}, d.get('fcst') or {}):
             v = dd.get(adj['idx']); c = _lvl(v, adj['breaks'])
-            cs.append(cell(v, _adj_chip(_to5(c, n))))
+            nm = (adj.get('classes') or [None] * n)[c] if c is not None and adj.get('classes') and len(adj['classes']) == n else None
+            a5 = ADJ_NAMES.index(nm) if nm in ADJ_NAMES else (1 if nm and nm.lower().startswith('low-mod') else _to5(c, n))
+            cs.append(cell(v, _adj_chip(a5, 'Low–Moderate' if nm and nm.lower().startswith('low-mod') else None)))
         used = f'{adj["idx"].upper()}-{adj["fm"]} {" / ".join(f"{b:g}" for b in adj["breaks"])} · {_esc(adj["label"])}'
     elif sl:
         cs = []

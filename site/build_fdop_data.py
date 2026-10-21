@@ -222,7 +222,7 @@ def fod_fires(cache: Path) -> pd.DataFrame:
                                 columns=['FOD_ID', 'FIRE_YEAR', 'DISCOVERY_DATE', 'FIRE_SIZE', 'NWCG_CAUSE_CLASSIFICATION',
                                          'NWCG_GENERAL_CAUSE', 'LATITUDE', 'LONGITUDE', 'NWCG_REPORTING_AGENCY', 'FIRE_NAME', 'STATE'])
     log.info('FPA FOD read: %d fires nationally', len(df))
-    df = df[(df['STATE'].astype(str).str.strip().isin(['CA', 'HI'])) & (pd.to_numeric(df['FIRE_YEAR']) >= START_YEAR)]
+    df = df[(df['STATE'].astype(str).str.strip().isin(['CA', 'HI', 'GU', 'AS', 'MP'])) & (pd.to_numeric(df['FIRE_YEAR']) >= START_YEAR)]
     dd = pd.to_datetime(df['DISCOVERY_DATE'])
     if dd.dt.tz is not None:              # 7th edition stores dates as UTC midnight; keep the calendar date
         dd = dd.dt.tz_localize(None)
@@ -238,7 +238,7 @@ def wfigs_fires(first_year: int) -> pd.DataFrame:
     rows = []
     this = datetime.now(TZ).year
     for y in range(first_year, this + 1):
-        feats = arcgis_query(WFIGS, f"POOState IN ('US-CA', 'US-HI') AND IncidentTypeCategory='WF' AND FireDiscoveryDateTime >= DATE '{y}-01-01' "
+        feats = arcgis_query(WFIGS, f"POOState IN ('US-CA', 'US-HI', 'US-GU', 'US-AS', 'US-MP') AND IncidentTypeCategory='WF' AND FireDiscoveryDateTime >= DATE '{y}-01-01' "
                                     f"AND FireDiscoveryDateTime < DATE '{y + 1}-01-01'",
                              fields='UniqueFireIdentifier,FireDiscoveryDateTime,IncidentSize,FinalAcres,DiscoveryAcres,FireCause,'
                                     'POOProtectingAgency,IncidentName,IsCpxChild,CpxID,IrwinID', page=2000)
@@ -283,7 +283,7 @@ def burned_by_year(g) -> tuple[dict, int]:
     frap_max = max(r['year'] for r in rows)
     if frap_max < this:
         try:
-            yt = arcgis_query(WFIGS_YTD, "attr_POOState IN ('US-CA', 'US-HI')", fields='poly_IncidentName,attr_FireDiscoveryDateTime',
+            yt = arcgis_query(WFIGS_YTD, "attr_POOState IN ('US-CA', 'US-HI', 'US-GU', 'US-AS', 'US-MP')", fields='poly_IncidentName,attr_FireDiscoveryDateTime',
                               out_sr=4326, offset_m=0.0003)
             rows += [{'year': this, 'name': f['properties'].get('poly_IncidentName'), 'geometry': shape(f['geometry'])}
                      for f in yt if f.get('geometry')]

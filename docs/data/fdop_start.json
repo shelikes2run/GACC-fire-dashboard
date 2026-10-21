@@ -5090,6 +5090,24 @@
      "SL 4",
      "SL 5"
     ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class in this plan)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     14.75,
+     29.5,
+     59,
+     65
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
    }
   ],
   "notes": "DOI Pacific Islands Zone (NPS/USFWS Region 12). Staffing classes 1-5 = adjective classes. Step-up / severity when both Kilauea ERC-Y stations reach the 90th (SL 4), or one does and Kealakomo KBDI (496024) > 599, or Kealakomo KBDI reaches its 90th (650; SL 2-5 KBDI 162/325/650/718), or Kahuku ERC-Y reaches its 90th with drought. Fire history here comes from FPA FOD / WFIGS Hawaii records. Plan breakpoints are per station: Keaumo 496006 SL 2-5 at 15.25/30.5/61/69, Pali 2 496009 at 14.25/28.5/57/61; the FDRA value here is the mean of the two stations, so the mean of the breakpoints is used."
@@ -5133,6 +5151,24 @@
      "SL 3",
      "SL 4",
      "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class in this plan)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     12.25,
+     24.5,
+     49,
+     56
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
     ]
    }
   ],

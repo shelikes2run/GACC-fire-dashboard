@@ -71,7 +71,7 @@
       l.on('mouseout', () => layer.resetStyle(l));
     },
   }).addTo(map);
-  map.fitBounds(layer.getBounds(), { padding: [10, 10] });
+  map.fitBounds([[32.4, -124.6], [42.1, -114.0]], { padding: [10, 10] });   // California (Hawaii FDRAs are off to the southwest)
   const legend = L.control({ position: 'bottomleft' });
   legend.onAdd = () => {
     const d = L.DomUtil.create('div', 'legend');

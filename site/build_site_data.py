@@ -413,7 +413,8 @@ def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
     rows.append(f'<tr><td><b>Fire danger (SFDI)</b><br><span style="color:#888">Severe Fire Danger Index, fuel model {own}</span></td>'
                 f'<td style="text-align:center">{sfchip(ob)}</td><td style="text-align:center">{sfchip(fc)}</td></tr>')
     lo, hi = (80, 95) if '80th' in str(p.get('standard_90_97') or '') else (90, 97)
-    st = _tool_pick(tools, r'staffing|preparedness', r'^2023 FDOP') or _tool_pick(tools, r'staffing|preparedness')
+    st = (_tool_pick(tools, r'staffing', r'^2023 FDOP') or _tool_pick(tools, r'staffing')
+          or _tool_pick(tools, r'preparedness', r'adjective'))
     sl = {}
     if st:
         cells, used, out, n, names = tool_cells(st, L)

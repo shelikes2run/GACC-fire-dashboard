@@ -25,15 +25,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { path: src }
+      - name: Skip until this copy is set up (setup/setup_area.ipynb)
+        id: guard
+        run: |
+          if [ "${{ github.repository }}" != "shelikes2run/GACC-fire-dashboard" ] && grep -q '"id": "CA"' src/docs/assets/area.js; then
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            echo "This copy of the template is not set up yet: run setup/setup_area.ipynb first." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - uses: actions/setup-python@v5
+        if: steps.guard.outputs.skip != '1'
         with: { python-version: '3.12' }
       - run: pip install --quiet pandas numpy requests geopandas pyogrio shapely
+        if: steps.guard.outputs.skip != '1'
       - uses: actions/cache@v4
+        if: steps.guard.outputs.skip != '1'
         with:
           path: fdop_cache
           key: fdop-cache-${{ github.run_id }}
           restore-keys: fdop-cache-
       - name: Build
+        if: steps.guard.outputs.skip != '1'
         run: |
           set +e
           python src/site/build_fdop_data.py out fdop_cache > build.log 2>&1
@@ -42,7 +53,7 @@ jobs:
           echo "rc=$rc" >> "$GITHUB_ENV"
           mkdir -p out && tail -300 build.log > out/build_log.txt
       - name: Keep the published data when the build fails (log only)
-        if: env.rc != '0'
+        if: steps.guard.outputs.skip != '1' && (env.rc != '0')
         run: |
           git clone -q --depth 1 --branch fdop-data "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" keep
           cp out/build_log.txt keep/build_log.txt
@@ -53,7 +64,7 @@ jobs:
           git push -q origin fdop-data
           exit 1
       - name: Publish (single commit)
-        if: env.rc == '0'
+        if: steps.guard.outputs.skip != '1' && (env.rc == '0')
         run: |
           cd out
           git init -q -b fdop-data

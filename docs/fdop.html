@@ -789,7 +789,7 @@ function fillSetup(unit) {
   let saved = null; try { saved = JSON.parse(localStorage.getItem('fdop_' + unit.unit) || 'null'); } catch (e) {}
   const q = k => P.get(k);
   const fromUrl = q('unit') === unit.unit;
-  // starting point: the FDRA's current signed FDOP (docs/data/fdop_start.json), then the 2026 sheet
+  // starting point: the FDRA's current signed FDOP (site/thresholds/FDRA_thresholds.xlsx, published as site-data fdop_start.json), then the 2026 sheet
   const S0 = (W.start || {})[unit.unit] || (W.start || {})[unit.fdra_id] || null;
   W.S0 = S0;
   if (S0 && saved && saved.src !== S0.source) saved = null;   // FDOP starting point changed since this browser saved a setup
@@ -849,7 +849,7 @@ async function loadUnit(unit) {
 }
 
 (async function main() {
-  [W.idx, W.start] = await Promise.all([fjson('index.json'), fetch('data/fdop_start.json?t=' + Math.floor(Date.now() / 600000)).then(r => r.json()).catch(() => ({}))]);
+  [W.idx, W.start] = await Promise.all([fjson('index.json'), fetch(DATA + 'fdop_start.json?t=' + Math.floor(Date.now() / 600000)).then(r => { if (!r.ok) throw 0; return r.json(); }).catch(() => fetch('data/fdop_start.json').then(r => r.json())).catch(() => ({}))]);
   const id = (P.get('id') || '').replace(/\s*\((?:peak|non-peak)\)$/, '').toUpperCase();
   const units = W.idx.units.filter(u => u.fdra_id.toUpperCase() === id);
   if (!units.length) { $('h2').textContent = id ? `No FDOP data for “${P.get('id')}”` : 'Pick an FDRA on the map'; return; }

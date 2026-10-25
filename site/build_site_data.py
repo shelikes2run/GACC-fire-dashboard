@@ -448,7 +448,8 @@ def write_sfdi_geojson(out: Path, polys: dict, rows: list, now):
     main-map layer in AGOL (GeoJSON layer read from the site-data branch, refreshed by the map)."""
     from shapely.geometry import mapping, shape
     by = {r['fdra_id']: r for r in rows}
-    start = json.loads(FDOP_START.read_text()) if FDOP_START.exists() else {}
+    sp = out / 'fdop_start.json'   # built from site/thresholds/FDRA_thresholds.xlsx (thresholds_book.py) earlier in the run
+    start = json.loads((sp if sp.exists() else FDOP_START).read_text()) if (sp.exists() or FDOP_START.exists()) else {}
     feats = []
     for f in polys['features']:
         p = f['properties']

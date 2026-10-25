@@ -207,21 +207,27 @@ def check_stations(members: pd.DataFrame, raws: pd.DataFrame, use_fems: bool = T
         r = by_id.loc[sid] if sid in by_id.index else None
         if isinstance(r, pd.DataFrame):
             r = r.iloc[0]
-        note, sugg = [], ''
-        if r is None:
-            note.append('not on the RAWS list under this id')
-        elif r.Status != 'A':
-            note.append(f'RAWS status {r.Status} (not active)')
-        if fems and fems.get(sid, 0) == 0:
+        note, warn, sugg = [], [], ''
+        has = bool(fems) and fems.get(sid, 0) > 0
+        if fems and not has:
             note.append('FEMS returns no data for this id')
-        if (r is None or (fems and fems.get(sid, 0) == 0)) and m.get('name'):
+        if r is None:
+            # FEMS is what the site reads: an id FEMS knows is fine even if the RAWS list shows another number
+            (warn if has else note).append('not on the RAWS list under this id')
+        elif r.Status != 'A':
+            warn.append(f'RAWS status {r.Status} (not active)')
+        if r is None and m.get('name'):
             hit = rl[rl.StationName.str.upper().str.replace(r'[^A-Z]', '', regex=True) ==
                      re.sub(r'[^A-Z]', '', str(m['name']).upper())]
             if len(hit):
                 sugg = ', '.join(f'{int(h.wims)} ({h.StationName}, {h.Status})' for h in hit.itertuples())
+                if has:
+                    warn[-1] = f'FEMS has data; the RAWS list shows this station as {sugg} — keep the FDOP id'
+                    sugg = ''
         out.append({'fdra_id': m.fdra_id, 'stationId': sid, 'name_given': m.get('name', ''),
                     'raws_name': None if r is None else r.StationName, 'status': None if r is None else r.Status,
-                    'fems_rows': fems.get(sid) if fems else None, 'ok': not note, 'problem': '; '.join(note), 'suggested_id': sugg})
+                    'fems_rows': fems.get(sid) if fems else None, 'ok': not note, 'problem': '; '.join(note),
+                    'note': '; '.join(warn), 'suggested_id': sugg})
     return pd.DataFrame(out)
 
 

@@ -317,7 +317,7 @@ def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
         return f'<td style="text-align:center">{fmt(v) if v is not None else ""}<br>{chip}</td>' if v is not None else f'<td style="text-align:center">{chip}</td>'
     rows.append(f'<tr><td><b>Fire danger (SFDI)</b><br><span style="color:#888">Severe Fire Danger Index, fuel model {own}</span></td>'
                 f'<td style="text-align:center">{sfchip(ob)}</td><td style="text-align:center">{sfchip(fc)}</td></tr>')
-    lo, hi = (80, 95) if (p['fdra_id'].upper().startswith('UFW') or (p['fdra_id'].upper().startswith('BLM') and p.get('agency') == 'BLM')) else (90, 97)
+    lo, hi = (80, 95) if '80th' in str(p.get('standard_90_97') or '') else (90, 97)
     st = _tool_pick(tools, r'staffing|preparedness', r'^2023 FDOP') or _tool_pick(tools, r'staffing|preparedness')
     sl = {}
     if st:
@@ -380,7 +380,7 @@ def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
 
 def popup_html(p: dict, r: dict, start: dict) -> str:
     """Popup for the main-map FDRA layer: latest values and each FDOP decision tool's level; FDRAs
-    without FDOP breakpoints use climatological percentiles (USFWS and BLM 80th/95th, USFS and CAL FIRE 90th/97th)."""
+    without FDOP breakpoints use climatological percentiles (WFS former USFWS / BLM units 80th/95th, USFS, CAL FIRE and other WFS units 90th/97th; set in the layer's standard_90_97 field)."""
     fid, unit = p['fdra_id'], r.get('active_unit')
     s, tools = fdra_tools(fid, start)
     own = (LATEST.get((unit, p.get('fuel_model'))) or {}).get('own') or p.get('fuel_model') or 'Y'
@@ -413,9 +413,9 @@ def popup_html(p: dict, r: dict, start: dict) -> str:
                         f'<td style="text-align:center">{fmt(f_)}<br>{_chip(cls[cf] if cf is not None else "", cf, n)}</td></tr>')
         src = f'Breakpoints: {_esc(s.get("source", "current FDOP"))}.'
     else:
-        fed = fid.upper()[:3]
-        lo, hi = (80, 95) if fed == 'UFW' or (fed == 'BLM' and p.get('agency') == 'BLM') else (90, 97)
-        who = {'UFW': 'USFWS', 'BLM': 'BLM'}.get(fed) if lo == 80 else ('USFS' if p.get('agency') == 'USFS' else 'CAL FIRE')
+        lo, hi = (80, 95) if '80th' in str(p.get('standard_90_97') or '') else (90, 97)
+        ag = p.get('agency') or ''
+        who = 'WFS' if 'WFS' in ag and lo == 80 else ('USFS' if ag == 'USFS' else 'WFS' if 'WFS' in ag else 'CAL FIRE')
         for k in ('erc', 'bi'):
             qs = base.get('q', {}).get(k)
             a, b = _q(qs, lo), _q(qs, hi)

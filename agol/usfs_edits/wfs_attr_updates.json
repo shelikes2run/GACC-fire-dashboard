@@ -1,0 +1,175 @@
+{
+ "BLM-Ca Nod": {
+  "forest": "WFS",
+  "agency": "WFS"
+ },
+ "NPS-Ca Bnp": {
+  "forest": "WFS",
+  "agency": "WFS"
+ },
+ "TUU-Bia": {
+  "agency": "WFS",
+  "fdra_name": "Tule River Reservation (WFS)"
+ },
+ "UFW-Ca Lkr": {
+  "forest": "WFS",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "UFW-Ca Mdr": {
+  "forest": "WFS",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "UFW-Ca Tkr": {
+  "forest": "WFS",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "UFW-Ufw-Lkr": {
+  "forest": "WFS",
+  "agency": "WFS",
+  "fdra_name": "Lkr",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "UFW-Eastern Sierra Unit": {
+  "forest": "WFS \u2013 Eastern Sierra Unit",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "UFW-South Coast Unit": {
+  "forest": "WFS \u2013 South Coast Unit",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "BLM-CND-B11": {
+  "forest": "WFS \u2013 Central California District",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "BLM-CND-B12": {
+  "forest": "WFS \u2013 Central California District",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "BLM-CND-B13": {
+  "forest": "WFS \u2013 Central California District",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "BLM-NOD-260": {
+  "forest": "WFS \u2013 Northern California District",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "BLM-NOD-265": {
+  "forest": "WFS \u2013 Northern California District",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "NPS-YOSE-Low": {
+  "forest": "WFS \u2013 Yosemite National Park",
+  "agency": "WFS"
+ },
+ "NPS-YOSE-Mid": {
+  "forest": "WFS \u2013 Yosemite National Park",
+  "agency": "WFS"
+ },
+ "NPS-YOSE-High": {
+  "forest": "WFS \u2013 Yosemite National Park",
+  "agency": "WFS"
+ },
+ "NPS-SEKI-438": {
+  "forest": "WFS \u2013 Sequoia & Kings Canyon National Parks",
+  "agency": "WFS"
+ },
+ "NPS-SEKI-435": {
+  "forest": "WFS \u2013 Sequoia & Kings Canyon National Parks",
+  "agency": "WFS"
+ },
+ "NPS-SEKI-440": {
+  "forest": "WFS \u2013 Sequoia & Kings Canyon National Parks",
+  "agency": "WFS"
+ },
+ "NPS-PINN": {
+  "forest": "WFS \u2013 Pinnacles National Park",
+  "agency": "WFS"
+ },
+ "SRF-RWP": {
+  "forest": "Six Rivers NF / WFS \u2013 Redwood National Park",
+  "agency": "USFS / WFS"
+ },
+ "CDIFP-Lower Desert": {
+  "forest": "WFS \u2013 California Desert Interagency Fire Program",
+  "agency": "WFS"
+ },
+ "CDIFP-Mojave Desert": {
+  "forest": "WFS \u2013 California Desert Interagency Fire Program",
+  "agency": "WFS"
+ },
+ "CDIFP-South Coast": {
+  "forest": "WFS \u2013 California Desert Interagency Fire Program",
+  "agency": "WFS"
+ },
+ "CDIFP-Upper Desert": {
+  "forest": "WFS \u2013 California Desert Interagency Fire Program",
+  "agency": "WFS"
+ },
+ "NPS-HAVO-Kilauea": {
+  "forest": "WFS \u2013 Hawaii Volcanoes National Park",
+  "agency": "WFS"
+ },
+ "NPS-HAVO-Kahuku": {
+  "forest": "WFS \u2013 Hawaii Volcanoes National Park",
+  "agency": "WFS"
+ },
+ "UFW-Hakalau Forest NWR": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "NPS-KAHO": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS"
+ },
+ "UFW-Kealia Pond NWR": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "NPS-HALE": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS"
+ },
+ "NPS-KALA": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS"
+ },
+ "UFW-James Campbell NWR": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "NPS-WAPA": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS"
+ },
+ "UFW-Guam NWR": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ },
+ "NPS-AMME": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS"
+ },
+ "NPS-NPSA": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS"
+ },
+ "UFW-Rose Atoll NWR": {
+  "forest": "WFS \u2013 Pacific Islands Zone",
+  "agency": "WFS",
+  "standard_90_97": "WFS 80th/95th"
+ }
+}

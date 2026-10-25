@@ -1,0 +1,300 @@
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:438: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  med_doy = cal[cal.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:438: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  med_doy = cal[cal.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:438: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  med_doy = cal[cal.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:438: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  med_doy = cal[cal.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:438: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  med_doy = cal[cal.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:438: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  med_doy = cal[cal.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:438: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  med_doy = cal[cal.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+/home/runner/work/GACC-fire-dashboard/GACC-fire-dashboard/src/site/build_fdop_data.py:453: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+  fdays = gy[gy.fd == 1].index.dayofyear
+[18:49:27] FDOP data: 216 units, 1540 stations × fuel models, 201 FDRAs with fires
+exit 0

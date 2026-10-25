@@ -1,0 +1,34 @@
+# Runs setup/setup_area.ipynb on GitHub instead of in a codespace (Actions → "Run setup notebook" → Run workflow).
+# It runs the notebook as committed, so edit the settings cells first (or leave EXAMPLE = 'noco' to load the
+# Northern Colorado example). The executed notebook, with every check's output, is saved as setup/setup_area.out.ipynb.
+name: Run setup notebook
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  setup:
+    if: github.repository != 'shelikes2run/GACC-fire-dashboard'   # never on the California site itself
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet geopandas pyogrio shapely openpyxl requests pandas folium mapclassify nbconvert ipykernel
+      - name: Run the notebook
+        run: |
+          git config user.name  "setup notebook"
+          git config user.email "actions@users.noreply.github.com"
+          jupyter nbconvert --to notebook --execute setup/setup_area.ipynb --output setup_area.out.ipynb --ExecutePreprocessor.timeout=1200
+          git add setup/setup_area.out.ipynb && git commit -qm "Setup notebook output" && git push -q || true
+      - name: Start the site builds
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: |
+          gh workflow run "Thresholds check" -R ${{ github.repository }}
+          gh workflow run "Site data" -R ${{ github.repository }} -f rebuild_normals=true
+          gh workflow run "FDOP data" -R ${{ github.repository }}

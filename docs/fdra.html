@@ -6,12 +6,13 @@
 <title>FDRA Season Tracking</title>
 <link rel="stylesheet" href="assets/site.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="assets/area.js"></script>
 <script src="assets/common.js"></script>
 </head>
 <body>
 <header class="top">
   <h1 id="h-forest">Fire Danger Operating Plan</h1>
-  <div class="sub"><a href="index.html">◂ CA FDRA map</a> · CA GACC Predictive Services</div>
+  <div class="sub"><a href="index.html">◂ <span class="area-id">CA</span> FDRA map</a> · <span class="area-org">CA GACC Predictive Services</span></div>
 </header>
 <main>
   <section class="panel" id="facts-panel">
@@ -57,7 +58,7 @@
     <div class="table-wrap"><table class="data" id="stations"></table></div>
     <p class="note">SFDI: Jolly, W.M.; Freeborn, P.H.; Page, W.G.; Butler, B.W. 2019. Severe Fire Danger Index: a forecastable metric
       to inform firefighter and community wildfire risk management. <i>Fire</i> 2: 47.
-      PAL: <a href="https://gacc.nifc.gov/oscc/predictive/weather/pal_combined_report.html" target="_blank">CA PAL Combined Report</a>.</p>
+      <span id="pal-note"></span></p>
   </section>
 </main>
 <script>
@@ -162,7 +163,7 @@ const CHARTS = {
     'SFDI = ERC percentile × BI percentile, re-ranked against the FDRA’s own record (Jolly et al. 2019). Classes: Low ≤ 60, Moderate ≤ 80, High ≤ 90, Very High ≤ 97, Severe above.'),
   'ERC': () => rawChart('erc', 'Energy Release Component'),
   'BI': () => rawChart('bi', 'Burning Index'),
-  'PAL': palChart,
+  ...(PAL_ON ? { 'PAL': palChart } : {}),
   'LFM': lfmChart,
   'TRH': trhChart,
   'Season end': endChart,
@@ -186,7 +187,7 @@ function rawChart(key, title) {
 }
 function palChart() {
   const pal = (S.cur.pal || []).filter(s => s.dates.length);
-  if (!pal.length) { draw([], layout('Project Activity Level', ''), 'No PAL stations inside this FDRA in the CA PAL Combined Report.'); return; }
+  if (!pal.length) { draw([], layout('Project Activity Level', ''), 'No PAL stations inside this FDRA in the ' + ((AREA.pal && AREA.pal.label) || 'PAL report') + '.'); return; }
   const tr = [];
   pal.forEach((s, i) => {
     const c = LINE_COL[i % LINE_COL.length], vis = s.forest_pal_station ? true : 'legendonly';
@@ -211,7 +212,7 @@ function palChart() {
     const lo = new Date(Math.min(a, new Date(Date.now() - 60 * 864e5)));
     lay.xaxis.range = [(new Date(Math.max(lo, a))).toISOString().slice(0, 10), b.toISOString().slice(0, 10)];
   }
-  draw(tr, lay, 'One line per RAWS inside the FDRA (forest PAL stations shown; others in the legend). Daily peak ERC/IC PAL from the CA PAL Combined Report — ' +
+  draw(tr, lay, 'One line per RAWS inside the FDRA (forest PAL stations shown; others in the legend). Daily peak ERC/IC PAL from the ' + ((AREA.pal && AREA.pal.label) || 'PAL report') + ' — ' +
     'solid observed, dotted forecast. History is kept from the first day the feed ran.');
 }
 function lfmChart() {
@@ -448,6 +449,7 @@ async function loadUnit(unit, fm) {
   document.getElementById('h-fdra').textContent = 'Could not load data';
   document.getElementById('facts').innerHTML = `<dd class="muted">${esc(e.message)}</dd>`;
 });
+document.getElementById('pal-note') && (document.getElementById('pal-note').innerHTML = palLink());
 </script>
 </body>
 </html>

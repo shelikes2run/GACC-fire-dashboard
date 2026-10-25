@@ -33,13 +33,15 @@ import requests
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'normals'))
 import ca_normals as cn  # noqa: E402
+sys.path.insert(0, str(ROOT / 'site'))
+from area import AREA  # noqa: E402
 
 log = logging.getLogger('site')
 MEMBERSHIP = ROOT / 'site' / 'fdra_station_membership_2026.csv'
 POLYGONS = ROOT / 'docs' / 'data' / 'fdras.geojson'
-PAL_RAW = 'https://raw.githubusercontent.com/shelikes2run/GACC-fire-dashboard/pal-data/'
+PAL_RAW = AREA['raw'] + 'pal-data/'
 NORMAL_YEARS = (2016, 2025)
-TZ = ZoneInfo('America/Los_Angeles')
+TZ = ZoneInfo(AREA['timezone'])
 SEASONS = {'peak': ((5, 1), (11, 15))}            # ENF-335 peak season May 1 – Nov 15
 FMS = ['V', 'W', 'X', 'Y', 'Z']                   # NFDRS 2016 fuel models offered on the charts
 
@@ -235,7 +237,7 @@ def pal_by_polygon(polys):
 cn_pal_order = ['A', 'B', 'C', 'D', 'Ev', 'E']
 
 
-SITE = 'https://shelikes2run.github.io/GACC-fire-dashboard/'
+SITE = AREA['site_url']
 FDOP_START = ROOT / 'docs' / 'data' / 'fdop_start.json'
 WEIGHTS = {}         # unit -> {stationId: SIG weight} (FDOP weighted SIGs)
 LATEST = {}          # (unit, fuel model) -> latest observed / next forecast values, climatology quantiles
@@ -276,8 +278,10 @@ def fdra_tools(fid: str, start: dict):
     tools = s.get('tools') or [{'label': f'FDOP {i.upper()}', 'idx': i, 'fm': s.get('fm', 'Y'), 'breaks': b,
                                 'classes': s.get('classes') or [str(n + 1) for n in range(len(b) + 1)]}
                                for i, b in (s.get('breaks') or {}).items()]
+    mt = s.get('matrix_tools') or []
+    if mt:   # matrix tools sit among the plain tools by their workbook order
+        tools = sorted(tools + mt, key=lambda t: (t.get('order', 999)))
     return s, tools
-
 
 
 ADJ_NAMES = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
@@ -310,6 +314,97 @@ def _tool_pick(tools, pat, avoid=None):
     return c[0] if c else None
 
 
+# ── decision tool evaluation: plain breakpoints, BI × ERC style matrices, multi-day windows, adjustments ──
+# days = [O1, F1, F2, ...] (latest observed day, then forecast days from today). Column 1 of the popup is the
+# tool's window as of today, column 2 the same window one day later (no window: O1 and F1).
+VAR = {'f100': 'fm100', 'f1000': 'fm1000'}
+
+
+def _win(tool):
+    w = (tool.get('window') or '').upper().replace(' ', '')
+    if not w:
+        return [0]
+    pos = []
+    for part in w.split('+'):
+        m = re.fullmatch(r'([OF])(\d)', part)
+        if m:
+            pos.append(0 if m.group(1) == 'O' else int(m.group(2)))
+    return pos or [0]
+
+
+def _wval(days, var, pos, shift):
+    var = VAR.get(var, var)
+    vals = []
+    for q in pos:
+        i = q + shift
+        if i >= len(days) or not days[i] or days[i].get(var) is None:
+            return None
+        vals.append(days[i][var])
+    return sum(vals) / len(vals)
+
+
+def _adjust(c, n, tool, days, shift):
+    """Apply one-class adjustments, e.g. {'var': 'tmax', 'op': '<', 'value': 57, 'adjust': -1, 'window': 'F1'}."""
+    notes = []
+    for a in tool.get('adjust') or []:
+        v = _wval(days, a['var'], _win(a) if a.get('window') else _win(tool), shift)
+        if v is None:
+            continue
+        hit = {'<': v < a['value'], '<=': v <= a['value'], '>': v > a['value'], '>=': v >= a['value']}[a['op']]
+        if hit:
+            c += a['adjust']; notes.append(f"{VAR_NAME.get(a['var'], a['var'].upper())} {v:.4g} {a['op']} {a['value']:g}")
+    return max(0, min(n - 1, c)), notes
+
+
+VAR_NAME = {'erc': 'ERC', 'bi': 'BI', 'ic': 'IC', 'sc': 'SC', 'kbdi': 'KBDI', 'gsi': 'GSI', 'tmax': 'Tmax', 'rhmin': 'RH min',
+            'f100': '100-hr', 'fm100': '100-hr', 'f1000': '1000-hr', 'fm1000': '1000-hr'}
+
+
+def tool_eval(t, L):
+    """-> n, class names, [(value text, class or None, notes) for today, tomorrow], description of what is used."""
+    pos = _win(t)
+    wtxt = '' if pos == [0] else (' · ' + ('avg ' if len(pos) > 1 else '') + '+'.join(('O1' if q == 0 else f'F{q}') for q in pos))
+    adj = '; '.join(f"{VAR_NAME.get(a['var'], a['var'])} {a['op']} {a['value']:g} → {a['adjust']:+d}" for a in t.get('adjust') or [])
+    adj = f' · adjust: {adj}' if adj else ''
+    if t.get('type') == 'matrix':
+        R, C = t['rows'], t['cols']
+        n = len(t['classes'])
+        out = []
+        for sh in (0, 1):
+            rv = _wval(L(R['fm']).get('days') or [], R['idx'], pos, sh)
+            cv = _wval(L(C['fm']).get('days') or [], C['idx'], pos, sh)
+            if rv is None or cv is None:
+                out.append(('–', None, [])); continue
+            c = t['matrix'][_lvl(rv, R['breaks'])][_lvl(cv, C['breaks'])] - 1
+            c, notes = _adjust(c, n, t, L(R['fm']).get('days') or [], sh)
+            out.append((f"{VAR_NAME.get(R['idx'], R['idx'])} {rv:.3g} · {VAR_NAME.get(C['idx'], C['idx'])} {cv:.3g}", c, notes))
+        used = (f"{VAR_NAME.get(R['idx'], R['idx'])}-{R['fm']} {' / '.join(f'{b:g}' for b in R['breaks'])} × "
+                f"{VAR_NAME.get(C['idx'], C['idx'])}-{C['fm']} {' / '.join(f'{b:g}' for b in C['breaks'])} matrix{wtxt}{adj}")
+        return n, t['classes'], out, used
+    n = len(t['breaks']) + 1
+    names = t.get('classes') if t.get('classes') and len(t['classes']) == n else [str(i + 1) for i in range(n)]
+    days = L(t['fm']).get('days') or []
+    out = []
+    for sh in (0, 1):
+        v = _wval(days, t['idx'], pos, sh)
+        if v is None:
+            out.append(('–', None, [])); continue
+        c, notes = _adjust(_lvl(v, t['breaks']), n, t, days, sh)
+        out.append((f'{v:.0f}' if abs(v) >= 100 else f'{v:.1f}' if abs(v) >= 1 else f'{v:.2f}', c, notes))
+    used = f"{VAR_NAME.get(t['idx'], t['idx'].upper())}-{t['fm']} {' / '.join(f'{b:g}' for b in t['breaks'])}{wtxt}{adj}"
+    return n, names, out, used
+
+
+def tool_cells(t, L, chip=None):
+    n, names, out, used = tool_eval(t, L)
+    cells = []
+    for txt, c, notes in out:
+        ch = chip(names[c] if c is not None else '', c, n) if chip else _chip(names[c] if c is not None else '', c, n)
+        nt = f'<br><span style="color:#888;font-size:10px">↓ {_esc(", ".join(notes))}</span>' if notes else ''
+        cells.append(f'<td style="text-align:center">{_esc(txt)}<br>{ch}{nt}</td>')
+    return ''.join(cells), used, out, n, names
+
+
 def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
     """Today at a glance: SFDI, staffing level, adjective (Smokey Bear sign) and dispatch — with what each is based on."""
     rows = []
@@ -321,13 +416,10 @@ def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
     st = _tool_pick(tools, r'staffing|preparedness', r'^2023 FDOP') or _tool_pick(tools, r'staffing|preparedness')
     sl = {}
     if st:
-        d = L(st['fm'])
-        n = len(st['breaks']) + 1
-        names = st.get('classes') if st.get('classes') and len(st['classes']) == n else [f'SL {i + 1}' for i in range(n)]
-        for key, dd in (('o', d.get('obs') or {}), ('f', d.get('fcst') or {})):
-            v = dd.get(st['idx']); c = _lvl(v, st['breaks'])
-            sl[key] = (v, c, n, names)
-        used = f'{st["idx"].upper()}-{st["fm"]} {" / ".join(f"{b:g}" for b in st["breaks"])} · {_esc(st["label"])}'
+        cells, used, out, n, names = tool_cells(st, L)
+        used = f'{_esc(used)} · {_esc(st["label"])}'
+        sl = {'o': (None, out[0][1], n, names), 'f': (None, out[1][1], n, names)}
+        rows.append(f'<tr><td><b>Staffing level</b><br><span style="color:#888">{used}</span></td>{cells}</tr>')
     else:
         sli = (p.get('sl_dl_index') or '').upper()
         k = 'bi' if ('BI' in sli and 'ERC' not in sli) else 'erc'
@@ -339,21 +431,18 @@ def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
                 v = dd.get(k); sl[key] = (v, _lvl(v, br), 5, names)
             used = (f'{k.upper()}-{own} climatology (no FDOP staffing tool): SL 4 above the {lo}th ({fmt(br[2])}), '
                     f'SL 5 above the {hi}th ({fmt(br[3])})')
-        else:
-            used = 'no data'
-    if sl:
-        rows.append(f'<tr><td><b>Staffing level</b><br><span style="color:#888">{used}</span></td>' +
-                    ''.join(cell(sl[key][0], _chip(sl[key][3][sl[key][1]] if sl[key][1] is not None else "", sl[key][1], sl[key][2])) for key in ('o', 'f')) + '</tr>')
+            rows.append(f'<tr><td><b>Staffing level</b><br><span style="color:#888">{used}</span></td>' +
+                        ''.join(cell(sl[key][0], _chip(sl[key][3][sl[key][1]] if sl[key][1] is not None else "", sl[key][1], sl[key][2])) for key in ('o', 'f')) + '</tr>')
     adj = _tool_pick(tools, r'adjective')
     if adj:
-        d = L(adj['fm']); n = len(adj['breaks']) + 1
+        n, names, out, used = tool_eval(adj, L)
         cs = []
-        for dd in (d.get('obs') or {}, d.get('fcst') or {}):
-            v = dd.get(adj['idx']); c = _lvl(v, adj['breaks'])
-            nm = (adj.get('classes') or [None] * n)[c] if c is not None and adj.get('classes') and len(adj['classes']) == n else None
-            a5 = ADJ_NAMES.index(nm) if nm in ADJ_NAMES else (1 if nm and nm.lower().startswith('low-mod') else _to5(c, n))
-            cs.append(cell(v, _adj_chip(a5, 'Low–Moderate' if nm and nm.lower().startswith('low-mod') else None)))
-        used = f'{adj["idx"].upper()}-{adj["fm"]} {" / ".join(f"{b:g}" for b in adj["breaks"])} · {_esc(adj["label"])}'
+        for txt, c, notes in out:
+            nm = names[c] if c is not None else None
+            a5 = None if c is None else (ADJ_NAMES.index(nm) if nm in ADJ_NAMES else (1 if nm and nm.lower().startswith('low-mod') else _to5(c, n)))
+            nt = f'<br><span style="color:#888;font-size:10px">↓ {_esc(", ".join(notes))}</span>' if notes else ''
+            cs.append(f'<td style="text-align:center">{_esc(txt)}<br>{_adj_chip(a5, "Low–Moderate" if nm and nm.lower().startswith("low-mod") else None)}{nt}</td>')
+        used = f'{_esc(used)} · {_esc(adj["label"])}'
     elif sl:
         cs = []
         for key, dd in (('o', ob), ('f', fc)):
@@ -366,13 +455,8 @@ def headline_html(p, s, tools, L, own, base, fmt, sfchip, ob, fc):
         rows.append(f'<tr><td><b>Adjective rating</b> (Smokey Bear sign)<br><span style="color:#888">{used}</span></td>{"".join(cs)}</tr>')
     dp = _tool_pick(tools, r'dispatch|response', r'^2023 FDOP')
     if dp and dp is not st and dp is not adj:
-        d = L(dp['fm']); n = len(dp['breaks']) + 1
-        names = dp.get('classes') if dp.get('classes') and len(dp['classes']) == n else [str(i + 1) for i in range(n)]
-        cs = []
-        for dd in (d.get('obs') or {}, d.get('fcst') or {}):
-            v = dd.get(dp['idx']); c = _lvl(v, dp['breaks'])
-            cs.append(cell(v, _chip(names[c] if c is not None else '', c, n)))
-        rows.append(f'<tr><td><b>Dispatch level</b><br><span style="color:#888">{dp["idx"].upper()}-{dp["fm"]} {" / ".join(f"{b:g}" for b in dp["breaks"])} · {_esc(dp["label"])}</span></td>{"".join(cs)}</tr>')
+        cells, used, *_ = tool_cells(dp, L)
+        rows.append(f'<tr><td><b>Dispatch level</b><br><span style="color:#888">{_esc(used)} · {_esc(dp["label"])}</span></td>{cells}</tr>')
     return ('<table style="width:100%;font-size:12px;border-collapse:collapse;margin-bottom:8px">'
             f'<tr><th style="text-align:left">Today</th><th>Observed<br>{_esc(ob.get("date") or "")}</th><th>Forecast<br>{_esc(fc.get("date") or "")}</th></tr>'
             + ''.join(rows) + '</table>')
@@ -403,14 +487,8 @@ def popup_html(p: dict, r: dict, start: dict) -> str:
     rows = []
     if tools:
         for t in tools:
-            d = L(t['fm'])
-            o, f_ = (d.get('obs') or {}).get(t['idx']), (d.get('fcst') or {}).get(t['idx'])
-            n = len(t['breaks']) + 1
-            cls = t.get('classes') or [str(i + 1) for i in range(n)]
-            co, cf = _lvl(o, t['breaks']), _lvl(f_, t['breaks'])
-            rows.append(f'<tr><td>{_esc(t["label"])}<br><span style="color:#888">{t["idx"].upper()}-{t["fm"]} {" / ".join(map(lambda b: f"{b:g}", t["breaks"]))}</span></td>'
-                        f'<td style="text-align:center">{fmt(o)}<br>{_chip(cls[co] if co is not None else "", co, n)}</td>'
-                        f'<td style="text-align:center">{fmt(f_)}<br>{_chip(cls[cf] if cf is not None else "", cf, n)}</td></tr>')
+            cells, used, *_ = tool_cells(t, L)
+            rows.append(f'<tr><td>{_esc(t["label"])}<br><span style="color:#888">{_esc(used)}</span></td>{cells}</tr>')
         src = f'Breakpoints: {_esc(s.get("source", "current FDOP"))}.'
     else:
         lo, hi = (80, 95) if '80th' in str(p.get('standard_90_97') or '') else (90, 97)
@@ -489,7 +567,7 @@ def build_current(out: Path):
     n, w = fetch_current(pairs, start, end)
     log.info('current: %d NFDR rows, %d wx rows, %s → %s', len(n), len(w), start, end)
     polys = json.loads(POLYGONS.read_text())
-    pal = pal_by_polygon(polys)
+    pal = pal_by_polygon(polys) if (AREA.get('pal') or {}).get('enabled') else {}
     cdir = out / 'current'
     cdir.mkdir(parents=True, exist_ok=True)
     idx_units = {}
@@ -501,7 +579,7 @@ def build_current(out: Path):
         sub = n[[(s, f) in mset for s, f in zip(n['stationId'], n['fm'])]]
         if sub.empty:
             continue
-        cols = ['erc', 'bi', 'ic', 'sc', 'herb', 'woody', 'fm1', 'fm10', 'fm100', 'fm1000', 'kbdi']
+        cols = ['erc', 'bi', 'ic', 'sc', 'herb', 'woody', 'fm1', 'fm10', 'fm100', 'fm1000', 'kbdi', 'gsi']
         d = _pick(sub, cols, WEIGHTS.get(uid))
         d = d[~d.index.duplicated()]
         sids = sorted({s for s, _ in members})
@@ -550,7 +628,10 @@ def build_current(out: Path):
                 'has_normals': bool(climo), 'normal_years': climo.get('years', []),
                 'latest_obs': {'date': last_o.strftime('%Y-%m-%d') if last_o is not None else None, **(snap(o_row) or {})},
                 'next_fcst': {'date': fc.index[0].strftime('%Y-%m-%d') if len(fc) else None, **(snap(f_row) or {})}}
-        LATEST[(uid, fmk)] = {'obs': unit['latest_obs'], 'fcst': unit['next_fcst'], 'own': own[uid],
+        dvars = [k for k in ('erc', 'bi', 'ic', 'sc', 'fm100', 'fm1000', 'kbdi', 'gsi', 'tmax', 'rhmin') if k in d.columns]
+        drow = lambda r, dt: {'date': dt.strftime('%Y-%m-%d'), **{k: (None if pd.isna(r[k]) else round(float(r[k]), 2 if k == 'gsi' else 1)) for k in dvars}}
+        days = ([drow(o_row, last_o)] if o_row is not None else [None]) + [drow(r_, dt) for dt, r_ in fc.head(8).iterrows()]
+        LATEST[(uid, fmk)] = {'obs': unit['latest_obs'], 'fcst': unit['next_fcst'], 'own': own[uid], 'days': days,
                               'q': {k: climo.get(k + '_q') for k in ('erc', 'bi')}, 'years': climo.get('years', []),
                               'n_st': len(sids)}
         unit['sfdi_class_fcst'] = sfdi_class(unit['next_fcst'].get('sfdi'))

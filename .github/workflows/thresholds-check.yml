@@ -1,0 +1,26 @@
+# Checks the FDRA thresholds workbook whenever it is uploaded. A red X means some rows need fixing;
+# the run summary lists them by sheet and row. FDRAs with problems keep their last good thresholds.
+name: Thresholds check
+
+on:
+  push:
+    paths: ['site/thresholds/**', 'site/thresholds_book.py']
+  pull_request:
+    paths: ['site/thresholds/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet openpyxl
+      - name: Check the workbook
+        run: |
+          set -o pipefail
+          python site/thresholds_book.py check | tee -a "$GITHUB_STEP_SUMMARY"

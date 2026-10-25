@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="assets/site.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="assets/area.js"></script>
 <script src="assets/common.js"></script>
 </head>
 <body>
 <header class="top">
-  <h1>California Fire Danger Rating Areas</h1>
-  <div class="sub">CA GACC Predictive Services · National Forest FDRAs · NFDRS 2016 fuel models</div>
+  <h1 id="title">California Fire Danger Rating Areas</h1>
+  <div class="sub" id="subtitle">CA GACC Predictive Services · National Forest FDRAs · NFDRS 2016 fuel models</div>
 </header>
 <main>
   <section class="panel">
@@ -34,11 +35,15 @@
     </div>
     <p class="note">SFDI: Jolly, W.M.; Freeborn, P.H.; Page, W.G.; Butler, B.W. 2019. Severe Fire Danger Index: a forecastable metric
       to inform firefighter and community wildfire risk management. <i>Fire</i> 2: 47. NFDRS values: FEMS daily summaries (observed peak and forecast).
-      PAL: <a href="https://gacc.nifc.gov/oscc/predictive/weather/pal_combined_report.html" target="_blank">CA PAL Combined Report</a>.</p>
+      <span id="pal-note"></span></p>
   </section>
 </main>
 <script>
 (async function () {
+  if (AREA.title) { document.getElementById('title').textContent = AREA.title; document.title = AREA.short_title || AREA.title; }
+  if (AREA.subtitle) document.getElementById('subtitle').textContent = AREA.subtitle;
+  document.getElementById('pal-note').innerHTML = palLink();
+  if (!PAL_ON) document.querySelector('#tbl thead th:last-child').remove();
   const embed = new URLSearchParams(location.search).get('embed') === '1';
   const noMap = new URLSearchParams(location.search).get('map') === '0';   // the app's main map already shows SFDI
   if (noMap) { const mp = document.getElementById('map').closest('section'); mp.style.display = 'none'; }
@@ -71,7 +76,7 @@
       l.on('mouseout', () => layer.resetStyle(l));
     },
   }).addTo(map);
-  map.fitBounds([[32.4, -124.6], [42.1, -114.0]], { padding: [10, 10] });   // California (Hawaii FDRAs are off to the southwest)
+  map.fitBounds(AREA.bounds || [[32.4, -124.6], [42.1, -114.0]], { padding: [10, 10] });   // area extent (CA: Hawaii FDRAs are off to the southwest)
   const legend = L.control({ position: 'bottomleft' });
   legend.onAdd = () => {
     const d = L.DomUtil.create('div', 'legend');
@@ -93,7 +98,7 @@
       <td>${esc(p.fuel_model || '')}</td><td>${o.date || '–'}</td><td>${fmt(o.erc)}</td><td>${ord(o.erc_p)}</td>
       <td>${fmt(o.bi)}</td><td>${ord(o.bi_p)}</td>
       <td>${c ? `<span class="badge" style="background:${c.color}">${fmt(fc.sfdi)} ${c.label}</span>` : '–'}</td>
-      <td class="l small">${pal || '–'}</td></tr>`;
+      ${PAL_ON ? `<td class="l small">${pal || '–'}</td>` : ''}</tr>`;
   }).join('');
   document.getElementById('q').addEventListener('input', e => {
     const q = e.target.value.toLowerCase();

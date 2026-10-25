@@ -40,9 +40,15 @@ import requests
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'normals'))
 import ca_normals as cn  # noqa: E402
+sys.path.insert(0, str(ROOT / 'site'))
+from area import AREA  # noqa: E402
 
 log = logging.getLogger('fdop')
-TZ = ZoneInfo('America/Los_Angeles')
+TZ = ZoneInfo(AREA['timezone'])
+CRS = AREA.get('crs', 5070)
+STATES = AREA['states']
+ST_IN = ', '.join(f"'US-{x}'" for x in STATES)
+NIFC_PERIM = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/InterAgencyFirePerimeterHistory_All_Years_View/FeatureServer/0'
 START_YEAR = 2006
 FMS = ['V', 'W', 'X', 'Y', 'Z']
 IDX = {'erc': 'ERC', 'bi': 'BI', 'ic': 'IC', 'sc': 'SC', 'f100': '100HrFM', 'f1000': '1000HrFM', 'kbdi': 'KBDI', 'gsi': 'GSI'}
@@ -103,19 +109,37 @@ def arcgis_query(url, where, fields='*', geometry=True, out_sr=4326, offset_m=No
 # ── FDRAs and candidate stations ─────────────────────────────────────────────
 def load_fdras():
     import geopandas as gpd
-    g = gpd.read_file(POLYGONS).to_crs(3310)
+    g = gpd.read_file(POLYGONS).to_crs(CRS)
     g['geometry'] = g.geometry.make_valid().buffer(0)
     mem = pd.read_csv(MEMBERSHIP).fillna('')
     mem['unit'] = np.where(mem['season'] != '', mem['fdra_id'] + ' (' + mem['season'] + ')', mem['fdra_id'])
     return g, mem
 
 
+def load_area_stations() -> pd.DataFrame:
+    """RAWS for the area: the CA NFDRS 3.0 layer (California), or the national public RAWS layer filtered to the
+    area's states (NWSID = the WIMS / FEMS station id)."""
+    if AREA.get('stations_source') == 'ca_nfdrs':
+        st = cn.load_ca_stations()[['stationId', 'StationName', 'Latitude', 'Longitude']]
+        return st.rename(columns={'StationName': 'name', 'Latitude': 'lat', 'Longitude': 'lon'})
+    where = 'State IN (' + ', '.join(f"'{x}'" for x in STATES) + ") AND NWSID IS NOT NULL"
+    feats = arcgis_query(AREA['raws_layer'], where, fields='NWSID,StationName,Latitude,Longitude', geometry=False, page=2000)
+    rows = []
+    for f in feats:
+        p = f['properties']
+        try:
+            rows.append({'stationId': int(str(p['NWSID']).strip()), 'name': p['StationName'], 'lat': p['Latitude'], 'lon': p['Longitude']})
+        except (TypeError, ValueError):
+            pass
+    log.info('area RAWS (%s): %d with a WIMS id', ', '.join(STATES), len(rows))
+    return pd.DataFrame(rows).drop_duplicates('stationId')
+
+
 def candidate_stations(g, mem):
     """{unit: [stationId,...]} candidates + station table (id, name, lat, lon)."""
     import geopandas as gpd
-    st = cn.load_ca_stations()[['stationId', 'StationName', 'Latitude', 'Longitude']]
-    st = st.rename(columns={'StationName': 'name', 'Latitude': 'lat', 'Longitude': 'lon'})
-    pts = gpd.GeoDataFrame(st, geometry=gpd.points_from_xy(st.lon, st.lat), crs=4326).to_crs(3310)
+    st = load_area_stations()
+    pts = gpd.GeoDataFrame(st, geometry=gpd.points_from_xy(st.lon, st.lat), crs=4326).to_crs(CRS)
     cand, info = {}, {}
     for unit, grp in mem.groupby('unit'):
         poly = g.loc[g.fdra_id.str.upper() == base_id(unit).upper(), 'geometry']
@@ -222,7 +246,7 @@ def fod_fires(cache: Path) -> pd.DataFrame:
                                 columns=['FOD_ID', 'FIRE_YEAR', 'DISCOVERY_DATE', 'FIRE_SIZE', 'NWCG_CAUSE_CLASSIFICATION',
                                          'NWCG_GENERAL_CAUSE', 'LATITUDE', 'LONGITUDE', 'NWCG_REPORTING_AGENCY', 'FIRE_NAME', 'STATE'])
     log.info('FPA FOD read: %d fires nationally', len(df))
-    df = df[(df['STATE'].astype(str).str.strip().isin(['CA', 'HI', 'GU', 'AS', 'MP'])) & (pd.to_numeric(df['FIRE_YEAR']) >= START_YEAR)]
+    df = df[(df['STATE'].astype(str).str.strip().isin(STATES)) & (pd.to_numeric(df['FIRE_YEAR']) >= START_YEAR)]
     dd = pd.to_datetime(df['DISCOVERY_DATE'])
     if dd.dt.tz is not None:              # 7th edition stores dates as UTC midnight; keep the calendar date
         dd = dd.dt.tz_localize(None)
@@ -230,7 +254,7 @@ def fod_fires(cache: Path) -> pd.DataFrame:
                         'cause': df['NWCG_CAUSE_CLASSIFICATION'].map({'Human': 'H', 'Natural': 'N'}).fillna('U'),
                         'lat': df['LATITUDE'], 'lon': df['LONGITUDE'], 'agency': df['NWCG_REPORTING_AGENCY'],
                         'name': df['FIRE_NAME'].fillna(''), 'src': 'FOD'})
-    log.info('FPA FOD CA fires %d-%d: %d', START_YEAR, int(df.FIRE_YEAR.max()), len(out))
+    log.info('FPA FOD area fires %d-%d: %d', START_YEAR, int(df.FIRE_YEAR.max()), len(out))
     return out, int(df.FIRE_YEAR.max())
 
 
@@ -238,7 +262,7 @@ def wfigs_fires(first_year: int) -> pd.DataFrame:
     rows = []
     this = datetime.now(TZ).year
     for y in range(first_year, this + 1):
-        feats = arcgis_query(WFIGS, f"POOState IN ('US-CA', 'US-HI', 'US-GU', 'US-AS', 'US-MP') AND IncidentTypeCategory='WF' AND FireDiscoveryDateTime >= DATE '{y}-01-01' "
+        feats = arcgis_query(WFIGS, f"POOState IN ({ST_IN}) AND IncidentTypeCategory='WF' AND FireDiscoveryDateTime >= DATE '{y}-01-01' "
                                     f"AND FireDiscoveryDateTime < DATE '{y + 1}-01-01'",
                              fields='UniqueFireIdentifier,FireDiscoveryDateTime,IncidentSize,FinalAcres,DiscoveryAcres,FireCause,'
                                     'POOProtectingAgency,IncidentName,IsCpxChild,CpxID,IrwinID', page=2000)
@@ -254,14 +278,14 @@ def wfigs_fires(first_year: int) -> pd.DataFrame:
                          'cause': {'Human': 'H', 'Natural': 'N'}.get(p.get('FireCause'), 'U'),
                          'lon': gm['coordinates'][0], 'lat': gm['coordinates'][1], 'agency': p.get('POOProtectingAgency'),
                          'name': p.get('IncidentName') or '', 'src': 'WFIGS'})
-        log.info('WFIGS %d: %d CA wildfires', y, len(feats))
+        log.info('WFIGS %d: %d area wildfires', y, len(feats))
     w = pd.DataFrame(rows)
     return w.drop_duplicates('uid').drop(columns='uid') if len(w) else w
 
 
 def assign_fires(fires: pd.DataFrame, g) -> dict:
     import geopandas as gpd
-    pts = gpd.GeoDataFrame(fires, geometry=gpd.points_from_xy(fires.lon, fires.lat), crs=4326).to_crs(3310)
+    pts = gpd.GeoDataFrame(fires, geometry=gpd.points_from_xy(fires.lon, fires.lat), crs=4326).to_crs(CRS)
     j = gpd.sjoin(pts, g[['fdra_id', 'geometry']], predicate='within', how='inner')
     out = {}
     for fid, grp in j.groupby('fdra_id'):
@@ -277,20 +301,29 @@ def burned_by_year(g) -> tuple[dict, int]:
     from shapely.geometry import shape
     this = datetime.now(TZ).year
     # f=geojson always returns WGS84, so simplify in degrees (~30 m) and project afterwards
-    feats = arcgis_query(FRAP, f'YEAR_ >= {START_YEAR}', fields='YEAR_,FIRE_NAME,GIS_ACRES', out_sr=4326, offset_m=0.0003)
-    rows = [{'year': int(f['properties']['YEAR_']), 'name': f['properties'].get('FIRE_NAME'), 'geometry': shape(f['geometry'])}
-            for f in feats if f.get('geometry')]
-    frap_max = max(r['year'] for r in rows)
+    if AREA.get('perimeters') == 'frap':      # CAL FIRE FRAP (California)
+        feats = arcgis_query(FRAP, f'YEAR_ >= {START_YEAR}', fields='YEAR_,FIRE_NAME,GIS_ACRES', out_sr=4326, offset_m=0.0003)
+        rows = [{'year': int(f['properties']['YEAR_']), 'name': f['properties'].get('FIRE_NAME'), 'geometry': shape(f['geometry'])}
+                for f in feats if f.get('geometry')]
+    else:                                      # NIFC interagency perimeter history, clipped to the area's FDRAs
+        xmin, ymin, xmax, ymax = g.to_crs(4326).total_bounds
+        env = {'geometry': json.dumps({'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax, 'spatialReference': {'wkid': 4326}}),
+               'geometryType': 'esriGeometryEnvelope', 'inSR': 4326, 'spatialRel': 'esriSpatialRelIntersects'}
+        feats = arcgis_query(NIFC_PERIM, f'FIRE_YEAR_INT >= {START_YEAR}', fields='FIRE_YEAR_INT,INCIDENT,GIS_ACRES',
+                             out_sr=4326, offset_m=0.0003, extra=env)
+        rows = [{'year': int(f['properties']['FIRE_YEAR_INT']), 'name': f['properties'].get('INCIDENT'), 'geometry': shape(f['geometry'])}
+                for f in feats if f.get('geometry') and f['properties'].get('FIRE_YEAR_INT')]
+    frap_max = max((r['year'] for r in rows), default=START_YEAR)
     if frap_max < this:
         try:
-            yt = arcgis_query(WFIGS_YTD, "attr_POOState IN ('US-CA', 'US-HI', 'US-GU', 'US-AS', 'US-MP')", fields='poly_IncidentName,attr_FireDiscoveryDateTime',
+            yt = arcgis_query(WFIGS_YTD, "attr_POOState IN (" + ST_IN + ")", fields='poly_IncidentName,attr_FireDiscoveryDateTime',
                               out_sr=4326, offset_m=0.0003)
             rows += [{'year': this, 'name': f['properties'].get('poly_IncidentName'), 'geometry': shape(f['geometry'])}
                      for f in yt if f.get('geometry')]
         except Exception as e:
             log.warning('WFIGS YTD perimeters: %s', e)
     p = gpd.GeoDataFrame(rows, crs=4326)
-    p = p[p.geom_type.isin(['Polygon', 'MultiPolygon'])].to_crs(3310)
+    p = p[p.geom_type.isin(['Polygon', 'MultiPolygon'])].to_crs(CRS)
     p['geometry'] = p.geometry.buffer(0)
     p = p[~p.geometry.is_empty]
     out = {}
@@ -310,7 +343,7 @@ def burned_by_year(g) -> tuple[dict, int]:
             if len(w):
                 trail[y] = round(100 * w.union_all().intersection(r.geometry).area / area, 2)
         out[r.fdra_id] = {'fdra_acres': round(area / 4046.86), 'by_year': yrs, 'trailing5_pct': trail}
-    log.info('burned area: FRAP %d-%d (+WFIGS YTD %s)', START_YEAR, frap_max, this if frap_max < this else '—')
+    log.info('burned area: perimeters %d-%d (+WFIGS YTD %s)', START_YEAR, frap_max, this if frap_max < this else '—')
     return out, frap_max
 
 
@@ -515,7 +548,7 @@ def main(out: Path, cache: Path):
         'fuel_models': FMS, 'scale': SCALE, 'defaults': DEFAULTS,
         'sources': {'fires': f'FPA FOD 7th ed. (RDS-2013-0009.7) {START_YEAR}-{fod_max}; WFIGS incident locations {fod_max + 1}-{now.year}',
                     'fod_last_year': fod_max,
-                    'perimeters': f'CAL FIRE FRAP {START_YEAR}-{frap_max}' + (f'; WFIGS YTD {now.year}' if frap_max < now.year else ''),
+                    'perimeters': ('CAL FIRE FRAP' if AREA.get('perimeters') == 'frap' else 'NIFC interagency perimeter history') + f' {START_YEAR}-{frap_max}' + (f'; WFIGS YTD {now.year}' if frap_max < now.year else ''),
                     'nfdrs': 'FEMS daily summaries (observed), NFDRS 2016'},
         'units': units, 'scorecards': cards,
         # every RAWS with history, so a planner can add any station to an FDRA's SIG in the Workbench

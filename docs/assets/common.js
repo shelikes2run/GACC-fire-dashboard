@@ -1,6 +1,9 @@
-// Shared helpers for the CA FDRA season-tracking site.
+// Shared helpers for the FDRA season-tracking site. Area settings: assets/area.js (window.AREA).
+const AREA = window.AREA || { repo: 'shelikes2run/GACC-fire-dashboard', pal: { enabled: true, matrix: 'R5' } };
+const PAL_ON = !!(AREA.pal && AREA.pal.enabled);
 const DATA = (new URLSearchParams(location.search).get('data')) ||
-  'https://raw.githubusercontent.com/shelikes2run/GACC-fire-dashboard/site-data/';
+  'https://raw.githubusercontent.com/' + AREA.repo + '/site-data/';
+function palLink() { return PAL_ON && AREA.pal.url ? `PAL: <a href="${AREA.pal.url}" target="_blank">${AREA.pal.label || 'PAL report'}</a>.` : ''; }
 const SFDI_CLASSES = [
   { max: 60, label: 'Low', color: '#2e7d32' },
   { max: 80, label: 'Moderate', color: '#c0ca33' },
@@ -26,5 +29,7 @@ function ord(v) {
 function esc(s) { return String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-root');
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.area-id').forEach(e => { e.textContent = AREA.id || e.textContent; });
+  if (AREA.org) document.querySelectorAll('.area-org').forEach(e => { e.textContent = AREA.org; });
   if (document.documentElement.classList.contains('embed-root')) document.body.classList.add('embed');
 });

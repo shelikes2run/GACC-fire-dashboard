@@ -22,6 +22,7 @@ concurrency:
 
 jobs:
   pal:
+    if: github.repository == 'shelikes2run/GACC-fire-dashboard' || vars.PAL_FEED == 'on'   # the CA PAL report; other areas skip it
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

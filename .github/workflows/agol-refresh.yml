@@ -31,6 +31,7 @@ concurrency:
 
 jobs:
   refresh:
+    if: github.repository == 'shelikes2run/GACC-fire-dashboard'   # California's AGOL layers only (copies of the template skip it)
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:

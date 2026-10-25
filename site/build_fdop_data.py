@@ -312,7 +312,7 @@ def burned_by_year(g) -> tuple[dict, int]:
         feats = arcgis_query(NIFC_PERIM, f'FIRE_YEAR_INT >= {START_YEAR}', fields='FIRE_YEAR_INT,INCIDENT,GIS_ACRES',
                              out_sr=4326, offset_m=0.0003, extra=env)
         rows = [{'year': int(f['properties']['FIRE_YEAR_INT']), 'name': f['properties'].get('INCIDENT'), 'geometry': shape(f['geometry'])}
-                for f in feats if f.get('geometry') and f['properties'].get('FIRE_YEAR_INT')]
+                for f in feats if f.get('geometry') and START_YEAR <= int(f['properties'].get('FIRE_YEAR_INT') or 0) <= this]
     frap_max = max((r['year'] for r in rows), default=START_YEAR)
     if frap_max < this:
         try:

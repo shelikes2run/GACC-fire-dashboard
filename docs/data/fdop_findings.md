@@ -143,6 +143,41 @@ and anything that needs the forest's attention. Values are class upper breakpoin
 - **Pacific Islands Zone 2024 (Hawaii, Guam, CNMI, American Samoa)**: 13 FDRAs from unit ownership (NIFC Jurisdictional Units). Hawaii Volcanoes Kilauea (Keaumo 496006 + Pali 2 496009) and Kahuku Unit (496023; HAVO Kahuku Unit boundary) with the plan's ERC-Y staffing classes — Kilauea uses the mean of the two stations' breakpoints because the FDRA value is the station mean (per station: Keaumo 15.25/30.5/61/69, Pali 2 14.25/28.5/57/61); Kealakomo KBDI (496024) step-up rule in the notes. Zone index stations loaded as their own FDRAs: Hakalau Forest NWR (150105 ERC-Y 13/26/52/59), Kaloko-Honokohau NHP (496017), Kealia Pond NWR Maui (498013), Kalaupapa NHP Molokai (494001), James Campbell NWR Oahu (150301) — KBDI 300/500/600/700. **Haleakala, War in the Pacific NHP and Guam NWR (Guam), American Memorial Park (Saipan), National Park of American Samoa and Rose Atoll NWR are on the map but the plan names no RAWS or thresholds for them** — need station IDs. Fire history now pulls Hawaii, Guam, CNMI and American Samoa from FPA FOD / WFIGS (whatever those sources hold for the territories).
 - **LVICC 2021**: southern Nevada and Parashant (AZ) only — no California FDRAs; nothing loaded.
 
+## USFS R5 FDRA layer, LPF 2026 FDOP, CAL FIRE unit survey (2026-10-24)
+- **USFS polygons swapped for the R5 FDRA layer of 2026-10-22** (R5_FDRA_20261022, 80 features; the Los Padres features appear twice, under "Los Padres" and "LPF", so one copy is used). Name mapping: PNF to PTZ-*; SRF MR / OR / SRNRA / Ukonom / RWP to SRF-130 / 112-115 / 110 / 201 / RWP; INF Owens / Mono / Plautea to 461 / 460 / 443; STF Above 7K to SNF-533, Below 4K to STF-348, Mid 4-7K to STF-370; SNF "non" to SNF-533 and "exempt" dropped; CNF COASTAL (7 ac) dropped. Where R5 FDRAs overlap each other, the smaller one wins.
+- New USFS FDRAs: LNF-West and LNF-East (they replace LNF-ALL and both use the joint LNF / Lassen Volcanic NP FDOP thresholds until separate ones are set), plus LPF-512 Vandenberg, LPF-514 Santa Barbara and LPF-514IS Channel Islands.
+- Removed: ENF-330 and ENF-340 (the R5 layer has only ENF-335) and NPS-LAVO (Lassen Volcanic NP is inside the R5 LNF FDRAs and on the same FDOP).
+- **Other agencies' own-plan FDRAs keep their ground.** The R5 polygons were clipped around CDIFP, BLM NOD/CND and NPS YOSE/SEKI/PINN. Biggest overlaps: BDF-694 lost 416,861 ac to CDIFP; LPF-588 lost 232,948 ac to BLM CND B11 and CDIFP; BDF-660 lost 25,743 ac; BDF-673 lost 9,501 ac. If the R5 layer means these lands to be USFS FDRA ground, the BLM / CDIFP shapes need to be revisited.
+- CAL FIRE / interagency pieces were trimmed to the new USFS union. These pieces now lie wholly inside R5 FDRAs and were removed: LNU-Mnf, NEU-Eastern, SBC-Cuyama Valley, SBC-Santa Ynez Valley and SQF-435 (outside NF). About 1.01M ac of former USFS FDRA land that the R5 layer no longer covers was given to the adjacent CAL FIRE piece, by FDRA_MASTER_2 name or, failing that, the longest shared border (for example LMU-Lmunw +271k ac, LMU-Lassen Nf +183k ac).
+- **LPF 2026 FDOP** (Vol. 1-3), fuel model X, fire history 2005-2022, large fire 75+ ac. All 10 FDRAs have:
+  - Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th and SL5 = 97th percentile.
+  - Adjective classes on BI-X and ERC-X.
+  - Dispatch levels on predicted BI-X (Table 34) and ERC-X (Table 35), with Low/Moderate at the 70th percentile and Moderate/High at the 90th.
+  - Discrepancies in the plan: Table 12 gives 514 ERC Low as 0-44 against 0-40 in the other tables (0-40 used), and Table 38 gives 586 BI SL5 as 153-208 against 153-308.
+- **CAL FIRE unit survey (Aug 2025)**: dispatch Low/Moderate/High levels were loaded as Workbench and popup tools for 54 pieces, using the survey's stations and fuel model. Membership and the layer's station_ids were updated to match. Matches:
+  - **AEU:** West.
+  - **CZU:** Inland, Coast and Bayside.
+  - **ORC:** Coastal and Inland (BI daily max).
+  - **NEU:** Placer, Western, Central and Foothill. Central and Foothill read "L 0-25, M 10-25", taken as 10/25.
+  - **BDU:** Valley, Mountain, Desert and Owens Valley.
+  - **TGU:** 1 Timber, 2 Grass (SC-V) and 3 Brush.
+  - **FKU:** Westdie (West), Auberry Dunlap (East), Shaver Kings (Shaver) and Great_Valley (LRA).
+  - **BEU:** West (Coastal Timber), North (Gabilan) and South (Salinas Valley Grass).
+  - **LMU:** Lmuse, Lmusw, Lmunw and Lmu Unit (SE/SW/NW/NE), with the North/South schemes as alternate tools.
+  - **SCU:** 7 (Northeast), 5 (Central), 6 (Bay, plus Northwest as a second tool) and 2 (South).
+  - **SLU:** Coastal, Coastal Valley and Inland Grass.
+  - **LNU:** West Side, Mayacamas, Central, East Side and Southend.
+  - **MMU:** Los Banos and Catheys Valley (SC-V), Mariposa and Metcalf.
+  - **BTU:** Grass (Valley), Brush (Foothill) and Timber (Mountain).
+  - **HUU:** Eel River, Alder Point and Coastal Strip.
+  - **TUU:** 1 and Lra.
+  - **TCU:** Fothills West (IC-Y).
+- SDU and SHU keep their signed FDOPs; the survey values match the SDU dispatch levels.
+- Survey FDRAs with no matching piece yet: AEU East and Alpine; NEU East (NEU-Eastern now lies inside R5 FDRAs); BEU Sierra de Salinas Shrub and Diablo Grasslands; SLU Inland Brush (Las Tablas 44904); TCU Foothills East (Banner Road IC 6/29); RRU Valley (V 30/60) and Mountain (X 110/185).
+- BDU Owens Valley lists Oak Creek as "20219", which is not a RAWS id, so it was left out.
+- Pinnacles: the survey's BEU Gabilan dispatch, BI-X 144/209, is added as a second tool. The 2023 park plan gives 60/160.
+- Pacific: added RAWS for American Samoa (TOA RIDGE 520102 and SIUFAGA RIDGE 520103, assigned to NPSA) and Saipan (AMME CS 520100) from the CAL FIRE Phase 1 station list. There are still no thresholds for these units, and still no Guam station.
+
 ## Cross-forest
 - Station weighting: the 2026 Forest Thresholds sheet has no SIG/weight columns, and 'Raws to PSA.xlsx' groups RAWS into South Ops PSAs (SC01–SC16), not FDRA SIGs. SIGs and weights are taken from each FDOP; only SNF-532 is unequally weighted. The membership file now has a weight column, used everywhere SIG values are averaged.
 - 2025 R5 PAL matrix now in the Workbench PAL check.

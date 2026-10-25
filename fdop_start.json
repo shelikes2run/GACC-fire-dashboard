@@ -1,0 +1,9283 @@
+{
+ "_about": "Starting points for the FDOP Workbench and the popup levels, built from site/thresholds/FDRA_thresholds.xlsx. Breakpoint = top of its class. Optional \"weights\": {stationId: weight} gives a weighted SIG; stations without a weight count 1.",
+ "AEU-West": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   42612
+  ],
+  "fm": "V",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    26,
+    48
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (AEU West FDRA; BI-V)",
+    "idx": "bi",
+    "fm": "V",
+    "breaks": [
+     26,
+     48
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE AEU \"West FDRA\" from the unit survey: BI-V dispatch Low 0-26, Moderate to 48, High above. Stations 42612. Ben Bolt + CFA (no RAWS id)."
+ },
+ "ANF-Front Country": {
+  "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
+  "stations": [
+   45443,
+   45405,
+   45411,
+   45437,
+   45421
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    38,
+    92,
+    147,
+    225
+   ],
+   "erc": [
+    16.6,
+    33.6,
+    55.2,
+    93
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "FDRA average BI breakpoints (Tables 2-3)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     38,
+     92,
+     147,
+     225
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FDRA average ERC breakpoints (Table 4)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     16.6,
+     33.6,
+     55.2,
+     93
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA average of the per-station Fire Family Plus breakpoints (BI Low/Mod/High/VH/Extreme = 38/92/147/225/271; ERC 16.6/33.6/55.2/93/109.4). Per-station values: Claremont, Clear Creek, Little Tujunga, Santa Fe, Tanbark.",
+  "top": {
+   "bi": 271,
+   "erc": 109.4
+  }
+ },
+ "ANF-High Country": {
+  "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
+  "stations": [
+   45401,
+   45436,
+   45435
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    69,
+    119,
+    187,
+    239
+   ],
+   "erc": [
+    5.7,
+    47,
+    70.7,
+    96
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "FDRA average BI breakpoints (Tables 2-3)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     69,
+     119,
+     187,
+     239
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FDRA average ERC breakpoints (Table 4)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     5.7,
+     47,
+     70.7,
+     96
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA averages of per-station breakpoints (BI 69/119/187/239/290; ERC 5.7/47/70.7/96/108). Stations Big Pines, Chilao, Mill Creek.",
+  "top": {
+   "bi": 290,
+   "erc": 108
+  }
+ },
+ "ANF-Saugus": {
+  "source": "Angeles NF FDOP Vol. 3 (2022-07-29), Tables 2-4",
+  "stations": [
+   45438,
+   45449,
+   45435,
+   45423,
+   45426,
+   45448
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    43,
+    110,
+    182,
+    247
+   ],
+   "erc": [
+    19.8,
+    39.5,
+    74.2,
+    99.8
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "FDRA average BI breakpoints (Tables 2-3)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     43,
+     110,
+     182,
+     247
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FDRA average ERC breakpoints (Table 4)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     19.8,
+     39.5,
+     74.2,
+     99.8
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA averages of per-station breakpoints (BI 43/110/182/247/304; ERC 19.8/39.5/74.2/99.8/107.5). Stations Acton, Grass Mtn, Mill Creek, Valyermo, Warm Springs Mtn, Whitaker Peak.",
+  "top": {
+   "bi": 304,
+   "erc": 107.5
+  }
+ },
+ "BDF-660": {
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "stations": [
+   45601,
+   45113,
+   45108,
+   45109
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    90,
+    125,
+    156,
+    181
+   ],
+   "erc": [
+    20,
+    33,
+    48,
+    58
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 30,
+  "tools": [
+   {
+    "label": "2026 operational staffing (BI-X; FEMS tool / 2026 sheet, 20th/40th/70th/90th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     90,
+     125,
+     156,
+     181
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-X; 2026 sheet)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     90,
+     125,
+     181
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     75,
+     124,
+     175,
+     212
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     33,
+     48,
+     58
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "Primary: 2026 operational BI-X staffing 90/125/156/181 (20th/40th/70th/90th percentiles) and dispatch (Moderate 90, High 125, High+ 181) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-X staffing/dispatch 75/124/175/212; ERC-Y preparedness 20/33/48/58. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+ },
+ "BDF-670": {
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "stations": [
+   45604,
+   45605,
+   45612
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    20,
+    28,
+    32,
+    36
+   ],
+   "erc": [
+    23,
+    37,
+    50,
+    56
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 30,
+  "tools": [
+   {
+    "label": "2026 operational staffing (BI-Y; FEMS tool / 2026 sheet, 22nd/60th/80th/90th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20,
+     28,
+     32,
+     36
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-Y; 2026 sheet)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20,
+     28,
+     36
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-Y; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     18,
+     30,
+     47,
+     55
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     23,
+     37,
+     50,
+     56
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "Primary: 2026 operational BI-Y staffing 20/28/32/36 (22nd/60th/80th/90th percentiles) and dispatch (Moderate 20, High 28, High+ 36) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-Y staffing/dispatch 18/30/47/55; ERC-Y preparedness 23/37/50/56. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+ },
+ "BDF-673": {
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "stations": [
+   45616,
+   45603
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    113,
+    144,
+    170,
+    193
+   ],
+   "erc": [
+    20,
+    35,
+    50,
+    61
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 30,
+  "tools": [
+   {
+    "label": "2026 operational staffing (BI-X; FEMS tool / 2026 sheet, 20th/40th/70th/92nd)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     113,
+     144,
+     170,
+     193
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-X; 2026 sheet)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     113,
+     144,
+     193
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     100,
+     150,
+     200,
+     260
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     35,
+     50,
+     61
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "Primary: 2026 operational BI-X staffing 113/144/170/193 (20th/40th/70th/92nd percentiles) and dispatch (Moderate 113, High 144, High+ 193) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-X staffing/dispatch 100/150/200/260; ERC-Y preparedness 20/35/50/61. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+ },
+ "BDF-692": {
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "stations": [
+   45105,
+   45101,
+   45133
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    19,
+    25,
+    31,
+    35
+   ],
+   "erc": [
+    28,
+    42,
+    54,
+    61
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 30,
+  "tools": [
+   {
+    "label": "2026 operational staffing (BI-Y; FEMS tool / 2026 sheet, 22nd/45th/75th/92nd)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     25,
+     31,
+     35
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-Y; 2026 sheet)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     25,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-Y; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     18,
+     27,
+     38,
+     43
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     28,
+     42,
+     54,
+     61
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "Primary: 2026 operational BI-Y staffing 19/25/31/35 (22nd/45th/75th/92nd percentiles) and dispatch (Moderate 19, High 25, High+ 35) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-Y staffing/dispatch 18/27/38/43; ERC-Y preparedness 28/42/54/61. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+ },
+ "BDF-694": {
+  "source": "2026 Forest Thresholds sheet (BDF FEMS operational tool, K. Osborne) + San Bernardino NF 2023 FDOP Vol. 1, Tables 13-18, 23-24",
+  "stations": [
+   45102,
+   45114,
+   45111
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    104,
+    127,
+    160,
+    185
+   ],
+   "erc": [
+    25,
+    40,
+    55,
+    65
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 30,
+  "tools": [
+   {
+    "label": "2026 operational staffing (BI-X; FEMS tool / 2026 sheet, 20th/40th/70th/90th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     104,
+     127,
+     160,
+     185
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "2026 operational dispatch (BI-X; 2026 sheet)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     104,
+     127,
+     185
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "High+"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Staffing / dispatch levels (BI-X; Tables 13-18, 24)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     75,
+     120,
+     173,
+     204
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 High",
+     "SL5 High + 2nd alarm"
+    ]
+   },
+   {
+    "label": "2023 FDOP — Preparedness levels (ERC-Y; Table 23)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     25,
+     40,
+     55,
+     65
+    ],
+    "classes": [
+     "PL1",
+     "PL2",
+     "PL3",
+     "PL4",
+     "PL5"
+    ]
+   }
+  ],
+  "notes": "Primary: 2026 operational BI-X staffing 104/127/160/185 (20th/40th/70th/90th percentiles) and dispatch (Moderate 104, High 127, High+ 185) from the 2026 Forest Thresholds sheet, mirrored in the BDF FEMS operational tool. Also listed: the 2023 FDOP tables. BI-X staffing/dispatch 75/120/173/204; ERC-Y preparedness 25/40/55/65. Large fire = 30 ac+. Adjective tables are images in the FDOP."
+ },
+ "BDU-Desert": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   45112,
+   45134
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    25,
+    50
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BDU Desert FDRA; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     25,
+     50
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BDU \"Desert FDRA\" from the unit survey: BI-X dispatch Low 0-25, Moderate to 50, High above. Stations 45112, 45134."
+ },
+ "BDU-Mountain": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   45101,
+   45133
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    10,
+    25
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BDU Mountain FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     10,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BDU \"Mountain FDRA\" from the unit survey: BI-Y dispatch Low 0-10, Moderate to 25, High above. Stations 45101, 45133."
+ },
+ "BDU-Owens Valley": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44803
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    40,
+    60
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BDU Owens Valley FDRA; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     40,
+     60
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BDU \"Owens Valley FDRA\" from the unit survey: BI-X dispatch Low 0-40, Moderate to 60, High above. Stations 44803. Oak Creek listed as \"20219\" (not a RAWS id) - left out."
+ },
+ "BDU-Valley": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   45113,
+   480306,
+   45114
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    25,
+    79
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BDU Valley FDRA; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     25,
+     79
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BDU \"Valley FDRA\" from the unit survey: BI-X dispatch Low 0-25, Moderate to 79, High above. Stations 45113, 480306, 45114."
+ },
+ "BEU-FDRA South BEU": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44303,
+   44310
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    196,
+    252
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BEU Salinas Valley Grass FDRA; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     196,
+     252
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BEU \"Salinas Valley Grass FDRA\" from the unit survey: BI-X dispatch Low 0-196, Moderate to 252, High above. Stations 44303, 44310."
+ },
+ "BEU-Fdra North Beu": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44310,
+   44410,
+   44409
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    144,
+    209
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BEU Gabilan FDRA; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     144,
+     209
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BEU \"Gabilan FDRA\" from the unit survey: BI-X dispatch Low 0-144, Moderate to 209, High above. Stations 44310, 44410, 44409."
+ },
+ "BEU-Fdra West Beu": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44301,
+   44302
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    22,
+    38
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BEU Coastal Timber FDRA; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     22,
+     38
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BEU \"Coastal Timber FDRA\" from the unit survey: BI-W dispatch Low 0-22, Moderate to 38, High above. Stations 44301, 44302."
+ },
+ "BLM-CND-B11": {
+  "source": "BLM CA-CND SQFCND FireFamily Plus analysis (2016) — NFDRS 1978 only",
+  "stations": [
+   44916
+  ],
+  "fm": "V",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "large": 10,
+  "mfd": 5,
+  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Carrizo 44916 (model 7A, grass). BI-A decision points 12/25/51/61 (5 classes, max 90); preparedness BI-A 26. NFDRS 2016 fuel model V (grass) used. Polygon = BLM-owned land (NIFC Jurisdictional Units), Bakersfield FO, Carrizo Plain / Temblor / Caliente south of 35.55°N."
+ },
+ "BLM-CND-B12": {
+  "source": "BLM CA-CND SQFCND FireFamily Plus analysis (2016) — NFDRS 1978 only",
+  "stations": [
+   44602,
+   44916
+  ],
+  "fm": "V",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "large": 10,
+  "mfd": 5,
+  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Kettleman Hills 44602 (0.5) + Carrizo 44916 (0.5), model 7A. BI-A decision points 12/24/49/56 (max 79); preparedness BI-A 26. NFDRS 2016 fuel model V used. Polygon = BLM-owned land (NIFC Jurisdictional Units), Bakersfield FO west of 119.3°W, north of 35.55°N (Kettleman Hills / Coalinga / north Temblor)."
+ },
+ "BLM-CND-B13": {
+  "source": "BLM CA-CND SQFCND FireFamily Plus analysis (2016) — NFDRS 1978 only",
+  "stations": [
+   44730
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "large": 10,
+  "mfd": 5,
+  "notes": "BLM Central California District (Bakersfield FO) FireFamily Plus analysis SQFCND_final (Geo Elements, June 2016), May 1–Nov 30, 1997–2015, large fire 10 ac, multi-fire day 5. Breakpoints are NFDRS 1978 and are not comparable with NFDRS 2016 values, so they are reference only (no decision tools loaded): SIG Bear Peak 44730 (model 7T, sagebrush-grass). BI-T decision points 24/49/99/122 (max 195); preparedness ERC-T 13. NFDRS 2016 fuel model W used. Polygon = BLM-owned land (NIFC Jurisdictional Units), Bakersfield FO east of 118.75°W (Kern River Valley / Piute / Kern Plateau / Walker Pass)."
+ },
+ "BLM-NOD-260": {
+  "source": "BLM CA-NOD Fire Danger Operating Plan 2017 (draft) — no FDOP breakpoints",
+  "stations": [
+   40725,
+   40728,
+   260113,
+   40727,
+   40714,
+   40732,
+   260111,
+   40308,
+   260112,
+   260110,
+   43690
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "notes": "CA-NOD FDOP 2017 is a draft: the decision summary table and staffing/dispatch breakpoints were never filled in. FDRA 265 Eagle Lake FO (SIG Blue Door 40725, Bull Flat 40728, Buffalo Creek 260113 NV, Horse Lake 40727, Ravendale 40714, Hidden Valley 40732) and FDRA 260 Applegate FO/Surprise (Barrel Springs 260111 NV, Juniper Creek 40308, Juniper Springs 260112 NV, Fox Mtn 260110 NV, Surprise Valley 43690). Plan recommends one SIG of all 11 stations for both FDRAs (one daily BI/dispatch level for NOD, matching SIFC practice) — used here. Plan uses BLM 80th/95th BI climatological breakpoints on NFDRS 1978 fuel model T: 265 70.0/85.6, 260 70.75/87.6, all 69.3/85.8 (1997–2016) — not comparable with NFDRS 2016; fuel model W (grass-shrub, the NFDRS 2016 equivalent of T) is used, with BLM 80th/95th percentiles computed from FEMS. Hidden Valley has only ~5 years of data. FDRA polygons are the CA part only (both FDRAs extend into Nevada); BLM-owned land (NIFC Jurisdictional Units) split at the Modoc/Lassen county line."
+ },
+ "BLM-NOD-265": {
+  "source": "BLM CA-NOD Fire Danger Operating Plan 2017 (draft) — no FDOP breakpoints",
+  "stations": [
+   40725,
+   40728,
+   260113,
+   40727,
+   40714,
+   40732,
+   260111,
+   40308,
+   260112,
+   260110,
+   43690
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "notes": "CA-NOD FDOP 2017 is a draft: the decision summary table and staffing/dispatch breakpoints were never filled in. FDRA 265 Eagle Lake FO (SIG Blue Door 40725, Bull Flat 40728, Buffalo Creek 260113 NV, Horse Lake 40727, Ravendale 40714, Hidden Valley 40732) and FDRA 260 Applegate FO/Surprise (Barrel Springs 260111 NV, Juniper Creek 40308, Juniper Springs 260112 NV, Fox Mtn 260110 NV, Surprise Valley 43690). Plan recommends one SIG of all 11 stations for both FDRAs (one daily BI/dispatch level for NOD, matching SIFC practice) — used here. Plan uses BLM 80th/95th BI climatological breakpoints on NFDRS 1978 fuel model T: 265 70.0/85.6, 260 70.75/87.6, all 69.3/85.8 (1997–2016) — not comparable with NFDRS 2016; fuel model W (grass-shrub, the NFDRS 2016 equivalent of T) is used, with BLM 80th/95th percentiles computed from FEMS. Hidden Valley has only ~5 years of data. FDRA polygons are the CA part only (both FDRAs extend into Nevada); BLM-owned land (NIFC Jurisdictional Units) split at the Modoc/Lassen county line."
+ },
+ "BTU-Brush": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   41211,
+   41214,
+   40805
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    54,
+    140
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BTU Foothill; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     54,
+     140
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BTU \"Foothill\" from the unit survey: BI-X dispatch Low 0-54, Moderate to 140, High above. Stations 41211, 41214, 40805."
+ },
+ "BTU-Grass": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   41201,
+   40814,
+   41215
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    10,
+    28
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BTU Valley; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     10,
+     28
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BTU \"Valley\" from the unit survey: BI-W dispatch Low 0-10, Moderate to 28, High above. Stations 41201, 40814, 41215."
+ },
+ "BTU-Timber": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   41213,
+   41701,
+   41214
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    30,
+    72
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (BTU Mountain; BI-Z)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     30,
+     72
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE BTU \"Mountain\" from the unit survey: BI-Z dispatch Low 0-30, Moderate to 72, High above. Stations 41213, 41701, 41214."
+ },
+ "CDIFP-Lower Desert": {
+  "source": "CDIFP Interagency Fire Danger Operating Plan 2024 (signed 2024-03-01)",
+  "stations": [
+   45802,
+   45801
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "calib": [
+   2010,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    48,
+    65,
+    82,
+    93
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing level (Lower Desert; ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     48,
+     65,
+     82,
+     93
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Response / restriction level (Lower Desert; ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     65,
+     90
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Fuel model Y for all four FDRAs (best fit to fire occurrence 2010-2022). Staffing level = 5 fire-business breakpoints on ERC-Y (the same breaks give the adjective rating through the staffing x IC matrix); response and restriction levels = 3 levels on ERC-Y; unit-wide preparedness level uses one all-station SIG (values only in graphics). CDIFP = BLM California Desert District, NPS Death Valley, Joshua Tree, Mojave NPres, Castle Mountains NM, and BOR lands in Riverside / Imperial counties (FICC dispatch). Lower Desert SIG includes Senator Wash (045801, BLM Yuma, Arizona)."
+ },
+ "CDIFP-Mojave Desert": {
+  "source": "CDIFP Interagency Fire Danger Operating Plan 2024 (signed 2024-03-01)",
+  "stations": [
+   45129,
+   45614,
+   45128
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "calib": [
+   2010,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    32,
+    52,
+    71,
+    81
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing level (Mojave Desert; ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     32,
+     52,
+     71,
+     81
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Response / restriction level (Mojave Desert; ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     52,
+     74
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Fuel model Y for all four FDRAs (best fit to fire occurrence 2010-2022). Staffing level = 5 fire-business breakpoints on ERC-Y (the same breaks give the adjective rating through the staffing x IC matrix); response and restriction levels = 3 levels on ERC-Y; unit-wide preparedness level uses one all-station SIG (values only in graphics). CDIFP = BLM California Desert District, NPS Death Valley, Joshua Tree, Mojave NPres, Castle Mountains NM, and BOR lands in Riverside / Imperial counties (FICC dispatch)."
+ },
+ "CDIFP-South Coast": {
+  "source": "CDIFP Interagency Fire Danger Operating Plan 2024 (signed 2024-03-01)",
+  "stations": [
+   45438,
+   45603,
+   45710,
+   45729
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "calib": [
+   2010,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    30,
+    42,
+    58,
+    70
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing level (South Coast; ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     30,
+     42,
+     58,
+     70
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Response / restriction level (South Coast; ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     36,
+     60
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Fuel model Y for all four FDRAs (best fit to fire occurrence 2010-2022). Staffing level = 5 fire-business breakpoints on ERC-Y (the same breaks give the adjective rating through the staffing x IC matrix); response and restriction levels = 3 levels on ERC-Y; unit-wide preparedness level uses one all-station SIG (values only in graphics). CDIFP = BLM California Desert District, NPS Death Valley, Joshua Tree, Mojave NPres, Castle Mountains NM, and BOR lands in Riverside / Imperial counties (FICC dispatch)."
+ },
+ "CDIFP-Upper Desert": {
+  "source": "CDIFP Interagency Fire Danger Operating Plan 2024 (signed 2024-03-01)",
+  "stations": [
+   45127,
+   45440,
+   45444
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "calib": [
+   2010,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    30,
+    55,
+    73,
+    81
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing level (Upper Desert; ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     30,
+     55,
+     73,
+     81
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Response / restriction level (Upper Desert; ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     42,
+     79
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Fuel model Y for all four FDRAs (best fit to fire occurrence 2010-2022). Staffing level = 5 fire-business breakpoints on ERC-Y (the same breaks give the adjective rating through the staffing x IC matrix); response and restriction levels = 3 levels on ERC-Y; unit-wide preparedness level uses one all-station SIG (values only in graphics). CDIFP = BLM California Desert District, NPS Death Valley, Joshua Tree, Mojave NPres, Castle Mountains NM, and BOR lands in Riverside / Imperial counties (FICC dispatch)."
+ },
+ "CNF-INLAND": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45704,
+   45710,
+   45729,
+   45734,
+   45744,
+   45745
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    52,
+    105,
+    211,
+    239
+   ],
+   "erc": [
+    60
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     52,
+     105,
+     211,
+     239
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     119,
+     188
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 61+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     60
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 61+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "Coastal/Inland FDRA. 2025 FEMS amendment: dispatch BI-X 0-119 / 120-188 / 189+; staffing & adjective BI-X 0-52/53-105/106-211/212-239/240+ (90th 211, 97th 239); seasonal staffing ERC-X 61+ (90% of fires ≥1 ac, 2013-2022, calendar year, large fire 1 ac). SIG confirmed from the 2022 FDOP (OCR of the scanned PDF): fuel model X, equal weights, analysis Apr 1-Nov 19."
+ },
+ "CNF-MOUNTAIN": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45619,
+   45635,
+   45636,
+   45707,
+   45708,
+   45709,
+   45711,
+   45740
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    46,
+    94,
+    188,
+    212
+   ],
+   "erc": [
+    64
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     46,
+     94,
+     188,
+     212
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     111,
+     167
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 65+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 65+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). SIG confirmed from the 2022 FDOP: fuel model X, equal weights."
+ },
+ "CZU-Bayside": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   43309
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    40.5,
+    70
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (CZU Bayside FDRA; BI-Z)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     40.5,
+     70
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE CZU \"Bayside FDRA\" from the unit survey: BI-Z dispatch Low 0-40.5, Moderate to 70, High above. Stations 43309. Survey gives no station; existing station kept."
+ },
+ "CZU-Coast": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   43802,
+   43304
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    13,
+    22
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (CZU Coast FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     13,
+     22
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE CZU \"Coast FDRA\" from the unit survey: BI-Y dispatch Low 0-13, Moderate to 22, High above. Stations 43802, 43304."
+ },
+ "CZU-Inland": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   43809,
+   43404
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    55.9,
+    75
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (CZU Inland FDRA; BI-Z)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     55.9,
+     75
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE CZU \"Inland FDRA\" from the unit survey: BI-Z dispatch Low 0-55.9, Moderate to 75, High above. Stations 43809, 43404."
+ },
+ "ENF-335": {
+  "source": "Eldorado NF Fire Danger Operating Plan 2026, Tables 3, 5, 7, 10, 11",
+  "stations": [
+   42601,
+   42603,
+   42608,
+   42611,
+   42615
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    15,
+    31,
+    50,
+    60
+   ],
+   "bi": [
+    10,
+    20,
+    29
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 5,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-Y; Tables 5 and 10, Jan–Dec)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     15,
+     31,
+     50,
+     60
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; Table 7, Jan–Dec)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     10,
+     20,
+     29
+    ],
+    "classes": [
+     "Smoke Check",
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 FDOP: one FDRA, SIG of 5 RAWS (Beaver, Bald Mtn, Hellhole, Owens Camp, Steely Fork), fuel model Y, 2016-2025 Jan-Dec. Staffing ERC-Y 0-15/16-31/32-50/51-60/61+; dispatch BI-Y 0-10 smoke check, 11-20 low, 21-29 medium, 30+ high (95th). Large fire = 5 ac; multi-fire day = 2+. FDOP SIG 90th/97th: ERC-Y 57/61, BI-Y 30/32 (ERC-X 88/93, BI-X 147/161). Replaces the peak / non-peak sets. Robbs and Granite Springs to join a future high-elevation FDRA. The 2026 sheet's peak/non-peak entries are superseded by this FDOP (sheet dispatch BI 10/20/28 matches)."
+ },
+ "FKU-Auberry Dunlap": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44517
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    10,
+    40
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (FKU EAST FDRA; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     10,
+     40
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE FKU \"EAST FDRA\" from the unit survey: BI-X dispatch Low 0-10, Moderate to 40, High above. Stations 44517. Survey lists BI and IC; dispatch breakpoints taken as BI."
+ },
+ "FKU-Great_Valley": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44516
+  ],
+  "fm": "V",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    10,
+    45
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (FKU LRA FDRA; BI-V)",
+    "idx": "bi",
+    "fm": "V",
+    "breaks": [
+     10,
+     45
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE FKU \"LRA FDRA\" from the unit survey: BI-V dispatch Low 0-10, Moderate to 45, High above. Stations 44516. Survey lists BI and IC; dispatch breakpoints taken as BI."
+ },
+ "FKU-Shaver Kings": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44522
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    15,
+    55
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (FKU SHAVER FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     15,
+     55
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE FKU \"SHAVER FDRA\" from the unit survey: BI-Y dispatch Low 0-15, Moderate to 55, High above. Stations 44522. Survey lists BI and IC; dispatch breakpoints taken as BI."
+ },
+ "FKU-Westdie": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44514
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    20,
+    48
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (FKU WEST FDRA; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     20,
+     48
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE FKU \"WEST FDRA\" from the unit survey: BI-W dispatch Low 0-20, Moderate to 48, High above. Stations 44514. Survey lists BI and IC; dispatch breakpoints taken as BI."
+ },
+ "HUU-Alder Point": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40423
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    15.9,
+    18.9
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (HUU Alderpoint; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     15.9,
+     18.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE HUU \"Alderpoint\" from the unit survey: BI-Y dispatch Low 0-15.9, Moderate to 18.9, High above. Stations 40423."
+ },
+ "HUU-Coastal Strip": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40429
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    16.9,
+    21.9
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (HUU Coastal Strip; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     16.9,
+     21.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE HUU \"Coastal Strip\" from the unit survey: BI-Y dispatch Low 0-16.9, Moderate to 21.9, High above. Stations 40429."
+ },
+ "HUU-Eel River": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40421
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    17.9,
+    22.9
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (HUU Eel River; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     17.9,
+     22.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE HUU \"Eel River\" from the unit survey: BI-Y dispatch Low 0-17.9, Moderate to 22.9, High above. Stations 40421."
+ },
+ "INF-443": {
+  "source": "Inyo NF Fire Danger Operating Plan, April 2026, Appendix 4, Tables A12.1-A12.2",
+  "stations": [
+   44722
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    25,
+    35,
+    49,
+    54
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Adjective, dispatch & staffing levels (ERC-Y; Appendix 4)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     25,
+     35,
+     49,
+     54
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "PLATEAU SIG: Black Rock (SQF RAWS), 2005-2025 Jan-Dec. ERC-Y bins Low 0-25 / Mod 26-35 / High 36-49 / VH 50-54 (90th) / Ext 55+ (97th); FFP bins, not manager-modified. ERC-Y for all decision tools. Calibration starts 2006 here (first year of the Workbench record)."
+ },
+ "INF-460": {
+  "source": "Inyo NF Fire Danger Operating Plan, April 2026, Appendix 2, Tables A5.1-A5.2",
+  "stations": [
+   43709,
+   43710,
+   43711
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    14,
+    25,
+    33,
+    37
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Adjective, dispatch & staffing levels (BI-Y; Appendix 2)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     14,
+     25,
+     33,
+     37
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "MONO SIG: Crestview, Rock Creek, Dexter (equal weight), 2005-2025 Jan-Dec. BI-Y bins Low 0-14 / Mod 15-25 / High 26-33 / VH 34-37 (90th) / Ext 38+ (97th); FFP bins, not manager-modified. BI-Y used for pocket card, adjective, dispatch and staffing levels. Calibration starts 2006 here (first year of the Workbench record)."
+ },
+ "INF-461": {
+  "source": "Inyo NF Fire Danger Operating Plan, April 2026, Appendix 3, Tables A11.1-A11.2",
+  "stations": [
+   43708,
+   43710,
+   44803,
+   44804
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    31,
+    37,
+    48,
+    53
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Adjective, dispatch & staffing levels (BI-Y; Appendix 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     31,
+     37,
+     48,
+     53
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "OWENS SIG: Benton, Rock Creek, Owens Valley, Oak Creek (equal weight), 2005-2025 Jan-Dec. BI-Y bins Low 0-31 / Mod 32-37 / High 38-48 / VH 49-53 (90th) / Ext 54+ (97th); FFP bins, not manager-modified. BI-Y for all decision tools. Calibration starts 2006 here (first year of the Workbench record)."
+ },
+ "KNF-200": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40222,
+   40225,
+   40237
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    12,
+    17,
+    22,
+    27
+   ],
+   "erc": [
+    22,
+    34,
+    42,
+    52
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 50,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF West; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     17,
+     22,
+     27
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF West; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     28,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF West; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     22,
+     34,
+     42,
+     52
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF West dispatch-area SIG (40222, 40225, 40237), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 50 ac, multi-fire day 2+. This FDRA's own SIG (Slater Butte, Somes Bar, Dutch Indy) is used for the season-tracking charts; the Workbench starts from the KNF West SIG."
+ },
+ "KNF-202": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40222,
+   40225,
+   40237
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    12,
+    17,
+    22,
+    27
+   ],
+   "erc": [
+    22,
+    34,
+    42,
+    52
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 50,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF West; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     17,
+     22,
+     27
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF West; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     28,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF West; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     22,
+     34,
+     42,
+     52
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF West dispatch-area SIG (40222, 40225, 40237), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 50 ac, multi-fire day 2+. This FDRA's own SIG (Blue Ridge, Sawyers Bar, Somes Bar) is used for the season-tracking charts; the Workbench starts from the KNF West SIG."
+ },
+ "KNF-204": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40222,
+   40225,
+   40237
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    12,
+    17,
+    22,
+    27
+   ],
+   "erc": [
+    22,
+    34,
+    42,
+    52
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 50,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF West; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     17,
+     22,
+     27
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF West; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     28,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF West; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     22,
+     34,
+     42,
+     52
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF West dispatch-area SIG (40222, 40225, 40237), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 50 ac, multi-fire day 2+. This FDRA's own SIG (Oak Knoll, Slater Butte, Collins Baldy) is used for the season-tracking charts; the Workbench starts from the KNF West SIG."
+ },
+ "KNF-208": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40222,
+   40225,
+   40237
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    12,
+    17,
+    22,
+    27
+   ],
+   "erc": [
+    22,
+    34,
+    42,
+    52
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 50,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF West; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     17,
+     22,
+     27
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF West; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     28,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF West; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     22,
+     34,
+     42,
+     52
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF West dispatch-area SIG (40222, 40225, 40237), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 50 ac, multi-fire day 2+. This FDRA's own SIG (Collins Baldy, Quartz Hill, Callahan #2) is used for the season-tracking charts; the Workbench starts from the KNF West SIG."
+ },
+ "KNF-214": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40240,
+   40243
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    15,
+    21,
+    26,
+    30
+   ],
+   "erc": [
+    20,
+    33,
+    40,
+    48
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF East; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     15,
+     21,
+     26,
+     30
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF East; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     16,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF East; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     33,
+     40,
+     48
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF East dispatch-area SIG (40240, 40243), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 10 ac, multi-fire day 2+. This FDRA's own SIG (Juanita, Van Bremmer) is used for the season-tracking charts; the Workbench starts from the KNF East SIG."
+ },
+ "KNF-220": {
+  "source": "Klamath NF Fire Danger Operating Plan 2026 (Figures 2-4, Tables 4-12, Appendix K)",
+  "stations": [
+   40240,
+   40243
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    15,
+    21,
+    26,
+    30
+   ],
+   "erc": [
+    20,
+    33,
+    40,
+    48
+   ]
+  },
+  "classes": [
+   "I",
+   "II",
+   "III",
+   "IV",
+   "V"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (KNF East; BI-Y, Fig. 4)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     15,
+     21,
+     26,
+     30
+    ],
+    "classes": [
+     "SL I",
+     "SL II",
+     "SL III",
+     "SL IV",
+     "SL V"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (KNF East; BI-Y, Fig. 3)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     16,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (KNF East; ERC-Y, Fig. 2)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     33,
+     40,
+     48
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Thresholds are set on the KNF East dispatch-area SIG (40240, 40243), FireFamily Plus 2016-2025, May 1-Nov 30, large fire 10 ac, multi-fire day 2+. This FDRA's own SIG (Juanita, Van Bremmer) is used for the season-tracking charts; the Workbench starts from the KNF East SIG."
+ },
+ "LMU-Lmu Unit": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40308,
+   40309
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    125,
+    210
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LMU LMU NE; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     125,
+     210
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (LMU North (alternate scheme); BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     88,
+     171
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LMU \"LMU NE\" from the unit survey: BI-X dispatch Low 0-125, Moderate to 210, High above. Stations 40308, 40309."
+ },
+ "LMU-Lmunw": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40221,
+   40312
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    50,
+    171
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LMU LMU NW; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     50,
+     171
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (LMU North (alternate scheme); BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     88,
+     171
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LMU \"LMU NW\" from the unit survey: BI-X dispatch Low 0-50, Moderate to 171, High above. Stations 40221, 40312."
+ },
+ "LMU-Lmuse": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40709,
+   40721,
+   40732
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    92,
+    162
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LMU LMU SE; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     92,
+     162
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (LMU South (alternate scheme); BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     79,
+     164
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LMU \"LMU SE\" from the unit survey: BI-X dispatch Low 0-92, Moderate to 162, High above. Stations 40709, 40721, 40732."
+ },
+ "LMU-Lmusw": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40719,
+   40904
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    65,
+    165
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LMU LMU SW; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     65,
+     165
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (LMU South (alternate scheme); BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     79,
+     164
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LMU \"LMU SW\" from the unit survey: BI-X dispatch Low 0-65, Moderate to 165, High above. Stations 40719, 40904."
+ },
+ "LNF-East": {
+  "source": "Lassen NF / Lassen Volcanic NP Interagency FDOP v2 (signed 2024-07-03), Tables 7, 11-14, Figure 24",
+  "stations": [
+   40703,
+   40904,
+   40730,
+   40723,
+   40609
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2010,
+   2023
+  ],
+  "breaks": {
+   "bi": [
+    9,
+    16,
+    22,
+    31
+   ],
+   "erc": [
+    16,
+    30,
+    42,
+    57
+   ],
+   "ic": [
+    12,
+    21,
+    31,
+    44
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 30,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 14)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     9,
+     16,
+     22,
+     31
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective & dispatch (BI-Y; Table 11)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     9,
+     16,
+     24,
+     31
+    ],
+    "classes": [
+     "Low · DL1",
+     "Moderate · DL2",
+     "High · DL2",
+     "Very High · DL3",
+     "Extreme · DL3"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-Y; Table 12)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     16,
+     30,
+     42,
+     57
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (IC-Y; Table 13)",
+    "idx": "ic",
+    "fm": "Y",
+    "breaks": [
+     12,
+     21,
+     31,
+     44
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "R5 FDRA layer (2026-10-22) splits the Lassen NF into West and East; no separate East thresholds yet, so this uses the joint LNF / Lassen Volcanic NP FDOP (one FDRA). One FDRA for the Lassen NF and Lassen Volcanic NP; 5-station SIG Bogard, Chester, Gordon, Ladder Butte, Manzanita Lake (fuel model Y). Staffing BI-Y 0-9/10-16/17-22/23-31/32+ (Table 14: SL1-2 = DL1, SL3 = DL2, SL4-5 = DL3). Table 11 gives BI adjective 0-9/10-16/17-24/25-31/32+ with dispatch 1/2/2/3/3 — the BI-to-dispatch mapping differs between Tables 11 and 14. Pocket card: 2010-2023, May-Oct, large fires (30 ac+) when ERC > 48."
+ },
+ "LNF-West": {
+  "source": "Lassen NF / Lassen Volcanic NP Interagency FDOP v2 (signed 2024-07-03), Tables 7, 11-14, Figure 24",
+  "stations": [
+   40703,
+   40904,
+   40730,
+   40723,
+   40609
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2010,
+   2023
+  ],
+  "breaks": {
+   "bi": [
+    9,
+    16,
+    22,
+    31
+   ],
+   "erc": [
+    16,
+    30,
+    42,
+    57
+   ],
+   "ic": [
+    12,
+    21,
+    31,
+    44
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 30,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 14)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     9,
+     16,
+     22,
+     31
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective & dispatch (BI-Y; Table 11)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     9,
+     16,
+     24,
+     31
+    ],
+    "classes": [
+     "Low · DL1",
+     "Moderate · DL2",
+     "High · DL2",
+     "Very High · DL3",
+     "Extreme · DL3"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-Y; Table 12)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     16,
+     30,
+     42,
+     57
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (IC-Y; Table 13)",
+    "idx": "ic",
+    "fm": "Y",
+    "breaks": [
+     12,
+     21,
+     31,
+     44
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "R5 FDRA layer (2026-10-22) splits the Lassen NF into West and East; no separate West thresholds yet, so this uses the joint LNF / Lassen Volcanic NP FDOP (one FDRA). One FDRA for the Lassen NF and Lassen Volcanic NP; 5-station SIG Bogard, Chester, Gordon, Ladder Butte, Manzanita Lake (fuel model Y). Staffing BI-Y 0-9/10-16/17-22/23-31/32+ (Table 14: SL1-2 = DL1, SL3 = DL2, SL4-5 = DL3). Table 11 gives BI adjective 0-9/10-16/17-24/25-31/32+ with dispatch 1/2/2/3/3 — the BI-to-dispatch mapping differs between Tables 11 and 14. Pocket card: 2010-2023, May-Oct, large fires (30 ac+) when ERC > 48."
+ },
+ "LNU-Central": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   41409
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    25,
+    45
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LNU Central; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     25,
+     45
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LNU \"Central\" from the unit survey: BI-W dispatch Low 0-25, Moderate to 45, High above. Stations 41409."
+ },
+ "LNU-East Side": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   42202
+  ],
+  "fm": "V",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    33,
+    51
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LNU Eastside; BI-V)",
+    "idx": "bi",
+    "fm": "V",
+    "breaks": [
+     33,
+     51
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LNU \"Eastside\" from the unit survey: BI-V dispatch Low 0-33, Moderate to 51, High above. Stations 42202."
+ },
+ "LNU-Mayacamas": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   42010
+  ],
+  "fm": "V",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    29,
+    55
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LNU Mayacamas; BI-V)",
+    "idx": "bi",
+    "fm": "V",
+    "breaks": [
+     29,
+     55
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LNU \"Mayacamas\" from the unit survey: BI-V dispatch Low 0-29, Moderate to 55, High above. Stations 42010."
+ },
+ "LNU-Southend": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   42310
+  ],
+  "fm": "V",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    34,
+    43
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LNU Southend; BI-V)",
+    "idx": "bi",
+    "fm": "V",
+    "breaks": [
+     34,
+     43
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LNU \"Southend\" from the unit survey: BI-V dispatch Low 0-34, Moderate to 43, High above. Stations 42310."
+ },
+ "LNU-West Side": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   42009
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    24,
+    40
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (LNU Westside; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     24,
+     40
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE LNU \"Westside\" from the unit survey: BI-W dispatch Low 0-24, Moderate to 40, High above. Stations 42009."
+ },
+ "LPF-507": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   44302
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    42,
+    60,
+    70,
+    80
+   ],
+   "bi": [
+    77,
+    91,
+    114,
+    128
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     42,
+     60,
+     70,
+     80
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     77,
+     91,
+     114,
+     128
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 507 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     77,
+     91,
+     114,
+     128
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 507 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     42,
+     60,
+     70,
+     80
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     77,
+     114
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     42,
+     70
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 507 Big Sur; SIG 44302, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends)."
+ },
+ "LPF-512": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   45220
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    45,
+    61,
+    74,
+    85
+   ],
+   "bi": [
+    80,
+    140,
+    201,
+    234
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     45,
+     61,
+     74,
+     85
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     80,
+     140,
+     201,
+     234
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 512 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     80,
+     140,
+     201,
+     234
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 512 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     45,
+     61,
+     74,
+     85
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     80,
+     201
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     45,
+     74
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 512 Vandenberg; SIG 45220, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends)."
+ },
+ "LPF-514": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   45218,
+   45221
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    40,
+    58,
+    77,
+    88
+   ],
+   "bi": [
+    100,
+    130,
+    175,
+    245
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     40,
+     58,
+     77,
+     88
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     100,
+     130,
+     175,
+     245
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 514 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     100,
+     130,
+     175,
+     245
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 514 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     40,
+     58,
+     77,
+     88
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     100,
+     175
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     40,
+     77
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 514 Santa Barbara; SIG 45218, 45221, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends). Table 12 lists ERC Low as 0-44 (other tables 0-40); 0-40 used."
+ },
+ "LPF-514IS": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   45216,
+   45217
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    47,
+    57,
+    73,
+    86
+   ],
+   "bi": [
+    100,
+    141,
+    195,
+    229
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     47,
+     57,
+     73,
+     86
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     100,
+     141,
+     195,
+     229
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 514IS table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     100,
+     141,
+     195,
+     229
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 514IS table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     47,
+     57,
+     73,
+     86
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     100,
+     195
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     47,
+     73
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 514IS Channel Islands; SIG 45216, 45217, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends)."
+ },
+ "LPF-560": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   44301,
+   44317
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    64,
+    80,
+    90,
+    96
+   ],
+   "bi": [
+    120,
+    151,
+    172,
+    192
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64,
+     80,
+     90,
+     96
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     120,
+     151,
+     172,
+     192
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 560 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     120,
+     151,
+     172,
+     192
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 560 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64,
+     80,
+     90,
+     96
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     120,
+     172
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64,
+     90
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 560 Arroyo Seco; SIG 44301, 44317, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends)."
+ },
+ "LPF-585": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   45201,
+   44901
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    60,
+    78,
+    85,
+    93
+   ],
+   "bi": [
+    71,
+    114,
+    162,
+    190
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     60,
+     78,
+     85,
+     93
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     71,
+     114,
+     162,
+     190
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 585 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     71,
+     114,
+     162,
+     190
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 585 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     60,
+     78,
+     85,
+     93
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     71,
+     162
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     60,
+     85
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 585 Figueroa; SIG 45201, 44901, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends)."
+ },
+ "LPF-586": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   45203
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    65,
+    76,
+    86,
+    92
+   ],
+   "bi": [
+    95,
+    121,
+    140,
+    152
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     65,
+     76,
+     86,
+     92
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     95,
+     121,
+     140,
+     152
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 586 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     95,
+     121,
+     140,
+     152
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 586 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     65,
+     76,
+     86,
+     92
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     95,
+     140
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     65,
+     86
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 586 Los Prietos; SIG 45203, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends). Table 38 lists BI SL5 as 153-208 (other tables 153-308); the 153 start is the same either way."
+ },
+ "LPF-588": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   44914,
+   45303
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    69,
+    81,
+    90,
+    96
+   ],
+   "bi": [
+    65,
+    78,
+    93,
+    101
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     69,
+     81,
+     90,
+     96
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     65,
+     78,
+     93,
+     101
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 588 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     65,
+     78,
+     93,
+     101
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 588 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     69,
+     81,
+     90,
+     96
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     65,
+     93
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     69,
+     90
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 588 Cuyama; SIG 44914, 45303, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends)."
+ },
+ "LPF-650": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   45307,
+   45308,
+   45314
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    65,
+    76,
+    85,
+    91
+   ],
+   "bi": [
+    110,
+    149,
+    170,
+    190
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     65,
+     76,
+     85,
+     91
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     110,
+     149,
+     170,
+     190
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 650 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     110,
+     149,
+     170,
+     190
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 650 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     65,
+     76,
+     85,
+     91
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     110,
+     170
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     65,
+     85
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 650 Ojai; SIG 45307, 45308, 45314, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends)."
+ },
+ "LPF-651": {
+  "source": "Los Padres NF 2026 FDOP Vol. 1 (Tables 14-38)",
+  "stations": [
+   45302
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2005,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    61,
+    78,
+    86,
+    93
+   ],
+   "bi": [
+    82,
+    125,
+    150,
+    186
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 75,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (ERC-X; Table 37)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     61,
+     78,
+     86,
+     93
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Staffing levels (BI-X; Table 38)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     82,
+     125,
+     150,
+     186
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Adjective (BI-X; FDRA 651 table)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     82,
+     125,
+     150,
+     186
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Adjective (ERC-X; FDRA 651 table)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     61,
+     78,
+     86,
+     93
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (predicted BI-X; Table 34)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     82,
+     150
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (ERC-X; Table 35)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     61,
+     86
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "2026 LPF FDOP, FDRA 651 Chuchupate; SIG 45302, fuel model X; fire history 2005-2022, large fire = 75+ ac. Staffing levels 1-5 on ERC-X (Table 37) and BI-X (Table 38); SL4 = 90th, SL5 = 97th percentile. Dispatch Low / Moderate split at the 70th percentile and Moderate / High at the 90th (predicted BI sets the daily level; all areas locked at High from about June 15 until High Fire Season ends)."
+ },
+ "MDF-258": {
+  "source": "Modoc Interagency Fire Alliance (MIFA) Fire Danger Operating Plan, April 2026 DRAFT — Table 2, Table 5, Staffing Levels, Response Plan",
+  "stations": [
+   40221,
+   40233,
+   40302,
+   40306,
+   40310,
+   40312,
+   40313,
+   40314
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "season": [
+   "06-01",
+   "09-30"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    20,
+    41,
+    83,
+    93
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 100,
+  "mfd": 5,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Z; FFP 5.0 decision points)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     20,
+     41,
+     83,
+     93
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Response / dispatch levels (BI; marked 'proposed change, under review')",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     47,
+     81
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "DRAFT April 2026. One FDRA (MIFA) covering Modoc NF and partners; SIG of 8 RAWS, equal weight: Round Mtn, Indian Well, Blue Mtn, Timber Mtn, Lower Klamath, Rush Creek, Bear Flat, Cold Springs (Blue Mtn is listed twice in Table 2). Staffing BI 0-20/21-41/42-83/84-93/93+ ('based on the BI 97% for fuel model Z'); Table 5 lists fuel model Y for the stations, but the breakpoints match BI-Z (BI-Y 97th is ~39). Dispatch BI 0-47/48-81/82+ annotated 'proposed change, under review by MIFA. ERC Y'. Adjective rating = staffing level x IC matrix. FFP parameters: large fire 100 ac, multiple fire day 5 fires, 2016-2025. Fire season for percentiles Jun-Sep. Sub-SIGs: Modoc (Timber, Round, Blue, Rush Creek, Lower Klamath), Warners (Cold Springs, Bear Flat)."
+ },
+ "MMU-Catheys Valley": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44114,
+   44516,
+   43613
+  ],
+  "fm": "V",
+  "idx": "sc",
+  "breaks": {
+   "sc": [
+    24,
+    59
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (MMU Catheys Valley; SC-V)",
+    "idx": "sc",
+    "fm": "V",
+    "breaks": [
+     24,
+     59
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE MMU \"Catheys Valley\" from the unit survey: SC-V dispatch Low 0-24, Moderate to 59, High above. Stations 44114, 44516, 43613. Dispatch set to High 1000-2000 per Ops Chief."
+ },
+ "MMU-Los Banos": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44003,
+   44514
+  ],
+  "fm": "V",
+  "idx": "sc",
+  "breaks": {
+   "sc": [
+    24,
+    54
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (MMU Los Banos; SC-V)",
+    "idx": "sc",
+    "fm": "V",
+    "breaks": [
+     24,
+     54
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE MMU \"Los Banos\" from the unit survey: SC-V dispatch Low 0-24, Moderate to 54, High above. Stations 44003, 44514. Dispatch set to High 1000-2000 per Ops Chief."
+ },
+ "MMU-Mariposa": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44106
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    39,
+    119
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (MMU Mariposa; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     39,
+     119
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE MMU \"Mariposa\" from the unit survey: BI-X dispatch Low 0-39, Moderate to 119, High above. Stations 44106. Dispatch set to High 1000-2000 per Ops Chief."
+ },
+ "MMU-Metcalf": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44209,
+   44207,
+   44203,
+   102903
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    79,
+    134
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (MMU Metcalf Gap; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     79,
+     134
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE MMU \"Metcalf Gap\" from the unit survey: BI-X dispatch Low 0-79, Moderate to 134, High above. Stations 44209, 44207, 44203, 102903. Dispatch set to High 1000-2000 per Ops Chief."
+ },
+ "MNF-162": {
+  "source": "Mendocino NF 2026 Fire Danger Operating Plan, Vol. 1 (Tables 9-11, 13-15, 17)",
+  "stations": [
+   41005,
+   41406
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    39,
+    59,
+    71,
+    91
+   ],
+   "erc": [
+    57,
+    74,
+    91,
+    110
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Z; Tables 13/17)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     39,
+     59,
+     71,
+     91
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Z; Tables 14-15)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     71
+    ],
+    "classes": [
+     "Low",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (ERC-Z; Table 14)",
+    "idx": "erc",
+    "fm": "Z",
+    "breaks": [
+     57,
+     74,
+     91,
+     110
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA 162 West; SIG Eel River, Soda Creek (fuel model Z). FDOP tables list the start of each class: staffing BI-Z starts 0/40/60/72/92; dispatch high at BI 72+; adjective ERC-Z starts 0/58/75/92/111. Loaded as class tops. Analysis years, season and large-fire size not stated in the text — Workbench defaults."
+ },
+ "MNF-165": {
+  "source": "Mendocino NF 2026 Fire Danger Operating Plan, Vol. 1 (Tables 9-11, 13-15, 17)",
+  "stations": [
+   41101,
+   41018
+  ],
+  "fm": "Z",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    37,
+    56,
+    69,
+    91
+   ],
+   "erc": [
+    61,
+    84,
+    101,
+    109
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Z; Tables 13/17)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     37,
+     56,
+     69,
+     91
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Z; Tables 14-15)",
+    "idx": "bi",
+    "fm": "Z",
+    "breaks": [
+     69
+    ],
+    "classes": [
+     "Low",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (ERC-Z; Table 14)",
+    "idx": "erc",
+    "fm": "Z",
+    "breaks": [
+     61,
+     84,
+     101,
+     109
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA 165 High Country; SIG Alder Springs, Mendocino Pass (fuel model Z). FDOP tables list the start of each class: staffing BI-Z starts 0/38/57/70/92; dispatch high at BI 70+ (Table 14, Grindstone) — Table 15 also lists 72+ for Upperlake/Covelo; adjective ERC-Z starts 0/62/85/102/110. Loaded as class tops. Analysis years, season and large-fire size not stated in the text — Workbench defaults."
+ },
+ "MNF-170": {
+  "source": "Mendocino NF 2026 Fire Danger Operating Plan, Vol. 1 (Tables 9-11, 13-15, 17)",
+  "stations": [
+   40802,
+   41402,
+   41503
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    22,
+    28,
+    34,
+    43
+   ],
+   "erc": [
+    28,
+    39,
+    51,
+    61
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Tables 13/17)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     28,
+     34,
+     43
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; Tables 14-15)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     34
+    ],
+    "classes": [
+     "Low",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (ERC-Y; Table 14)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     28,
+     39,
+     51,
+     61
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "FDRA 170 East; SIG Eagle Peak, High Glade Lookout, Stonyford (fuel model Y). FDOP tables list the start of each class: staffing BI-Y starts 0/23/29/35/44; dispatch high at BI 35+; adjective ERC-Y starts 0/29/40/52/62. Loaded as class tops. Analysis years, season and large-fire size not stated in the text — Workbench defaults."
+ },
+ "NEU-Central": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   41806,
+   41808,
+   41908
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    10,
+    25
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (NEU Central FDRA; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     10,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE NEU \"Central FDRA\" from the unit survey: BI-W dispatch Low 0-10, Moderate to 25, High above. Stations 41806, 41808, 41908. Survey reads \"L 0-25, M 10-25\"; Low taken as 0-10."
+ },
+ "NEU-Foothill": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   41701
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    10,
+    25
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (NEU Foothill FDRA; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     10,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE NEU \"Foothill FDRA\" from the unit survey: BI-W dispatch Low 0-10, Moderate to 25, High above. Stations 41701. Survey reads \"L 0-25, M 10-25\"; Low taken as 0-10; no station listed, existing kept."
+ },
+ "NEU-Placer": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   41907,
+   42609
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    10,
+    30
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (NEU Placer FDRA; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     10,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE NEU \"Placer FDRA\" from the unit survey: BI-W dispatch Low 0-10, Moderate to 30, High above. Stations 41907, 42609."
+ },
+ "NEU-Western": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   41201,
+   42609,
+   41907
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    10,
+    30
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (NEU Western FDRA; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     10,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE NEU \"Western FDRA\" from the unit survey: BI-W dispatch Low 0-10, Moderate to 30, High above. Stations 41201, 42609, 41907."
+ },
+ "NPS-AMME": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "NPS-HALE": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "NPS-HAVO-Kahuku": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   496023
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "breaks": {
+   "erc": [
+    12.25,
+    24.5,
+    49,
+    56
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (ERC-Y, Kahuku 496023)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     12.25,
+     24.5,
+     49,
+     56
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class in this plan)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     12.25,
+     24.5,
+     49,
+     56
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "DOI Pacific Islands Zone (NPS/USFWS Region 12). Staffing classes 1-5 = adjective classes. Step-up / severity when both Kilauea ERC-Y stations reach the 90th (SL 4), or one does and Kealakomo KBDI (496024) > 599, or Kealakomo KBDI reaches its 90th (650; SL 2-5 KBDI 162/325/650/718), or Kahuku ERC-Y reaches its 90th with drought. Fire history comes from FPA FOD / WFIGS Hawaii records; Kahuku Unit polygon from the HAVO Kahuku Unit boundary layer."
+ },
+ "NPS-HAVO-Kilauea": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   496006,
+   496009
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "breaks": {
+   "erc": [
+    14.75,
+    29.5,
+    59,
+    65
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (ERC-Y; mean of the Keaumo and Pali 2 station breakpoints)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     14.75,
+     29.5,
+     59,
+     65
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class in this plan)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     14.75,
+     29.5,
+     59,
+     65
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "DOI Pacific Islands Zone (NPS/USFWS Region 12). Staffing classes 1-5 = adjective classes. Step-up / severity when both Kilauea ERC-Y stations reach the 90th (SL 4), or one does and Kealakomo KBDI (496024) > 599, or Kealakomo KBDI reaches its 90th (650; SL 2-5 KBDI 162/325/650/718), or Kahuku ERC-Y reaches its 90th with drought. Fire history comes from FPA FOD / WFIGS Hawaii records; Kahuku Unit polygon from the HAVO Kahuku Unit boundary layer. Plan breakpoints are per station: Keaumo 496006 SL 2-5 at 15.25/30.5/61/69, Pali 2 496009 at 14.25/28.5/57/61; the FDRA value here is the mean of the two stations, so the mean of the breakpoints is used."
+ },
+ "NPS-KAHO": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   496017
+  ],
+  "fm": "Y",
+  "idx": "kbdi",
+  "breaks": {
+   "kbdi": [
+    300,
+    500,
+    600,
+    700
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (KBDI, Kaloko-Honokohau 496017)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes. KBDI SL 2-5 at 300/500/600/700."
+ },
+ "NPS-KALA": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   494001
+  ],
+  "fm": "Y",
+  "idx": "kbdi",
+  "breaks": {
+   "kbdi": [
+    300,
+    500,
+    600,
+    700
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (KBDI, Kalaupapa 494001)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes. KBDI SL 2-5 at 300/500/600/700. NPS-owned land here is small (most of the park is leased or state land)."
+ },
+ "NPS-NPSA": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "NPS-PINN": {
+  "source": "Pinnacles NP FDOP (Appendix C-1, 2023) — CAL FIRE BEU Gabilan Shrub FDRA",
+  "stations": [
+   44310,
+   44409,
+   44410
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "04-01",
+   "11-30"
+  ],
+  "calib": [
+   2011,
+   2021
+  ],
+  "breaks": {
+   "bi": [
+    60,
+    160
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Response / dispatch level (BI-X, CAL FIRE BEU Gabilan Shrub)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     60,
+     160
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (CAL FIRE BEU Gabilan, 2025 unit survey; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     144,
+     209
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Since 2022 the park uses the CAL FIRE BEU Gabilan Shrub SIG (Pinnacles, Hernandez, Parkfield, equal weight) to match BEU fire danger levels. SIG 90th/97th BI-X 193/215, ERC-Y 65/70 (2011-2021, Apr 1-Nov 30). Other BEU dispatch levels: Coast BI-W 8/24, Sierra BI-V 8/30, Valley BI-X 53/126, Diablo BI-Z 58/90. The 2025 CAL FIRE unit survey gives BEU Gabilan dispatch BI-X 0-144 / 145-209 / 210+ (Parkfield, Pinnacles, Hernandez), higher than the 60/160 in the 2023 park plan."
+ },
+ "NPS-SEKI-435": {
+  "source": "Sequoia & Kings Canyon NPs Fire Danger Operating Plan 2026 (signed)",
+  "stations": [
+   44713,
+   44732
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2010,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    13,
+    28,
+    56,
+    60
+   ],
+   "bi": [
+    6,
+    13,
+    27,
+    29
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing level (ERC-Y, climatological)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     13,
+     28,
+     56,
+     60
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Climatological classes (BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     6,
+     13,
+     27,
+     29
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Fire business option, not adopted (ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     19,
+     30,
+     51,
+     57
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   }
+  ],
+  "notes": "SEKI left the Sierra South FDOP for this single-agency plan; staffing levels are climatological (SL 4 = 90th, SL 5 = 97th, May 1-Oct 31, 2010-2025; SL 3 floor = 1/2 of the 90th, SL 2 = 1/4). Adjective = staffing level x IC (standard NFDRS matrix). Dispatch: tied to the adjective in 438; set to High from June 1 to season end. Fire business breakpoints are shown in the plan as options only. 90th/97th ERC-Y 58.2/61.3."
+ },
+ "NPS-SEKI-438": {
+  "source": "Sequoia & Kings Canyon NPs Fire Danger Operating Plan 2026 (signed)",
+  "stations": [
+   44701,
+   44719,
+   44508
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2010,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    37,
+    76,
+    151,
+    160
+   ],
+   "erc": [
+    14,
+    28,
+    57,
+    60
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing level (BI-X, climatological)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     37,
+     76,
+     151,
+     160
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Staffing level (ERC-Y, climatological)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     14,
+     28,
+     57,
+     60
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Staffing level (BI-Y, climatological)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7,
+     14,
+     30,
+     32
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Fire business option, not adopted (ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     23,
+     37,
+     50,
+     56
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   }
+  ],
+  "notes": "SEKI left the Sierra South FDOP for this single-agency plan; staffing levels are climatological (SL 4 = 90th, SL 5 = 97th, May 1-Oct 31, 2010-2025; SL 3 floor = 1/2 of the 90th, SL 2 = 1/4). Adjective = staffing level x IC (standard NFDRS matrix). Dispatch: tied to the adjective in 438; set to High from June 1 to season end. Fire business breakpoints are shown in the plan as options only. 90th/97th: ERC-Y 57.7/61.1, BI-Y 31.2/33.0, BI-X 152.2/160.8."
+ },
+ "NPS-SEKI-440": {
+  "source": "Sequoia & Kings Canyon NPs Fire Danger Operating Plan 2026 (signed)",
+  "stations": [
+   44722,
+   44726
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2010,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    12,
+    24,
+    50,
+    53
+   ],
+   "bi": [
+    6,
+    13,
+    28,
+    31
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing level (ERC-Y, climatological)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     12,
+     24,
+     50,
+     53
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Climatological classes (BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     6,
+     13,
+     28,
+     31
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Fire business option, not adopted (ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     12,
+     29,
+     45,
+     50
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   }
+  ],
+  "notes": "SEKI left the Sierra South FDOP for this single-agency plan; staffing levels are climatological (SL 4 = 90th, SL 5 = 97th, May 1-Oct 31, 2010-2025; SL 3 floor = 1/2 of the 90th, SL 2 = 1/4). Adjective = staffing level x IC (standard NFDRS matrix). Dispatch: tied to the adjective in 438; set to High from June 1 to season end. Fire business breakpoints are shown in the plan as options only. 90th/97th ERC-Y 51.9/54.5. SIG uses SQF Blackrock and Peppermint (outside the park); the seasonal park RAWS Sugarloaf 44728 and Rattlesnake 44729 form SIG 440aux (ERC-Y 13/26/53/56) used to supplement."
+ },
+ "NPS-WAPA": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "NPS-YOSE-High": {
+  "source": "Yosemite NP Fire Danger Operating Plan 2026 (signed March 2026)",
+  "stations": [
+   43612
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "06-01",
+   "10-31"
+  ],
+  "calib": [
+   2005,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    23,
+    30,
+    38,
+    45
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Adjective fire danger (ERC-Y, White Wolf)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     23,
+     30,
+     38,
+     45
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Single station per FDRA since 2025 (no SIGs). Dispatch level is an ERC x BI matrix (Low White Wolf: ERC rows 23/30/38/45, BI columns 16/24) that tracks the adjective rating: Low=Low, Moderate=Medium, High/Very High/Extreme=High. Park-wide staffing level uses El Portal ERC-Y 18/35/51/62 (Low Elevation FDRA). Polygon: park land above 7,200 ft (FDRA 533)."
+ },
+ "NPS-YOSE-Low": {
+  "source": "Yosemite NP Fire Danger Operating Plan 2026 (signed March 2026)",
+  "stations": [
+   44112
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "04-01",
+   "10-31"
+  ],
+  "calib": [
+   2005,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    18,
+    35,
+    51,
+    62
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Park-wide staffing level (ERC-Y, El Portal)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     18,
+     35,
+     51,
+     62
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (ERC-Y, El Portal)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     18,
+     35,
+     51,
+     62
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Single station per FDRA since 2025 (no SIGs). Dispatch level is an ERC x BI matrix (Low El Portal: ERC rows 18/35/51/62, BI columns 21/30) that tracks the adjective rating: Low=Low, Moderate=Medium, High/Very High/Extreme=High. Park-wide staffing level uses El Portal ERC-Y 18/35/51/62 (Low Elevation FDRA). Polygon: park land below ~4,100 ft south of 37.66N (El Portal / Wawona); most of the Low FDRA lies outside the park."
+ },
+ "NPS-YOSE-Mid": {
+  "source": "Yosemite NP Fire Danger Operating Plan 2026 (signed March 2026)",
+  "stations": [
+   44102
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2005,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    24,
+    37,
+    50,
+    58
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Adjective fire danger (ERC-Y, Crane)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     24,
+     37,
+     50,
+     58
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Single station per FDRA since 2025 (no SIGs). Dispatch level is an ERC x BI matrix (Low Crane: ERC rows 24/37/50/58, BI columns 24/34) that tracks the adjective rating: Low=Low, Moderate=Medium, High/Very High/Extreme=High. Park-wide staffing level uses El Portal ERC-Y 18/35/51/62 (Low Elevation FDRA). Polygon: park land 4,100-7,200 ft (FDRAs 370 and 532)."
+ },
+ "ORC-Orange County Coastal": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   45509,
+   45735
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    99,
+    199
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (ORC Coastal FDRA; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     99,
+     199
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE ORC \"Coastal FDRA\" from the unit survey: BI-X dispatch Low 0-99, Moderate to 199, High above. Stations 45509, 45735. BI daily max."
+ },
+ "ORC-Orange County Inland": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   45736,
+   45735
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    149,
+    249
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (ORC Inland FDRA; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     149,
+     249
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE ORC \"Inland FDRA\" from the unit survey: BI-X dispatch Low 0-149, Moderate to 249, High above. Stations 45736, 45735. BI daily max."
+ },
+ "PTZ-East": {
+  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
+  "stations": [
+   40709,
+   40921,
+   40917,
+   41310,
+   41311
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    14,
+    22,
+    28,
+    34
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (East FDRA; BI-Y, Table 6)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     14,
+     22,
+     28,
+     34
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4 (90th)",
+     "SL5 (97th)"
+    ]
+   },
+   {
+    "label": "Dispatch levels (East FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     29
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch levels as derived in the East analysis text (BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     24.9,
+     31.9
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~58th/82nd percentile)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Plumas-Tahoe zone FDRA East (boundary PNF_TNF_FDRA_Bndy_20250529, clipped to the forests; non-forest land stays with the CAL FIRE FDRAs). East SIG: 40709, 40921, 40917, 41310, 41311 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 23.9/36.9/52.9/57.9, BI-Y 11.9/21.9/30.9/33.9."
+ },
+ "PTZ-North": {
+  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
+  "stations": [
+   40910,
+   40915,
+   40916
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    18,
+    25,
+    30,
+    38
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (North FDRA; BI-Y, Table 6)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     18,
+     25,
+     30,
+     38
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4 (90th)",
+     "SL5 (97th)"
+    ]
+   },
+   {
+    "label": "Dispatch levels (North FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     18,
+     25
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Plumas-Tahoe zone FDRA North (boundary PNF_TNF_FDRA_Bndy_20250529, clipped to the forests; non-forest land stays with the CAL FIRE FDRAs). North SIG: 40910, 40915, 40916 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Adjective matrix axes: ERC-Y 24.9/36.9/51.9/58.9, BI-Y 19.9/26.9/34.9/39.9."
+ },
+ "PTZ-West": {
+  "source": "Plumas-Tahoe Zone Interagency FDOP, signed 2026-06-09 (Tables 3, 5, 6; Dispatch Levels; Appendix dispatch analysis)",
+  "stations": [
+   41304,
+   41701,
+   41806,
+   41901,
+   41908
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    11,
+    23,
+    32,
+    38
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (West FDRA; BI-Y, Table 6)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     11,
+     23,
+     32,
+     38
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4 (90th)",
+     "SL5 (97th)"
+    ]
+   },
+   {
+    "label": "Dispatch levels (West FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     29
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch levels as derived in the West analysis text (BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     24.9,
+     31.9
+    ],
+    "classes": [
+     "Low",
+     "Med",
+     "High"
+    ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-Y assumed — index not stated; ~60th/77th percentile)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     30
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Plumas-Tahoe zone FDRA West (boundary PNF_TNF_FDRA_Bndy_20250529, clipped to the forests; non-forest land stays with the CAL FIRE FDRAs). West SIG: 41304, 41701, 41806, 41901, 41908 (fuel model Y). Staffing BI-Y uses 2005-2022 gap-filled FEMS data, May 1-Oct 31 (Workbench record starts 2006). Adjective rating is an ERC-Y x BI-Y matrix (I-V); its axis breaks are listed as tools. Dispatch: the main section and summary boxes say Low 0-19 / Med 20-29 / High 30+; the analysis text derives 0-24.9 / 25-31.9 / 32+ — both loaded. Adjective matrix axes: ERC-Y 18.9/32.9/56.9/61.9, BI-Y 10.9/20.9/30.9/33.9."
+ },
+ "SCU-2": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   43913,
+   43912
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    16.9,
+    20.9
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (SCU South FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     16.9,
+     20.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE SCU \"South FDRA\" from the unit survey: BI-Y dispatch Low 0-16.9, Moderate to 20.9, High above. Stations 43913, 43912."
+ },
+ "SCU-5": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   43502,
+   43404
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    21.9,
+    30.9
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (SCU Central FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     21.9,
+     30.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE SCU \"Central FDRA\" from the unit survey: BI-Y dispatch Low 0-21.9, Moderate to 30.9, High above. Stations 43502, 43404."
+ },
+ "SCU-6": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   43402,
+   43403
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    12.9,
+    17.9
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (SCU Bay FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12.9,
+     17.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch level (SCU Northwest FDRA (Briones / Las Trampas); BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20.9,
+     27.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE SCU \"Bay FDRA\" from the unit survey: BI-Y dispatch Low 0-12.9, Moderate to 17.9, High above. Stations 43402, 43403. Piece covers both the Bay and Northwest FDRAs."
+ },
+ "SCU-7": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   43008,
+   43011,
+   43013,
+   43407
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    23.9,
+    33.9
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (SCU Northeast FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     23.9,
+     33.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE SCU \"Northeast FDRA\" from the unit survey: BI-Y dispatch Low 0-23.9, Moderate to 33.9, High above. Stations 43008, 43011, 43013, 43407."
+ },
+ "SDU-Desert": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45707,
+   45708,
+   45709,
+   45636,
+   45711,
+   45635,
+   45740,
+   45619
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    46,
+    94,
+    188,
+    212
+   ],
+   "erc": [
+    64
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     46,
+     94,
+     188,
+     212
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     111,
+     167
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 65+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 65+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE San Diego Unit part of the interagency Mountain/Desert FDRA (CNF / CAL FIRE SDU / USFWS FDOP, Jan 2022, and the 2025 FEMS amendment): same SIG, fuel model X and thresholds as CNF-MOUNTAIN. The Desert FDRA has no RAWS and is evaluated with Mountain. Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). Stations from the 2026 thresholds sheet."
+ },
+ "SDU-Inland": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45745,
+   45710,
+   45704,
+   45744,
+   45734,
+   45729
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    52,
+    105,
+    211,
+    239
+   ],
+   "erc": [
+    60
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     52,
+     105,
+     211,
+     239
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     119,
+     188
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 61+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     60
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 61+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE San Diego Unit part of the interagency Coast/Inland FDRA (CNF / CAL FIRE SDU / USFWS FDOP, Jan 2022, and the 2025 FEMS amendment): same SIG, fuel model X and thresholds as CNF-INLAND. Coastal/Inland FDRA. 2025 FEMS amendment: dispatch BI-X 0-119 / 120-188 / 189+; staffing & adjective BI-X 0-52/53-105/106-211/212-239/240+ (90th 211, 97th 239); seasonal staffing ERC-X 61+ (90% of fires ≥1 ac, 2013-2022, calendar year, large fire 1 ac). Stations from the 2026 thresholds sheet (2022 FDOP SIG table is scanned)."
+ },
+ "SDU-Mountain": {
+  "source": "San Diego Interagency FDOP Amendment for Transition to FEMS (CNF / CAL FIRE SDU / USFWS, signed Oct 2025); FDOP Jan 2022",
+  "stations": [
+   45707,
+   45708,
+   45709,
+   45636,
+   45711,
+   45635,
+   45740,
+   45619
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2013,
+   2022
+  ],
+  "breaks": {
+   "bi": [
+    46,
+    94,
+    188,
+    212
+   ],
+   "erc": [
+    64
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 1,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing level & adjective (BI-X; 90th/4, 90th/2, 90th, 97th)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     46,
+     94,
+     188,
+     212
+    ],
+    "classes": [
+     "SL1 Low",
+     "SL2 Moderate",
+     "SL3 High",
+     "SL4 Very High",
+     "SL5 Extreme"
+    ]
+   },
+   {
+    "label": "Dispatch level (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     111,
+     167
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   },
+   {
+    "label": "Seasonal staffing threshold (ERC-X 65+)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     64
+    ],
+    "classes": [
+     "Below threshold",
+     "ERC 65+ (≈90% of 1-ac+ fires)"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE San Diego Unit part of the interagency Mountain/Desert FDRA (CNF / CAL FIRE SDU / USFWS FDOP, Jan 2022, and the 2025 FEMS amendment): same SIG, fuel model X and thresholds as CNF-MOUNTAIN. Mountain/Desert FDRA. 2025 FEMS amendment: dispatch BI-X 0-111 / 112-167 / 168+; staffing & adjective BI-X 0-46/47-94/95-188/189-212/213+ (90th 188, 97th 212); seasonal staffing ERC-X 65+ (90% of fires ≥1 ac, 2013-2022, calendar year). Stations from the 2026 thresholds sheet."
+ },
+ "SHF-230": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40501,
+   40503,
+   40512,
+   40516,
+   40517,
+   40518,
+   40520
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7.43,
+    14.85,
+    29.7,
+    32.9
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7.43,
+     14.85,
+     29.7,
+     32.9
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20,
+     26
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Big Bar, Hayfork, Friend Mtn, Trinity Camp, Scorpion, Backbone, Five Cent (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHF-238": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40511,
+   40812
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7.08,
+    14.15,
+    28.3,
+    30.9
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7.08,
+     14.15,
+     28.3,
+     30.9
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     31
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Yolla Bolla, Paymocus (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHF-240": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40217,
+   40247,
+   40618
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7.6,
+    15.2,
+    30.4,
+    33.4
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7.6,
+     15.2,
+     30.4,
+     33.4
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19,
+     26
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Mt. Shasta, Bolam, Sims (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHF-241": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40614,
+   40635
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2016,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    8.8,
+    17.6,
+    35.2,
+    38.2
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     8.8,
+     17.6,
+     35.2,
+     38.2
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     22,
+     31
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Sugarloaf SHF, Oak Mountain (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHF-243": {
+  "source": "Shasta-Trinity NF 2026 Fire Danger Operating Plan, FINAL signed (May 2026), Tables 5 and dispatch breakpoints, Appendix FFP parameters",
+  "stations": [
+   40221,
+   40244
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "calib": [
+   2011,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7.28,
+    14.55,
+    29.1,
+    32
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing levels (BI-Y; Table 5 — ¼ 90th, ½ 90th, 90th, 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7.28,
+     14.55,
+     29.1,
+     32
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI-Y; FDRA fire analysis 2011-2025)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     20,
+     27
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "SIG Round Mountain, Ash Creek (equal weight, fuel model Y). Staffing: 90th/97th BI from gap-filled FEMS 2005-2022, Jan-Dec (SL4 starts at the 90th, SL5 at the 97th; SL2/SL3 at 1/4 and 1/2 the 90th). FDRA staffing is tracked; the Forest level (all RAWS: 7.43/14.85/29.7/31.7) sets actual staffing. Dispatch from 2011-2025 fire occurrence vs BI with large fire days 5+ ac and multi-fire days 2+. FFP parameters: large fire 10 ac, multi-fire day 2+."
+ },
+ "SHU-1": {
+  "source": "CAL FIRE Shasta-Trinity Unit (SHU) Fire Danger Operating Plan 2026 (signed May 1, 2026)",
+  "stations": [
+   40516,
+   40503
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    19.9,
+    25.9
+   ],
+   "erc": [
+    50,
+    53,
+    56
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (Zone 1 Timber West; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19.9,
+     25.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective High / Very High / Extreme (Zone 1 Timber West; ERC-Y 80th/90th/97th)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     50,
+     53,
+     56
+    ],
+    "classes": [
+     "Low-Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "2026 SHU FDOP (signed May 1, 2026). Dispatch levels on BI-Y every two hours (SIG mean where a SIG exists). GSI step-down in shoulder seasons for zones 2, 3 and 5: dispatch is lowered one level while GSI exceeds 0.30 / 0.15 / 0.30 (Apr-May zone 3, Apr-Jun zones 2 and 5). Adjective High / Very High / Extreme start at the 80th / 90th / 97th ERC-Y percentile (used for cooperator and public notification)."
+ },
+ "SHU-2": {
+  "source": "CAL FIRE Shasta-Trinity Unit (SHU) Fire Danger Operating Plan 2026 (signed May 1, 2026)",
+  "stations": [
+   40632,
+   40637,
+   40615
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    17.9,
+    27.9
+   ],
+   "erc": [
+    61,
+    64,
+    68
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (Zone 2 Brush; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     17.9,
+     27.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective High / Very High / Extreme (Zone 2 Brush; ERC-Y 80th/90th/97th)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     61,
+     64,
+     68
+    ],
+    "classes": [
+     "Low-Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "2026 SHU FDOP (signed May 1, 2026). Dispatch levels on BI-Y every two hours (SIG mean where a SIG exists). GSI step-down in shoulder seasons for zones 2, 3 and 5: dispatch is lowered one level while GSI exceeds 0.30 / 0.15 / 0.30 (Apr-May zone 3, Apr-Jun zones 2 and 5). Adjective High / Very High / Extreme start at the 80th / 90th / 97th ERC-Y percentile (used for cooperator and public notification)."
+ },
+ "SHU-3": {
+  "source": "CAL FIRE Shasta-Trinity Unit (SHU) Fire Danger Operating Plan 2026 (signed May 1, 2026)",
+  "stations": [
+   40611
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    25.9,
+    31.9
+   ],
+   "erc": [
+    58,
+    61,
+    66
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (Zone 3 Sacramento Valley Floor; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     25.9,
+     31.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective High / Very High / Extreme (Zone 3 Sacramento Valley Floor; ERC-Y 80th/90th/97th)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     58,
+     61,
+     66
+    ],
+    "classes": [
+     "Low-Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "2026 SHU FDOP (signed May 1, 2026). Dispatch levels on BI-Y every two hours (SIG mean where a SIG exists). GSI step-down in shoulder seasons for zones 2, 3 and 5: dispatch is lowered one level while GSI exceeds 0.30 / 0.15 / 0.30 (Apr-May zone 3, Apr-Jun zones 2 and 5). Adjective High / Very High / Extreme start at the 80th / 90th / 97th ERC-Y percentile (used for cooperator and public notification)."
+ },
+ "SHU-4": {
+  "source": "CAL FIRE Shasta-Trinity Unit (SHU) Fire Danger Operating Plan 2026 (signed May 1, 2026)",
+  "stations": [
+   40615,
+   40630
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    19.9,
+    25.9
+   ],
+   "erc": [
+    58,
+    62,
+    65
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (Zone 4 Timber East; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     19.9,
+     25.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective High / Very High / Extreme (Zone 4 Timber East; ERC-Y 80th/90th/97th)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     58,
+     62,
+     65
+    ],
+    "classes": [
+     "Low-Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "2026 SHU FDOP (signed May 1, 2026). Dispatch levels on BI-Y every two hours (SIG mean where a SIG exists). GSI step-down in shoulder seasons for zones 2, 3 and 5: dispatch is lowered one level while GSI exceeds 0.30 / 0.15 / 0.30 (Apr-May zone 3, Apr-Jun zones 2 and 5). Adjective High / Very High / Extreme start at the 80th / 90th / 97th ERC-Y percentile (used for cooperator and public notification)."
+ },
+ "SHU-5": {
+  "source": "CAL FIRE Shasta-Trinity Unit (SHU) Fire Danger Operating Plan 2026 (signed May 1, 2026)",
+  "stations": [
+   40630
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    29.9,
+    39.9
+   ],
+   "erc": [
+    60,
+    63,
+    67
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (Zone 5 Northeastern Plateau; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     29.9,
+     39.9
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Adjective High / Very High / Extreme (Zone 5 Northeastern Plateau; ERC-Y 80th/90th/97th)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     60,
+     63,
+     67
+    ],
+    "classes": [
+     "Low-Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "2026 SHU FDOP (signed May 1, 2026). Dispatch levels on BI-Y every two hours (SIG mean where a SIG exists). GSI step-down in shoulder seasons for zones 2, 3 and 5: dispatch is lowered one level while GSI exceeds 0.30 / 0.15 / 0.30 (Apr-May zone 3, Apr-Jun zones 2 and 5). Adjective High / Very High / Extreme start at the 80th / 90th / 97th ERC-Y percentile (used for cooperator and public notification)."
+ },
+ "SLU-Coastal": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44917
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    11,
+    17
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (SLU Coastal FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     11,
+     17
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE SLU \"Coastal FDRA\" from the unit survey: BI-Y dispatch Low 0-11, Moderate to 17, High above. Stations 44917."
+ },
+ "SLU-Coastal Valley": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44915
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    12,
+    21
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (SLU Coastal Valley FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     21
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE SLU \"Coastal Valley FDRA\" from the unit survey: BI-Y dispatch Low 0-12, Moderate to 21, High above. Stations 44915."
+ },
+ "SLU-Inland Grass": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44914
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    16,
+    31
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (SLU Inland Grass FDRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     16,
+     31
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE SLU \"Inland Grass FDRA\" from the unit survey: BI-Y dispatch Low 0-16, Moderate to 31, High above. Stations 44914."
+ },
+ "SNF-528": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 6",
+  "stations": [
+   44207,
+   44110,
+   44112,
+   44204,
+   44505,
+   44510,
+   44503
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "11-30"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    42,
+    59,
+    69,
+    77
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Manager ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     42,
+     59,
+     69,
+     77
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FFP initial ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     56,
+     65,
+     76,
+     79
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Manager bins 0-42/43-59/60-69/70-77/78+ (FFP 0-56/57-65/66-76/77-79/80+). Climatology May 1-Nov 30; Table A6.1 lists Jun 15-Oct 1 for the thresholds."
+ },
+ "SNF-532": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 7",
+  "stations": [
+   44503,
+   44203,
+   44109,
+   44505
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "04-01",
+   "11-30"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    39,
+    53,
+    64,
+    70
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Manager ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     39,
+     53,
+     64,
+     70
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FFP initial ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     48,
+     56,
+     68,
+     72
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Manager bins 0-39/40-53/54-64/65-70/71+ (FFP 0-48/49-56/57-68/69-72/73+). The FDOP SIG is weighted (Fence Meadow 30, Minarets 30, Mt Rest 30, Wawona 10); the Workbench, season tracking and map use these weights (stations not reporting drop out and the rest are re-weighted).",
+  "weights": {
+   "44503": 30,
+   "44203": 30,
+   "44109": 10,
+   "44505": 30
+  }
+ },
+ "SNF-533": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 4",
+  "stations": [
+   43612,
+   44511,
+   44520
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "06-15",
+   "10-01"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    52,
+    57
+   ]
+  },
+  "classes": [
+   "Below Very High",
+   "Very High",
+   "Extreme"
+  ],
+  "tools": [
+   {
+    "label": "Very High / Extreme (ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     52,
+     57
+    ],
+    "classes": [
+     "Below VH",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Very High = 75th percentile = ERC 52; Extreme = 95th percentile = ERC 57 (2010-2020, Jun 15-Oct 1). Covers STF, YNP and SNF high country."
+ },
+ "SQF-435": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 9",
+  "stations": [
+   44713,
+   44732
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "11-01"
+  ],
+  "calib": [
+   2010,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    20,
+    35
+   ],
+   "bi": [
+    25,
+    45
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch levels (ERC-Y, chosen for tree mortality)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     20,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "Dispatch levels (BI)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     25,
+     45
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (ERC-Y assumed — index not stated; 39th/69th percentile)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     21,
+     46
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "ERC dispatch Low 0-20, Moderate 20-35, High 35-76 (chosen because of tree mortality); BI alternative 0-25/25-45/45+. Station 90th/97th ERC: Park Ridge 61/66, Wolverton 69/72.  2026 Forest Thresholds sheet custom values 21 / 46 are loaded as a tool on the best-fitting index (assumed; the sheet does not name it) — confirm with the forest."
+ },
+ "SQF-438": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 8",
+  "stations": [
+   44701,
+   44712,
+   44717,
+   44719,
+   44508
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2010,
+   2020
+  ],
+  "breaks": {
+   "bi": [
+    50,
+    150
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch levels (BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     50,
+     150
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (BI-X assumed — index not stated; 16th/47th percentile)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     45,
+     104
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "BI-X for staffing and adjective; dispatch Low 0-50, Moderate 50-150, High 150-264. Per-station 90th/97th BI and ERC listed in Table A8.X.  2026 Forest Thresholds sheet custom values 45 / 104 are loaded as a tool on the best-fitting index (assumed; the sheet does not name it) — confirm with the forest."
+ },
+ "SQF-440": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 10",
+  "stations": [
+   44707,
+   44722,
+   44726,
+   45009
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "11-01"
+  ],
+  "calib": [
+   2010,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    21,
+    35
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch response (ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     21,
+     35
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (ERC-Y assumed — index not stated; 25th/45th percentile)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     13,
+     28
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "Dispatch Low 0-21, Moderate 21-35, High 35-67. Station 90th/97th ERC: Johnsondale 56/59, Black Rock 52/56, Peppermint 60/65, Breckenridge 63/67.  2026 Forest Thresholds sheet custom values 13 / 28 are loaded as a tool on the best-fitting index (assumed; the sheet does not name it) — confirm with the forest."
+ },
+ "SQF-445": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 13",
+  "stations": [
+   45002,
+   45016
+  ],
+  "fm": "X",
+  "idx": "erc",
+  "season": [
+   "04-01",
+   "11-30"
+  ],
+  "calib": [
+   2012,
+   2022
+  ],
+  "breaks": {
+   "erc": [
+    108.5,
+    113.5
+   ]
+  },
+  "classes": [
+   "Below VH",
+   "Very High (90th)",
+   "Extreme (97th)"
+  ],
+  "tools": [
+   {
+    "label": "90th / 97th ERC-X (station average)",
+    "idx": "erc",
+    "fm": "X",
+    "breaks": [
+     108.5,
+     113.5
+    ],
+    "classes": [
+     "Below VH",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "2026 sheet custom thresholds (ERC-Y assumed — index not stated; 23rd/68th; on fuel model X these would be the 5th/20th percentile)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     28,
+     53
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "ERC-X; station 90th/97th Democrat 107/112, River Kern 110/115 (averaged here). FDOP class graphics not in the text.  2026 Forest Thresholds sheet custom values 28 / 53 are loaded as a tool on the best-fitting index (assumed; the sheet does not name it) — confirm with the forest."
+ },
+ "SRF-110": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40102,
+   40105,
+   40101
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    6,
+    14,
+    30,
+    33
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (SRNRA; BI-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     6,
+     14,
+     30,
+     33
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (SRNRA; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     14,
+     22
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "FDRA SRNRA; SIG Gasquet 2, Ship Mtn, Camp Six (33% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. Dispatch from 2005-2022 fire history vs BI."
+ },
+ "SRF-112-115": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40404,
+   40430,
+   40408,
+   40519
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    6,
+    14,
+    29,
+    32
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (ORD-HIA-LTRD; BI-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     6,
+     14,
+     29,
+     32
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (ORD-HIA-LTRD; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     11,
+     21
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "FDRA ORD-HIA-LTRD; SIG Brush Mtn, Slate Creek, Hoopa, Underwood (25% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. Dispatch from 2005-2022 fire history vs BI."
+ },
+ "SRF-130": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40507,
+   40508
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    5,
+    11,
+    23,
+    25
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (MR; BI-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     5,
+     11,
+     23,
+     25
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (MR; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     19
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "FDRA MR; SIG Mad River, Ruth (50% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. Dispatch from 2005-2022 fire history vs BI."
+ },
+ "SRF-201": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses",
+  "stations": [
+   40231,
+   40246
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2006,
+   2025
+  ],
+  "breaks": {
+   "bi": [
+    7,
+    15,
+    31,
+    33
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing levels (Ukonom; BI-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     7,
+     15,
+     31,
+     33
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   },
+   {
+    "label": "Dispatch levels (Ukonom; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     15,
+     24
+    ],
+    "classes": [
+     "Low",
+     "Medium",
+     "High"
+    ]
+   }
+  ],
+  "notes": "FDRA Ukonom; SIG Somes Bar, Dutch Indy (KNF) (50% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. Dispatch from 2005-2022 fire history vs BI."
+ },
+ "SRF-RWP": {
+  "source": "Six Rivers NF / Redwood NP 2026 FDOP, DRAFT for signature V2 (Jun 2026) — Staffing Level table, Dispatch Level analyses; 2026 Appendix C-1 (NPS copy) checked — same thresholds",
+  "stations": [
+   40102,
+   40425
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "10-31"
+  ],
+  "calib": [
+   2015,
+   2025
+  ],
+  "breaks": {
+   "erc": [
+    14,
+    24,
+    35,
+    40
+   ]
+  },
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "large": 5,
+  "tools": [
+   {
+    "label": "Staffing levels (RWP (Redwood NP); ERC-Y — SL4 = 90th, SL5 = 97th)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     14,
+     24,
+     35,
+     40
+    ],
+    "classes": [
+     "SL1",
+     "SL2",
+     "SL3",
+     "SL4",
+     "SL5"
+    ]
+   }
+  ],
+  "notes": "FDRA RWP (Redwood NP); SIG Gasquet 2, Schoolhouse (50% each), fuel model Y. Staffing SL4/SL5 at the 90th/97th, SL3 top = 90th/2, SL2 top = SL3/2 (RWP adjusts SL1-3 by fire occurrence). Staffing table dataset reads 2005-2025 (text says 2005-2022 gap-filled), May 1-Oct 31. RWP uses ERC and has no dispatch levels; large fire 5 ac (only 3 large-fire days 2015-2024)."
+ },
+ "STF-348": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 2",
+  "stations": [
+   43605,
+   44115
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "12-01"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    29,
+    48,
+    67,
+    75
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 10,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Staffing / dispatch — manager ERC-Y bins (2022)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     29,
+     48,
+     67,
+     75
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FFP initial ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     46,
+     59,
+     72,
+     76
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "STF forest staffing & adjective levels (Table A14.1, ERC-Y)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     24,
+     33,
+     50,
+     62
+    ],
+    "classes": [
+     "1 Low",
+     "2 Medium",
+     "3 High",
+     "4 Very High",
+     "5 Extreme"
+    ]
+   }
+  ],
+  "notes": "Manager-modified ERC-Y bins used in 2022 (FFP initial bins 0-46, 47-59, 60-72, 73-76, 77+). Large fire = 10 ac final size; multi-fire day = 2+ starts.",
+  "breaks_ffp": {
+   "erc": [
+    46,
+    59,
+    72,
+    76
+   ]
+  }
+ },
+ "STF-370": {
+  "source": "Sierra South Interagency FDOP (signed 2023-03-20, v. 2023-05-05), Appendix 3",
+  "stations": [
+   44102,
+   43615,
+   43210
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "season": [
+   "05-01",
+   "11-01"
+  ],
+  "calib": [
+   2011,
+   2020
+  ],
+  "breaks": {
+   "erc": [
+    27,
+    40,
+    54,
+    63
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High",
+   "Very High",
+   "Extreme"
+  ],
+  "large": 20,
+  "mfd": 2,
+  "tools": [
+   {
+    "label": "Manager ERC-Y bins (2022)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     27,
+     40,
+     54,
+     63
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   },
+   {
+    "label": "FFP initial ERC-Y bins",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     34,
+     44,
+     63,
+     66
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Manager-modified ERC-Y bins (FFP initial 0-34, 35-44, 45-63, 64-66, 67+). Large fire = 20 ac; multi-fire day = 2+.",
+  "breaks_ffp": {
+   "erc": [
+    34,
+    44,
+    63,
+    66
+   ]
+  }
+ },
+ "TCU-Fothills West": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   43613
+  ],
+  "fm": "Y",
+  "idx": "ic",
+  "breaks": {
+   "ic": [
+    16,
+    29
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (TCU Foothills West; IC-Y)",
+    "idx": "ic",
+    "fm": "Y",
+    "breaks": [
+     16,
+     29
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE TCU \"Foothills West\" from the unit survey: IC-Y dispatch Low 0-16, Moderate to 29, High above. Stations 43613."
+ },
+ "TGU-1": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40815,
+   40805,
+   40801
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    12,
+    27
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (TGU Timber; BI-Y)",
+    "idx": "bi",
+    "fm": "Y",
+    "breaks": [
+     12,
+     27
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE TGU \"Timber\" from the unit survey: BI-Y dispatch Low 0-12, Moderate to 27, High above. Stations 40815, 40805, 40801."
+ },
+ "TGU-2": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40814,
+   41215
+  ],
+  "fm": "V",
+  "idx": "sc",
+  "breaks": {
+   "sc": [
+    10,
+    90
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (TGU Grass; SC-V)",
+    "idx": "sc",
+    "fm": "V",
+    "breaks": [
+     10,
+     90
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE TGU \"Grass\" from the unit survey: SC-V dispatch Low 0-10, Moderate to 90, High above. Stations 40814, 41215."
+ },
+ "TGU-3": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   40816,
+   40802
+  ],
+  "fm": "W",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    12,
+    50
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (TGU Brush; BI-W)",
+    "idx": "bi",
+    "fm": "W",
+    "breaks": [
+     12,
+     50
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE TGU \"Brush\" from the unit survey: BI-W dispatch Low 0-12, Moderate to 50, High above. Stations 40816, 40802."
+ },
+ "TMU-335": {
+  "source": "Lake Tahoe Basin MU Standard Operating Guidelines 2026 (signed) + 2026 Forest Thresholds sheet",
+  "stations": [
+   42616,
+   41909,
+   261205,
+   260117
+  ],
+  "fm": "Y",
+  "idx": "bi",
+  "season": [
+   "01-01",
+   "12-31"
+  ],
+  "notes": "The LTBMU SOGs contain no NFDRS breakpoints or SIG table; the 2026 sheet lists standard 90th/97th (ERC/BI Low-Extreme, staffing 1-5) on fuel model Y with these RAWS. SOG trigger: NDF helicopter prepositioned at SLT airport when forecast BI is at or above the 90th percentile or a Red Flag Warning is issued for the SLT area (CAL FIRE-NDF agreement supplement). Popup and Workbench use the USFS 90th/97th percentiles."
+ },
+ "TUU-1": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44731,
+   44708
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    89,
+    144
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (TUU TUU; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     89,
+     144
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE TUU \"TUU\" from the unit survey: BI-X dispatch Low 0-89, Moderate to 144, High above. Stations 44731, 44708."
+ },
+ "TUU-Lra": {
+  "source": "CAL FIRE unit FDRA thresholds survey (Aug 2025; CALFIRE FDRA Thresholds 10222026.xlsx)",
+  "stations": [
+   44731,
+   44708
+  ],
+  "fm": "X",
+  "idx": "bi",
+  "breaks": {
+   "bi": [
+    89,
+    144
+   ]
+  },
+  "classes": [
+   "Low",
+   "Moderate",
+   "High"
+  ],
+  "tools": [
+   {
+    "label": "Dispatch level (TUU TUU; BI-X)",
+    "idx": "bi",
+    "fm": "X",
+    "breaks": [
+     89,
+     144
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High"
+    ]
+   }
+  ],
+  "notes": "CAL FIRE TUU \"TUU\" from the unit survey: BI-X dispatch Low 0-89, Moderate to 144, High above. Stations 44731, 44708."
+ },
+ "UFW-Eastern Sierra Unit": {
+  "source": "USFWS unit boundary (provided 2026-10-20) — no FDOP",
+  "stations": [
+   43708
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "USFWS Eastern Sierra Unit clipped to the federal non-USFS DPA (BLM, NPS, DoD, USFWS, BIA) outside forest FDRAs — USFS, state (CAL FIRE) and local government DPA removed (CA Wildland Fire Direct Protection Areas, updated 2026-05-27). No FDOP: USFWS standard 80th/95th percentiles. Stations = RAWS inside the area (few for this size; add an FDOP SIG when available)."
+ },
+ "UFW-Guam NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "UFW-Hakalau Forest NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   150105
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "breaks": {
+   "erc": [
+    13,
+    26,
+    52,
+    59
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (ERC-Y, 150105)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     13,
+     26,
+     52,
+     59
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "erc",
+    "fm": "Y",
+    "breaks": [
+     13,
+     26,
+     52,
+     59
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes."
+ },
+ "UFW-James Campbell NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   150301
+  ],
+  "fm": "Y",
+  "idx": "kbdi",
+  "breaks": {
+   "kbdi": [
+    300,
+    500,
+    600,
+    700
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (KBDI, James Campbell 150301)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes. KBDI SL 2-5 at 300/500/600/700."
+ },
+ "UFW-Kealia Pond NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5)",
+  "stations": [
+   498013
+  ],
+  "fm": "Y",
+  "idx": "kbdi",
+  "breaks": {
+   "kbdi": [
+    300,
+    500,
+    600,
+    700
+   ]
+  },
+  "classes": [
+   "SL 1",
+   "SL 2",
+   "SL 3",
+   "SL 4",
+   "SL 5"
+  ],
+  "tools": [
+   {
+    "label": "Staffing class (KBDI, Kealia Pond 498013)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "SL 1",
+     "SL 2",
+     "SL 3",
+     "SL 4",
+     "SL 5"
+    ]
+   },
+   {
+    "label": "Adjective fire danger (= staffing class)",
+    "idx": "kbdi",
+    "fm": "Y",
+    "breaks": [
+     300,
+     500,
+     600,
+     700
+    ],
+    "classes": [
+     "Low",
+     "Moderate",
+     "High",
+     "Very High",
+     "Extreme"
+    ]
+   }
+  ],
+  "notes": "Pacific Islands Zone index station: sustained SL 4 or 5 here may warrant heightened zone staffing and preparedness (plan p. 10). Staffing classes = adjective classes. KBDI SL 2-5 at 300/500/600/700."
+ },
+ "UFW-Rose Atoll NWR": {
+  "source": "DOI Pacific Islands Zone Fire Management Staffing Plan and FDOP 2024 (ver. 8/5) — zone unit, no FDOP station or thresholds",
+  "stations": [],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "Part of the DOI Pacific Islands Zone (fire staff based at Hawaii Volcanoes NP). The 2024 plan sets no RAWS or thresholds for this unit; add the unit's RAWS (FEMS station ID) to show fire danger here."
+ },
+ "UFW-South Coast Unit": {
+  "source": "USFWS unit boundary (provided 2026-10-20) — no FDOP",
+  "stations": [
+   45620,
+   45127,
+   45128,
+   45129
+  ],
+  "fm": "Y",
+  "idx": "erc",
+  "notes": "USFWS South Coast Unit clipped to the federal non-USFS DPA (BLM, NPS, DoD, USFWS, BIA) outside forest FDRAs — USFS, state (CAL FIRE) and local government DPA removed (CA Wildland Fire Direct Protection Areas, updated 2026-05-27). No FDOP: USFWS standard 80th/95th percentiles. Stations = RAWS inside the area (few for this size; add an FDOP SIG when available)."
+ }
+}

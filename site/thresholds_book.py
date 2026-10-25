@@ -32,6 +32,14 @@ INFO_COLS = ['FDRA ID', 'FDRA name (info only)', 'Agency (info only)', 'FDOP sou
              'Large fire (acres)', 'Multi-fire day (fires)', 'Class names (primary)', 'Advanced (JSON)', 'Notes']
 TOOL_COLS = ['FDRA ID', 'Order', 'Tool name', 'Index', 'Fuel model'] + [f'Break {i}' for i in range(1, NB + 1)] + \
             [f'Class {i}' for i in range(1, NC + 1)]
+TOOL_OPT = ['Days used', 'Adjustments']          # optional columns (older workbooks without them still read)
+MAT_COLS = (['FDRA ID', 'Order', 'Tool name', 'Row index', 'Row fuel model'] + [f'Row break {i}' for i in range(1, NB + 1)] +
+            ['Column index', 'Column fuel model'] + [f'Column break {i}' for i in range(1, NB + 1)] +
+            [f'Row {i} levels' for i in range(1, NC + 1)] + [f'Class {i}' for i in range(1, NC + 1)] + TOOL_OPT)
+ADJ_VARS = {'TMAX': 'tmax', 'RH MIN': 'rhmin', '100-HR FM': 'f100', '1000-HR FM': 'f1000', 'GSI': 'gsi', 'KBDI': 'kbdi',
+            'ERC': 'erc', 'BI': 'bi', 'IC': 'ic', 'SC': 'sc'}
+ADJ_NAME = {'tmax': 'Tmax', 'rhmin': 'RH min', 'f100': '100-hr FM', 'f1000': '1000-hr FM', 'gsi': 'GSI', 'kbdi': 'KBDI',
+            'erc': 'ERC', 'bi': 'BI', 'ic': 'IC', 'sc': 'SC'}
 
 HOWTO = """HOW TO UPDATE THE FDRA THRESHOLDS
 1. Download this file from GitHub: site/thresholds/FDRA_thresholds.xlsx, then Download raw file.
@@ -42,6 +50,14 @@ HOWTO = """HOW TO UPDATE THE FDRA THRESHOLDS
      must be one more class than there are breakpoints.
      Use Index and Fuel model from the dropdowns. Order sets the order the tools are listed in.
      The first tool for an index sets that index's default breakpoints in the Workbench.
+     Days used (optional): which days the tool averages. Blank = the observed day and the forecast day.
+     F1 = the next forecast day only; O1+F1+F2+F3 = average of yesterday's observed and the next three forecast days.
+     Adjustments (optional): move the class up or down when a condition is met, one per line or separated by ;
+     for example  Tmax < 57 : -1   or   GSI > 0.3 : -1   or   100-hr FM > 14 : -1 @F1  (the @ part sets its own days).
+     Variables: Tmax, RH min, 100-hr FM, 1000-hr FM, GSI, KBDI, ERC, BI, IC, SC.
+   - Matrix tools sheet: a level read from a table, such as BI rows x ERC columns. Give the row index and
+     breakpoints, the column index and breakpoints, then one "Row N levels" cell per row with the level for each
+     column, separated by spaces (for example 1 1 1 2 3). Levels are numbers from 1 to the number of classes.
    - FDOP info sheet: one row per FDRA (the plan source, SIG stations, season and so on).
      Rows with no FDOP source and no tools are ignored.
    - To change a threshold, edit its row. To add a tool, add a row with the FDRA ID.
@@ -79,26 +95,33 @@ def export(start: dict, path: Path = BOOK):
         s.freeze_panes = 'B2'
         return s
 
-    tl = sheet('Thresholds', TOOL_COLS, [22, 7, 48, 13, 9] + [8] * NB + [14] * NC)
+    tl = sheet('Thresholds', TOOL_COLS + TOOL_OPT, [22, 7, 48, 13, 9] + [8] * NB + [14] * NC + [16, 34])
+    mt = sheet('Matrix tools', MAT_COLS, [22, 7, 48, 13, 9] + [8] * NB + [13, 9] + [8] * NB + [12] * NC + [14] * NC + [16, 34])
     info = sheet('FDOP info', INFO_COLS, [22, 26, 18, 50, 13, 9, 26, 22, 11, 11, 10, 10, 10, 10, 30, 24, 80])
     ids = sorted(set(meta) | set(start))
     for k in ids:
         e = start.get(k, {}); m = meta.get(k, {})
         extra = {x: e[x] for x in e if x not in ('source', 'stations', 'fm', 'idx', 'notes', 'breaks', 'classes', 'tools',
-                                                 'season', 'calib', 'large', 'mfd', 'weights')}
+                                                 'season', 'calib', 'large', 'mfd', 'weights', 'matrix_tools')}
         info.append([k, m.get('fdra_name', ''), m.get('agency', ''), e.get('source', ''), INDEX_NAME.get(e.get('idx'), ''),
                      e.get('fm', ''), ', '.join(map(str, e.get('stations', []))),
                      ', '.join(f'{a}:{b}' for a, b in (e.get('weights') or {}).items()),
                      *(e.get('season') or ['', '']), *(e.get('calib') or ['', '']), e.get('large', ''), e.get('mfd', ''),
                      ' | '.join(e.get('classes') or []), json.dumps(extra) if extra else '', e.get('notes', '')])
         for i, t in enumerate(e.get('tools', []), 1):
-            tl.append([k, i, t['label'], INDEX_NAME[t['idx']], t['fm']] + t['breaks'] + [None] * (NB - len(t['breaks'])) +
-                      t['classes'] + [None] * (NC - len(t['classes'])))
-    for s in (info, tl):   # text cells stay text in Excel (no 05-01 -> 1-May, no 44302, 45220 -> number)
+            tl.append([k, t.get('order', i), t['label'], INDEX_NAME[t['idx']], t['fm']] + t['breaks'] + [None] * (NB - len(t['breaks'])) +
+                      t['classes'] + [None] * (NC - len(t['classes'])) + [t.get('window', ''), adj_text(t.get('adjust'))])
+        for t in e.get('matrix_tools', []):
+            R, C = t['rows'], t['cols']
+            mt.append([k, t.get('order', ''), t['label'], INDEX_NAME[R['idx']], R['fm']] + R['breaks'] + [None] * (NB - len(R['breaks'])) +
+                      [INDEX_NAME[C['idx']], C['fm']] + C['breaks'] + [None] * (NB - len(C['breaks'])) +
+                      [' '.join(map(str, r)) for r in t['matrix']] + [None] * (NC - len(t['matrix'])) +
+                      t['classes'] + [None] * (NC - len(t['classes'])) + [t.get('window', ''), adj_text(t.get('adjust'))])
+    for s in (info, tl, mt):   # text cells stay text in Excel (no 05-01 -> 1-May, no 44302, 45220 -> number)
         for row in s.iter_rows(min_row=2):
             for c in row:
                 h = s.cell(1, c.column).value
-                if not (h.startswith('Break') or h in ('Order', 'Calibration from', 'Calibration to', 'Large fire (acres)', 'Multi-fire day (fires)')):
+                if not (h.startswith(('Break', 'Row break', 'Column break')) or h in ('Order', 'Calibration from', 'Calibration to', 'Large fire (acres)', 'Multi-fire day (fires)')):
                     c.number_format = '@'
                 if h == 'Notes':
                     c.alignment = Alignment(wrap_text=False)
@@ -119,9 +142,20 @@ def export(start: dict, path: Path = BOOK):
     dv(info, f'E2:E{n}', f'=Lists!$B$1:$B${len(INDEX)}', 'Pick the index from the list.')
     dv(tl, f'E2:E{n}', f'=Lists!$C$1:$C${len(FUEL)}', 'Fuel model V, W, X, Y or Z.')
     dv(info, f'F2:F{n}', f'=Lists!$C$1:$C${len(FUEL)}', 'Fuel model V, W, X, Y or Z.')
-    num = DataValidation(type='decimal', operator='between', formula1='-1000', formula2='100000', allow_blank=True,
-                         showErrorMessage=True, errorTitle='Number only', error='Breakpoints are numbers (for example 42 or 55.9).')
-    tl.add_data_validation(num); num.add(f'F2:{chr(ord("F") + NB - 1)}{n}')
+    from openpyxl.utils import get_column_letter as L_
+    dv(mt, f'A2:A{n}', f'=Lists!$A$1:$A${len(ids)}', 'Use an FDRA ID from the FDOP info sheet.')
+    ci = {h: i + 1 for i, h in enumerate(MAT_COLS)}
+    for h in ('Row index', 'Column index'):
+        dv(mt, f'{L_(ci[h])}2:{L_(ci[h])}{n}', f'=Lists!$B$1:$B${len(INDEX)}', 'Pick the index from the list.')
+    for h in ('Row fuel model', 'Column fuel model'):
+        dv(mt, f'{L_(ci[h])}2:{L_(ci[h])}{n}', f'=Lists!$C$1:$C${len(FUEL)}', 'Fuel model V, W, X, Y or Z.')
+    for sh, rngs in ((tl, [f'F2:{L_(5 + NB)}{n}']),
+                     (mt, [f'{L_(ci["Row break 1"])}2:{L_(ci["Row break " + str(NB)])}{n}',
+                           f'{L_(ci["Column break 1"])}2:{L_(ci["Column break " + str(NB)])}{n}'])):
+        num = DataValidation(type='decimal', operator='between', formula1='-1000', formula2='100000', allow_blank=True,
+                             showErrorMessage=True, errorTitle='Number only', error='Breakpoints are numbers (for example 42 or 55.9).')
+        sh.add_data_validation(num)
+        for r_ in rngs: num.add(r_)
     path.parent.mkdir(parents=True, exist_ok=True)
     wb.save(path)
 
@@ -159,6 +193,38 @@ def _int(v, what, err, lo=None, hi=None):
 def _num(v):
     f = float(v)
     return int(f) if f.is_integer() else round(f, 3)
+
+
+def adj_text(adj):
+    return '; '.join(f"{ADJ_NAME[a['var']]} {a['op']} {a['value']:g} : {a['adjust']:+d}" + (f" @{a['window']}" if a.get('window') else '')
+                     for a in adj or [])
+
+
+def _window(v, err):
+    w = _s(v).upper().replace(' ', '')
+    if not w:
+        return ''
+    if not re.fullmatch(r'(O1|F[1-7])(\+(O1|F[1-7]))*', w):
+        err(f'days used "{_s(v)}" should look like F1 or O1+F1+F2+F3 (O1 = observed, F1-F7 = forecast days)'); return None
+    return w
+
+
+def _adjust(v, err):
+    out = []
+    for part in [p.strip() for p in re.split(r'[;\n]+', _s(v)) if p.strip()]:
+        m = re.fullmatch(r'(.+?)\s*(<=|>=|<|>)\s*(-?\d+(?:\.\d+)?)\s*:\s*([+-]?\d)\s*(?:@\s*(\S+))?', part)
+        var = m and ADJ_VARS.get(re.sub(r'\s+', ' ', m.group(1)).upper().replace('100 HR', '100-HR').replace('1000 HR', '1000-HR'))
+        if not m or not var:
+            err(f'adjustment "{part}" should look like  Tmax < 57 : -1  (variables: {", ".join(ADJ_NAME.values())})'); return None
+        a = {'var': var, 'op': m.group(2), 'value': _num(m.group(3)), 'adjust': int(m.group(4))}
+        if a['adjust'] == 0 or abs(a['adjust']) > 2:
+            err(f'adjustment "{part}": the change should be -1, +1, -2 or +2'); return None
+        if m.group(5):
+            w = _window(m.group(5), err)
+            if w is None: return None
+            a['window'] = w
+        out.append(a)
+    return out
 
 
 def read(path: Path = BOOK):
@@ -256,10 +322,73 @@ def read(path: Path = BOOK):
         if len(cl) != len(br) + 1:
             err(f'{len(br)} breakpoints need {len(br) + 1} class names (found {len(cl)})'); continue
         order = _int(v['Order'], 'order', err)
-        tools.setdefault(k, []).append((order if order is not None else 999, rn, {
-            'label': _s(v['Tool name']) or f'{ix}-{fm}', 'idx': INDEX[ix], 'fm': fm, 'breaks': br, 'classes': cl}))
+        win, adj = _window(v.get('Days used'), err), _adjust(v.get('Adjustments'), err)
+        if win is None or adj is None: continue
+        t = {'label': _s(v['Tool name']) or f'{ix}-{fm}', 'idx': INDEX[ix], 'fm': fm, 'breaks': br, 'classes': cl}
+        if win: t['window'] = win
+        if adj: t['adjust'] = adj
+        tools.setdefault(k, []).append((order if order is not None else 999, rn, t))
+    mats = {}
+    if 'Matrix tools' in wb.sheetnames:
+        got = [_s(c.value) for c in wb['Matrix tools'][1]]
+        miss = [c for c in MAT_COLS if c not in got and c not in TOOL_OPT]
+        if miss:
+            return None, [('Matrix tools', 1, '', f'missing column(s): {", ".join(miss)} (keep the headings as they are)')], set()
+        for rn, v in rows('Matrix tools'):
+            k = _s(v['FDRA ID'])
+            def err(m, k=k, rn=rn): probs.append(('Matrix tools', rn, k, m)); bad.add(k)
+            if not k: err('FDRA ID is blank'); continue
+            if k not in start:
+                err(f'FDRA ID "{k}" has no row on the FDOP info sheet' if k in ids else f'FDRA ID "{k}" is not on the map'); continue
+            ax, ok = {}, True
+            for side, lab in (('rows', 'Row'), ('cols', 'Column')):
+                ix, fm = _s(v[f'{lab} index']), _s(v[f'{lab} fuel model']).upper()
+                if ix not in INDEX: err(f'{lab.lower()} index "{ix}" is not on the list'); ok = False; break
+                if fm not in FUEL: err(f'{lab.lower()} fuel model "{fm}" should be V, W, X, Y or Z'); ok = False; break
+                cells = [v[f'{lab} break {i}'] for i in range(1, NB + 1)]
+                while cells and cells[-1] in (None, ''): cells.pop()
+                try:
+                    br = [_num(c) for c in cells]
+                except (TypeError, ValueError):
+                    err(f'{lab.lower()} breakpoints {cells} must all be numbers'); ok = False; break
+                if not br or any(b2 <= b1 for b1, b2 in zip(br, br[1:])):
+                    err(f'{lab.lower()} breakpoints {br} must be given and go up from left to right'); ok = False; break
+                ax[side] = {'idx': INDEX[ix], 'fm': fm, 'breaks': br}
+            if not ok: continue
+            cl = [_s(v[f'Class {i}']) for i in range(1, NC + 1)]
+            while cl and not cl[-1]: cl.pop()
+            if len(cl) < 2 or any(not c for c in cl): err('give at least two class names, with no blanks in the middle'); continue
+            nr, nc_ = len(ax['rows']['breaks']) + 1, len(ax['cols']['breaks']) + 1
+            mat = []
+            for i in range(1, nr + 1):
+                txt = _s(v.get(f'Row {i} levels'))
+                try:
+                    lv = [int(x) for x in re.split(r'[\s,]+', txt) if x]
+                except ValueError:
+                    err(f'Row {i} levels "{txt}" should be whole numbers separated by spaces'); ok = False; break
+                if len(lv) != nc_:
+                    err(f'Row {i} levels needs {nc_} numbers, one per column class (found {len(lv)})'); ok = False; break
+                if any(x < 1 or x > len(cl) for x in lv):
+                    err(f'Row {i} levels must be between 1 and {len(cl)} (the number of classes)'); ok = False; break
+                mat.append(lv)
+            if not ok: continue
+            extra_rows = [i for i in range(nr + 1, NC + 1) if _s(v.get(f'Row {i} levels'))]
+            if extra_rows: err(f'{nr - 1} row breakpoints give {nr} rows, but Row {extra_rows[0]} levels is filled in'); continue
+            win, adj = _window(v.get('Days used'), err), _adjust(v.get('Adjustments'), err)
+            if win is None or adj is None: continue
+            order = _int(v['Order'], 'order', err)
+            t = {'type': 'matrix', 'label': _s(v['Tool name']) or 'Matrix', **ax, 'matrix': mat, 'classes': cl}
+            if win: t['window'] = win
+            if adj: t['adjust'] = adj
+            mats.setdefault(k, []).append((order if order is not None else 999, rn, t))
     for k, e in start.items():
-        ts = [t for _, _, t in sorted(tools.get(k, []), key=lambda x: (x[0], x[1]))]
+        allt = sorted([(o, 0, rn, t) for o, rn, t in tools.get(k, [])] + [(o, 1, rn, t) for o, rn, t in mats.get(k, [])],
+                      key=lambda x: (x[0], x[1], x[2]))
+        for i, (_, _, _, t) in enumerate(allt, 1):
+            t['order'] = i
+        ts = [t for _, kind, _, t in allt if kind == 0]
+        if mats.get(k):
+            e['matrix_tools'] = [t for _, kind, _, t in allt if kind == 1]
         if ts:
             e['tools'] = ts
             e['breaks'] = {}
@@ -276,12 +405,11 @@ def read(path: Path = BOOK):
     keep = {}
     for k, e in start.items():
         e.pop('_row', None)
-        if not e.get('source') and not e.get('tools'):
+        if not e.get('source') and not e.get('tools') and not e.get('matrix_tools'):
             continue
-        keep[k] = {x: e[x] for x in ('source', 'stations', 'fm', 'idx', 'season', 'calib', 'breaks', 'classes', 'large', 'mfd',
-                                     'tools', 'notes') if x in e and e[x] not in ('', None)}
-        keep[k].update({x: e[x] for x in e if x not in keep[k] and x not in ('notes',)
-                        and x not in ('source', 'stations', 'fm', 'idx', 'season', 'calib', 'breaks', 'classes', 'large', 'mfd', 'tools')})
+        F_ = ('source', 'stations', 'fm', 'idx', 'season', 'calib', 'breaks', 'classes', 'large', 'mfd', 'tools', 'matrix_tools')
+        keep[k] = {x: e[x] for x in F_ + ('notes',) if x in e and e[x] not in ('', None)}
+        keep[k].update({x: e[x] for x in e if x not in keep[k] and x != 'notes' and x not in F_})
         keep[k].setdefault('notes', e.get('notes', ''))
     return keep, probs, bad
 

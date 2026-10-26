@@ -1,7 +1,7 @@
 // FDOP Workbench — build, display and validate an FDRA's fire danger indices, and check each
 // year whether they still hold. Data: fdop-data branch (site/build_fdop_data.py).
 const FDATA = (new URLSearchParams(location.search).get('fdata')) ||
-  'https://raw.githubusercontent.com/' + ((window.AREA && window.AREA.repo) || 'shelikes2run/GACC-fire-dashboard') + '/fdop-data/';
+  'https://raw.githubusercontent.com/' + ((typeof AREA !== 'undefined' && AREA.repo) || (window.AREA && window.AREA.repo) || 'shelikes2run/GACC-fire-dashboard') + '/fdop-data/';
 const IDX_LABEL = { erc: 'ERC', bi: 'BI', ic: 'IC', sc: 'SC', f100: '100-hr FM', f1000: '1000-hr FM', kbdi: 'KBDI', gsi: 'GSI', gsic: 'GSI (lower = more cured)' };
 // GSI as a breakpoint index: lower GSI = more cured = higher class. Internally the value is negated ('gsic' = −GSI) so every
 // class / percentile / option routine keeps "higher = worse"; the helpers below show and read real GSI values.

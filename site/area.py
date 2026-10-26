@@ -1,5 +1,6 @@
 """Area settings (docs/assets/area.js) for the build scripts. One file drives the pages and the builds."""
 import json
+import os
 import re
 from pathlib import Path
 
@@ -16,6 +17,10 @@ def load(path: Path = AREA_JS) -> dict:
     m = re.search(r'\{.*\}', re.sub(r'^\s*//.*$', '', txt, flags=re.M), re.S)
     a = json.loads(m.group(0)) if m else {}
     out = {**DEFAULTS, **a}
+    gh = os.environ.get('GITHUB_REPOSITORY')     # on GitHub Actions: the repo this copy actually lives in (follows a transfer)
+    if gh and gh.lower() != out['repo'].lower():
+        out['repo'] = gh
+        out.pop('site_url', None)
     owner, name = out['repo'].split('/')
     out.setdefault('site_url', f'https://{owner.lower()}.github.io/{name}/')
     out['raw'] = f'https://raw.githubusercontent.com/{out["repo"]}/'

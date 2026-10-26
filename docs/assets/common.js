@@ -1,5 +1,8 @@
 // Shared helpers for the FDRA season-tracking site. Area settings: assets/area.js (window.AREA).
 const AREA = window.AREA || { repo: 'shelikes2run/GACC-fire-dashboard', pal: { enabled: true, matrix: 'R5' } };
+// On GitHub Pages the address says where the repo lives (owner.github.io/repo/), so the data links follow a transfer.
+if (/\.github\.io$/.test(location.hostname) && location.pathname.split('/')[1])
+  AREA.repo = location.hostname.split('.')[0] + '/' + location.pathname.split('/')[1];
 const PAL_ON = !!(AREA.pal && AREA.pal.enabled);
 const DATA = (new URLSearchParams(location.search).get('data')) ||
   'https://raw.githubusercontent.com/' + AREA.repo + '/site-data/';

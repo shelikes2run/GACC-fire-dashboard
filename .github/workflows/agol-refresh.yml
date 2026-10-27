@@ -10,10 +10,11 @@
 name: AGOL refresh
 
 on:
-  schedule:
-    # ~06:40 and ~16:40 Pacific (cron is UTC; shifts an hour with DST)
-    - cron: '40 13 * * *'
-    - cron: '40 23 * * *'
+  # Schedule off: this job needs FEMS and AGOL API keys stored as repository secrets, which this repo does not keep.
+  # The site, popups and AGOL levels layer come from the "Site data" builds instead. Run by hand if the keys are added.
+  # schedule:
+  #   - cron: '40 13 * * *'
+  #   - cron: '40 23 * * *'
   workflow_dispatch:
     inputs:
       gacc:

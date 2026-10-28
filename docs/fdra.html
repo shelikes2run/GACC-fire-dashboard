@@ -378,7 +378,7 @@ async function loadUnit(unit, fm) {
   const opts = Object.keys(ff).length ? Object.keys(ff) : [S.fm];
   sel.innerHTML = opts.map(k => `<option value="${k}"${k === S.fm ? ' selected' : ''}>${k}${k === dfm ? ' (FDOP)' : ''}</option>`).join('');
   sel.onchange = () => loadUnit(S.unit, sel.value);
-  document.getElementById('fmnote').textContent = Object.keys(ff).length > 1 ? 'All five NFDRS 2016 fuel models at the same FDOP stations.' :
+  document.getElementById('fmnote').textContent = Object.keys(ff).length > 1 ? 'All five NFDRSv.4 fuel models at the same FDOP stations.' :
     'Other fuel models appear after the next data run.';
   S.year = Number(S.cur.series.dates[0].slice(0, 4));
   document.getElementById('gen').textContent = S.cur.generated;
@@ -390,7 +390,7 @@ async function loadUnit(unit, fm) {
     ['FDOP RAWS', stn],
     ['Historic data years', S.norm ? `${S.norm.years[0]}–${S.norm.years[S.norm.years.length - 1]} (${S.norm.n_days} days)` : 'not built yet'],
     ['Staffing / dispatch index', esc(p.sl_dl_index || '–')],
-    ['Breakpoints', (S.tools && S.tools.length ? S.tools.map(t => `${esc(short(t.label))}: <b>${t.idx.toUpperCase()}-${t.fm} ${t.breaks.join(' / ')}</b>`).join('<br>') : 'none in the FDOP file') +
+    ['Fire Business Thresholds', (S.tools && S.tools.length ? S.tools.map(t => `${esc(short(t.label))}: <b>${t.idx.toUpperCase()}-${t.fm} ${t.breaks.join(' / ')}</b>`).join('<br>') : 'none in the FDOP file') +
       (S.norm ? `<br><span class="muted">90th / 97th (${normYears()}, FM ${esc(S.fm)}): ERC ${fmt(q(S.norm.erc_q, 90))} / ${fmt(q(S.norm.erc_q, 97))} · BI ${fmt(q(S.norm.bi_q, 90))} / ${fmt(q(S.norm.bi_q, 97))}</span>` : '')],
   ];
   if (S.cur.season) facts.splice(1, 0, ['Season', esc(S.cur.season) + (S.cur.season === 'peak' ? ' (May 1 – Nov 15)' : ' (Nov 16 – Apr 30)')]);

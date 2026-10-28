@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GACC Fire Weather</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/area.js"></script>
+<script src="../assets/common.js"></script>
+<script src="wx.js"></script>
+</head>
+<body>
+<header class="top">
+  <h1>GACC Fire Weather</h1>
+  <div class="sub">National PSA fire danger · key RAWS · 2005–2024 climatology · FEMS NFDRS 2016</div>
+</header>
+<main>
+  <section class="panel">
+    <h2>Today by GACC</h2>
+    <div class="controls"><label>Index <select id="field"></select></label><span class="muted small" id="gen"></span></div>
+    <div class="table-wrap"><table class="data" id="tbl"></table></div>
+    <p class="note">Count of PSAs at each alert level today: fire indices ≥ 90th Elevated, ≥ 95th High, ≥ 97th Critical against each PSA's 2005–2024 climatology; fuel moisture ≤ 10th / 5th / 3rd. Click a GACC for its overview.</p>
+  </section>
+</main>
+<script>
+(async function () {
+  const idx = await wxJSON('index.json');
+  $('gen').textContent = 'Updated ' + idx.generated;
+  let field = Q.get('field') || 'erc';
+  fieldSelect($('field'), idx.fields, idx.primary, field);
+  function draw() {
+    $('tbl').innerHTML = `<thead><tr><th class="l">GACC</th><th>PSAs</th>${LVL_ORDER.map(l => `<th>${chip(l)}</th>`).join('')}</tr></thead><tbody>` +
+      idx.gaccs.map(g => { const c = g.levels_today[field] || {};
+        return `<tr><td class="l"><a href="${linkQ('gacc.html', { gacc: g.abbrev, field })}">${g.abbrev}</a> <span class="muted small">${esc(g.name)}</span></td><td>${g.psas.length}</td>${LVL_ORDER.map(l => `<td>${c[l] || 0}</td>`).join('')}</tr>`; }).join('') + '</tbody>';
+  }
+  $('field').onchange = e => { field = e.target.value; draw(); };
+  draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PSA Fire Weather</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="../assets/area.js"></script>
+<script src="../assets/common.js"></script>
+<script src="wx.js"></script>
+</head>
+<body>
+<header class="top">
+  <h1 id="h1">PSA Fire Weather</h1>
+  <div class="sub"><a id="gacc-link" href="gacc.html">◂ GACC overview</a> · <a href="index.html">All GACCs</a> · NFDRS 2016 · FEMS key RAWS</div>
+</header>
+<main>
+  <section class="panel">
+    <div class="controls"><label>Index <select id="field"></select></label><span class="muted small" id="gen"></span></div>
+    <div class="tabs" id="tabs">
+      <button data-t="t7" class="on">7-day forecast</button><button data-t="tall">All indices</button>
+      <button data-t="ttr">30-day trend</button><button data-t="tst">Key stations</button><button data-t="tab">About &amp; data</button>
+    </div>
+    <div id="t7"><div id="today" class="table-wrap" style="margin-bottom:8px"></div><div id="c7" class="chart"></div>
+      <p class="note">Mean of the PSA's key RAWS (FEMS daily summaries): solid = observed, dotted = FEMS forecast. Lines: the PSA's 2005–2024 climatology (mean and 80th / 90th / 95th / 97th; fuel moisture: 20th / 10th / 5th / 3rd, the dry side).</p></div>
+    <div id="tall" style="display:none"><div id="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px"></div></div>
+    <div id="ttr" style="display:none"><div id="ctr" class="chart"></div><p class="note">Last 30 days observed plus the 7-day forecast, with the climatology lines.</p></div>
+    <div id="tst" style="display:none"><div class="table-wrap"><table class="data" id="stations"></table></div>
+      <p class="note">Latest observed day and next forecast day for each key RAWS (the PSA value is their mean).</p></div>
+    <div id="tab" style="display:none"><div id="about" class="small"></div></div>
+  </section>
+</main>
+<script>
+(async function () {
+  const psa = (Q.get('psa') || '').toUpperCase().replace(/^﻿/, '');
+  const idx = await wxJSON('index.json');
+  const g = idx.gaccs.find(x => x.psas.includes(psa));
+  if (!g) { $('h1').textContent = psa ? `No key RAWS configured for PSA ${psa}` : 'Pick a PSA on the map'; return; }
+  const doc = await wxJSON(`gacc/${g.abbrev}.json`), rec = doc.psas[psa], F = idx.fields;
+  $('h1').textContent = `${psa} ${rec.name || ''} — ${g.abbrev}`; document.title = `${psa} fire weather`;
+  $('gacc-link').href = linkQ('gacc.html', { gacc: g.abbrev, psa }); $('gacc-link').textContent = `◂ ${g.abbrev} overview`;
+  $('gen').textContent = `Updated ${idx.generated} · fuel model ${rec.fuel_model} · ${rec.stations.length} key RAWS`;
+  let field = Q.get('field') || 'erc';
+  fieldSelect($('field'), F, Object.keys(F).filter(k => rec.baseline[k] || (rec.series && rec.series[k].some(v => v !== null))), field);
+  const from = shiftDays(idx.today, -5), to = shiftDays(idx.today, 7);
+  function draw7() {
+    const b = rec.baseline[field], m = F[field].moisture;
+    const tr = seriesTraces(rec, field, F[field].short, '#ff7a33', from);
+    plot('c7', tr, hl({ title: { text: `${F[field].label} — ${psa}, D-5 to D+7` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' },
+      xaxis: { range: [from, to], gridcolor: '#3a3f45' } }, b, m));
+    const cell = (s) => `<td>${nf(s.v[field], field === 'gsi' ? 2 : undefined)}<br>${chip(s.lvl[field])}</td>`;
+    $('today').innerHTML = `<table class="data"><thead><tr><th class="l">${esc(F[field].short)}</th><th>Today ${rec.today.date || ''}</th><th>Tomorrow ${rec.next.date || ''}</th>
+      <th>Mean</th>${lines(b, m).map(([k, t]) => `<th>${t}</th>`).join('')}</tr></thead><tbody><tr><td class="l">PSA mean</td>${cell(rec.today)}${cell(rec.next)}
+      <td>${nf(b && b.mean)}</td>${lines(b, m).map(([k]) => `<td>${nf(b[k])}</td>`).join('')}</tr></tbody></table>`;
+  }
+  function drawAll() {
+    const keys = ['erc', 'ic', 'bi', 'sc', 'fm1', 'fm10', 'fm100', 'fm1000', 'kbdi'];
+    $('grid').innerHTML = keys.map(k => `<div id="g_${k}" style="height:300px"></div>`).join('');
+    keys.forEach(k => plot('g_' + k, seriesTraces(rec, k, F[k].short, '#ff7a33', from),
+      hl({ title: { text: F[k].short, font: { size: 13 } }, showlegend: false, margin: { l: 40, r: 90, t: 30, b: 30 }, xaxis: { range: [from, to], gridcolor: '#3a3f45' } }, rec.baseline[k], F[k].moisture)));
+  }
+  function drawTrend() {
+    plot('ctr', seriesTraces(rec, field, F[field].short, '#ff7a33'), hl({ title: { text: `${F[field].label} — last 30 days and forecast` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' } }, rec.baseline[field], F[field].moisture));
+  }
+  function drawStations() {
+    const rows = rec.station_table || [];
+    $('stations').innerHTML = `<thead><tr><th class="l">Station</th><th>Last obs</th><th>ERC</th><th>BI</th><th>IC</th><th>100-hr</th><th>KBDI</th><th>ERC fcst</th><th>BI fcst</th><th>100-hr fcst</th></tr></thead><tbody>` +
+      rows.map(r => `<tr><td class="l">${r.stationId}</td><td>${r.o_date || '–'}</td><td>${nf(r.o_erc)}</td><td>${nf(r.o_bi)}</td><td>${nf(r.o_ic)}</td><td>${nf(r.o_fm100)}</td><td>${nf(r.o_kbdi)}</td>
+        <td>${nf(r.f_erc)}</td><td>${nf(r.f_bi)}</td><td>${nf(r.f_fm100)}</td></tr>`).join('') + '</tbody>';
+  }
+  function drawAbout() {
+    const b = rec.baseline;
+    $('about').innerHTML = `<dl class="facts"><dt>PSA</dt><dd>${psa} ${esc(rec.name || '')} (${esc(g.name)})</dd>
+      <dt>Key RAWS</dt><dd>${rec.stations.join(', ')} (${rec.stations.length}); fuel model ${rec.fuel_model}</dd>
+      <dt>Climatology</dt><dd>${idx.climo[0]}–${idx.climo[1]}, observed daily values, PSA = mean of the key RAWS each day, all days of the year (${rec.n_days_climo || '–'} days). Source: ${esc(idx.baseline_source)}.</dd>
+      <dt>Alert levels</dt><dd>Fire indices (ERC, BI, IC, SC, KBDI): Elevated ≥ 90th, High ≥ 95th, Critical ≥ 97th percentile. Fuel moisture: Elevated ≤ 10th, High ≤ 5th, Critical ≤ 3rd (drier = worse).</dd>
+      <dt>Data</dt><dd>FEMS NFDRS daily summaries (public climatology download, no key), observed and FEMS forecast; updated twice a day. Today = today's FEMS value; tomorrow = the next forecast day.</dd></dl>
+      <h3 class="small" style="margin:14px 0 6px;text-transform:uppercase">Climatology for this PSA</h3><div class="table-wrap"><table class="data"><thead><tr><th class="l">Index</th><th>3rd</th><th>5th</th><th>10th</th><th>20th</th><th>Mean</th><th>80th</th><th>90th</th><th>95th</th><th>97th</th></tr></thead><tbody>` +
+      Object.keys(F).filter(k => b[k]).map(k => `<tr><td class="l">${F[k].short}</td>${['p3', 'p5', 'p10', 'p20', 'mean', 'p80', 'p90', 'p95', 'p97'].map(q => `<td>${nf(b[k][q])}</td>`).join('')}</tr>`).join('') + '</tbody></table></div>';
+  }
+  const tabs = { t7: draw7, tall: drawAll, ttr: drawTrend, tst: drawStations, tab: drawAbout };
+  let cur = Q.get('tab') || 't7';
+  function show(t) { cur = t; document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+    Object.keys(tabs).forEach(k => $(k).style.display = k === t ? '' : 'none'); tabs[t](); }
+  document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => show(b.dataset.t));
+  $('field').onchange = e => { field = e.target.value; show(cur); };
+  show(cur);
+})();
+</script>
+</body>
+</html>

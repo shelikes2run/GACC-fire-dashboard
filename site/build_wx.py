@@ -47,7 +47,7 @@ HI_P, LO_P = [80, 90, 95, 97], [20, 10, 5, 3]
 PSA_LAYER = ('https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/'
              'DMP_Predictive_Service_Area__PSA_Boundaries_Public/FeatureServer/0')
 LEVELS = ['Normal', 'Elevated', 'High', 'Critical']          # ≥90th / ≥95th / ≥97th (fuel moisture: ≤10th / ≤5th / ≤3rd)
-LVL_COL = {'Normal': '#2e7d32', 'Elevated': '#f9c80e', 'High': '#ff7a00', 'Critical': '#e0115f', 'No data': '#9aa0a6'}
+LVL_COL = {'Dormant': '#8d6e63', 'Green-up': '#43a047', 'Normal': '#2e7d32', 'Elevated': '#f9c80e', 'High': '#ff7a00', 'Critical': '#e0115f', 'No data': '#9aa0a6'}
 SITE = 'https://shelikes2run.github.io/GACC-fire-dashboard/'
 
 
@@ -161,7 +161,11 @@ def load_baseline(out: Path) -> dict:
 
 def level(k, v, b):
     """Alert level of value v for field k against its PSA baseline entry b."""
-    if v is None or b is None or (isinstance(v, float) and np.isnan(v)):
+    if v is None or (isinstance(v, float) and np.isnan(v)):
+        return 'No data'
+    if k == 'gsi':      # NFDRS green-up threshold: live fuels green up from GSI 0.5, dormant below it
+        return 'Green-up' if v >= 0.5 else 'Dormant'
+    if b is None:
         return 'No data'
     if k in MOIST:
         if b.get('p3') is None:

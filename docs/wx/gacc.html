@@ -27,7 +27,7 @@ input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--
       <button data-t="tov" class="on">GACC overview</button><button data-t="thm">Heatmap</button><button data-t="ttr">30-day trend</button>
       <button data-t="tpc">Percentile context</button><button data-t="ttb">Data table</button>
     </div>
-    <div id="tov"><div id="cov" class="chart"></div><p class="note">Today's PSA value (mean of its key RAWS). Bar color = alert level; markers = the PSA's 90th / 95th / 97th (fuel moisture: 10th / 5th / 3rd). Click a bar for the PSA charts.</p></div>
+    <div id="tov"><div id="cov" class="chart"></div><p class="note">Today's PSA value (mean of its key RAWS). Bar color = alert level; markers = the PSA's 90th / 95th / 97th (fuel moisture: 10th / 5th / 3rd). GSI (Growing Season Index, 0–1) is shown as a status instead: below 0.5 = Dormant (live fuels dormant or cured), 0.5 and up = Green-up (the NFDRS green-up threshold); it normally falls to 0 in fall and winter. Click a bar for the PSA charts.</p></div>
     <div id="thm" style="display:none"><div id="chm" class="chart" style="height:640px"></div><p class="note">PSA × date, last 30 days observed and the forecast (right of the white line). Colors: the PSA's own percentile class.</p></div>
     <div id="ttr" style="display:none"><div id="ctr" class="chart"></div><p class="note">Every PSA in the GACC; the selected PSA is highlighted (pick it in the legend or with ?psa=).</p></div>
     <div id="tpc" style="display:none"><div id="cpc" class="chart"></div><p class="note">Today's value against the PSA's climatology points.</p></div>
@@ -54,6 +54,13 @@ input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--
     const vals = P.map(r => [r.psa, r.today.v[field]]).filter(x => x[1] !== null);
     const avg = vals.length ? vals.reduce((s, x) => s + x[1], 0) / vals.length : null;
     const ext = vals.sort((a, b) => m ? a[1] - b[1] : b[1] - a[1])[0];
+    if (field === 'gsi') {   // GSI is a green-up status (NFDRS threshold 0.5), not a danger percentile
+      $('kpis').innerHTML = [['Dormant PSAs', c('Dormant'), 'GSI below 0.5: live fuels dormant / cured', LVL.Dormant],
+        ['Green-up PSAs', c('Green-up'), 'GSI 0.5 or more: live fuels greening', LVL['Green-up']],
+        ['Average GSI', nf(avg, 2), 'today, all PSAs', '#7fb3ff'], [`Greenest (${ext ? ext[0] : '–'})`, ext ? nf(ext[1], 2) : '–', 'today', '#7fb3ff']]
+        .map(([l, v, s, c]) => `<div class="kpi" style="--c:${c}"><div class="l">${l}</div><div class="v">${v}</div><div class="small muted">${s}</div></div>`).join('');
+      return;
+    }
     $('kpis').innerHTML = [['Critical PSAs', c('Critical'), m ? '≤ 3rd percentile' : '≥ 97th percentile', LVL.Critical],
       ['High PSAs', c('High'), m ? '≤ 5th' : '≥ 95th', LVL.High], ['Elevated PSAs', c('Elevated'), m ? '≤ 10th' : '≥ 90th', LVL.Elevated],
       [`Average ${F[field].short}`, nf(avg), 'today, all PSAs', '#7fb3ff'],
@@ -64,7 +71,8 @@ input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--
     const m = F[field].moisture, x = P.map(r => r.psa), y = P.map(r => r.today.v[field]);
     const tr = [{ type: 'bar', x, y, marker: { color: P.map(r => col(r.today.lvl[field])) }, name: 'Today',
       customdata: P.map(r => r.name), hovertemplate: '%{x} %{customdata}<br>%{y}<extra></extra>' }];
-    for (const [k, t, c] of (m ? LO.slice(1) : HI.slice(1)))
+    if (field === 'gsi') tr.push({ type: 'scatter', mode: 'lines', x: [x[0], x[x.length - 1]], y: [0.5, 0.5], name: 'Green-up threshold (0.5)', line: { color: '#43a047', dash: 'dash', width: 2 } });
+    else for (const [k, t, c] of (m ? LO.slice(1) : HI.slice(1)))
       tr.push({ type: 'scatter', mode: 'markers', x, y: P.map(r => (r.baseline[field] || {})[k] ?? null), name: t, marker: { symbol: 'line-ew-open', size: 18, color: c, line: { width: 3, color: c } } });
     plot('cov', tr, { title: { text: `${F[field].label} — today by PSA` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' }, barmode: 'overlay' });
     $('cov').on('plotly_click', e => { const p = e.points[0].x; location.href = linkQ('psa.html', { psa: p, field }); });
@@ -78,9 +86,12 @@ input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--
     for (const r of P) { const s = r.series || { dates: [] };
       z.push(dates.map(d => { const i = s.dates.indexOf(d); return i < 0 ? null : cls(r, s[field][i]); }));
       txt.push(dates.map(d => { const i = s.dates.indexOf(d); return i < 0 ? '' : `${nf(s[field][i])} (${s.type[i]})`; })); }
-    plot('chm', [{ type: 'heatmap', x: dates, y: P.map(r => r.psa), z, text: txt, hovertemplate: '%{y} %{x}<br>%{text}<extra></extra>', zmin: 0, zmax: 3,
-      colorscale: [[0, LVL.Normal], [0.1667, LVL.Normal], [0.1667, LVL.Elevated], [0.5, LVL.Elevated], [0.5, LVL.High], [0.8333, LVL.High], [0.8333, LVL.Critical], [1, LVL.Critical]],
-      colorbar: { tickvals: [0, 1, 2, 3], ticktext: ['Normal', 'Elevated', 'High', 'Critical'] }, xgap: 1, ygap: 1 }],
+    const G = field === 'gsi';   // GSI: shade by value, tan (dormant) to green (green-up)
+    const zz = G ? P.map(r => { const s = r.series || { dates: [] }; return dates.map(d => { const i = s.dates.indexOf(d); return i < 0 ? null : s.gsi[i]; }); }) : z;
+    plot('chm', [{ type: 'heatmap', x: dates, y: P.map(r => r.psa), z: zz, text: txt, hovertemplate: '%{y} %{x}<br>%{text}<extra></extra>', zmin: 0, zmax: G ? 1 : 3,
+      colorscale: G ? [[0, '#5d4037'], [0.25, '#8d6e63'], [0.4999, '#d7ccc8'], [0.5, '#c5e1a5'], [0.75, '#7cb342'], [1, '#1b5e20']]
+        : [[0, LVL.Normal], [0.1667, LVL.Normal], [0.1667, LVL.Elevated], [0.5, LVL.Elevated], [0.5, LVL.High], [0.8333, LVL.High], [0.8333, LVL.Critical], [1, LVL.Critical]],
+      colorbar: G ? { tickvals: [0, 0.25, 0.5, 0.75, 1], ticktext: ['0 dormant', '0.25', '0.5 green-up', '0.75', '1'] } : { tickvals: [0, 1, 2, 3], ticktext: ['Normal', 'Elevated', 'High', 'Critical'] }, xgap: 1, ygap: 1 }],
       { title: { text: `${F[field].label} — PSA × date` }, margin: { l: 70, r: 30, t: 40, b: 60 }, yaxis: { autorange: 'reversed', gridcolor: '#3a3f45' },
         shapes: [{ type: 'line', x0: idx.today, x1: idx.today, yref: 'paper', y0: 0, y1: 1, line: { color: '#fff', width: 2 } }] });
   }

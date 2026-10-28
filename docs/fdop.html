@@ -644,7 +644,7 @@ function drawToolDelta(year) {
   const list = tools.length ? tools.map(t => ({ ...t, src: 'FDOP' }))
     : (W.cfg.breaks.length ? [{ label: 'Setup box breakpoints (no FDOP decision tools loaded)', idx: W.cfg.idx, fm: W.cfg.fm, breaks: W.cfg.breaks, src: 'setup' }] : []);
   const old = S0 && /1978/.test(S0.notes || '') && !tools.length;
-  $('dtools-note').innerHTML = (old ? `<b style="color:${FLAG[1]}">This FDRA's FDOP breakpoints are on NFDRS 1978 fuel models, which FEMS no longer produces — they cannot be checked here; build NFDRS 2016 breakpoints in the Decision points tab.</b> ` : '') +
+  $('dtools-note').innerHTML = (old ? `<b style="color:${FLAG[1]}">This FDRA's FDOP breakpoints are on NFDRS 1978 fuel models, which FEMS no longer produces — they cannot be checked here; build NFDRSv.4 breakpoints in the Decision points tab.</b> ` : '') +
     `${year}: each tool is checked on its own index and fuel model with the setup's stations, season (${seasonLabel(W.cfg)}) and calibration years ${W.cfg.calibFrom}–${W.cfg.calibTo}. ` +
     '<b>Reach</b>: a breakpoint above the 99.5th percentile (that class never occurs). <b>Days in top class</b>: this year vs. what the calibration predicts. <b>Skill</b>: AUC for fire days this year vs. calibration. <b>Top-2 catch</b>: share of large fire days in the two highest classes. <b>Rises</b>: fire-day probability climbs class to class in the calibration.';
   if (!list.length) { $('dtools').innerHTML = ''; PL('dchart4', [], {}); return; }

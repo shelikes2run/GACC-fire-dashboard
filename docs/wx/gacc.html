@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
 <script src="../assets/area.js"></script>
 <script src="../assets/common.js"></script>
-<script src="wx.js"></script>
+<script src="wx.js?v=20261028b"></script>
 <style>.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
 .kpi{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;border-top:3px solid var(--c,#7fb3ff)}
 .kpi .v{font-size:26px;font-weight:700}.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
@@ -159,7 +159,7 @@ input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = `${doc.abbrev}_${field}_${idx.today}.csv`; a.click(); };
   const tabs = { tov: overview, thm: heatmap, ttr: trend, tpc: context, ttb: table };
   let cur = Q.get('tab') || 'tov';
-  function show(t) { cur = t; $('def').innerHTML = defBox(field); kpis(); document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  function show(t) { cur = t; if (typeof defBox === 'function') $('def').innerHTML = defBox(field); kpis(); document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     Object.keys(tabs).forEach(k => $(k).style.display = k === t ? '' : 'none'); tabs[t](); }
   document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => show(b.dataset.t));
   $('field').onchange = e => { field = e.target.value; show(cur); };

@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
 <script src="../assets/area.js"></script>
 <script src="../assets/common.js"></script>
-<script src="wx.js"></script>
+<script src="wx.js?v=20261028b"></script>
 </head>
 <body>
 <header class="top">
@@ -81,7 +81,7 @@
   }
   const tabs = { t7: draw7, tall: drawAll, ttr: drawTrend, tst: drawStations, tab: drawAbout };
   let cur = Q.get('tab') || 't7';
-  function show(t) { cur = t; $('def').innerHTML = defBox(field); document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  function show(t) { cur = t; if (typeof defBox === 'function') $('def').innerHTML = defBox(field); document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     Object.keys(tabs).forEach(k => $(k).style.display = k === t ? '' : 'none'); tabs[t](); }
   document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => show(b.dataset.t));
   $('field').onchange = e => { field = e.target.value; show(cur); };

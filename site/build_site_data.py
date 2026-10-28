@@ -3,7 +3,7 @@ build_site_data.py — data for the FDRA season-tracking site (docs/).
 
 Two jobs, both keyless (public FEMS climatology downloads, batches of 20 stations):
 
-  python site/build_site_data.py normals OUT   # 2016-2025 climatology per FDRA (slow, run rarely)
+  python site/build_site_data.py normals OUT   # 2006-2025 climatology per FDRA (slow, run rarely)
   python site/build_site_data.py current OUT   # this year's observed + forecast, PAL, index (daily)
 
 OUT is a checkout of the `site-data` branch. The site reads it from

@@ -33,6 +33,7 @@ input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--
     <div id="tpc" style="display:none"><div id="cpc" class="chart"></div><p class="note">Today's value against the PSA's climatology points.</p></div>
     <div id="ttb" style="display:none"><div class="controls"><input class="search" id="q" placeholder="Filter PSA…"><button id="csv" class="tabs" style="all:unset;cursor:pointer;color:var(--link)">⬇ Download CSV</button></div>
       <div class="table-wrap" style="max-height:560px"><table class="data" id="tbl"></table></div></div>
+    <div id="def"></div>
   </section>
 </main>
 <script>
@@ -127,7 +128,7 @@ input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = `${doc.abbrev}_${field}_${idx.today}.csv`; a.click(); };
   const tabs = { tov: overview, thm: heatmap, ttr: trend, tpc: context, ttb: table };
   let cur = Q.get('tab') || 'tov';
-  function show(t) { cur = t; kpis(); document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  function show(t) { cur = t; $('def').innerHTML = defBox(field); kpis(); document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     Object.keys(tabs).forEach(k => $(k).style.display = k === t ? '' : 'none'); tabs[t](); }
   document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => show(b.dataset.t));
   $('field').onchange = e => { field = e.target.value; show(cur); };

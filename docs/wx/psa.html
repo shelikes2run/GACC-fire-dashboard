@@ -28,6 +28,7 @@
     <div id="tst" style="display:none"><div class="table-wrap"><table class="data" id="stations"></table></div>
       <p class="note">Latest observed day and next forecast day for each key RAWS (the PSA value is their mean).</p></div>
     <div id="tab" style="display:none"><div id="about" class="small"></div></div>
+    <div id="def"></div>
   </section>
 </main>
 <script>
@@ -80,7 +81,7 @@
   }
   const tabs = { t7: draw7, tall: drawAll, ttr: drawTrend, tst: drawStations, tab: drawAbout };
   let cur = Q.get('tab') || 't7';
-  function show(t) { cur = t; document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  function show(t) { cur = t; $('def').innerHTML = defBox(field); document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     Object.keys(tabs).forEach(k => $(k).style.display = k === t ? '' : 'none'); tabs[t](); }
   document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => show(b.dataset.t));
   $('field').onchange = e => { field = e.target.value; show(cur); };

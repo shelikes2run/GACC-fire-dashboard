@@ -49,3 +49,27 @@ function fieldSelect(sel, fields, keys, cur) {
   sel.innerHTML = keys.map(k => `<option value="${k}"${k === cur ? ' selected' : ''}>${esc(fields[k].short)} — ${esc(fields[k].label)}</option>`).join('');
 }
 function linkQ(page, params) { const u = new URLSearchParams(params); if (EMBED) u.set('embed', '1'); return page + '?' + u.toString(); }
+
+// ── what each index is (shown under the charts for the index picked) ──
+// ERC, BI, IC, SC, KBDI: NWCG PMS 437, "NFDRS System Inputs and Outputs"; fuel moistures and GSI: NFDRS 2016.
+const NWCG_URL = 'https://www.nwcg.gov/publications/pms437/fire-danger/nfdrs-system-inputs-and-outputs';
+const IDX_DEF = {
+  erc: ['Energy Release Component (ERC)', 'The available energy (BTU per square foot) in the flaming front at the head of a fire. A cumulative, build-up index: the 1000-hour fuel moisture is a primary input and wind is not, so it changes slowly from day to day. Open-ended and relative (an ERC of 24 is twice the potential heat release of 12). Best NFDRS measure of seasonal drying and drought; used for planning 24–72 hours out and for preparedness and staffing.'],
+  bi: ['Burning Index (BI)', 'How much fire behavior adds to the effort of containing a fire, built from the Spread Component and ERC. Roughly flame length in feet × 10, open-ended. Represents the near upper limit expected in the rating area (worst fuel, weather and topography); containment difficulty rises more than twice as fast as BI. Responds to wind, so it moves more day to day than ERC.'],
+  ic: ['Ignition Component (IC)', 'The probability (0–100%) that a firebrand landing in receptive fuel starts a fire that needs suppression action. 100 means every firebrand would start an actionable fire; 0 means none would. Driven mostly by fine (1-hour) fuel moisture and temperature, plus spread potential.'],
+  sc: ['Spread Component (SC)', 'The forward rate of spread of a head fire, numerically equal to the theoretical rate of spread in feet per minute. Open-ended and highly variable from day to day because it is driven by wind, slope and fine fuel moisture.'],
+  fm1: ['1-hour dead fuel moisture', 'Moisture content (% of dry weight) of dead fuels under ¼ inch in diameter: grass, needles, small twigs and the surface litter. Responds within an hour or so to temperature, humidity and sun, so it swings through the day. Lower = easier ignition; the main driver of Ignition Component.'],
+  fm10: ['10-hour dead fuel moisture', 'Moisture content of dead fuels ¼ to 1 inch in diameter. Responds over hours to about a day, tracking the day-to-day weather. A key input to fire spread; lower = more available fine fuel.'],
+  fm100: ['100-hour dead fuel moisture', 'Moisture content of dead fuels 1 to 3 inches in diameter. Responds over several days, so it reflects the multi-day trend of temperature, humidity and precipitation rather than single-day swings. Lower values mean drying over the past week or so.'],
+  fm1000: ['1000-hour dead fuel moisture', 'Moisture content of dead fuels 3 to 8 inches in diameter (large logs). Responds over weeks, so it reflects seasonal drying and drought; a primary input to ERC. Use as a stand-alone drought indicator only after checking local historical fire-weather data for critical levels.'],
+  herb: ['Herbaceous live fuel moisture', 'Modeled moisture content of live grasses and forbs. In NFDRS 2016 it follows the Growing Season Index: it rises during green-up and falls to about 30% (fully cured) when plants are dormant. Cured herbaceous fuel behaves like dead fuel.'],
+  woody: ['Woody live fuel moisture', 'Modeled moisture content of live shrub and tree foliage and small stems. In NFDRS 2016 it follows the Growing Season Index, ranging from about 60% (dormant) up to about 200% (full green-up). Lower values mean more of the live fuel can burn.'],
+  kbdi: ['Keetch-Byram Drought Index (KBDI)', 'Not an NFDRS output itself, but often shown with it: a stand-alone index of seasonal drought. Estimates the rain, in hundredths of an inch, needed to bring the top 8 inches of soil back to saturation: 0 = saturated, 800 (8 inches) = maximum. Rising values mean more vegetation stress, live plants adding to the dead fuel load, and more duff and litter becoming available to burn.'],
+  gsi: ['Growing Season Index (GSI)', 'A 0–1 index of how favorable conditions are for plant growth, from minimum temperature, vapor pressure deficit and day length, averaged over 21 days. In NFDRS 2016 it drives the herbaceous and woody live fuel moistures: green-up begins at 0.5 and live fuels are fully green at 1. It normally sits at or near 0 in fall and winter, especially in dry, offshore-wind periods, meaning live fuels are dormant or cured. Shown here as Dormant (below 0.5) or Green-up (0.5 and up).'],
+};
+function defBox(k) {
+  const d = IDX_DEF[k]; if (!d) return '';
+  return `<div style="margin-top:12px;padding:10px 12px;border-left:4px solid #7fb3ff;background:rgba(127,179,255,.08);border-radius:6px;font-size:13px;line-height:1.5">
+    <b>${esc(d[0])}</b><br>${esc(d[1])}
+    <div class="small muted" style="margin-top:4px">Source: <a href="${NWCG_URL}" target="_blank" rel="noopener">NWCG PMS 437, NFDRS System Inputs and Outputs</a>${['fm1', 'fm10', 'fm100', 'fm1000', 'herb', 'woody', 'gsi'].includes(k) ? ' and the NFDRS 2016 documentation' : ''}.</div></div>`;
+}

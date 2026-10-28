@@ -47,8 +47,8 @@
   function draw7() {
     const b = rec.baseline[field], m = F[field].moisture;
     const tr = seriesTraces(rec, field, F[field].short, '#ff7a33', from);
-    plot('c7', tr, hl({ title: { text: `${F[field].label} — ${psa}, D-5 to D+7` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' },
-      xaxis: { range: [from, to], gridcolor: '#3a3f45' } }, b, m));
+    plot('c7', tr, fcstShade(hl({ title: { text: `${F[field].label} — ${psa}, D-5 to D+7` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' },
+      xaxis: { range: [from, to], gridcolor: '#3a3f45' } }, b, m), idx.today));
     const cell = (s) => `<td>${nf(s.v[field], field === 'gsi' ? 2 : undefined)}<br>${chip(s.lvl[field])}</td>`;
     $('today').innerHTML = `<table class="data"><thead><tr><th class="l">${esc(F[field].short)}</th><th>Today ${rec.today.date || ''}</th><th>Tomorrow ${rec.next.date || ''}</th>
       <th>Mean</th>${lines(b, m).map(([k, t]) => `<th>${t}</th>`).join('')}</tr></thead><tbody><tr><td class="l">PSA mean</td>${cell(rec.today)}${cell(rec.next)}
@@ -61,12 +61,12 @@
       hl({ title: { text: F[k].short, font: { size: 13 } }, showlegend: false, margin: { l: 40, r: 90, t: 30, b: 30 }, xaxis: { range: [from, to], gridcolor: '#3a3f45' } }, rec.baseline[k], F[k].moisture)));
   }
   function drawTrend() {
-    plot('ctr', seriesTraces(rec, field, F[field].short, '#ff7a33'), hl({ title: { text: `${F[field].label} — last 30 days and forecast` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' } }, rec.baseline[field], F[field].moisture));
+    plot('ctr', seriesTraces(rec, field, F[field].short, '#ff7a33'), fcstShade(hl({ title: { text: `${F[field].label} — last 30 days and forecast` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' } }, rec.baseline[field], F[field].moisture), idx.today));
   }
   function drawStations() {
     const rows = rec.station_table || [];
     $('stations').innerHTML = `<thead><tr><th class="l">Station</th><th>Last obs</th><th>ERC</th><th>BI</th><th>IC</th><th>100-hr</th><th>KBDI</th><th>ERC fcst</th><th>BI fcst</th><th>100-hr fcst</th></tr></thead><tbody>` +
-      rows.map(r => `<tr><td class="l">${r.stationId}</td><td>${r.o_date || '–'}</td><td>${nf(r.o_erc)}</td><td>${nf(r.o_bi)}</td><td>${nf(r.o_ic)}</td><td>${nf(r.o_fm100)}</td><td>${nf(r.o_kbdi)}</td>
+      rows.map(r => `<tr><td class="l"><a href="https://famweb.nwcg.gov/SSOLogin/RawsWeatherInfo.cfm?siteId=${r.stationId}" target="_blank" rel="noopener">${r.stationId}</a></td><td>${r.o_date || '–'}</td><td>${nf(r.o_erc)}</td><td>${nf(r.o_bi)}</td><td>${nf(r.o_ic)}</td><td>${nf(r.o_fm100)}</td><td>${nf(r.o_kbdi)}</td>
         <td>${nf(r.f_erc)}</td><td>${nf(r.f_bi)}</td><td>${nf(r.f_fm100)}</td></tr>`).join('') + '</tbody>';
   }
   function drawAbout() {

@@ -25,10 +25,24 @@ function hl(lay, b, moist) {   // climatology reference lines (mean + 80/90/95/9
     lay.shapes.push({ type: 'line', xref: 'paper', x0: 0, x1: 1, y0: y, y1: y, line: { color: col, width: 1.4, dash } });
     lay.annotations.push({ xref: 'paper', x: 1.01, xanchor: 'left', y, text: `${txt}: ${nf(y)}`, showarrow: false, font: { color: col, size: 10 } });
   };
+  const [lo, hi] = moist ? ['p3', 'p10'] : ['p90', 'p97'];   // shade the Elevated-to-Critical band, as the Streamlit trend did
+  if (b && b[lo] != null && b[hi] != null) lay.shapes.push({ type: 'rect', xref: 'paper', x0: 0, x1: 1, y0: b[lo], y1: b[hi], fillcolor: 'rgba(255,90,40,0.10)', line: { width: 0 }, layer: 'below' });
   if (b && b.mean !== undefined) add(b.mean, 'Mean', '#00d4b4', 'dot');
   for (const [k, t, c, d] of lines(b, moist)) add(b[k], t, c, d);
   return lay;
 }
+// Approximate percentile of value v within the PSA's 2005–2024 climatology (interpolated between the stored points)
+function pctRank(v, b) {
+  if (v === null || v === undefined || !b) return null;
+  const pts = [[3, b.p3], [5, b.p5], [10, b.p10], [20, b.p20], [80, b.p80], [90, b.p90], [95, b.p95], [97, b.p97]].filter(([, y]) => y !== null && y !== undefined);
+  if (pts.length < 2) return null;
+  if (v <= pts[0][1]) return pts[0][1] === pts[pts.length - 1][1] ? 50 : pts[0][0] * (v < pts[0][1] ? 0.5 : 1);
+  if (v >= pts[pts.length - 1][1]) return v > pts[pts.length - 1][1] ? 99 : 97;
+  for (let i = 1; i < pts.length; i++) { const [p0, y0] = pts[i - 1], [p1, y1] = pts[i];
+    if (v <= y1) return y1 === y0 ? p1 : p0 + (p1 - p0) * (v - y0) / (y1 - y0); }
+  return null;
+}
+const pctTxt = p => p === null ? '–' : p >= 99 ? '>97th' : p < 3 ? '<3rd' : `~${Math.round(p)}th`;
 function plot(id, tr, lay) { Plotly.newPlot(id, tr, base(lay), { responsive: true, displaylogo: false }); }
 function dayLabel(d, today) {
   const t = new Date(today + 'T12:00'), x = new Date(d + 'T12:00'), k = Math.round((x - t) / 864e5);
@@ -43,6 +57,12 @@ function seriesTraces(rec, k, name, color, from) {
   if (xo.length && xf.length) { xf.unshift(xo[xo.length - 1]); yf.unshift(yo[yo.length - 1]); }
   return [{ x: xo, y: yo, name: name + ' observed', mode: 'lines+markers', line: { color, width: 2.2 }, marker: { size: 5 } },
           { x: xf, y: yf, name: name + ' forecast', mode: 'lines+markers', line: { color, width: 2, dash: 'dot' }, marker: { size: 5, symbol: 'circle-open' } }];
+}
+function fcstShade(lay, today) {   // shaded forecast region (right of today), as in the Streamlit 7-day chart
+  lay.shapes = lay.shapes || [];
+  lay.shapes.push({ type: 'rect', xref: 'x', yref: 'paper', x0: today, x1: shiftDays(today, 8), y0: 0, y1: 1, fillcolor: 'rgba(255,122,51,0.06)', line: { width: 0 }, layer: 'below' });
+  lay.annotations = (lay.annotations || []).concat([{ xref: 'x', yref: 'paper', x: today, xanchor: 'left', y: 1, yanchor: 'bottom', text: 'FORECAST ▸', showarrow: false, font: { size: 10, color: '#a5abb2' } }]);
+  return lay;
 }
 function shiftDays(iso, n) { const d = new Date(iso + 'T12:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
 function fieldSelect(sel, fields, keys, cur) {

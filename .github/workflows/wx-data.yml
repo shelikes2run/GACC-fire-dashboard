@@ -46,9 +46,9 @@ jobs:
           key: wx-raw-2005-2024-v1
       - name: Baseline (2005-2024)
         if: ${{ inputs.rebuild_baseline || hashFiles('out/baseline.json') == '' }}
-        run: python src/site/build_wx.py baseline out wx_cache
+        run: set -o pipefail; python src/site/build_wx.py baseline out wx_cache 2>&1 | tee -a build.log
       - name: Current (30 days + 7-day forecast)
-        run: python src/site/build_wx.py current out
+        run: set -o pipefail; python src/site/build_wx.py current out 2>&1 | tee -a build.log
       - name: Publish
         run: |
           cd out
@@ -58,3 +58,9 @@ jobs:
           if git diff --cached --quiet; then echo "no change"; exit 0; fi
           git commit -qm "fire weather data $(date -u +%FT%TZ)"
           git push -q origin wx-data
+      - name: Save the build log (wx-log branch)
+        if: always()
+        run: |
+          mkdir -p logdir && tail -400 build.log > logdir/build_log.txt 2>/dev/null || echo "no log" > logdir/build_log.txt
+          cd logdir && git init -q -b wx-log && git add -A && git -c user.name=wx -c user.email=wx@users.noreply.github.com commit -qm "log $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" wx-log

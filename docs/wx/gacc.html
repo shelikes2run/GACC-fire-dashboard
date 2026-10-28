@@ -79,7 +79,7 @@ input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--
       z.push(dates.map(d => { const i = s.dates.indexOf(d); return i < 0 ? null : cls(r, s[field][i]); }));
       txt.push(dates.map(d => { const i = s.dates.indexOf(d); return i < 0 ? '' : `${nf(s[field][i])} (${s.type[i]})`; })); }
     plot('chm', [{ type: 'heatmap', x: dates, y: P.map(r => r.psa), z, text: txt, hovertemplate: '%{y} %{x}<br>%{text}<extra></extra>', zmin: 0, zmax: 3,
-      colorscale: [[0, LVL.Normal], [0.33, LVL.Normal], [0.34, LVL.Elevated], [0.66, LVL.Elevated], [0.67, LVL.High], [0.9, LVL.High], [0.91, LVL.Critical], [1, LVL.Critical]],
+      colorscale: [[0, LVL.Normal], [0.1667, LVL.Normal], [0.1667, LVL.Elevated], [0.5, LVL.Elevated], [0.5, LVL.High], [0.8333, LVL.High], [0.8333, LVL.Critical], [1, LVL.Critical]],
       colorbar: { tickvals: [0, 1, 2, 3], ticktext: ['Normal', 'Elevated', 'High', 'Critical'] }, xgap: 1, ygap: 1 }],
       { title: { text: `${F[field].label} — PSA × date` }, margin: { l: 70, r: 30, t: 40, b: 60 }, yaxis: { autorange: 'reversed', gridcolor: '#3a3f45' },
         shapes: [{ type: 'line', x0: idx.today, x1: idx.today, yref: 'paper', y0: 0, y1: 1, line: { color: '#fff', width: 2 } }] });

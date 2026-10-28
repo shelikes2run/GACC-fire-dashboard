@@ -87,7 +87,7 @@ def _read(txt: str, want: set, observed_only: bool) -> pd.DataFrame:
         out[k] = pd.to_numeric(df[c], errors='coerce').astype('float32') if c in df.columns else np.float32(np.nan)
     out = out.dropna(subset=['stationId', 'date'])
     out['stationId'] = out['stationId'].astype(int)
-    out = out[[p in want for p in zip(out['stationId'], out['fm'])]]
+    out = out.loc[np.array([p in want for p in zip(out['stationId'], out['fm'])], dtype=bool)]
     for k in FIELDS:
         out.loc[out[k] < 0, k] = np.nan
     return out

@@ -150,13 +150,8 @@ def build_baseline(out: Path, cache: Path):
 
 
 def load_baseline(out: Path) -> dict:
-    """wx-data baseline.json (built above) if present, else the Streamlit app's gacc_climo_baseline.json (high side only)."""
-    p = out / 'baseline.json'
-    if p.exists():
-        return json.loads(p.read_text())['psa']
-    old = json.loads((ROOT / 'gacc_climo_baseline.json').read_text())['psa']
-    ab = {name: g['abbrev'] for name, g in GACC_CONFIG.items()}
-    return {f"{ab.get(k.split('|')[0], k.split('|')[0])}|{k.split('|')[1]}": v for k, v in old.items()}
+    """The 2005-2024 baseline.json on the wx-data branch (the workflow builds it first if it is missing)."""
+    return json.loads((out / 'baseline.json').read_text())['psa']
 
 
 def level(k, v, b):
@@ -300,7 +295,7 @@ def build_current(out: Path):
     (out / 'psas.geojson').write_text(json.dumps({'type': 'FeatureCollection', 'features': feats}, separators=(',', ':'), allow_nan=False))
     (out / 'index.json').write_text(json.dumps({
         'generated': now.strftime('%Y-%m-%d %H:%M %Z'), 'today': today.strftime('%Y-%m-%d'), 'window': [start, end],
-        'climo': CLIMO, 'baseline_source': 'wx-data baseline.json' if (out / 'baseline.json').exists() else 'gacc_climo_baseline.json (Streamlit)',
+        'climo': CLIMO, 'baseline_source': 'wx-data baseline.json (FEMS daily summaries, 2005-2024)',
         'fields': {k: {'short': META[k][0], 'label': META[k][1], 'moisture': k in MOIST} for k in FIELDS}, 'primary': PRIMARY,
         'gaccs': idx}, separators=(',', ':')))
     log.info('current: %d GACCs, %d PSA polygons → %s', len(idx), len(feats), out)

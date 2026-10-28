@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GACC Fire Weather</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+<script src="../assets/area.js"></script>
+<script src="../assets/common.js"></script>
+<script src="wx.js"></script>
+<style>.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.kpi{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;border-top:3px solid var(--c,#7fb3ff)}
+.kpi .v{font-size:26px;font-weight:700}.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+input.search{background:var(--panel-2);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 8px;font:inherit}</style>
+</head>
+<body>
+<header class="top">
+  <h1 id="h1">GACC Fire Weather</h1>
+  <div class="sub"><a href="index.html">◂ All GACCs</a> · PSA fire danger vs 2005–2024 climatology · FEMS key RAWS</div>
+</header>
+<main>
+  <section class="panel">
+    <div class="controls"><label>GACC <select id="gacc"></select></label><label>Index <select id="field"></select></label>
+      <span class="muted small" id="gen"></span></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="tabs" id="tabs">
+      <button data-t="tov" class="on">GACC overview</button><button data-t="thm">Heatmap</button><button data-t="ttr">30-day trend</button>
+      <button data-t="tpc">Percentile context</button><button data-t="ttb">Data table</button>
+    </div>
+    <div id="tov"><div id="cov" class="chart"></div><p class="note">Today's PSA value (mean of its key RAWS). Bar color = alert level; markers = the PSA's 90th / 95th / 97th (fuel moisture: 10th / 5th / 3rd). Click a bar for the PSA charts.</p></div>
+    <div id="thm" style="display:none"><div id="chm" class="chart" style="height:640px"></div><p class="note">PSA × date, last 30 days observed and the forecast (right of the white line). Colors: the PSA's own percentile class.</p></div>
+    <div id="ttr" style="display:none"><div id="ctr" class="chart"></div><p class="note">Every PSA in the GACC; the selected PSA is highlighted (pick it in the legend or with ?psa=).</p></div>
+    <div id="tpc" style="display:none"><div id="cpc" class="chart"></div><p class="note">Today's value against the PSA's climatology points.</p></div>
+    <div id="ttb" style="display:none"><div class="controls"><input class="search" id="q" placeholder="Filter PSA…"><button id="csv" class="tabs" style="all:unset;cursor:pointer;color:var(--link)">⬇ Download CSV</button></div>
+      <div class="table-wrap" style="max-height:560px"><table class="data" id="tbl"></table></div></div>
+  </section>
+</main>
+<script>
+(async function () {
+  const idx = await wxJSON('index.json'), F = idx.fields;
+  const gsel = Q.get('gacc') || ((idx.gaccs.find(g => g.psas.includes((Q.get('psa') || '').toUpperCase())) || {}).abbrev) || idx.gaccs[0].abbrev;
+  $('gacc').innerHTML = idx.gaccs.map(g => `<option value="${g.abbrev}"${g.abbrev === gsel ? ' selected' : ''}>${g.abbrev} — ${esc(g.name)}</option>`).join('');
+  $('gacc').onchange = e => location.href = linkQ('gacc.html', { gacc: e.target.value, field });
+  let field = Q.get('field') || 'erc', selPsa = (Q.get('psa') || '').toUpperCase();
+  fieldSelect($('field'), F, ['erc', 'bi', 'ic', 'sc', 'fm1', 'fm10', 'fm100', 'fm1000', 'kbdi', 'gsi'], field);
+  const doc = await wxJSON(`gacc/${gsel}.json`);
+  const P = Object.values(doc.psas).sort((a, b) => a.psa.localeCompare(b.psa, undefined, { numeric: true }));
+  $('h1').textContent = `${doc.name} (${doc.abbrev})`; document.title = `${doc.abbrev} fire weather`;
+  $('gen').textContent = `Updated ${idx.generated} · ${P.length} PSAs`;
+  const from = shiftDays(idx.today, -30);
+  const col = l => LVL[l] || LVL['No data'];
+  function kpis() {
+    const m = F[field].moisture, c = l => P.filter(r => r.today.lvl[field] === l).length;
+    const vals = P.map(r => [r.psa, r.today.v[field]]).filter(x => x[1] !== null);
+    const avg = vals.length ? vals.reduce((s, x) => s + x[1], 0) / vals.length : null;
+    const ext = vals.sort((a, b) => m ? a[1] - b[1] : b[1] - a[1])[0];
+    $('kpis').innerHTML = [['Critical PSAs', c('Critical'), m ? '≤ 3rd percentile' : '≥ 97th percentile', LVL.Critical],
+      ['High PSAs', c('High'), m ? '≤ 5th' : '≥ 95th', LVL.High], ['Elevated PSAs', c('Elevated'), m ? '≤ 10th' : '≥ 90th', LVL.Elevated],
+      [`Average ${F[field].short}`, nf(avg), 'today, all PSAs', '#7fb3ff'],
+      [`${m ? 'Driest' : 'Highest'} (${ext ? ext[0] : '–'})`, ext ? nf(ext[1]) : '–', 'today', '#7fb3ff']]
+      .map(([l, v, s, c]) => `<div class="kpi" style="--c:${c}"><div class="l">${l}</div><div class="v">${v}</div><div class="small muted">${s}</div></div>`).join('');
+  }
+  function overview() {
+    const m = F[field].moisture, x = P.map(r => r.psa), y = P.map(r => r.today.v[field]);
+    const tr = [{ type: 'bar', x, y, marker: { color: P.map(r => col(r.today.lvl[field])) }, name: 'Today',
+      customdata: P.map(r => r.name), hovertemplate: '%{x} %{customdata}<br>%{y}<extra></extra>' }];
+    for (const [k, t, c] of (m ? LO.slice(1) : HI.slice(1)))
+      tr.push({ type: 'scatter', mode: 'markers', x, y: P.map(r => (r.baseline[field] || {})[k] ?? null), name: t, marker: { symbol: 'line-ew-open', size: 18, color: c, line: { width: 3, color: c } } });
+    plot('cov', tr, { title: { text: `${F[field].label} — today by PSA` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' }, barmode: 'overlay' });
+    $('cov').on('plotly_click', e => { const p = e.points[0].x; location.href = linkQ('psa.html', { psa: p, field }); });
+  }
+  function heatmap() {
+    const dates = [...new Set(P.flatMap(r => r.series ? r.series.dates : []))].sort().filter(d => d >= from);
+    const m = F[field].moisture, lv = { 'Normal': 0, 'Elevated': 1, 'High': 2, 'Critical': 3 };
+    const cls = (r, v) => { const b = r.baseline[field]; if (v === null || !b) return null;
+      if (m) return v <= b.p3 ? 3 : v <= b.p5 ? 2 : v <= b.p10 ? 1 : 0; return v >= b.p97 ? 3 : v >= b.p95 ? 2 : v >= b.p90 ? 1 : 0; };
+    const z = [], txt = [];
+    for (const r of P) { const s = r.series || { dates: [] };
+      z.push(dates.map(d => { const i = s.dates.indexOf(d); return i < 0 ? null : cls(r, s[field][i]); }));
+      txt.push(dates.map(d => { const i = s.dates.indexOf(d); return i < 0 ? '' : `${nf(s[field][i])} (${s.type[i]})`; })); }
+    plot('chm', [{ type: 'heatmap', x: dates, y: P.map(r => r.psa), z, text: txt, hovertemplate: '%{y} %{x}<br>%{text}<extra></extra>', zmin: 0, zmax: 3,
+      colorscale: [[0, LVL.Normal], [0.33, LVL.Normal], [0.34, LVL.Elevated], [0.66, LVL.Elevated], [0.67, LVL.High], [0.9, LVL.High], [0.91, LVL.Critical], [1, LVL.Critical]],
+      colorbar: { tickvals: [0, 1, 2, 3], ticktext: ['Normal', 'Elevated', 'High', 'Critical'] }, xgap: 1, ygap: 1 }],
+      { title: { text: `${F[field].label} — PSA × date` }, margin: { l: 70, r: 30, t: 40, b: 60 }, yaxis: { autorange: 'reversed', gridcolor: '#3a3f45' },
+        shapes: [{ type: 'line', x0: idx.today, x1: idx.today, yref: 'paper', y0: 0, y1: 1, line: { color: '#fff', width: 2 } }] });
+  }
+  function trend() {
+    const tr = [];
+    P.forEach((r, i) => { if (!r.series) return; const on = !selPsa || r.psa === selPsa;
+      tr.push({ x: r.series.dates, y: r.series[field], name: r.psa, mode: 'lines', line: { width: r.psa === selPsa ? 3.5 : 1.3, color: r.psa === selPsa ? '#ff7a33' : undefined }, opacity: on ? 1 : 0.35 }); });
+    plot('ctr', tr, { title: { text: `${F[field].label} — all ${doc.abbrev} PSAs` }, yaxis: { title: F[field].short, gridcolor: '#3a3f45' },
+      shapes: [{ type: 'line', x0: idx.today, x1: idx.today, yref: 'paper', y0: 0, y1: 1, line: { color: '#fff', width: 1.5, dash: 'dot' } }] });
+  }
+  function context() {
+    const x = P.map(r => r.psa), m = F[field].moisture, pts = m ? ['p3', 'p5', 'p10', 'p20', 'mean'] : ['mean', 'p80', 'p90', 'p95', 'p97'];
+    const C = { p3: '#e0115f', p5: '#ff7a00', p10: '#f9c80e', p20: '#7fb3ff', mean: '#00d4b4', p80: '#7fb3ff', p90: '#f9c80e', p95: '#ff7a00', p97: '#e0115f' };
+    const tr = pts.map(k => ({ type: 'bar', x, y: P.map(r => (r.baseline[field] || {})[k] ?? null), name: k === 'mean' ? 'Mean' : k.slice(1) + 'th', marker: { color: C[k], opacity: 0.55 } }));
+    tr.push({ type: 'scatter', mode: 'markers', x, y: P.map(r => r.today.v[field]), name: 'Today', marker: { size: 11, color: '#fff', symbol: 'diamond', line: { color: '#111', width: 1 } } });
+    plot('cpc', tr, { title: { text: `${F[field].label} — today vs climatology` }, barmode: 'group', yaxis: { title: F[field].short, gridcolor: '#3a3f45' } });
+  }
+  let rows = [];
+  function table() {
+    const days = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7].map(n => shiftDays(idx.today, n)), m = F[field].moisture;
+    const cl = m ? ['p20', 'p10', 'p5', 'p3'] : ['p80', 'p90', 'p95', 'p97'];
+    rows = P.map(r => { const s = r.series || { dates: [] };
+      return { PSA: r.psa, Name: r.name, ...Object.fromEntries(days.map(d => { const i = s.dates.indexOf(d); return [d, i < 0 ? null : s[field][i]]; })),
+               Level: r.today.lvl[field], Climo_Mean: (r.baseline[field] || {}).mean ?? null, ...Object.fromEntries(cl.map(k => [k.toUpperCase(), (r.baseline[field] || {})[k] ?? null])) }; });
+    const q = ($('q').value || '').toUpperCase(), cols = Object.keys(rows[0] || {});
+    const vis = rows.filter(r => !q || (r.PSA + ' ' + r.Name).toUpperCase().includes(q));
+    $('tbl').innerHTML = `<thead><tr>${cols.map(c => `<th${['PSA', 'Name'].includes(c) ? ' class="l"' : ''}>${days.includes(c) ? dayLabel(c, idx.today) : c.replace('_', ' ')}</th>`).join('')}</tr></thead><tbody>` +
+      vis.map(r => `<tr>${cols.map(c => c === 'PSA' ? `<td class="l"><a href="${linkQ('psa.html', { psa: r.PSA, field })}">${r.PSA}</a></td>` : c === 'Name' ? `<td class="l">${esc(r.Name)}</td>` : c === 'Level' ? `<td>${chip(r.Level)}</td>` : `<td>${nf(r[c])}</td>`).join('')}</tr>`).join('') + '</tbody>';
+  }
+  $('q').oninput = table;
+  $('csv').onclick = () => { const cols = Object.keys(rows[0] || {});
+    const csv = [cols.join(','), ...rows.map(r => cols.map(c => { const v = r[c]; return v === null || v === undefined ? '' : /[",]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : v; }).join(','))].join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = `${doc.abbrev}_${field}_${idx.today}.csv`; a.click(); };
+  const tabs = { tov: overview, thm: heatmap, ttr: trend, tpc: context, ttb: table };
+  let cur = Q.get('tab') || 'tov';
+  function show(t) { cur = t; kpis(); document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+    Object.keys(tabs).forEach(k => $(k).style.display = k === t ? '' : 'none'); tabs[t](); }
+  document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => show(b.dataset.t));
+  $('field').onchange = e => { field = e.target.value; show(cur); };
+  show(cur);
+})();
+</script>
+</body>
+</html>

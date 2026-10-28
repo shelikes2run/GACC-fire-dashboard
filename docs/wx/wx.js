@@ -2,7 +2,7 @@
 const WX = (new URLSearchParams(location.search).get('wxdata')) || 'https://raw.githubusercontent.com/' + AREA.repo + '/wx-data/';
 const Q = new URLSearchParams(location.search);
 const EMBED = Q.get('embed') === '1';
-const LVL = { 'Normal': '#2e7d32', 'Elevated': '#f9c80e', 'High': '#ff7a00', 'Critical': '#e0115f', 'No data': '#6b7280' };
+const LVL = { 'Dormant': '#8d6e63', 'Green-up': '#43a047', 'Normal': '#2e7d32', 'Elevated': '#f9c80e', 'High': '#ff7a00', 'Critical': '#e0115f', 'No data': '#6b7280' };
 const LVL_ORDER = ['Critical', 'High', 'Elevated', 'Normal', 'No data'];
 const HI = [['p80', '80th', '#7fb3ff', 'dot'], ['p90', '90th', '#f9c80e', 'dash'], ['p95', '95th', '#ff7a00', 'dash'], ['p97', '97th', '#e0115f', 'dash']];
 const LO = [['p20', '20th (dry)', '#7fb3ff', 'dot'], ['p10', '10th (very dry)', '#f9c80e', 'dash'], ['p5', '5th (critically dry)', '#ff7a00', 'dash'], ['p3', '3rd (extremely dry)', '#e0115f', 'dash']];

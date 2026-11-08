@@ -2,7 +2,7 @@
 # Statewide (ONCC + OSCC) and Hawaii RAWS, public FEMS daily summaries (fuel model Y), no secrets.
 #   climo:   each station's 2005-2024 record (percentiles for BI / ERC / IC / SC / SFDI), first run or "rebuild climatology"
 #   current: latest observed day + 7-day FEMS forecast, station values and percentiles, PSA outlines
-name: CA fire danger maps
+name: CA PSA Fire Danger Maps
 
 on:
   schedule:

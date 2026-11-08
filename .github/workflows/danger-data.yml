@@ -1,0 +1,66 @@
+# California + Hawaii fire danger maps → `danger-data` branch (read by docs/wx/danger.html and the GACC Fire Weather app).
+# Statewide (ONCC + OSCC) and Hawaii RAWS, public FEMS daily summaries (fuel model Y), no secrets.
+#   climo:   each station's 2005-2024 record (percentiles for BI / ERC / IC / SC / SFDI), first run or "rebuild climatology"
+#   current: latest observed day + 7-day FEMS forecast, station values and percentiles, PSA outlines
+name: CA fire danger maps
+
+on:
+  schedule:
+    - cron: '5 12 * * *'       # ~4-5 am Pacific, after the overnight FEMS observations
+    - cron: '5 22 * * *'       # ~2-3 pm Pacific, updated forecast
+  workflow_dispatch:
+    inputs:
+      rebuild_climo:
+        description: 'Rebuild the 2005-2024 station climatology'
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths: ['site/build_danger.py', '.github/workflows/danger-data.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: danger-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.repository == 'shelikes2run/GACC-fire-dashboard'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: src }
+      - name: Check out danger-data branch (create if missing)
+        run: |
+          git clone --depth 1 --branch danger-data "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" out \
+            || (mkdir out && cd out && git init -b danger-data && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git")
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install --quiet pandas numpy requests
+      - uses: actions/cache@v4
+        with:
+          path: danger_cache
+          key: danger-raw-2005-2024-v1
+      - name: Station climatology (2005-2024)
+        if: ${{ inputs.rebuild_climo || hashFiles('danger_cache/danger_climo.npz') == '' }}
+        run: set -o pipefail; python src/site/build_danger.py climo out danger_cache 2>&1 | tee -a build.log
+      - name: Current (observed day + 7-day forecast)
+        run: set -o pipefail; python src/site/build_danger.py current out danger_cache 2>&1 | tee -a build.log
+      - name: Publish
+        run: |
+          cd out
+          git config user.name  "danger-data bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git commit -qm "fire danger maps $(date -u +%FT%TZ)"
+          git push -q origin danger-data
+      - name: Save the build log (danger-log branch)
+        if: always()
+        run: |
+          mkdir -p logdir && tail -300 build.log > logdir/build_log.txt 2>/dev/null || echo "no log" > logdir/build_log.txt
+          cd logdir && git init -q -b danger-log && git add -A && git -c user.name=danger -c user.email=danger@users.noreply.github.com commit -qm "log $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" danger-log

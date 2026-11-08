@@ -25,7 +25,12 @@
   .leaflet-tooltip.st table td { padding: 0 6px 0 0; }
   .xm { color: #222; font: 700 12px/12px sans-serif; text-shadow: 0 0 2px #fff; }
   body.embed header.top { display: none; }
-  body.embed main { padding: 8px; }
+  body.embed main { padding: 6px; }
+  body.embed .panel { padding: 10px; }
+  body.embed .bar .lbl { display: none; }
+  body.embed .bar { margin: 3px 0; gap: 4px; }
+  body.embed .bar button { padding: 3px 9px; font-size: 12px; }
+  body.embed #map { height: calc(100vh - 210px); min-height: 380px; }
 </style>
 </head>
 <body>
@@ -141,10 +146,11 @@ function stations() {
       return `<b>${esc(s[1])}</b> <span style="color:#666">(${s[0]})</span><br>${fmtDate(day.date)} · ${day.observed ? 'observed' : 'forecast'}<table>${ORDER.map(row).join('')}</table>`; };
     const mk = v === null || v === undefined
       ? L.marker([s[2], s[3]], { icon: L.divIcon({ className: 'xm', html: '×', iconSize: [12, 12] }), keyboard: false })
-      : L.circleMarker([s[2], s[3]], { radius: 4.5, weight: 1, color: '#222', fillColor: m.colors[m.cls(v)], fillOpacity: 1 });
+      : L.circleMarker([s[2], s[3]], { radius: dotR(), weight: MAP.getZoom() < 7 ? 0.6 : 1, color: '#222', fillColor: m.colors[m.cls(v)], fillOpacity: 1 });
     mk.bindTooltip(tip, { className: 'st', sticky: false, direction: 'top' }).addTo(STL);
   });
 }
+const dotR = () => MAP.getZoom() < 6.5 ? 2.6 : MAP.getZoom() < 8 ? 3.6 : 5;   // smaller dots statewide so the surface shows
 function draw() {
   const m = M[S.metric], day = D.days[S.day];
   frame(); stations();
@@ -166,8 +172,9 @@ function play() { if (S.playing) { clearInterval(S.playing); S.playing = null; $
   MAP = L.map('map', { zoomSnap: 0.25 });
   L.tileLayer('https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 13, attribution: 'Esri, HERE, Garmin, © OpenStreetMap contributors' }).addTo(MAP);
   MAP.createPane('lines').style.zIndex = 420;
+  MAP.on('zoomend', () => STL && STL.eachLayer(l => l.setRadius && l.setStyle({ radius: dotR(), weight: MAP.getZoom() < 7 ? 0.6 : 1 }) && l.setRadius(dotR())));
   PSAL = L.geoJSON(PSA, { pane: 'lines', style: psaStyle, onEachFeature: (f, l) => l.bindTooltip(`${esc(f.properties.PSANationalCode)} ${esc(f.properties.PSANAME)}`, { sticky: true }) }).addTo(MAP);
-  $('regions').insertAdjacentHTML('beforeend', [['CA', 'California (ONCC + OSCC)'], ['HI', 'Hawaii']].map(([r, t]) => `<button data-r="${r}">${t}</button>`).join(''));
+  $('regions').insertAdjacentHTML('beforeend', [['CA', document.body.classList.contains('embed') ? 'California' : 'California (ONCC + OSCC)'], ['HI', 'Hawaii']].map(([r, t]) => `<button data-r="${r}">${t}</button>`).join(''));
   $('metrics').insertAdjacentHTML('beforeend', ORDER.map(k => `<button data-k="${k}">${M[k].short}</button>`).join(''));
   document.querySelectorAll('#regions button').forEach(b => b.onclick = () => setRegion(b.dataset.r));
   document.querySelectorAll('#metrics button').forEach(b => b.onclick = () => { S.metric = b.dataset.k; draw(); });

@@ -85,6 +85,10 @@
         <button class="btn ghost" id="link">Copy link</button><button class="btn ghost" id="csv">Daily CSV</button>
         <button class="btn ghost" id="print">Print report</button>
         <button class="btn ghost" id="pocket-card">Pocket Card</button></div>
+      <div class="form-row no-print" style="margin-top:4px">
+        <label for="card-author" style="font-size:12px;color:var(--muted)">Card prepared by</label>
+        <input type="text" id="card-author" placeholder="Your name / unit" style="width:220px">
+      </div>
       <div id="status"></div>
     </section>
 
@@ -893,6 +897,7 @@ function pocketCard() {
   const forest = (unit.forest || unit.fdra_id || '').replace(/\s*fire danger rating area$/i, '').trim();
   const unitLabel = unit.unit || fdraId;
   const stNames = (unit.candidates || []).filter(c => cfg.stations.includes(c.sid)).map(c => c.name || String(c.sid)).join(', ');
+  const author = ($('card-author') && $('card-author').value.trim()) || '';
 
   // calibration rows for the selected index
   const cal = W.rows.filter(r => r.year >= cfg.calibFrom && r.year <= cfg.calibTo && r[k] !== null);
@@ -1095,7 +1100,7 @@ function pocketCard() {
 
   <div class="footer">
     <b>NWCG Fire Danger Pocket Card</b> · Generated from FDOP Workbench (CA GACC OSCC Predictive Services) · Data: FEMS ${W.idx && W.idx.history_start ? W.idx.history_start + '–' + W.idx.history_end : ''}, NFDRS v.4 ·
-    Fires: FPA FOD + WFIGS · Calibration ${cfg.calibFrom}–${cfg.calibTo} · ${today}
+    Fires: FPA FOD + WFIGS · Calibration ${cfg.calibFrom}–${cfg.calibTo} · ${today}${author ? ' · Prepared by: ' + esc(author) : ''}
     <br>This card is for use by qualified wildland fire personnel. Confirm any recalibration in FireFamily Plus with the unit.
   </div>
   </body></html>`;

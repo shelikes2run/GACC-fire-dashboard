@@ -85,18 +85,68 @@
         <button class="btn ghost" id="link">Copy link</button><button class="btn ghost" id="csv">Daily CSV</button>
         <button class="btn ghost" id="print">Print report</button>
         <button class="btn ghost" id="pocket-card">Pocket Card</button></div>
-      <div class="form-row no-print" style="margin-top:4px">
-        <label for="card-author" style="font-size:12px;color:var(--muted)">Card prepared by</label>
-        <input type="text" id="card-author" placeholder="Your name / unit" style="width:220px">
-      </div>
-      <div class="form-row no-print" style="margin-top:4px">
-        <label for="card-watchouts" style="font-size:12px;color:var(--muted)">Watch Out Situations <span style="font-weight:normal">(one per line)</span></label>
-        <textarea id="card-watchouts" rows="4" placeholder="Enter unit-specific watch-out situations, one per line" style="width:100%;font-size:12px;resize:vertical"></textarea>
-      </div>
-      <div class="form-row no-print" style="margin-top:4px">
-        <label for="card-thumbnail" style="font-size:12px;color:var(--muted)">Card thumbnail / logo <span style="font-weight:normal">(optional image)</span></label>
-        <input type="file" id="card-thumbnail" accept="image/*" style="font-size:12px">
-      </div>
+      <!-- ── Pocket Card fields ──────────────────────────────────────────── -->
+      <details class="no-print" id="card-fields" style="margin-top:8px;border:1px solid var(--border);border-radius:6px;padding:8px 12px">
+        <summary style="font-size:12px;font-weight:600;cursor:pointer;color:var(--muted)">Pocket Card options</summary>
+        <div style="margin-top:8px;display:grid;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <label for="card-author" style="font-size:12px;min-width:110px">Prepared by</label>
+            <input type="text" id="card-author" placeholder="Name / unit / agency" style="flex:1;min-width:180px">
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <label for="card-dp-mode" style="font-size:12px;min-width:110px">Enter DP1/DP2 as</label>
+            <select id="card-dp-mode" style="font-size:12px">
+              <option value="raw">Raw BI / ERC / IC value</option>
+              <option value="pct">Percentile (%ile)</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <span style="font-size:12px;min-width:110px">Pocket Card lines</span>
+            <label style="font-size:12px;font-weight:600;color:#1a56a0">Medium DP <input type="number" id="card-dp-med" placeholder="none" style="width:70px;margin-left:4px"></label>
+            <label style="font-size:12px;font-weight:600;color:#c0392b">High DP <input type="number" id="card-dp-high" placeholder="none" style="width:70px;margin-left:4px"></label>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;min-width:110px">Years to remember</span>
+            <label style="font-size:12px">Year 1 <input type="number" id="card-yr1" placeholder="——" min="1990" max="2099" style="width:70px;margin-left:4px"></label>
+            <label style="font-size:12px">Year 2 <input type="number" id="card-yr2" placeholder="——" min="1990" max="2099" style="width:70px;margin-left:4px"></label>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" id="card-3day" style="margin:0">
+            <label for="card-3day" style="font-size:12px">Show running 3-day average on chart</label>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12px;min-width:110px">Memorable fires</span>
+            <select id="card-fire1" style="font-size:12px;flex:1;min-width:140px"><option value="">none</option></select>
+            <select id="card-fire2" style="font-size:12px;flex:1;min-width:140px"><option value="">none</option></select>
+            <select id="card-fire3" style="font-size:12px;flex:1;min-width:140px"><option value="">none</option></select>
+          </div>
+          <div>
+            <label for="card-psa" style="font-size:12px;display:block;margin-bottom:3px">PSA image / unit logo <span style="font-weight:normal;color:var(--muted)">(optional)</span></label>
+            <input type="file" id="card-psa" accept="image/*" style="font-size:12px">
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:4px">Local thresholds — watch out when</div>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12px">
+              <label style="font-weight:600;color:#1a56a0">20′ wind over <input type="number" id="card-thr-wind" placeholder="—" min="0" style="width:55px;margin-left:4px"> mph</label>
+              <label style="font-weight:600;color:#c0392b">RH under <input type="number" id="card-thr-rh" placeholder="—" min="0" max="100" style="width:55px;margin-left:4px"> %</label>
+              <label style="font-weight:600;color:#8e44ad">Temp over <input type="number" id="card-thr-temp" placeholder="—" min="0" style="width:55px;margin-left:4px"> °F</label>
+              <label style="font-weight:600;color:#d35400">10-hr FM under <input type="number" id="card-thr-fm" placeholder="—" min="0" max="40" style="width:55px;margin-left:4px"> %</label>
+            </div>
+          </div>
+          <div>
+            <label for="card-watchouts" style="font-size:12px;display:block;margin-bottom:3px">Watch Out Situations <span style="font-weight:normal;color:var(--muted)">(one per line)</span></label>
+            <textarea id="card-watchouts" rows="3" placeholder="Enter unit-specific watch-out situations, one per line" style="width:100%;font-size:12px;resize:vertical"></textarea>
+          </div>
+          <div>
+            <label for="card-fda" style="font-size:12px;display:block;margin-bottom:3px">Fire Danger Area <span style="font-weight:normal;color:var(--muted)">(one line per bullet)</span></label>
+            <textarea id="card-fda" rows="3" placeholder="e.g. SIG_SC_04&#10;NWSFZ1 and NWSFZ2&#10;Green Spring; Mariposa; Catheys Valley RAWS" style="width:100%;font-size:12px;resize:vertical"></textarea>
+          </div>
+          <div>
+            <label for="card-pastexp" style="font-size:12px;display:block;margin-bottom:3px">Past Experience <span id="card-pastexp-ct" style="font-weight:normal;color:var(--muted)">(0 / 750)</span></label>
+            <textarea id="card-pastexp" rows="4" maxlength="750" placeholder="Notes on past fires, local knowledge, conditions to watch for…" style="width:100%;font-size:12px;resize:vertical" oninput="document.getElementById('card-pastexp-ct').textContent='('+this.value.length+' / 750)'"></textarea>
+          </div>
+        </div>
+      </details>
       <div id="status"></div>
     </section>
 
@@ -905,13 +955,40 @@ async function pocketCard() {
   const forest = (unit.forest || unit.fdra_id || '').replace(/\s*fire danger rating area$/i, '').trim();
   const unitLabel = unit.unit || fdraId;
   const stNames = (unit.candidates || []).filter(c => cfg.stations.includes(c.sid)).map(c => c.name || String(c.sid)).join(', ');
-  const author = ($('card-author') && $('card-author').value.trim()) || '';
+  const author    = ($('card-author')    && $('card-author').value.trim())    || '';
+  const dpMode    = ($('card-dp-mode')  && $('card-dp-mode').value)             || 'raw';
+  const dpMed     = $('card-dp-med')   && $('card-dp-med').value.trim()   !== '' ? Number($('card-dp-med').value)   : null;
+  const dpHigh    = $('card-dp-high')  && $('card-dp-high').value.trim()  !== '' ? Number($('card-dp-high').value)  : null;
+  const yr1       = $('card-yr1')      && $('card-yr1').value.trim()      !== '' ? Number($('card-yr1').value)      : null;
+  const yr2       = $('card-yr2')      && $('card-yr2').value.trim()      !== '' ? Number($('card-yr2').value)      : null;
+  const show3day  = !!($('card-3day')  && $('card-3day').checked);
+  const thrWind   = $('card-thr-wind') && $('card-thr-wind').value.trim() !== '' ? Number($('card-thr-wind').value) : null;
+  const thrRH     = $('card-thr-rh')   && $('card-thr-rh').value.trim()   !== '' ? Number($('card-thr-rh').value)   : null;
+  const thrTemp   = $('card-thr-temp') && $('card-thr-temp').value.trim() !== '' ? Number($('card-thr-temp').value) : null;
+  const thrFM     = $('card-thr-fm')   && $('card-thr-fm').value.trim()   !== '' ? Number($('card-thr-fm').value)   : null;
+  const fdaLines  = ($('card-fda') && $('card-fda').value.trim())
+      ? $('card-fda').value.trim().split(/\n/).map(s => s.trim()).filter(Boolean) : [];
   const watchouts = ($('card-watchouts') && $('card-watchouts').value.trim())
-    ? $('card-watchouts').value.trim().split(/\n/).map(s => s.trim()).filter(Boolean)
-    : [];
-  // Load thumbnail as data URL if provided
+      ? $('card-watchouts').value.trim().split(/\n/).map(s => s.trim()).filter(Boolean) : [];
+  const pastExp   = ($('card-pastexp') && $('card-pastexp').value.trim()) || '';
+  const memoFires = ['card-fire1','card-fire2','card-fire3']
+      .map(id => $('card-fire1') ? $(id).value : '').filter(Boolean);
+  // Populate fire dropdowns on first use
+  ['card-fire1','card-fire2','card-fire3'].forEach(id => {
+    const sel = $(id); if (!sel || sel.dataset.populated) return;
+    const fires = (W.fires || []).filter(f => (f.fire_size || 0) >= 300)
+      .sort((a, b) => (b.fire_size||0) - (a.fire_size||0)).slice(0, 60);
+    fires.forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f.fire_name || f.irwin_id || '';
+      opt.textContent = `${f.fire_name||'?'} ${f.year||''} (${Math.round(f.fire_size||0).toLocaleString()} ac)`;
+      sel.appendChild(opt);
+    });
+    sel.dataset.populated = '1';
+  });
+  // Load PSA image as data URL if provided
   let thumbDataUrl = '';
-  const thumbFile = $('card-thumbnail') && $('card-thumbnail').files && $('card-thumbnail').files[0];
+  const thumbFile = $('card-psa') && $('card-psa').files && $('card-psa').files[0];
   if (thumbFile) {
     thumbDataUrl = await new Promise(res => {
       const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(thumbFile);
@@ -999,15 +1076,53 @@ async function pocketCard() {
     `<line x1="${PAD.l}" x2="${PAD.l + cW}" y1="${yS(v).toFixed(1)}" y2="${yS(v).toFixed(1)}" stroke="#ddd" stroke-width="0.5"/>
      <text x="${PAD.l - 4}" y="${(yS(v) + 3).toFixed(1)}" font-size="9" fill="#444" text-anchor="end">${v}</text>`
   ).join('');
+  // ── 3-day running average series ──────────────────────────────────
+  const series3day = show3day ? seriesAvg.map((_, i, arr) => {
+    const slice = arr.slice(Math.max(0, i - 2), i + 1).filter(v => v !== null);
+    return slice.length ? slice.reduce((s, v) => s + v, 0) / slice.length : null;
+  }) : [];
+
+  // ── DP reference lines (dashed horizontal) ──────────────────────
+  const yRange = yMax - yMin || 1;
+  const dpLinesSvg = [
+    dpMed  !== null && dpMed  >= yMin && dpMed  <= yMax
+      ? { y: dpMed,  color: '#1a56a0', label: dpMode === 'pct' ? `Med DP (${dpMed}%ile)` : `Med DP ${dpMed}` }
+      : null,
+    dpHigh !== null && dpHigh >= yMin && dpHigh <= yMax
+      ? { y: dpHigh, color: '#c0392b', label: dpMode === 'pct' ? `High DP (${dpHigh}%ile)` : `High DP ${dpHigh}` }
+      : null,
+  ].filter(Boolean).map(({ y, color, label }) => {
+    const ypx = yS(y);
+    return `<line x1="${PAD.l}" y1="${ypx.toFixed(1)}" x2="${(W_CHART - PAD.r).toFixed(1)}" y2="${ypx.toFixed(1)}" stroke="${color}" stroke-width="1.5" stroke-dasharray="6 3"/>
+     <text x="${(W_CHART - PAD.r - 4).toFixed(1)}" y="${(ypx - 3).toFixed(1)}" font-size="9" fill="${color}" text-anchor="end">${label}</text>`;
+  }).join('');
+
+  // ── Year highlight traces ────────────────────────────────────────
+  const yearColors = ['#2ecc71', '#9b59b6'];
+  const yearHighlightsSvg = [yr1, yr2].filter(Boolean).map((yr, yi) => {
+    const pts = Array.from({ length: 365 }, (_, d) => {
+      const row = (W.sorted || []).find(r => r.year === yr && r.doy === d + 1);
+      return row ? { x: xS(d + 1), y: yS(row[cfg.fireIndex] ?? null) } : null;
+    }).filter(Boolean);
+    if (!pts.length) return '';
+    const poly = pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+    return `<polyline points="${poly}" fill="none" stroke="${yearColors[yi]}" stroke-width="1.5" opacity="0.85"/>
+     <text x="${pts[pts.length-1].x.toFixed(1)}" y="${(pts[pts.length-1].y - 4).toFixed(1)}" font-size="9" fill="${yearColors[yi]}">${yr}</text>`;
+  }).join('');
+
   const chartSvg = `<svg width="${W_CHART}" height="${H_CHART}" style="display:block;max-width:100%">
     ${yAxisSvg}${gridSvg}
+    ${yearHighlightsSvg}
     ${polyline(seriesMax, '#c00000', '5,3')}
     ${polyline(seriesPct90, '#ff7a00')}
     ${polyline(seriesAvg, '#5b9bd5', '3,2')}
+    ${show3day ? polyline(series3day, '#27ae60', '2,1') : ''}
+    ${dpLinesSvg}
     <rect x="${PAD.l}" y="${PAD.t}" width="${cW}" height="${cH}" fill="none" stroke="#999" stroke-width="0.8"/>
     <text x="${PAD.l + 6}" y="${PAD.t + 11}" font-size="9" fill="#c00000">— Max</text>
     <text x="${PAD.l + 42}" y="${PAD.t + 11}" font-size="9" fill="#ff7a00">— 90th %ile</text>
     <text x="${PAD.l + 100}" y="${PAD.t + 11}" font-size="9" fill="#5b9bd5">- - Avg</text>
+    ${show3day ? `<text x="${PAD.l + 142}" y="${PAD.t + 11}" font-size="9" fill="#27ae60">— 3-day avg</text>` : ''}
   </svg>`;
 
   // class color bar SVG
@@ -1117,13 +1232,32 @@ async function pocketCard() {
   </p>
   <p style="font-size:9pt;margin:4px 0"><b>Use at briefings:</b> At morning crew meetings, tailgate safety sessions, and incident briefings, compare today's ${idxLabel} with the chart above to see where it falls in the historical range. Indices at or above the 90th percentile line indicate conditions in the top 10% historically.</p>
 
+  ${fdaLines.length ? `<div style="margin-top:10px;padding:6px 8px;background:#f0f4f8;border:1px solid #b0bec5;border-radius:3px;page-break-inside:avoid">
+    <div style="font-size:8pt;font-weight:700;color:#37474f;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em">Fire Danger Area</div>
+    <ul style="margin:0;padding-left:16px;font-size:8pt;color:#333;line-height:1.5">
+      ${fdaLines.map(l => `<li>${esc(l)}</li>`).join('')}
+    </ul>
+  </div>` : ''}
+  ${(thrWind !== null || thrRH !== null || thrTemp !== null || thrFM !== null) ? `<div style="margin-top:10px;padding:6px 8px;background:#e3f2fd;border:1px solid #90caf9;border-radius:3px;page-break-inside:avoid">
+    <div style="font-size:8pt;font-weight:700;color:#0d47a1;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em">Local Thresholds — Watch Out When</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;font-size:8pt">
+      ${thrWind !== null ? `<span style="color:#1a56a0"><b>20′ wind &gt; ${thrWind} mph</b></span>` : ''}
+      ${thrRH   !== null ? `<span style="color:#c0392b"><b>RH &lt; ${thrRH}%</b></span>` : ''}
+      ${thrTemp !== null ? `<span style="color:#8e44ad"><b>Temp &gt; ${thrTemp}°F</b></span>` : ''}
+      ${thrFM   !== null ? `<span style="color:#d35400"><b>10-hr FM &lt; ${thrFM}%</b></span>` : ''}
+    </div>
+  </div>` : ''}
   ${watchouts.length ? `<div style="margin-top:10px;padding:6px 8px;background:#fffbe6;border:1px solid #e6c200;border-radius:3px;page-break-inside:avoid">
     <div style="font-size:8pt;font-weight:700;color:#7a5c00;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em">Watch Out Situations</div>
     <ol style="margin:0;padding-left:16px;font-size:8pt;color:#333;line-height:1.5">
       ${watchouts.map(w => `<li>${esc(w)}</li>`).join('')}
     </ol>
   </div>` : ''}
-  ${thumbDataUrl ? `<div style="margin-top:8px;text-align:center"><img src="${thumbDataUrl}" style="max-height:60px;max-width:200px;object-fit:contain"></div>` : ''}
+  ${pastExp ? `<div style="margin-top:10px;padding:6px 8px;background:#f5f5f5;border:1px solid #ccc;border-radius:3px;page-break-inside:avoid">
+    <div style="font-size:8pt;font-weight:700;color:#333;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em">Past Experience</div>
+    <div style="font-size:8pt;color:#333;line-height:1.5;white-space:pre-wrap">${esc(pastExp)}</div>
+  </div>` : ''}
+  ${thumbDataUrl ? `<div style="margin-top:8px;text-align:center"><img src="${thumbDataUrl}" style="max-height:80px;max-width:240px;object-fit:contain"></div>` : ''}
   <div class="footer">
     <b>NWCG Fire Danger Pocket Card</b> · Generated from FDOP Workbench (CA GACC OSCC Predictive Services) · Data: FEMS ${W.idx && W.idx.history_start ? W.idx.history_start + '–' + W.idx.history_end : ''}, NFDRS v.4 ·
     Fires: FPA FOD + WFIGS · Calibration ${cfg.calibFrom}–${cfg.calibTo} · ${today}${author ? ' · Prepared by: ' + esc(author) : ''}

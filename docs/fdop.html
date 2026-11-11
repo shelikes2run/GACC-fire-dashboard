@@ -83,7 +83,8 @@
       <div class="custom-list no-print" id="custom-list"></div>
       <div class="form-row no-print"><button class="btn" id="run">Run</button>
         <button class="btn ghost" id="link">Copy link</button><button class="btn ghost" id="csv">Daily CSV</button>
-        <button class="btn ghost" id="print">Print report</button></div>
+        <button class="btn ghost" id="print">Print report</button>
+        <button class="btn ghost" id="pocket-card">Pocket Card</button></div>
       <div id="status"></div>
     </section>
 
@@ -870,7 +871,7 @@ async function loadUnit(unit) {
     window.dispatchEvent(new Event('resize'));
   });
   addStationUI();
-  $('run').onclick = run; $('csv').onclick = csv; $('link').onclick = linkToSetup; $('print').onclick = () => window.print();
+  $('run').onclick = run; $('csv').onclick = csv; $('link').onclick = linkToSetup; $('print').onclick = () => window.print(); $('pocket-card').onclick = pocketCard;
   $('bp-pct').onclick = () => { setBreaksFromPct(); drawDP(); };
   $('bp-add').onclick = () => addCustom('breaks'); $('pct-add').onclick = () => addCustom('pct');
   $('breaks').onchange = drawDP; $('dyear').onchange = drawDelta; $('hyear').onchange = drawHistory; $('hmin').onchange = drawHistory;
@@ -879,6 +880,233 @@ async function loadUnit(unit) {
   const want = P.get('unit');
   await loadUnit(units.find(u => u.unit === want) || units.find(u => !/non-peak/.test(u.unit)) || units[0]);
 })().catch(e => { $('h2').textContent = 'Could not load FDOP data'; setStatus(e.message); });
+
+// ── Pocket Card ──────────────────────────────────────────────────────────────
+function pocketCard() {
+  if (!W.cfg || !W.rows || !W.rows.length) { alert('Run the analysis first, then generate the pocket card.'); return; }
+  const cfg = W.cfg, k = cfg.idx, fm = cfg.fm;
+  const IDX = { erc: 'ERC', bi: 'BI', ic: 'IC', sc: 'SC', kbdi: 'KBDI', gsic: 'GSI' };
+  const idxLabel = IDX[k] || k.toUpperCase();
+  const NEG_K = k === 'gsic';
+  const unit = W.unit;
+  const fdraId = unit.fdra_id || '';
+  const forest = (unit.forest || unit.fdra_id || '').replace(/\s*fire danger rating area$/i, '').trim();
+  const unitLabel = unit.unit || fdraId;
+  const stNames = (unit.candidates || []).filter(c => cfg.stations.includes(c.sid)).map(c => c.name || String(c.sid)).join(', ');
+
+  // calibration rows for the selected index
+  const cal = W.rows.filter(r => r.year >= cfg.calibFrom && r.year <= cfg.calibTo && r[k] !== null);
+  if (!cal.length) { alert('No calibration data for this setup.'); return; }
+
+  // compute day-of-year stats (max, avg, 90th pct) over calibration
+  const byDoy = {};
+  cal.forEach(r => {
+    const doy = new Date(r.date).getUTCMonth() * 32 + new Date(r.date).getUTCDate(); // approx bucket
+    const d = new Date(r.date); const mo = d.getUTCMonth(), da = d.getUTCDate();
+    const key = mo * 100 + da; // MMDD as number for sorting
+    if (!byDoy[key]) byDoy[key] = { vals: [], label: `${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][mo]} ${da}` };
+    byDoy[key].vals.push(r[k]);
+  });
+  const doys = Object.keys(byDoy).map(Number).sort((a, b) => a - b);
+  const seriesMax = [], seriesAvg = [], seriesPct90 = [], labels = [];
+  doys.forEach(key => {
+    const vals = byDoy[key].vals.slice().sort((a, b) => a - b);
+    const n = vals.length;
+    labels.push(byDoy[key].label);
+    seriesMax.push(vals[n - 1]);
+    seriesAvg.push(vals.reduce((s, v) => s + v, 0) / n);
+    seriesPct90.push(vals[Math.floor(n * 0.9)]);
+  });
+
+  // breakpoints & class table
+  const breaks = cfg.breaks || [];
+  const classCount = breaks.length + 1;
+  const CLASS_NAMES_LOCAL = { 2: ['Low','High'], 3: ['Low','High','Extreme'], 4: ['Low','Moderate','High','Extreme'],
+    5: ['Low','Moderate','High','Very High','Extreme'], 6: ['Low','Moderate','High','Very High','Extreme','Critical'] };
+  const names = (W.toolClasses && W.toolClasses.length === classCount) ? W.toolClasses
+    : (W.S0 && W.S0.classes && W.S0.classes.length === classCount) ? W.S0.classes
+    : (CLASS_NAMES_LOCAL[classCount] || Array.from({ length: classCount }, (_, i) => `Class ${i + 1}`));
+  const CLASS_COLORS = ['#5b9bd5','#70ad47','#ffc000','#ff7a00','#c00000','#7030a0'];
+  const FLAG_COLORS = ['#5b9bd5','#ffc000','#ff7a00','#c00000','#7030a0'];
+
+  // fire probability per class
+  const sorted = W.sorted || cal.map(r => r[k]).filter(v => v !== null).sort((a, b) => a - b);
+  const pctile = (arr, p) => { if (!arr.length) return null; const i = p / 100 * (arr.length - 1); const lo = Math.floor(i); return arr[lo] + (arr[lo + 1] !== undefined ? (i - lo) * (arr[lo + 1] - arr[lo]) : 0); };
+  const rankPct = (arr, v) => { let lo = 0, hi = arr.length; while (lo < hi) { const m = (lo + hi) >> 1; arr[m] <= v ? lo = m + 1 : hi = m; } return 100 * lo / arr.length; };
+  const classBounds = [NEG_K ? Infinity : -Infinity, ...breaks, NEG_K ? -Infinity : Infinity];
+  const classRows = names.map((name, i) => {
+    const lo = classBounds[i], hi = classBounds[i + 1];
+    const inClass = r => NEG_K ? (r[k] <= lo && r[k] > hi) : (r[k] > lo && r[k] <= hi);
+    const days = cal.filter(inClass);
+    const fireDays = days.filter(r => r.fd);
+    const lfDays = days.filter(r => r.lfd);
+    return { name, lo, hi, days: days.length, pFD: days.length ? fireDays.length / days.length : null, pLFD: days.length ? lfDays.length / days.length : null, color: CLASS_COLORS[i] || '#9aa0a6' };
+  });
+
+  // FDOP tools for local thresholds section
+  const tools = W.tools || [];
+  const hasTools = tools.length > 0;
+
+  // chart: sparkline path generators for SVG
+  const W_CHART = 580, H_CHART = 180, PAD = { l: 44, r: 10, t: 14, b: 36 };
+  const cW = W_CHART - PAD.l - PAD.r, cH = H_CHART - PAD.t - PAD.b;
+  const allVals = [...seriesMax, ...seriesAvg, ...seriesPct90].filter(v => v !== null);
+  const yMin = 0, yMax = Math.ceil(Math.max(...allVals) * 1.08 / 5) * 5;
+  const xS = i => PAD.l + (i / (labels.length - 1 || 1)) * cW;
+  const yS = v => PAD.t + cH - ((v - yMin) / (yMax - yMin || 1)) * cH;
+  const polyline = (arr, color, dash = '') => {
+    const pts = arr.map((v, i) => `${xS(i).toFixed(1)},${yS(v).toFixed(1)}`).join(' ');
+    return `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="${dash ? 1.5 : 2}" ${dash ? `stroke-dasharray="${dash}"` : ''} stroke-linejoin="round"/>`;
+  };
+  // month grid lines from labels
+  const monthLines = [];
+  let lastMo = null;
+  labels.forEach((l, i) => {
+    const mo = l.split(' ')[0];
+    if (mo !== lastMo) { monthLines.push({ i, mo }); lastMo = mo; }
+  });
+  const gridSvg = monthLines.map(({ i, mo }) =>
+    `<line x1="${xS(i).toFixed(1)}" x2="${xS(i).toFixed(1)}" y1="${PAD.t}" y2="${PAD.t + cH}" stroke="#ccc" stroke-width="0.5" stroke-dasharray="3,3"/>
+     <text x="${xS(i).toFixed(1)}" y="${PAD.t + cH + 14}" font-size="9" fill="#444" text-anchor="middle">${mo}</text>`
+  ).join('');
+  // y axis ticks
+  const yTicks = Array.from({ length: Math.ceil((yMax - yMin) / 10) + 1 }, (_, i) => yMin + i * 10).filter(v => v <= yMax);
+  const yAxisSvg = yTicks.map(v =>
+    `<line x1="${PAD.l}" x2="${PAD.l + cW}" y1="${yS(v).toFixed(1)}" y2="${yS(v).toFixed(1)}" stroke="#ddd" stroke-width="0.5"/>
+     <text x="${PAD.l - 4}" y="${(yS(v) + 3).toFixed(1)}" font-size="9" fill="#444" text-anchor="end">${v}</text>`
+  ).join('');
+  const chartSvg = `<svg width="${W_CHART}" height="${H_CHART}" style="display:block;max-width:100%">
+    ${yAxisSvg}${gridSvg}
+    ${polyline(seriesMax, '#c00000', '5,3')}
+    ${polyline(seriesPct90, '#ff7a00')}
+    ${polyline(seriesAvg, '#5b9bd5', '3,2')}
+    <rect x="${PAD.l}" y="${PAD.t}" width="${cW}" height="${cH}" fill="none" stroke="#999" stroke-width="0.8"/>
+    <text x="${PAD.l + 6}" y="${PAD.t + 11}" font-size="9" fill="#c00000">— Max</text>
+    <text x="${PAD.l + 42}" y="${PAD.t + 11}" font-size="9" fill="#ff7a00">— 90th %ile</text>
+    <text x="${PAD.l + 100}" y="${PAD.t + 11}" font-size="9" fill="#5b9bd5">- - Avg</text>
+  </svg>`;
+
+  // class color bar SVG
+  const barW = 580, barH = 28;
+  const segW = barW / classCount;
+  const colorBar = `<svg width="${barW}" height="${barH}" style="display:block;max-width:100%;margin:0 0 2px">
+    ${classRows.map((c, i) => `<rect x="${i * segW}" y="0" width="${segW}" height="${barH}" fill="${c.color}"/>
+      <text x="${i * segW + segW / 2}" y="18" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">${c.name}</text>`).join('')}
+  </svg>`;
+
+  // class table rows
+  const classTableRows = classRows.map((c, i) => {
+    const bp = i < breaks.length ? (NEG_K ? `≤ ${(-breaks[i]).toFixed(2)}` : `≤ ${breaks[i]}`) : '—';
+    const pFD = c.pFD !== null ? (100 * c.pFD).toFixed(1) + '%' : '—';
+    const pLFD = c.pLFD !== null ? (100 * c.pLFD).toFixed(1) + '%' : '—';
+    return `<tr><td style="background:${c.color};color:#fff;font-weight:700;padding:3px 8px">${c.name}</td>
+      <td style="padding:3px 8px;text-align:center">${bp}</td>
+      <td style="padding:3px 8px;text-align:center">${pFD}</td>
+      <td style="padding:3px 8px;text-align:center">${pLFD}</td>
+      <td style="padding:3px 8px;text-align:center">${c.days}</td></tr>`;
+  }).join('');
+
+  // FDOP tools table (if available)
+  let toolsHtml = '';
+  if (hasTools) {
+    const toolRows = tools.map(t => {
+      const bp = (t.breaks || []).join(', ');
+      return `<tr><td style="padding:3px 8px">${t.label || '—'}</td>
+        <td style="padding:3px 8px;text-align:center">${(t.idx || '').toUpperCase()}-${t.fm || ''}</td>
+        <td style="padding:3px 8px">${bp}</td>
+        <td style="padding:3px 8px">${(t.classes || []).join(' / ') || '—'}</td></tr>`;
+    }).join('');
+    toolsHtml = `<h3 style="margin:10px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.06em">FDOP Decision Tools</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:10px;border:1px solid #ccc">
+      <thead><tr style="background:#f0f0f0"><th style="padding:3px 8px;text-align:left">Tool / Decision</th>
+        <th style="padding:3px 8px">Index</th><th style="padding:3px 8px;text-align:left">Fire Business Thresholds</th>
+        <th style="padding:3px 8px;text-align:left">Class Names</th></tr></thead>
+      <tbody>${toolRows}</tbody>
+    </table>`;
+  }
+
+  // season label
+  const seasonStr = `${cfg.season[0]} – ${cfg.season[1]}`;
+  const nDays = cal.length;
+  const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+  <title>Pocket Card — ${esc(fdraId)}</title>
+  <style>
+    @page { size: letter portrait; margin: 0.55in 0.5in; }
+    body { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; color: #111; margin: 0; }
+    h1 { font-size: 15pt; margin: 0 0 2px; }
+    h2 { font-size: 11pt; margin: 10px 0 4px; border-bottom: 1.5px solid #333; padding-bottom: 2px; }
+    table { border-collapse: collapse; width: 100%; }
+    th { background: #2a4a7f; color: #fff; padding: 4px 8px; font-size: 9pt; text-align: center; }
+    .meta { display: flex; flex-wrap: wrap; gap: 4px 24px; font-size: 9pt; color: #444; margin-bottom: 6px; }
+    .meta b { color: #111; }
+    .note { font-size: 8pt; color: #555; margin-top: 4px; }
+    .footer { margin-top: 12px; font-size: 7.5pt; color: #777; border-top: 1px solid #ccc; padding-top: 4px; }
+    @media screen { body { max-width: 680px; margin: 24px auto; padding: 0 16px; } }
+  </style>
+  </head><body>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #2a4a7f;padding-bottom:6px;margin-bottom:8px">
+    <div>
+      <h1>Fire Danger Pocket Card</h1>
+      <div style="font-size:11pt;font-weight:700;color:#2a4a7f">${esc(forest)}${unitLabel !== fdraId ? ' — ' + esc(unitLabel) : ''}</div>
+      <div style="font-size:9pt;color:#555">Fire Danger Rating Area: <b>${esc(fdraId)}</b></div>
+    </div>
+    <div style="text-align:right;font-size:8.5pt;color:#555">
+      <div><b>USDA Forest Service / CA GACC</b></div>
+      <div>OSCC Predictive Services</div>
+      <div style="margin-top:2px">${today}</div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <span><b>Index:</b> ${idxLabel}</span>
+    <span><b>Fuel Model:</b> ${esc(fm)} (NFDRS v.4)</span>
+    <span><b>Calibration:</b> ${cfg.calibFrom}–${cfg.calibTo} (${nDays.toLocaleString()} season days)</span>
+    <span><b>Fire Season:</b> ${seasonStr}</span>
+    <span><b>Stations (SIG):</b> ${esc(stNames)}</span>
+  </div>
+
+  <h2>${idxLabel} — Seasonal Range (${cfg.calibFrom}–${cfg.calibTo})</h2>
+  <p class="note" style="margin:0 0 4px">Maximum, 90th percentile, and average ${idxLabel} by day across the calibration period. 10% of fire-season days exceeded the 90th-percentile line.</p>
+  ${chartSvg}
+
+  <h2>${idxLabel} Fire Danger Classes</h2>
+  ${colorBar}
+  <table style="font-size:9pt">
+    <thead><tr><th style="text-align:left">Class</th><th>Upper Breakpoint</th><th>P(Fire Day)</th><th>P(Large Fire Day)</th><th>Cal. Days</th></tr></thead>
+    <tbody>${classTableRows}</tbody>
+  </table>
+  <p class="note">P(Fire Day): probability that at least one fire was discovered this day during calibration. P(Large Fire Day): probability of a fire ≥ ${cfg.large} ac.
+  Breakpoints are ${idxLabel} class upper values${breaks.length ? ': ' + breaks.join(', ') : ' (not set)'}.</p>
+
+  ${toolsHtml}
+
+  <h2>What ${idxLabel} Tells You</h2>
+  <p style="font-size:9pt;margin:4px 0">
+    ${k === 'erc' ? 'ERC reflects the available energy in the fire environment — it integrates temperature, relative humidity, wind, and fuel moisture over time. ERC does <b>not</b> include wind speed directly but responds to drying trend. High ERC indicates a large-fire potential day.' : ''}
+    ${k === 'bi' ? 'BI (Burning Index) estimates the difficulty of containing a fire and is related to flame length. It integrates wind speed, fuel moisture, and weather. High BI indicates difficult suppression conditions.' : ''}
+    ${k === 'ic' ? 'IC (Ignition Component) is the probability that a firebrand will cause a fire that requires suppression. High IC means high probability of ignition from a spot.' : ''}
+    ${k === 'sc' ? 'SC (Spread Component) estimates the rate of fire spread in chains per hour. It reflects wind and fuel moisture.' : ''}
+    ${k === 'kbdi' ? 'KBDI (Keetch-Byram Drought Index) reflects the moisture deficiency in deep duff and large fuels. High KBDI indicates drought stress and deep burning potential.' : ''}
+    ${k === 'gsic' ? 'GSI (Growing Season Index) reflects green-up and curing of herbaceous fuels. Lower values indicate more cured (dry) fuels and higher fire potential.' : ''}
+  </p>
+  <p style="font-size:9pt;margin:4px 0"><b>Use at briefings:</b> At morning crew meetings, tailgate safety sessions, and incident briefings, compare today's ${idxLabel} with the chart above to see where it falls in the historical range. Indices at or above the 90th percentile line indicate conditions in the top 10% historically.</p>
+
+  <div class="footer">
+    <b>NWCG Fire Danger Pocket Card</b> · Generated from FDOP Workbench (CA GACC OSCC Predictive Services) · Data: FEMS ${W.idx && W.idx.history_start ? W.idx.history_start + '–' + W.idx.history_end : ''}, NFDRS v.4 ·
+    Fires: FPA FOD + WFIGS · Calibration ${cfg.calibFrom}–${cfg.calibTo} · ${today}
+    <br>This card is for use by qualified wildland fire personnel. Confirm any recalibration in FireFamily Plus with the unit.
+  </div>
+  </body></html>`;
+
+  const win = window.open('', '_blank');
+  if (!win) { alert('Pop-up blocked — allow pop-ups for this site and try again.'); return; }
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 600);
+}
 
 function fillSetupKeep() { run(); }
 function addStationUI() {

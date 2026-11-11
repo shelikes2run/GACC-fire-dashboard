@@ -89,6 +89,14 @@
         <label for="card-author" style="font-size:12px;color:var(--muted)">Card prepared by</label>
         <input type="text" id="card-author" placeholder="Your name / unit" style="width:220px">
       </div>
+      <div class="form-row no-print" style="margin-top:4px">
+        <label for="card-watchouts" style="font-size:12px;color:var(--muted)">Watch Out Situations <span style="font-weight:normal">(one per line)</span></label>
+        <textarea id="card-watchouts" rows="4" placeholder="Enter unit-specific watch-out situations, one per line" style="width:100%;font-size:12px;resize:vertical"></textarea>
+      </div>
+      <div class="form-row no-print" style="margin-top:4px">
+        <label for="card-thumbnail" style="font-size:12px;color:var(--muted)">Card thumbnail / logo <span style="font-weight:normal">(optional image)</span></label>
+        <input type="file" id="card-thumbnail" accept="image/*" style="font-size:12px">
+      </div>
       <div id="status"></div>
     </section>
 
@@ -886,7 +894,7 @@ async function loadUnit(unit) {
 })().catch(e => { $('h2').textContent = 'Could not load FDOP data'; setStatus(e.message); });
 
 // ── Pocket Card ──────────────────────────────────────────────────────────────
-function pocketCard() {
+async function pocketCard() {
   if (!W.cfg || !W.rows || !W.rows.length) { alert('Run the analysis first, then generate the pocket card.'); return; }
   const cfg = W.cfg, k = cfg.idx, fm = cfg.fm;
   const IDX = { erc: 'ERC', bi: 'BI', ic: 'IC', sc: 'SC', kbdi: 'KBDI', gsic: 'GSI' };
@@ -898,6 +906,17 @@ function pocketCard() {
   const unitLabel = unit.unit || fdraId;
   const stNames = (unit.candidates || []).filter(c => cfg.stations.includes(c.sid)).map(c => c.name || String(c.sid)).join(', ');
   const author = ($('card-author') && $('card-author').value.trim()) || '';
+  const watchouts = ($('card-watchouts') && $('card-watchouts').value.trim())
+    ? $('card-watchouts').value.trim().split(/\n/).map(s => s.trim()).filter(Boolean)
+    : [];
+  // Load thumbnail as data URL if provided
+  let thumbDataUrl = '';
+  const thumbFile = $('card-thumbnail') && $('card-thumbnail').files && $('card-thumbnail').files[0];
+  if (thumbFile) {
+    thumbDataUrl = await new Promise(res => {
+      const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(thumbFile);
+    });
+  }
 
   // calibration rows for the selected index
   const cal = W.rows.filter(r => r.year >= cfg.calibFrom && r.year <= cfg.calibTo && r[k] !== null);
@@ -1098,6 +1117,13 @@ function pocketCard() {
   </p>
   <p style="font-size:9pt;margin:4px 0"><b>Use at briefings:</b> At morning crew meetings, tailgate safety sessions, and incident briefings, compare today's ${idxLabel} with the chart above to see where it falls in the historical range. Indices at or above the 90th percentile line indicate conditions in the top 10% historically.</p>
 
+  ${watchouts.length ? `<div style="margin-top:10px;padding:6px 8px;background:#fffbe6;border:1px solid #e6c200;border-radius:3px;page-break-inside:avoid">
+    <div style="font-size:8pt;font-weight:700;color:#7a5c00;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em">Watch Out Situations</div>
+    <ol style="margin:0;padding-left:16px;font-size:8pt;color:#333;line-height:1.5">
+      ${watchouts.map(w => `<li>${esc(w)}</li>`).join('')}
+    </ol>
+  </div>` : ''}
+  ${thumbDataUrl ? `<div style="margin-top:8px;text-align:center"><img src="${thumbDataUrl}" style="max-height:60px;max-width:200px;object-fit:contain"></div>` : ''}
   <div class="footer">
     <b>NWCG Fire Danger Pocket Card</b> · Generated from FDOP Workbench (CA GACC OSCC Predictive Services) · Data: FEMS ${W.idx && W.idx.history_start ? W.idx.history_start + '–' + W.idx.history_end : ''}, NFDRS v.4 ·
     Fires: FPA FOD + WFIGS · Calibration ${cfg.calibFrom}–${cfg.calibTo} · ${today}${author ? ' · Prepared by: ' + esc(author) : ''}

@@ -1,0 +1,3 @@
+2026-11-21 03:09:10,432 INFO stations: 563 ({'CA': 514, 'HI': 49})
+2026-11-21 03:09:11,093 INFO danger.json: 504 stations, day 0 2026-11-19 (491 with BI percentile), to 2026-11-26
+2026-11-21 03:09:11,642 INFO PSA polygons: 30

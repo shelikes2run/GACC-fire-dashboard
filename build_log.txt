@@ -1,0 +1,2 @@
+[21:16:29] current: 32734 station-days (873 stations), 2026-10-29 → 2026-12-06
+[21:16:39] current: 9 GACCs, 211 PSA polygons → out
